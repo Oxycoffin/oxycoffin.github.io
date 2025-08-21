@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lagartija Labs — Desarrollo de apps Android</title>
+    <meta name="description" content="Lagartija Labs crea apps móviles cuidadas, rápidas y útiles para Android. Descubre nuestro trabajo, políticas y contacto." />
+
+    <meta property="og:title" content="Lagartija Labs" />
+    <meta property="og:description" content="Desarrollo de apps Android con foco en calidad y privacidad." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://lagartijalabs.github.io/" />
+    <meta name="theme-color" content="#0ea5e9" />
+
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Lagartija Labs",
+      "url": "https://lagartijalabs.github.io/",
+      "sameAs": [
+        "https://play.google.com/store/apps/developer?id=Lagartija+Labs"
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" href="#" aria-label="Inicio Lagartija Labs">
+          <span class="brand-mark" aria-hidden="true">🦎</span>
+          <span class="brand-text">Lagartija Labs</span>
+        </a>
+        <nav class="nav">
+          <a href="#apps">Apps</a>
+          <a href="#about">Quiénes somos</a>
+          <a href="#contact">Contacto</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-inner">
+          <div class="hero-copy">
+            <h1>Apps Android con mimo y propósito</h1>
+            <p>Diseñamos y desarrollamos experiencias móviles rápidas, accesibles y respetuosas con tu privacidad.</p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="https://play.google.com/store/apps/developer?id=Lagartija+Labs" target="_blank" rel="noopener">Ver en Google Play</a>
+              <a class="btn btn-ghost" href="#apps">Explorar apps</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="apps" class="section">
+        <div class="container">
+          <h2>Nuestras apps</h2>
+          <p class="section-lead">Una selección de proyectos publicados y en curso.</p>
+
+          <div class="grid cards">
+            <!-- Ejemplo de tarjeta de app: duplica y edita -->
+            <article class="card">
+              <div class="card-body">
+                <h3 class="card-title">Tu App Aquí</h3>
+                <p class="card-text">Resumen corto de la app: objetivo, usuario y valor diferencial.</p>
+              </div>
+              <div class="card-actions">
+                <a class="btn btn-secondary" href="https://play.google.com/store" target="_blank" rel="noopener">Google Play</a>
+                <a class="btn btn-ghost" href="#">Sitio / Política</a>
+              </div>
+            </article>
+
+            <article class="card placeholder">
+              <div class="card-body">
+                <h3 class="card-title">Próximamente</h3>
+                <p class="card-text">Más apps en camino. Síguenos para novedades.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section alt">
+        <div class="container">
+          <h2>Quiénes somos</h2>
+          <p>
+            En Lagartija Labs nos mueve crear software simple, útil y bien acabado.
+            Trabajamos con tecnologías nativas y modernas, priorizando rendimiento, accesibilidad y un diseño claro.
+          </p>
+          <ul class="bullets">
+            <li><strong>Experiencia:</strong> Android, Kotlin/Java, UI/UX, analítica respetuosa.</li>
+            <li><strong>Calidad:</strong> pruebas, CI/CD y monitoreo para estabilidad.</li>
+            <li><strong>Privacidad:</strong> recogemos lo mínimo necesario para mejorar.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <div class="container">
+          <h2>Contacto</h2>
+          <p>¿Tienes dudas, propuestas o necesitas soporte?</p>
+          <div class="contact-cards">
+            <a class="contact-card" href="mailto:lagartijalabs@gmail.com">
+              <span class="icon" aria-hidden="true">✉️</span>
+              <span>
+                <strong>Correo</strong>
+                <small>lagartijalabs@gmail.com</small>
+              </span>
+            </a>
+            <a class="contact-card" href="https://play.google.com/store/apps/developer?id=Lagartija+Labs" target="_blank" rel="noopener">
+              <span class="icon" aria-hidden="true">▶️</span>
+              <span>
+                <strong>Google Play</strong>
+                <small>Perfil de desarrollador</small>
+              </span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>© <span id="year"></span> Lagartija Labs</p>
+        <nav class="footer-nav">
+          <a href="privacy.html">Política de privacidad</a>
+          <a href="app-ads.txt">app-ads.txt</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script>
+      // Año dinámico en el pie de página
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+  </html>

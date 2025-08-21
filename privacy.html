@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Política de privacidad — Lagartija Labs</title>
+    <meta name="description" content="Política de privacidad de las aplicaciones de Lagartija Labs." />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" href="./">
+          <span class="brand-mark" aria-hidden="true">🦎</span>
+          <span class="brand-text">Lagartija Labs</span>
+        </a>
+        <nav class="nav">
+          <a href="./">Inicio</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="section">
+      <div class="container">
+        <h1>Política de privacidad</h1>
+        <p class="section-lead">Última actualización: <time id="updated"></time></p>
+
+        <p>
+          En Lagartija Labs nos tomamos la privacidad en serio. Esta política
+          explica qué datos pueden recopilar nuestras aplicaciones, con qué
+          propósito y cómo puedes ejercer tus derechos.
+        </p>
+
+        <h2>Datos que recopilamos</h2>
+        <ul class="bullets">
+          <li><strong>Datos de uso anónimos</strong> para mejorar estabilidad y rendimiento.</li>
+          <li><strong>Datos necesarios</strong> para el funcionamiento de funciones explícitas de la app.</li>
+          <li><strong>Nunca</strong> vendemos datos personales ni recopilamos más de lo necesario.</li>
+        </ul>
+
+        <h2>Fines y base legal</h2>
+        <p>Usamos los datos únicamente para:</p>
+        <ul class="bullets">
+          <li>Proveer y mantener el servicio.</li>
+          <li>Detectar, prevenir y resolver incidencias.</li>
+          <li>Mejorar experiencia de usuario de forma agregada.</li>
+        </ul>
+
+        <h2>Retención</h2>
+        <p>Conservamos los datos el tiempo estrictamente necesario para los fines anteriores.</p>
+
+        <h2>Terceros</h2>
+        <p>Algunas apps pueden integrar servicios de terceros (p. ej. Google Play Services). Consulta la ficha de cada app para detalles específicos.</p>
+
+        <h2>Tus derechos</h2>
+        <p>Puedes solicitar acceso, rectificación o eliminación escribiendo a <a href="mailto:lagartijalabs@gmail.com">lagartijalabs@gmail.com</a>.</p>
+
+        <h2>Contacto</h2>
+        <p>Para cualquier consulta sobre privacidad: <a href="mailto:lagartijalabs@gmail.com">lagartijalabs@gmail.com</a>.</p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>© <span id="year"></span> Lagartija Labs</p>
+        <nav class="footer-nav">
+          <a href="/">Inicio</a>
+          <a href="app-ads.txt">app-ads.txt</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+      document.getElementById('updated').textContent = new Date().toISOString().slice(0, 10);
+    </script>
+  </body>
+  </html>
