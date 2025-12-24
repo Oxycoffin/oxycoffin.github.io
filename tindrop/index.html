@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tindrop — Intelligent cleanup</title>
+    <meta name="google-site-verification" content="QkEcEMa1r8XIJjp8nC9ovbMAYlx9SjgG6K0Gp5jMMKo" />
+    <meta
+      name="description"
+      content="Clean your gallery and Google Drive with swipes. Fast, secure, and fun."
+    />
+    <meta name="theme-color" content="#6750A4" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        /* Refined palette */
+        --primary: #6750a4;
+        --secondary: #03dac6;
+        --dark-text: #050505; /* Near-absolute black for titles/logo */
+        --body-text: #2c2e3a; /* Dark gray for comfortable reading */
+        --muted-text: #5e6275;
+        
+        /* Glassmorphism System */
+        --glass-bg: rgba(255, 255, 255, 0.88);
+        --glass-border: rgba(255, 255, 255, 0.6);
+        --glass-shine: rgba(255, 255, 255, 0.4);
+        
+        /* Spacing & Radius */
+        --radius-lg: 32px;
+        --radius-md: 20px;
+        --radius-sm: 12px;
+        
+        /* Shadows "Super Pro" */
+        --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.03);
+        --shadow-medium: 0 12px 32px rgba(31, 32, 48, 0.06);
+        --shadow-float: 0 24px 60px rgba(31, 32, 48, 0.12), 0 0 0 1px rgba(255,255,255,0.5) inset;
+      }
+
+      * {
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, sans-serif; /* Inter for a clean UI */
+        color: var(--body-text);
+        /* The gradient that doesn't budge */
+        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) fixed;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      h1, h2, h3, .logo {
+        font-family: "Fraunces", serif;
+        color: var(--dark-text);
+      }
+      
+      .eyebrow, .btn, .nav, .tab-btn {
+        font-family: "Space Grotesk", sans-serif;
+      }
+
+      a { text-decoration: none; color: inherit; transition: color 0.2s; }
+      img { max-width: 100%; display: block; }
+
+      .wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 24px 120px;
+      }
+
+      /* --- GLASS MAIN CONTAINER --- */
+      .main-glass {
+        background: var(--glass-bg);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-float);
+        padding: 40px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Top glare for a premium sheen */
+      .main-glass::after {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+      }
+
+      /* --- HEADER --- */
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 60px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(0,0,0,0.04);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-weight: 700;
+        font-size: 2.5rem; /* Aumentado */
+        letter-spacing: -1px;
+        color: #000000;
+      }
+
+      .logo-mark {
+        width: 88px;
+        height: 88px;
+        background: #fff;
+        border-radius: 22px;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 6px 16px rgba(103, 80, 164, 0.18);
+        display: grid;
+        place-items: center;
+      }
+      
+      .logo-mark img { width: 60px; }
+
+      .nav {
+        display: flex;
+        gap: 32px;
+        font-weight: 600;
+        font-size: 1.05rem;
+      }
+
+      .nav a {
+        color: #000000; /* Strict black */
+        position: relative;
+      }
+
+      .nav a::after {
+        content: '';
+        position: absolute;
+        bottom: -4px; left: 0; width: 0; height: 2px;
+        background: var(--primary);
+        transition: width 0.3s ease;
+      }
+
+      .nav a:hover::after { width: 100%; }
+
+      /* --- HERO SECTION --- */
+      .hero {
+        display: grid;
+        grid-template-columns: 1fr 400px; /* Space reserved for the phone */
+        gap: 60px;
+        align-items: center;
+      }
+
+      .hero-content {
+        max-width: 600px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: rgba(103, 80, 164, 0.08);
+        color: var(--primary);
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        margin-bottom: 24px;
+      }
+
+      h1 {
+        font-size: clamp(3rem, 5vw, 4.5rem);
+        line-height: 1.05;
+        margin: 0 0 24px;
+        letter-spacing: -1.5px;
+      }
+
+      .hero-desc {
+        font-size: 1.25rem;
+        color: var(--body-text);
+        margin-bottom: 40px;
+        font-weight: 400;
+      }
+
+      .cta-row {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 18px 32px;
+        border-radius: 100px;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 0.2s cubic-bezier(0.3, 0, 0.4, 1), box-shadow 0.2s;
+        border: none;
+      }
+
+      .btn:active { transform: scale(0.98); }
+
+      .btn-primary {
+        background: #000000;
+        color: #fff;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      }
+      
+      .btn-primary:hover {
+        background: #1a1a1a;
+        transform: translateY(-2px);
+      }
+
+      .btn-secondary {
+        background: #fff;
+        color: #000;
+        border: 1px solid rgba(0,0,0,0.1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      }
+      
+      .btn-secondary:hover {
+        background: #fcfcfc;
+        transform: translateY(-2px);
+      }
+
+      /* --- PHONE MOCKUP INTERACTIVO --- */
+      .phone-container {
+        position: relative;
+        width: 340px;
+        height: 660px;
+        background: #fff;
+        border-radius: 48px;
+        box-shadow: 
+          0 0 0 12px #ffffff, /* Marco interior */
+          0 0 0 14px rgba(0,0,0,0.1), /* Borde sutil */
+          0 40px 80px -20px rgba(50, 50, 93, 0.25), /* Elevation shadow */
+          0 30px 60px -30px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        font-family: "Inter", sans-serif;
+        border: 1px solid #e1e1e1;
+      }
+      
+      /* Simulated notch */
+      .phone-notch {
+        position: absolute;
+        top: 0; left: 50%; transform: translateX(-50%);
+        width: 120px; height: 30px;
+        background: #fff;
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
+        z-index: 100;
+      }
+
+      .phone-header {
+        padding: 44px 20px 10px;
+        background: #fff;
+        z-index: 10;
+      }
+
+      .tab-switch {
+        display: flex;
+        background: #f4f4f5;
+        padding: 4px;
+        border-radius: 14px;
+        position: relative;
+      }
+
+      .tab-btn {
+        flex: 1;
+        text-align: center;
+        padding: 10px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #888;
+        cursor: pointer;
+        z-index: 2;
+        transition: color 0.3s;
+      }
+
+      .tab-btn.active {
+        color: #000;
+      }
+
+      .tab-indicator {
+        position: absolute;
+        top: 4px; left: 4px;
+        width: calc(50% - 4px);
+        height: calc(100% - 8px);
+        background: #fff;
+        border-radius: 11px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+      }
+
+      .phone-body {
+        flex: 1;
+        position: relative;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: #fafafc;
+        overflow: hidden; /* Importante para que las cartas salgan */
+      }
+
+      /* Card stack */
+      .card-stack {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        perspective: 1000px;
+      }
+
+      .swipe-card {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        border-radius: 24px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border: 1px solid rgba(0,0,0,0.05);
+        cursor: grab;
+        transform-origin: 50% 100%;
+        transition: transform 0.1s; /* Fast drag response */
+        user-select: none;
+        touch-action: none;
+      }
+      
+      .swipe-card:active { cursor: grabbing; }
+
+      /* Estilo cuando la carta vuelve al centro (release) */
+      .swipe-card.resetting {
+        transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      /* Estilo cuando la carta se va (swipe out) */
+      .swipe-card.flying {
+        transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s;
+        opacity: 0;
+      }
+
+      .card-image {
+        flex: 1;
+        background: #eee;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .card-image img {
+        width: 100%; height: 100%; object-fit: cover;
+        pointer-events: none;
+      }
+      
+      .card-tag {
+        position: absolute;
+        top: 20px; right: 20px;
+        background: rgba(0,0,0,0.6);
+        color: #fff;
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-weight: 600;
+        backdrop-filter: blur(4px);
+      }
+
+      .card-info {
+        padding: 16px;
+        background: #fff;
+      }
+      
+      .card-info h4 { margin: 0; font-size: 1rem; color: #000; }
+      .card-info p { margin: 4px 0 0; font-size: 0.8rem; color: #888; }
+
+      /* Decision overlays (Like / Trash) */
+      .overlay-choice {
+        position: absolute;
+        top: 40px;
+        padding: 10px 20px;
+        border: 4px solid;
+        border-radius: 12px;
+        font-size: 2rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        transform: rotate(-15deg);
+        opacity: 0;
+        transition: opacity 0.1s;
+        pointer-events: none;
+      }
+      
+      .choice-keep {
+        left: 40px;
+        color: #03dac6;
+        border-color: #03dac6;
+        transform: rotate(-15deg);
+      }
+      
+      .choice-trash {
+        right: 40px;
+        color: #ff5252;
+        border-color: #ff5252;
+        transform: rotate(15deg);
+      }
+
+      .phone-controls {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        padding: 20px;
+      }
+      
+      .control-btn {
+        width: 50px; height: 50px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        display: grid;
+        place-items: center;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: transform 0.2s;
+        border: 1px solid #f0f0f0;
+      }
+      
+      .control-btn:hover { transform: scale(1.1); }
+      .btn-trash { color: #ff5252; }
+      .btn-keep { color: #03dac6; }
+      .btn-undo { color: #f5a623; width: 40px; height: 40px; align-self: center;}
+
+
+      /* --- STATS GRID (BENTO BOX STYLE) --- */
+      .stats-grid {
+        margin-top: 80px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .bento-box {
+        background: #fff;
+        border-radius: var(--radius-md);
+        padding: 32px;
+        box-shadow: var(--shadow-medium);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 220px;
+        transition: transform 0.3s ease;
+      }
+      
+      .bento-box:hover { transform: translateY(-4px); }
+
+      .bento-icon {
+        width: 48px; height: 48px;
+        background: #f4f1fa;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        color: var(--primary);
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+
+      .bento-box h3 { margin: 0 0 8px; font-size: 1.4rem; color: #000; }
+      .bento-box p { margin: 0; color: var(--muted-text); font-size: 1rem; line-height: 1.5; }
+
+      /* --- INFO SECTIONS --- */
+      .section { margin-top: 100px; }
+      
+      .section-header {
+        margin-bottom: 40px;
+      }
+      
+      .section-header h2 {
+        font-size: 3rem;
+        color: #fff;
+        text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        margin: 0;
+      }
+      
+      .section-header p {
+        color: rgba(255,255,255,0.9);
+        font-size: 1.2rem;
+        max-width: 600px;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+      }
+
+      .feature-card {
+        background: #fff;
+        border-radius: var(--radius-md);
+        padding: 40px;
+        box-shadow: var(--shadow-medium);
+      }
+      
+      .feature-card h3 { font-size: 1.5rem; margin: 0 0 12px; color: #000; }
+      .feature-card p { font-size: 1.1rem; color: var(--muted-text); margin: 0; }
+
+      /* --- CTA & FOOTER --- */
+      .cta-box {
+        margin-top: 120px;
+        background: #fff;
+        border-radius: var(--radius-lg);
+        padding: 60px;
+        text-align: center;
+        box-shadow: var(--shadow-float);
+      }
+      
+      .cta-box h2 { font-size: 2.5rem; margin-bottom: 16px; color: #000; }
+      .cta-box p { font-size: 1.2rem; color: var(--muted-text); margin-bottom: 32px; }
+
+      footer {
+        margin-top: 80px;
+        border-top: 1px solid rgba(255,255,255,0.3);
+        padding-top: 40px;
+        display: flex;
+        justify-content: space-between;
+        color: #fff;
+        font-weight: 500;
+      }
+      
+      .footer-links a { margin-left: 24px; opacity: 0.8; }
+      .footer-links a:hover { opacity: 1; text-decoration: underline; }
+
+      /* Responsive */
+      @media (max-width: 960px) {
+        header { flex-direction: column; gap: 24px; align-items: center; }
+        .hero { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+        .hero-content { margin: 0 auto; }
+        .cta-row { justify-content: center; }
+        .stats-grid, .features-grid { grid-template-columns: 1fr; }
+        footer { flex-direction: column; gap: 20px; align-items: center; }
+        .footer-links a { margin: 0 12px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      
+      <!-- Glassmorphism main container -->
+      <div class="main-glass">
+        <header>
+          <div class="logo">
+            <div class="logo-mark">
+              <img src="tindrop.png" alt="Tindrop" />
+            </div>
+            <span>Tindrop</span>
+          </div>
+          <nav class="nav">
+            <a href="#how-it-works">How it works</a>
+            <a href="#benefits">Benefits</a>
+          </nav>
+        </header>
+
+        <section class="hero">
+          <div class="hero-content">
+            <span class="eyebrow">✨ Smart cleanup 2.0</span>
+            <h1>Reclaim space with a single swipe.</h1>
+            <p class="hero-desc">
+              Tindrop turns the dull job of cleaning your gallery and Google Drive into a quick game. Swipe right to keep, left to delete.
+            </p>
+            <div class="cta-row">
+              <button class="btn btn-primary">Download App</button>
+              <a href="#demo" class="btn btn-secondary">Watch Demo</a>
+            </div>
+          </div>
+
+          <!-- Interactive mockup -->
+          <div class="phone-container" id="demo">
+            <div class="phone-notch"></div>
+            
+            <div class="phone-header">
+              <div class="tab-switch">
+                <div class="tab-indicator" id="tabIndicator"></div>
+                <div class="tab-btn active" onclick="switchMode('local')">Gallery</div>
+                <div class="tab-btn" onclick="switchMode('drive')">Drive</div>
+              </div>
+            </div>
+
+            <div class="phone-body">
+              <div class="card-stack" id="cardStack">
+                <!-- Cards are generated with JS -->
+              </div>
+            </div>
+
+            <div class="phone-controls">
+              <div class="control-btn btn-trash" onclick="swipe('left')">✕</div>
+              <div class="control-btn btn-undo" onclick="undo()">↺</div>
+              <div class="control-btn btn-keep" onclick="swipe('right')">♥</div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Benefits grid (Bento style) -->
+      <section class="stats-grid" id="benefits">
+        <div class="bento-box">
+          <div class="bento-icon">⚡</div>
+          <h3>Instant decisions</h3>
+          <p>Make calls in milliseconds. No complex menus, just you and your photos.</p>
+        </div>
+        <div class="bento-box">
+          <div class="bento-icon">☁️</div>
+          <h3>Cloud-ready</h3>
+          <p>Link your Google account and clean Drive with the same ease as your local gallery.</p>
+        </div>
+        <div class="bento-box">
+          <div class="bento-icon">🔒</div>
+          <h3>Full privacy</h3>
+          <p>Processing happens on your device. Your photos never touch our servers.</p>
+        </div>
+      </section>
+
+      <section class="section" id="how-it-works">
+        <div class="section-header">
+          <h2>Zen cleanup flow</h2>
+          <p>Designed to erase digital stress.</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <h3>1. Focus Mode</h3>
+            <p>We show one image at a time. No distractions, no overwhelming grids.</p>
+          </div>
+          <div class="feature-card">
+            <h3>2. Smart Bursts</h3>
+            <p>We group similar photos automatically so you can pick the best and delete the rest in one tap.</p>
+          </div>
+          <div class="feature-card">
+            <h3>3. Infinite Undo</h3>
+            <p>Messed up? No problem. The undo button is always there to bail you out.</p>
+          </div>
+          <div class="feature-card">
+            <h3>4. Final Sweep</h3>
+            <p>Nothing is deleted permanently until you review the trash and confirm.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-box">
+        <h2>Stop paying for extra storage.</h2>
+        <p>Start freeing space intelligently today.</p>
+        <button class="btn btn-primary">Download on Google Play</button>
+      </section>
+
+      <footer>
+        <span>© 2025 Tindrop Inc.</span>
+        <div class="footer-links" id="privacy">
+          <a href="terms.html">Terms</a>
+          <a href="privacy.html">Privacy</a>
+          <a href="#">Support</a>
+        </div>
+      </footer>
+
+    </div>
+
+    <!-- Swipe interaction logic -->
+    <script>
+      const cardStack = document.getElementById('cardStack');
+      const tabIndicator = document.getElementById('tabIndicator');
+      let currentMode = 'local'; // 'local' or 'drive'
+      
+      // Mock data
+      const data = {
+        local: [
+          { color: 'linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%)', text: 'IMG_2024.jpg', size: '3.2 MB' },
+          { color: 'linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)', text: 'Screenshot_02.png', size: '1.1 MB' },
+          { color: 'linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%)', text: 'Selfie_Beach.jpg', size: '4.5 MB' },
+          { color: 'linear-gradient(120deg, #fccb90 0%, #d57eeb 100%)', text: 'Party_001.jpg', size: '2.8 MB' }
+        ],
+        drive: [
+           { color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', text: 'Project_Final.pdf', size: '12 MB', tag: 'DRIVE' },
+           { color: 'linear-gradient(135deg, #6B73FF 0%, #000DFF 100%)', text: 'Backup_2023.zip', size: '150 MB', tag: 'DRIVE' },
+           { color: 'linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%)', text: 'Doc_scan.jpg', size: '500 KB', tag: 'DRIVE' }
+        ]
+      };
+
+      let activeCards = [];
+
+      function initCards() {
+        cardStack.innerHTML = '';
+        const items = data[currentMode];
+        
+        items.forEach((item, index) => {
+          const card = document.createElement('div');
+          card.classList.add('swipe-card');
+          card.style.zIndex = index;
+          // Layer the back cards visually
+          if (index < items.length - 1) {
+             const scale = 1 - (items.length - 1 - index) * 0.05;
+             const translateY = (items.length - 1 - index) * 10;
+             card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+          }
+
+          card.innerHTML = `
+            <div class="card-image" style="background: ${item.color}">
+              ${item.tag ? `<span class="card-tag">${item.tag}</span>` : ''}
+              <div class="overlay-choice choice-keep">KEEP</div>
+              <div class="overlay-choice choice-trash">TRASH</div>
+            </div>
+            <div class="card-info">
+              <h4>${item.text}</h4>
+              <p>${item.size} • 2 days ago</p>
+            </div>
+          `;
+          
+          cardStack.appendChild(card);
+        });
+
+        activeCards = Array.from(document.querySelectorAll('.swipe-card'));
+        // Enable drag on the top card
+        enableDrag(activeCards[activeCards.length - 1]);
+      }
+
+      function switchMode(mode) {
+        currentMode = mode;
+        const btns = document.querySelectorAll('.tab-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        
+        if (mode === 'local') {
+          btns[0].classList.add('active');
+          tabIndicator.style.transform = 'translateX(0%)';
+        } else {
+          btns[1].classList.add('active');
+          tabIndicator.style.transform = 'translateX(100%)';
+        }
+        
+        initCards();
+      }
+
+      // --- Swipe & drag logic (mouse & touch) ---
+      function enableDrag(card) {
+        if (!card) return;
+
+        let isDragging = false;
+        let startX = 0;
+        let currentX = 0;
+
+        const onStart = (e) => {
+          isDragging = true;
+          startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+          card.style.transition = 'none';
+        };
+
+        const onMove = (e) => {
+          if (!isDragging) return;
+          e.preventDefault(); // Prevent mobile scroll
+          const x = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+          currentX = x - startX;
+          const rotate = currentX * 0.1; // Smooth rotation
+          
+          card.style.transform = `translateX(${currentX}px) rotate(${rotate}deg)`;
+
+          // Mostrar overlays
+          const keep = card.querySelector('.choice-keep');
+          const trash = card.querySelector('.choice-trash');
+          
+          if (currentX > 0) {
+            keep.style.opacity = Math.min(currentX / 100, 1);
+            trash.style.opacity = 0;
+          } else {
+            trash.style.opacity = Math.min(Math.abs(currentX) / 100, 1);
+            keep.style.opacity = 0;
+          }
+        };
+
+        const onEnd = () => {
+          if (!isDragging) return;
+          isDragging = false;
+          
+          // Threshold para decidir swipe
+          if (Math.abs(currentX) > 100) {
+            const dir = currentX > 0 ? 'right' : 'left';
+            dismissCard(card, dir);
+          } else {
+            // Reset
+            card.classList.add('resetting');
+            card.style.transform = '';
+            card.querySelector('.choice-keep').style.opacity = 0;
+            card.querySelector('.choice-trash').style.opacity = 0;
+            
+            setTimeout(() => {
+              card.classList.remove('resetting');
+            }, 500);
+          }
+          currentX = 0;
+        };
+
+        card.addEventListener('mousedown', onStart);
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onEnd);
+        
+        card.addEventListener('touchstart', onStart);
+        document.addEventListener('touchmove', onMove, { passive: false });
+        document.addEventListener('touchend', onEnd);
+      }
+
+      function dismissCard(card, direction) {
+        card.classList.add('flying');
+        const x = direction === 'right' ? 500 : -500;
+        const r = direction === 'right' ? 30 : -30;
+        card.style.transform = `translateX(${x}px) rotate(${r}deg)`;
+        
+        // Remove from DOM after animation
+        setTimeout(() => {
+          card.remove();
+          activeCards.pop();
+          // Activar la siguiente
+          if (activeCards.length > 0) {
+            const nextCard = activeCards[activeCards.length - 1];
+            nextCard.style.transform = 'scale(1) translateY(0)'; // Traer al frente
+            enableDrag(nextCard);
+          } else {
+            // Reiniciar demo si se acaban
+            setTimeout(initCards, 500);
+          }
+        }, 300);
+      }
+
+      // Funciones para botones externos
+      function swipe(dir) {
+        if (activeCards.length === 0) return;
+        const card = activeCards[activeCards.length - 1];
+        
+        // Mostrar visualmente el overlay antes de volar
+        const overlay = dir === 'right' ? card.querySelector('.choice-keep') : card.querySelector('.choice-trash');
+        overlay.style.opacity = 1;
+        
+        dismissCard(card, dir);
+      }
+      
+      function undo() {
+        initCards(); // Simple reset para demo
+      }
+
+      // Inicializar
+      initCards();
+    </script>
+  </body>
+</html>
