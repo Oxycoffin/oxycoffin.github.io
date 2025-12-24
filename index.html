@@ -1,123 +1,362 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Lagartija Labs — Desarrollo de apps Android</title>
-    <meta name="description" content="Lagartija Labs crea apps móviles cuidadas, rápidas y útiles para Android. Descubre nuestro trabajo, políticas y contacto." />
+    <title>Lagartija Labs — Android Development</title>
+    <meta name="description" content="Lagartija Labs creates native Android apps. Check out Tindrop, our new gallery cleaner." />
+    <meta name="theme-color" content="#0f172a" />
 
-    <meta property="og:title" content="Lagartija Labs" />
-    <meta property="og:description" content="Desarrollo de apps Android con foco en calidad y privacidad." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://oxycoffin.github.io/" />
-    <meta name="theme-color" content="#0ea5e9" />
+    <!-- Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
 
-    <link rel="canonical" href="https://oxycoffin.github.io/" />
-    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="assets/css/styles.css" />
+    <style>
+      /* --- DARK THEME VARIABLES --- */
+      :root {
+        --bg-body: #020617;       /* Deep dark background */
+        --bg-surface: #1e293b;    /* Card background */
+        --bg-header: rgba(2, 6, 23, 0.85);
+        
+        /* Accents */
+        --primary: #38bdf8;       /* Sky Blue */
+        --primary-hover: #7dd3fc;
+        --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
 
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Lagartija Labs",
-      "url": "https://oxycoffin.github.io/",
-      "sameAs": [
-        "https://play.google.com/store/apps/developer?id=Lagartija+Labs"
-      ]
-    }
-    </script>
+        /* Text */
+        --text-main: #f8fafc;     /* White/Off-white */
+        --text-muted: #94a3b8;    /* Muted gray */
+        
+        /* UI Elements */
+        --border: #334155;
+        --radius: 16px;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: 'Inter', system-ui, sans-serif;
+        background-color: var(--bg-body);
+        color: var(--text-main);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
+      ul { list-style: none; }
+
+      /* --- LAYOUT --- */
+      .container {
+        width: 100%;
+        max-width: 1000px; /* Slightly tighter for better reading */
+        margin: 0 auto;
+        padding: 0 1.5rem;
+      }
+
+      section { padding: 5rem 0; }
+
+      /* --- HEADER --- */
+      .site-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background: var(--bg-header);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+        padding: 1rem 0;
+      }
+
+      .site-header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 700;
+        font-size: 1.25rem;
+      }
+
+      .brand-mark { font-size: 1.5rem; }
+
+      .nav { display: flex; gap: 2rem; }
+      .nav a {
+        font-weight: 500;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+      }
+      .nav a:hover { color: var(--primary); }
+
+      /* --- HERO SECTION --- */
+      .hero {
+        padding-top: 10rem;
+        padding-bottom: 4rem;
+        text-align: center;
+        background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.1) 0%, transparent 60%);
+      }
+
+      .hero h1 {
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        font-weight: 900;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        background: var(--accent-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero p {
+        font-size: 1.25rem;
+        color: var(--text-muted);
+        max-width: 600px;
+        margin: 0 auto 3rem;
+      }
+
+      /* --- BUTTONS --- */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: #0f172a;
+        box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+      }
+      .btn-primary:hover {
+        background: var(--primary-hover);
+        transform: translateY(-2px);
+      }
+
+      .btn-ghost {
+        background-color: transparent;
+        color: var(--text-main);
+        border: 1px solid var(--border);
+      }
+      .btn-ghost:hover {
+        border-color: var(--primary);
+      }
+
+      /* --- APPS SECTION --- */
+      .app-highlight {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        margin-bottom: 3rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .app-highlight:hover {
+        border-color: var(--primary);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      }
+
+      .app-header {
+        padding: 2.5rem 2.5rem 1.5rem;
+      }
+
+      .app-title {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .tindrop-icon {
+        width: 1.75rem;
+        height: 1.75rem;
+        object-fit: contain;
+      }
+
+      .app-tagline {
+        font-size: 1.25rem;
+        color: var(--primary);
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+      }
+
+      .app-desc {
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+        font-size: 1.05rem;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        padding: 0 2.5rem 2.5rem;
+      }
+
+      .feature-box h4 { color: var(--text-main); margin-bottom: 0.5rem; }
+      .feature-box p { color: var(--text-muted); font-size: 0.9rem; }
+
+      .app-footer {
+        background: rgba(0,0,0,0.3);
+        padding: 1.5rem 2.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+        border-top: 1px solid var(--border);
+      }
+
+      /* --- CONTACT --- */
+      .contact-links {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: var(--bg-surface);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+      }
+      .contact-item:hover { border-color: var(--primary); }
+      
+      .contact-item svg { width: 24px; height: 24px; color: var(--primary); }
+
+      /* --- FOOTER --- */
+      .site-footer {
+        margin-top: 4rem;
+        padding: 3rem 0;
+        border-top: 1px solid var(--border);
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        background: #020617;
+      }
+      .footer-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+      .footer-nav { display: flex; gap: 1.5rem; }
+      .footer-nav a:hover { color: var(--text-main); }
+      
+      @media (min-width: 768px) {
+        .footer-inner { flex-direction: row; justify-content: space-between; }
+        .contact-links { flex-direction: row; }
+        .contact-item { flex: 1; }
+      }
+    </style>
   </head>
   <body>
     <header class="site-header">
       <div class="container">
-        <a class="brand" href="./" aria-label="Inicio Lagartija Labs">
+        <a class="brand" href="./" aria-label="Home">
           <span class="brand-mark" aria-hidden="true">🦎</span>
           <span class="brand-text">Lagartija Labs</span>
         </a>
         <nav class="nav">
           <a href="#apps">Apps</a>
-          <a href="#about">Quiénes somos</a>
-          <a href="#contact">Contacto</a>
+          <a href="#contact">Contact</a>
         </nav>
       </div>
     </header>
 
     <main>
       <section class="hero">
-        <div class="container hero-inner">
-          <div class="hero-copy">
-            <h1>Apps Android con mimo y propósito</h1>
-            <p>Diseñamos y desarrollamos experiencias móviles rápidas, accesibles y respetuosas con tu privacidad.</p>
-            <div class="cta-row">
-              <a class="btn btn-primary" href="https://play.google.com/store/apps/developer?id=Lagartija+Labs" target="_blank" rel="noopener">Ver en Google Play</a>
-              <a class="btn btn-ghost" href="#apps">Explorar apps</a>
-            </div>
-          </div>
+        <div class="container">
+          <h1>Focused Android Apps.</h1>
+          <p>We build software designed to be useful, private, and efficient.</p>
+          <a class="btn btn-primary" href="#apps">View Projects</a>
         </div>
       </section>
 
       <section id="apps" class="section">
         <div class="container">
-          <h2>Nuestras apps</h2>
-          <p class="section-lead">Una selección de proyectos publicados y en curso.</p>
+          <!-- TINDROP MAIN CARD -->
+          <article class="app-highlight">
+            <div class="app-header">
+              <h2 class="app-title">
+                <img src="tindrop/tindrop.png" alt="" aria-hidden="true" class="tindrop-icon" loading="lazy">
+                Tindrop
+              </h2>
+              <p class="app-tagline">Gallery Cleaner</p>
+              <p class="app-desc">
+                Swipe to decide what stays and what goes. Tindrop makes cleaning your photo and video gallery fast, simple, and surprisingly addictive. 
+                Revive your memories while freeing up space.
+              </p>
+            </div>
 
-          <div class="grid cards">
-            <!-- Ejemplo de tarjeta de app: duplica y edita -->
-            <article class="card">
-              <div class="card-body">
-                <h3 class="card-title">Tu App Aquí</h3>
-                <p class="card-text">Resumen corto de la app: objetivo, usuario y valor diferencial.</p>
+            <div class="feature-grid">
+              <div class="feature-box">
+                <h4>✨ How it works</h4>
+                <p>Swipe right to keep, left to delete. Review everything before confirming. Works directly with your existing gallery.</p>
               </div>
-              <div class="card-actions">
-                <a class="btn btn-secondary" href="https://play.google.com/store" target="_blank" rel="noopener">Google Play</a>
-                <a class="btn btn-ghost" href="#">Sitio / Política</a>
+              <div class="feature-box">
+                <h4>🚀 Super-fast triage</h4>
+                <p>Fly through hundreds of photos in minutes. Smart bursts group related shots so you keep the best.</p>
               </div>
-            </article>
+              <div class="feature-box">
+                <h4>🛡️ Private by design</h4>
+                <p>Everything runs on-device. Your media never leaves your phone. No account required.</p>
+              </div>
+              <div class="feature-box">
+                <h4>↩️ Trash Safety</h4>
+                <p>Deletions respect your device’s recycle bin, allowing you to restore files if needed.</p>
+              </div>
+            </div>
 
-            <article class="card placeholder">
-              <div class="card-body">
-                <h3 class="card-title">Próximamente</h3>
-                <p class="card-text">Más apps en camino. Síguenos para novedades.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section id="about" class="section alt">
-        <div class="container">
-          <h2>Quiénes somos</h2>
-          <p>
-            En Lagartija Labs nos mueve crear software simple, útil y bien acabado.
-            Trabajamos con tecnologías nativas y modernas, priorizando rendimiento, accesibilidad y un diseño claro.
-          </p>
-          <ul class="bullets">
-            <li><strong>Experiencia:</strong> Android, Kotlin/Java, UI/UX, analítica respetuosa.</li>
-            <li><strong>Calidad:</strong> pruebas, CI/CD y monitoreo para estabilidad.</li>
-            <li><strong>Privacidad:</strong> recogemos lo mínimo necesario para mejorar.</li>
-          </ul>
+            <div class="app-footer">
+              <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.tindrop.tindrop" target="_blank" rel="noopener">
+                Get it on Google Play
+              </a>
+              <span style="color: var(--text-muted); font-size: 0.9rem; margin-left: auto;">
+                Requires Android 8.0+
+              </span>
+            </div>
+          </article>
         </div>
       </section>
 
       <section id="contact" class="section">
         <div class="container">
-          <h2>Contacto</h2>
-          <p>¿Tienes dudas, propuestas o necesitas soporte?</p>
-          <div class="contact-cards">
-            <a class="contact-card" href="mailto:lagartijalabs@gmail.com">
-              <span class="icon" aria-hidden="true">✉️</span>
-              <span>
-                <strong>Correo</strong>
-                <small>lagartijalabs@gmail.com</small>
-              </span>
+          <h2 style="font-size: 2rem; margin-bottom: 2rem; font-weight: 800;">Get in touch</h2>
+          <div class="contact-links">
+            <a href="mailto:lagartijalabs@gmail.com" class="contact-item">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <div>
+                <strong>Email Support</strong>
+                <div style="color:var(--text-muted); font-size:0.9rem;">lagartijalabs@gmail.com</div>
+              </div>
             </a>
-            <a class="contact-card" href="https://play.google.com/store/apps/developer?id=Lagartija+Labs" target="_blank" rel="noopener">
-              <span class="icon" aria-hidden="true">▶️</span>
-              <span>
+            
+            <a href="https://play.google.com/store/apps/developer?id=Lagartija+Labs" target="_blank" rel="noopener" class="contact-item">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+              <div>
                 <strong>Google Play</strong>
-                <small>Perfil de desarrollador</small>
-              </span>
+                <div style="color:var(--text-muted); font-size:0.9rem;">Developer Profile</div>
+              </div>
             </a>
           </div>
         </div>
@@ -126,17 +365,19 @@
 
     <footer class="site-footer">
       <div class="container footer-inner">
-        <p>© <span id="year"></span> Lagartija Labs</p>
+        <p>© <span id="year"></span> Lagartija Labs.</p>
         <nav class="footer-nav">
-          <a href="privacy.html">Política de privacidad</a>
+          <a href="privacy.html">Privacy Policy</a>
           <a href="app-ads.txt">app-ads.txt</a>
         </nav>
       </div>
     </footer>
 
     <script>
-      // Año dinámico en el pie de página
-      document.getElementById('year').textContent = new Date().getFullYear();
+      const yearElement = document.getElementById('year');
+      if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+      }
     </script>
   </body>
-  </html>
+</html>
