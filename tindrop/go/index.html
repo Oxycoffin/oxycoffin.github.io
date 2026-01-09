@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Descargar — Tindrop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#6750A4" />
+
+  <style>
+    :root{
+      --primary:#6750A4; --secondary:#03DAC6; --text:#101114; --muted:#6b7280;
+      --card:#ffffff; --border:rgba(0,0,0,.06); --shadow:rgba(0,0,0,.08);
+      --badge-w: 220px;
+      --badge-h: 66px; /* misma altura SIEMPRE */
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) fixed}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;color:var(--text);line-height:1.6}
+    .wrap{max-width:960px;margin:0 auto;padding:24px}
+    .card{
+      margin:24px auto;background:var(--card);border-radius:24px;border:1px solid var(--border);
+      box-shadow:0 8px 24px var(--shadow); overflow:hidden
+    }
+    header{
+      padding:32px 28px;background:linear-gradient(120deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      border-bottom:1px solid var(--border); text-align:center
+    }
+    h1{margin:0 0 6px;font-size:28px;line-height:1.2;color:#0f172a}
+    .subtitle{color:#334155}
+    .content{padding:28px}
+
+    .brand{display:flex;justify-content:center;padding:0}
+    .brand-inner{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:999px;
+      background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+    .brand .logo{width:56px;height:56px;border-radius:12px;object-fit:cover;background:#fff}
+    .brand .name{font-size:22px;font-weight:800;letter-spacing:.4px;line-height:1;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+
+    .badges{
+      display:flex;
+      gap:16px;
+      justify-content:center;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+    @media (max-width:640px){
+      .badges{flex-direction:column; align-items:center}
+    }
+
+    /* “Botón” = solo imagen */
+    a.badge-link{
+      display:inline-block;
+      line-height:0;            /* evita espacios */
+      text-decoration:none;     /* por si acaso */
+      border:0;
+      outline:none;
+    }
+    img.badge{
+      width:var(--badge-w);
+      height:var(--badge-h);
+      object-fit:contain;       /* fuerza mismo tamaño visual */
+      display:block;
+      border:0;
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+    a.badge-link:focus-visible img.badge{
+      outline:3px solid rgba(103,80,164,.45);
+      outline-offset:6px;
+      border-radius:12px;
+    }
+
+    .links{
+      margin-top:18px;
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+    }
+    .links a{color:#2563eb;text-decoration:none}
+    .links a:hover{text-decoration:underline}
+
+    footer{padding:18px;border-top:1px solid var(--border);background:#fff;color:#475569;text-align:center}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="brand" aria-label="App brand">
+      <div class="brand-inner">
+        <img class="logo" src="../tindrop.png" onerror="this.onerror=null;this.src='../Tindrop.png'" alt="Tindrop logo" width="56" height="56" />
+        <div class="name" aria-label="App name">Tindrop</div>
+      </div>
+    </div>
+
+    <div class="card" role="article" aria-labelledby="title">
+      <header>
+        <h1 id="title">Descargar Tindrop</h1>
+        <div class="subtitle">Elige tu tienda</div>
+      </header>
+
+      <div class="content">
+        <div class="badges" aria-label="Store badges">
+          <a class="badge-link" id="iosLink"
+             href="https://apps.apple.com/es/app/tindrop/id6756980913"
+             rel="noopener">
+            <img class="badge"
+                 src="https://joshbuchea.com/images/notes/app-store-badge-ios-download-on-the-app-store.png"
+                 alt="Descargar en el App Store" />
+          </a>
+
+          <a class="badge-link" id="androidLink"
+             href="https://play.google.com/store/apps/details?id=com.tindrop.tindrop"
+             rel="noopener">
+            <img class="badge"
+                 src="https://joshbuchea.com/images/notes/app-store-badge-android-get-it-on-google-play.png"
+                 alt="Consíguelo en Google Play" />
+          </a>
+        </div>
+
+        <div class="links">
+          <div>
+            <a href="https://apps.apple.com/es/app/tindrop/id6756980913">App Store</a>
+            &nbsp;·&nbsp;
+            <a href="https://play.google.com/store/apps/details?id=com.tindrop.tindrop">Google Play</a>
+          </div>
+          <noscript>
+            <div style="margin-top:10px;">(JavaScript está desactivado, usa los enlaces de arriba.)</div>
+          </noscript>
+        </div>
+      </div>
+
+      <footer>
+        © <span id="year"></span> Tindrop. All rights reserved.
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    (function autoRedirect() {
+      try {
+        var ua = navigator.userAgent || "";
+        var isAndroid = /Android/i.test(ua);
+        var isIOS = /iPhone|iPad|iPod/i.test(ua);
+
+        if (isAndroid) {
+          location.replace("https://play.google.com/store/apps/details?id=com.tindrop.tindrop");
+          return;
+        }
+        if (isIOS) {
+          location.replace("https://apps.apple.com/es/app/tindrop/id6756980913");
+          return;
+        }
+      } catch (e) {
+        /* si falla, no pasa nada: se quedan los links */
+      }
+    })();
+  </script>
+</body>
+</html>
