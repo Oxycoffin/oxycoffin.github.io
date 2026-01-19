@@ -235,7 +235,7 @@
         position: relative;
         width: 340px;
         height: 660px;
-        background: #fff;
+        background: #f6f7fb;
         border-radius: 48px;
         box-shadow: 
           0 0 0 12px #ffffff, /* Marco interior */
@@ -261,26 +261,28 @@
       }
 
       .phone-header {
-        padding: 44px 20px 10px;
-        background: #fff;
+        padding: 40px 18px 12px;
+        background: #f6f7fb;
         z-index: 10;
+        border-bottom: 1px solid rgba(0,0,0,0.06);
       }
 
       .tab-switch {
         display: flex;
-        background: #f4f4f5;
+        background: #e9ebf2;
         padding: 4px;
-        border-radius: 14px;
+        border-radius: 16px;
         position: relative;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
       }
 
       .tab-btn {
         flex: 1;
         text-align: center;
-        padding: 10px;
+        padding: 9px;
         font-size: 0.9rem;
         font-weight: 600;
-        color: #888;
+        color: #6b6f7c;
         cursor: pointer;
         z-index: 2;
         transition: color 0.3s;
@@ -296,19 +298,20 @@
         width: calc(50% - 4px);
         height: calc(100% - 8px);
         background: #fff;
-        border-radius: 11px;
+        border-radius: 12px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        border: 1px solid rgba(0,0,0,0.06);
         transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
       }
 
       .phone-body {
         flex: 1;
         position: relative;
-        padding: 20px;
+        padding: 16px;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        background: #fafafc;
+        background: #f3f4f7;
         overflow: hidden; /* Importante para que las cartas salgan */
       }
 
@@ -326,11 +329,11 @@
         height: 100%;
         background: #fff;
         border-radius: 24px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.14);
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        border: 1px solid rgba(0,0,0,0.05);
+        border: 1px solid rgba(0,0,0,0.06);
         cursor: grab;
         transform-origin: 50% 100%;
         transition: transform 0.1s; /* Fast drag response */
@@ -353,7 +356,7 @@
 
       .card-image {
         flex: 1;
-        background: #eee;
+        background: #111;
         position: relative;
         overflow: hidden;
       }
@@ -366,37 +369,72 @@
       .card-tag {
         position: absolute;
         top: 20px; right: 20px;
-        background: rgba(0,0,0,0.6);
+        background: rgba(0,0,0,0.55);
         color: #fff;
         font-size: 0.75rem;
         padding: 4px 10px;
         border-radius: 8px;
         font-weight: 600;
         backdrop-filter: blur(4px);
+        text-transform: uppercase;
       }
 
-      .card-info {
-        padding: 16px;
-        background: #fff;
+      .card-label {
+        position: absolute;
+        left: 16px;
+        bottom: 16px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        background: rgba(0,0,0,0.6);
+        color: #fff;
+        border-radius: 12px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        backdrop-filter: blur(4px);
       }
       
-      .card-info h4 { margin: 0; font-size: 1rem; color: #000; }
-      .card-info p { margin: 4px 0 0; font-size: 0.8rem; color: #888; }
+      .card-label-size {
+        color: rgba(255,255,255,0.8);
+        font-weight: 500;
+      }
+
+      .card-share {
+        position: absolute;
+        right: 16px;
+        bottom: 16px;
+        width: 38px;
+        height: 38px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        background: rgba(255,255,255,0.85);
+        border: 1px solid rgba(0,0,0,0.06);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      }
+      
+      .card-share svg {
+        width: 18px;
+        height: 18px;
+        stroke: #1a1a1a;
+      }
 
       /* Decision overlays (Like / Trash) */
       .overlay-choice {
         position: absolute;
         top: 40px;
         padding: 10px 20px;
-        border: 4px solid;
+        border: 3px solid;
         border-radius: 12px;
-        font-size: 2rem;
+        font-size: 1.6rem;
         font-weight: 800;
         text-transform: uppercase;
         transform: rotate(-15deg);
         opacity: 0;
         transition: opacity 0.1s;
         pointer-events: none;
+        background: rgba(255,255,255,0.88);
       }
       
       .choice-keep {
@@ -408,8 +446,8 @@
       
       .choice-trash {
         right: 40px;
-        color: #ff5252;
-        border-color: #ff5252;
+        color: #ef5350;
+        border-color: #ef5350;
         transform: rotate(15deg);
       }
 
@@ -687,15 +725,15 @@
       // Mock data
       const data = {
         local: [
-          { color: 'linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%)', text: 'IMG_2024.jpg', size: '3.2 MB' },
-          { color: 'linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)', text: 'Screenshot_02.png', size: '1.1 MB' },
-          { color: 'linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%)', text: 'Selfie_Beach.jpg', size: '4.5 MB' },
-          { color: 'linear-gradient(120deg, #fccb90 0%, #d57eeb 100%)', text: 'Party_001.jpg', size: '2.8 MB' }
+          { color: 'linear-gradient(135deg, #1B3A57 0%, #2E6E8C 100%)', text: 'IMG_2024.jpg', size: '3.2 MB', label: 'Sep 18' },
+          { color: 'linear-gradient(135deg, #1E7F74 0%, #3A9D62 100%)', text: 'Selfie_01.jpg', size: '4.5 MB', label: 'Sep 20' },
+          { color: 'linear-gradient(135deg, #B04F3D 0%, #D27D2D 100%)', text: 'Cafe_02.jpg', size: '2.8 MB', label: 'Sep 22' },
+          { color: 'linear-gradient(135deg, #2E3A5B 0%, #6B4E94 100%)', text: 'Screenshot_02.png', size: '1.1 MB', label: 'Sep 23' }
         ],
         drive: [
-           { color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', text: 'Project_Final.pdf', size: '12 MB', tag: 'DRIVE' },
-           { color: 'linear-gradient(135deg, #6B73FF 0%, #000DFF 100%)', text: 'Backup_2023.zip', size: '150 MB', tag: 'DRIVE' },
-           { color: 'linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%)', text: 'Doc_scan.jpg', size: '500 KB', tag: 'DRIVE' }
+           { color: 'linear-gradient(135deg, #6B4E94 0%, #B63D59 100%)', text: 'Project_Final.pdf', size: '12 MB', tag: 'Drive', label: 'Oct 02' },
+           { color: 'linear-gradient(135deg, #3D6B6B 0%, #1B3A57 100%)', text: 'Backup_2023.zip', size: '150 MB', tag: 'Drive', label: 'Oct 03' },
+           { color: 'linear-gradient(135deg, #6E8C2E 0%, #8A6F3A 100%)', text: 'Doc_scan.jpg', size: '500 KB', tag: 'Drive', label: 'Oct 05' }
         ]
       };
 
@@ -709,6 +747,7 @@
           const card = document.createElement('div');
           card.classList.add('swipe-card');
           card.style.zIndex = index;
+          const labelText = item.label || item.text;
           // Layer the back cards visually
           if (index < items.length - 1) {
              const scale = 1 - (items.length - 1 - index) * 0.05;
@@ -719,12 +758,19 @@
           card.innerHTML = `
             <div class="card-image" style="background: ${item.color}">
               ${item.tag ? `<span class="card-tag">${item.tag}</span>` : ''}
+              <div class="card-label">
+                <span>${labelText}</span>
+                ${item.size ? `<span class="card-label-size">• ${item.size}</span>` : ''}
+              </div>
+              <div class="card-share" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 5v10"></path>
+                  <path d="M8 9l4-4 4 4"></path>
+                  <path d="M5 19h14"></path>
+                </svg>
+              </div>
               <div class="overlay-choice choice-keep">KEEP</div>
               <div class="overlay-choice choice-trash">TRASH</div>
-            </div>
-            <div class="card-info">
-              <h4>${item.text}</h4>
-              <p>${item.size} • 2 days ago</p>
             </div>
           `;
           
