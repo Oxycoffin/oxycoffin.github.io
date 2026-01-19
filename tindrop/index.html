@@ -312,7 +312,7 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: rgba(0,0,0,0.28);
+        background: rgba(0,0,0,0.16);
         z-index: 1;
       }
 
@@ -430,7 +430,7 @@
       .drag-overlay {
         position: absolute;
         top: 50%;
-        width: 80%;
+        width: 88%;
         height: 72%;
         transform: translateY(-50%);
         border-radius: 999px;
@@ -442,19 +442,19 @@
       }
 
       .drag-overlay.left {
-        left: -45%;
+        left: 6%;
         justify-content: flex-end;
         padding-right: 22px;
         background: rgba(239,83,80,0.55);
-        transform: translateY(-50%) translateX(-60%) scale(0.8);
+        transform: translateY(-50%) translateX(-24px) scale(0.8);
       }
 
       .drag-overlay.right {
-        right: -45%;
+        right: 6%;
         justify-content: flex-start;
         padding-left: 22px;
         background: rgba(76,175,80,0.55);
-        transform: translateY(-50%) translateX(60%) scale(0.8);
+        transform: translateY(-50%) translateX(24px) scale(0.8);
       }
 
       .drag-overlay span {
@@ -733,7 +733,7 @@
               </div>
               <div class="counter-pill counter-tertiary">
                 <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 21s-6-4.2-8.5-7.2C1.5 11 3 7.5 6.5 7.5c2 0 3.2 1.2 3.5 2 0.3-0.8 1.5-2 3.5-2 3.5 0 5 3.5 3 6.3C18 16.8 12 21 12 21z"></path>
+                  <path d="M20.8 8.6a4.6 4.6 0 0 0-6.5 0L12 10.9l-2.3-2.3a4.6 4.6 0 0 0-6.5 6.5l2.3 2.3L12 23l6.5-5.6 2.3-2.3a4.6 4.6 0 0 0 0-6.5z"></path>
                 </svg>
                 <span>42</span>
               </div>
@@ -855,14 +855,15 @@
 
       function updateDragOverlay(deltaX) {
         const progress = Math.min(Math.abs(deltaX) / 120, 1);
-        const scale = 0.8 + progress * 0.2;
+        const scale = 0.82 + progress * 0.2;
+        const shift = 24 - (16 * progress);
         if (deltaX < 0) {
           dragLeft.style.opacity = (0.55 * progress).toFixed(2);
-          dragLeft.style.transform = `translateY(-50%) translateX(${(-60 + (30 * progress))}%) scale(${scale})`;
+          dragLeft.style.transform = `translateY(-50%) translateX(-${shift}px) scale(${scale})`;
           dragRight.style.opacity = 0;
         } else if (deltaX > 0) {
           dragRight.style.opacity = (0.55 * progress).toFixed(2);
-          dragRight.style.transform = `translateY(-50%) translateX(${(60 - (30 * progress))}%) scale(${scale})`;
+          dragRight.style.transform = `translateY(-50%) translateX(${shift}px) scale(${scale})`;
           dragLeft.style.opacity = 0;
         } else {
           dragLeft.style.opacity = 0;
