@@ -1,4 +1,5 @@
 .DS_Store
+.venv/
 
 # Tindrop remote config local file
 /tindrop/config.local.json
