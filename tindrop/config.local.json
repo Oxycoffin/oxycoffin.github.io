@@ -7,7 +7,7 @@
     "enable_interactive_tutorial": true
   },
   "ads": {
-    "frequency": 2,
+    "frequency": 10,
     "premium_first_ad": 3,
     "premium_ad_frequency": 7,
     "cooldown_minutes": 3,
@@ -25,8 +25,8 @@
     "filter_rewarded_daily_limit": 2
   },
   "rating": {
-    "swipe_threshold": 200,
-    "cooldown_days": 7,
+    "swipe_threshold": 100,
+    "cooldown_days": 4,
     "ios_app_store_id": "6756980913"
   },
   "notifications": {
