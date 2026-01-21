@@ -4,7 +4,7 @@ import base64
 import json
 import struct
 import sys
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from pathlib import Path
 
 
@@ -28,12 +28,17 @@ def _load_json(path: Path) -> dict:
     return data
 
 
-def _stamp_times(data: dict, days: int | None) -> dict:
+def _bump_and_stamp(data: dict) -> dict:
     now = datetime.now(timezone.utc)
     data = dict(data)
-    data.setdefault("issued_at", int(now.timestamp()))
-    if days is not None and days > 0:
-        data.setdefault("expires_at", int((now + timedelta(days=days)).timestamp()))
+    raw_version = data.get("version", 0)
+    try:
+        version = int(raw_version)
+    except (TypeError, ValueError) as exc:
+        raise SystemExit(f"invalid version: {raw_version}") from exc
+    data["version"] = max(0, version) + 1
+    data["issued_at"] = int(now.timestamp())
+    data.pop("expires_at", None)
     return data
 
 
@@ -75,17 +80,13 @@ def _run_sign(
     config_out: Path,
     sig_out: Path,
     key_path: Path,
-    stamp: bool,
-    expires_days: int | None,
 ) -> None:
     if not config_in.exists():
         raise SystemExit(f"config not found: {config_in}")
     if not key_path.exists():
         raise SystemExit(f"private key not found: {key_path}")
 
-    data = _load_json(config_in)
-    if stamp:
-        data = _stamp_times(data, expires_days)
+    data = _bump_and_stamp(_load_json(config_in))
 
     payload = _canonical_json(data)
     config_out.write_bytes(payload)
@@ -97,28 +98,10 @@ def _prompt_path(label: str, default: Path) -> Path:
     return Path(raw) if raw else default
 
 
-def _prompt_bool(label: str, default: bool = False) -> bool:
-    suffix = "Y/n" if default else "y/N"
-    raw = input(f"{label} ({suffix}): ").strip().lower()
-    if not raw:
-        return default
-    return raw in ("y", "yes", "1", "true")
-
-
-def _prompt_int(label: str, default: int) -> int:
-    raw = input(f"{label} [{default}]: ").strip()
-    if not raw:
-        return default
-    try:
-        return int(raw)
-    except ValueError as exc:
-        raise SystemExit(f"invalid integer: {raw}") from exc
-
-
 def _interactive() -> None:
     print("Tindrop Remote Config Signer")
     print("=" * 30)
-    print("1) Sign config.json (optional timestamps)")
+    print("1) Sign config.json (bump version + issued_at)")
     print("2) Update public key file")
     print("3) Sign config.json + update public key")
     print("4) Show dart-define snippet")
@@ -133,20 +116,15 @@ def _interactive() -> None:
         config_out = _prompt_path("config.json", DEFAULT_CONFIG_OUT)
         sig_out = _prompt_path("config.json.sig", DEFAULT_SIG_OUT)
         key_path = _prompt_path("private key", DEFAULT_KEY)
-        stamp = _prompt_bool("Add issued_at if missing", True)
-        add_expiry = _prompt_bool("Add expires_at if missing", False)
-        expires_days = _prompt_int("Expires in days", 30) if add_expiry else None
         print(
             f"Command: sign config_in={config_in} config_out={config_out} sig_out={sig_out} "
-            f"key={key_path} stamp={stamp} expires_days={expires_days}"
+            f"key={key_path}"
         )
         _run_sign(
             config_in=config_in,
             config_out=config_out,
             sig_out=sig_out,
             key_path=key_path,
-            stamp=stamp,
-            expires_days=expires_days,
         )
         print(f"Wrote: {config_out}")
         print(f"Wrote: {sig_out}")
@@ -201,17 +179,6 @@ def main() -> None:
         help="Path to Ed25519 private key (default: ~/.tindrop_remote_config/remote_config_ed25519)",
     )
     parser.add_argument(
-        "--stamp",
-        action="store_true",
-        help="Set issued_at if missing",
-    )
-    parser.add_argument(
-        "--expires-days",
-        type=int,
-        default=None,
-        help="Days until expiration when using --stamp (default: unset)",
-    )
-    parser.add_argument(
         "--update-public-key",
         action="store_true",
         help="Write REMOTE_CONFIG_PUBLIC_KEY.txt from ssh public key",
@@ -239,8 +206,6 @@ def main() -> None:
         config_out=args.config_out,
         sig_out=args.sig_out,
         key_path=args.key,
-        stamp=args.stamp,
-        expires_days=args.expires_days,
     )
     print(f"Wrote: {args.config_out}")
     print(f"Wrote: {args.sig_out}")
