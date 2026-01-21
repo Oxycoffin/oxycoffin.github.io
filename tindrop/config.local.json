@@ -1,7 +1,6 @@
 {
-  "version": 1,
-  "issued_at": 1737420000,
-  "expires_at": 1738456800,
+  "version": 2,
+  "issued_at": 1768988985,
   "flags": {
     "show_source_selector": true,
     "enable_whats_new": true,
