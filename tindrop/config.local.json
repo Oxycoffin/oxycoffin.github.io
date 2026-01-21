@@ -7,7 +7,7 @@
     "enable_interactive_tutorial": true
   },
   "ads": {
-    "frequency": 5,
+    "frequency": 2,
     "premium_first_ad": 3,
     "premium_ad_frequency": 7,
     "cooldown_minutes": 3,
