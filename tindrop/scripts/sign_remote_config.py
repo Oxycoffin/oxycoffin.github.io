@@ -7,7 +7,6 @@ import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from cryptography.hazmat.primitives.serialization import load_ssh_private_key
 
 DEFAULT_CONFIG_IN = Path(__file__).resolve().parents[1] / "config.local.json"
 DEFAULT_CONFIG_OUT = Path(__file__).resolve().parents[1] / "config.json"
@@ -38,6 +37,13 @@ def _stamp_times(data: dict, days: int) -> dict:
 
 
 def _load_private_key(path: Path):
+    try:
+        from cryptography.hazmat.primitives.serialization import load_ssh_private_key
+    except ModuleNotFoundError as exc:
+        raise SystemExit(
+            "Missing dependency: cryptography. Install with:\n"
+            "  python3 -m pip install --user cryptography"
+        ) from exc
     key_bytes = path.read_bytes()
     return load_ssh_private_key(key_bytes, password=None)
 
