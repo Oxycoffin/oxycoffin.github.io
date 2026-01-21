@@ -13,6 +13,53 @@ Incluye la Política de Privacidad y los Términos de Uso con un encabezado de m
 - `terms.html`: Términos de Uso
 - `tindrop.png`: Logo utilizado en el encabezado de ambas páginas
 
+## Remote config (Tindrop)
+
+Se publica en `tindrop/config.json` y se firma en `tindrop/config.json.sig`.
+
+Flujo recomendado:
+
+1. Copia `tindrop/config.example.json` a `tindrop/config.local.json`.
+2. Edita `tindrop/config.local.json` (este archivo está ignorado por Git).
+3. Ejecuta el script de firmado:
+
+```bash
+python3 tindrop/scripts/sign_remote_config.py --stamp
+```
+
+Esto genera:
+- `tindrop/config.json`
+- `tindrop/config.json.sig`
+
+Opcionalmente actualiza el public key con:
+
+```bash
+python3 tindrop/scripts/sign_remote_config.py --update-public-key
+```
+## Remote config (Tindrop)
+
+Se publica en `tindrop/config.json` y se firma en `tindrop/config.json.sig`.
+
+Flujo recomendado:
+
+1. Copia `tindrop/config.example.json` a `tindrop/config.local.json`.
+2. Edita `tindrop/config.local.json` (este archivo está ignorado por Git).
+3. Ejecuta el script de firmado:
+
+```bash
+python3 tindrop/scripts/sign_remote_config.py --stamp
+```
+
+Esto genera:
+- `tindrop/config.json`
+- `tindrop/config.json.sig`
+
+Opcionalmente actualiza el public key con:
+
+```bash
+python3 tindrop/scripts/sign_remote_config.py --update-public-key
+```
+
 ## Previsualización local
 
 Opción 1: abrir directamente el archivo en el navegador (doble clic sobre `privacy.html` o `terms.html`).

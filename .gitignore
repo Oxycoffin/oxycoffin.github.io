@@ -1,1 +1,4 @@
 .DS_Store
+
+# Tindrop remote config local file
+/tindrop/config.local.json
