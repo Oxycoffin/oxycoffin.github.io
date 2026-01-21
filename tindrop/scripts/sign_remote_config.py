@@ -3,6 +3,7 @@ import argparse
 import base64
 import json
 import struct
+import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -62,8 +63,111 @@ def _write_public_key(pub_out: Path, pub_path: Path) -> None:
     pub_out.write_text(base64.b64encode(key_bytes).decode("ascii"), encoding="utf-8")
 
 
+def _run_sign(
+    config_in: Path,
+    config_out: Path,
+    sig_out: Path,
+    key_path: Path,
+    stamp: bool,
+    expires_days: int,
+) -> None:
+    if not config_in.exists():
+        raise SystemExit(f"config not found: {config_in}")
+    if not key_path.exists():
+        raise SystemExit(f"private key not found: {key_path}")
+
+    data = _load_json(config_in)
+    if stamp:
+        data = _stamp_times(data, expires_days)
+
+    payload = _canonical_json(data)
+    config_out.write_bytes(payload)
+    _write_signature(sig_out, payload, key_path)
+
+
+def _prompt_path(label: str, default: Path) -> Path:
+    raw = input(f"{label} [{default}]: ").strip()
+    return Path(raw) if raw else default
+
+
+def _prompt_bool(label: str, default: bool = False) -> bool:
+    suffix = "Y/n" if default else "y/N"
+    raw = input(f"{label} ({suffix}): ").strip().lower()
+    if not raw:
+        return default
+    return raw in ("y", "yes", "1", "true")
+
+
+def _prompt_int(label: str, default: int) -> int:
+    raw = input(f"{label} [{default}]: ").strip()
+    if not raw:
+        return default
+    try:
+        return int(raw)
+    except ValueError as exc:
+        raise SystemExit(f"invalid integer: {raw}") from exc
+
+
+def _interactive() -> None:
+    print("Tindrop Remote Config Signer")
+    print("=" * 30)
+    print("1) Sign config.json (optional timestamps)")
+    print("2) Update public key file")
+    print("3) Sign config.json + update public key")
+    print("4) Show dart-define snippet")
+    print("5) Exit")
+    choice = input("Select option [1]: ").strip() or "1"
+
+    if choice == "5":
+        return
+
+    if choice in ("1", "3"):
+        config_in = _prompt_path("config.local.json", DEFAULT_CONFIG_IN)
+        config_out = _prompt_path("config.json", DEFAULT_CONFIG_OUT)
+        sig_out = _prompt_path("config.json.sig", DEFAULT_SIG_OUT)
+        key_path = _prompt_path("private key", DEFAULT_KEY)
+        stamp = _prompt_bool("Add issued_at/expires_at if missing", True)
+        expires_days = _prompt_int("Expires in days", 30)
+        print(
+            f"Command: sign config_in={config_in} config_out={config_out} sig_out={sig_out} "
+            f"key={key_path} stamp={stamp} expires_days={expires_days}"
+        )
+        _run_sign(
+            config_in=config_in,
+            config_out=config_out,
+            sig_out=sig_out,
+            key_path=key_path,
+            stamp=stamp,
+            expires_days=expires_days,
+        )
+        print(f"Wrote: {config_out}")
+        print(f"Wrote: {sig_out}")
+
+    if choice in ("2", "3"):
+        pub_key = _prompt_path("public key", DEFAULT_PUB_KEY)
+        pub_out = _prompt_path("public key output", DEFAULT_PUB_OUT)
+        print(f"Command: update public key pub_key={pub_key} pub_out={pub_out}")
+        if not pub_key.exists():
+            raise SystemExit(f"public key not found: {pub_key}")
+        _write_public_key(pub_out, pub_key)
+        print(f"Wrote: {pub_out}")
+
+    if choice == "4":
+        key = DEFAULT_PUB_OUT.read_text(encoding="utf-8").strip()
+        print("Dart defines:")
+        print(
+            f"--dart-define=REMOTE_CONFIG_URL=https://lagartijalabs.com/tindrop/config.json "
+            f"--dart-define=REMOTE_CONFIG_PUBLIC_KEY={key}"
+        )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Sign Tindrop remote config")
+    parser.add_argument(
+        "--interactive",
+        action="store_true",
+        help="Run interactive menu",
+    )
     parser.add_argument(
         "--config-in",
         type=Path,
@@ -118,27 +222,25 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    if not args.config_in.exists():
-        raise SystemExit(f"config not found: {args.config_in}")
-    if not args.key.exists():
-        raise SystemExit(f"private key not found: {args.key}")
+    if args.interactive or (len(sys.argv) == 1 and sys.stdin.isatty()):
+        _interactive()
+        return
 
-    data = _load_json(args.config_in)
-    if args.stamp:
-        data = _stamp_times(data, args.expires_days)
-
-    payload = _canonical_json(data)
-    args.config_out.write_bytes(payload)
-    _write_signature(args.sig_out, payload, args.key)
+    _run_sign(
+        config_in=args.config_in,
+        config_out=args.config_out,
+        sig_out=args.sig_out,
+        key_path=args.key,
+        stamp=args.stamp,
+        expires_days=args.expires_days,
+    )
+    print(f"Wrote: {args.config_out}")
+    print(f"Wrote: {args.sig_out}")
 
     if args.update_public_key:
         if not args.pub_key.exists():
             raise SystemExit(f"public key not found: {args.pub_key}")
         _write_public_key(args.pub_out, args.pub_key)
-
-    print(f"Wrote: {args.config_out}")
-    print(f"Wrote: {args.sig_out}")
-    if args.update_public_key:
         print(f"Wrote: {args.pub_out}")
 
 

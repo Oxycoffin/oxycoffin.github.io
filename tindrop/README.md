@@ -27,6 +27,12 @@ Flujo recomendado:
 python3 tindrop/scripts/sign_remote_config.py --stamp
 ```
 
+Si lo prefieres, ejecuta el modo interactivo (menú):
+
+```bash
+python3 tindrop/scripts/sign_remote_config.py --interactive
+```
+
 Esto genera:
 - `tindrop/config.json`
 - `tindrop/config.json.sig`
