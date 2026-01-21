@@ -28,11 +28,12 @@ def _load_json(path: Path) -> dict:
     return data
 
 
-def _stamp_times(data: dict, days: int) -> dict:
+def _stamp_times(data: dict, days: int | None) -> dict:
     now = datetime.now(timezone.utc)
     data = dict(data)
     data.setdefault("issued_at", int(now.timestamp()))
-    data.setdefault("expires_at", int((now + timedelta(days=days)).timestamp()))
+    if days is not None and days > 0:
+        data.setdefault("expires_at", int((now + timedelta(days=days)).timestamp()))
     return data
 
 
@@ -75,7 +76,7 @@ def _run_sign(
     sig_out: Path,
     key_path: Path,
     stamp: bool,
-    expires_days: int,
+    expires_days: int | None,
 ) -> None:
     if not config_in.exists():
         raise SystemExit(f"config not found: {config_in}")
@@ -132,8 +133,9 @@ def _interactive() -> None:
         config_out = _prompt_path("config.json", DEFAULT_CONFIG_OUT)
         sig_out = _prompt_path("config.json.sig", DEFAULT_SIG_OUT)
         key_path = _prompt_path("private key", DEFAULT_KEY)
-        stamp = _prompt_bool("Add issued_at/expires_at if missing", True)
-        expires_days = _prompt_int("Expires in days", 30)
+        stamp = _prompt_bool("Add issued_at if missing", True)
+        add_expiry = _prompt_bool("Add expires_at if missing", False)
+        expires_days = _prompt_int("Expires in days", 30) if add_expiry else None
         print(
             f"Command: sign config_in={config_in} config_out={config_out} sig_out={sig_out} "
             f"key={key_path} stamp={stamp} expires_days={expires_days}"
@@ -201,13 +203,13 @@ def main() -> None:
     parser.add_argument(
         "--stamp",
         action="store_true",
-        help="Set issued_at/expires_at if missing",
+        help="Set issued_at if missing",
     )
     parser.add_argument(
         "--expires-days",
         type=int,
-        default=30,
-        help="Days until expiration when using --stamp (default: 30)",
+        default=None,
+        help="Days until expiration when using --stamp (default: unset)",
     )
     parser.add_argument(
         "--update-public-key",

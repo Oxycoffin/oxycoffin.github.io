@@ -27,7 +27,8 @@ Flujo recomendado:
 python3 tindrop/scripts/sign_remote_config.py --stamp
 ```
 
-Si lo prefieres, ejecuta el modo interactivo (menú):
+Si lo prefieres, ejecuta el modo interactivo (menú). Por defecto solo añade
+`issued_at`; el `expires_at` es opcional:
 
 ```bash
 python3 tindrop/scripts/sign_remote_config.py --interactive
