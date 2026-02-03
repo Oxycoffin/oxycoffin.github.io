@@ -3,277 +3,359 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Lagartija Labs — Android Development</title>
-    <meta name="description" content="Lagartija Labs creates native Android apps. Check out Tindrop, our new gallery cleaner." />
-    <meta name="theme-color" content="#0f172a" />
+    <title>Lagartija Labs — Mobile Apps</title>
+    <meta name="description" content="Lagartija Labs builds focused, privacy-respecting mobile apps with a distinctive visual edge." />
+    <meta name="theme-color" content="#f7f2ea" />
 
-    <!-- Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
     <style>
-      /* --- DARK THEME VARIABLES --- */
       :root {
-        --bg-body: #020617;       /* Deep dark background */
-        --bg-surface: #1e293b;    /* Card background */
-        --bg-header: rgba(2, 6, 23, 0.85);
-        
-        /* Accents */
-        --primary: #38bdf8;       /* Sky Blue */
-        --primary-hover: #7dd3fc;
-        --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
-
-        /* Text */
-        --text-main: #f8fafc;     /* White/Off-white */
-        --text-muted: #94a3b8;    /* Muted gray */
-        
-        /* UI Elements */
-        --border: #334155;
-        --radius: 16px;
+        --bg: #f7f2ea;
+        --bg-2: #eef4f0;
+        --ink: #1f1a17;
+        --muted: #5c504b;
+        --accent: #ff6b3d;
+        --accent-2: #1f7a8c;
+        --card: #fffaf4;
+        --border: rgba(31, 26, 23, 0.12);
+        --shadow: 0 24px 60px rgba(24, 18, 13, 0.14);
+        --radius: 20px;
       }
 
       * { box-sizing: border-box; margin: 0; padding: 0; }
-      
       html { scroll-behavior: smooth; }
-
       body {
-        font-family: 'Inter', system-ui, sans-serif;
-        background-color: var(--bg-body);
-        color: var(--text-main);
+        font-family: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+        color: var(--ink);
+        background: radial-gradient(circle at 10% -10%, #fff6e7 0%, transparent 45%),
+                    radial-gradient(circle at 95% 10%, #e6f4ff 0%, transparent 40%),
+                    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
         line-height: 1.6;
         -webkit-font-smoothing: antialiased;
       }
 
-      a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
-      ul { list-style: none; }
+      a { color: inherit; text-decoration: none; }
+      img { max-width: 100%; display: block; }
 
-      /* --- LAYOUT --- */
       .container {
-        width: 100%;
-        max-width: 1000px; /* Slightly tighter for better reading */
+        max-width: 1120px;
         margin: 0 auto;
         padding: 0 1.5rem;
       }
 
-      section { padding: 5rem 0; }
-
-      /* --- HEADER --- */
       .site-header {
-        position: fixed;
+        position: sticky;
         top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1000;
-        background: var(--bg-header);
-        backdrop-filter: blur(12px);
+        z-index: 20;
+        backdrop-filter: blur(10px);
+        background: rgba(247, 242, 234, 0.82);
         border-bottom: 1px solid var(--border);
-        padding: 1rem 0;
       }
 
       .site-header .container {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        justify-content: space-between;
+        padding: 1rem 0;
       }
 
       .brand {
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        gap: 0.75rem;
+        gap: 0.8rem;
         font-weight: 700;
-        font-size: 1.25rem;
+        letter-spacing: 0.02em;
       }
 
-      .brand-mark { font-size: 1.5rem; }
+      .brand-mark {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--accent) 0%, #ffa07a 100%);
+        display: grid;
+        place-items: center;
+        color: white;
+        font-weight: 700;
+        font-family: "Fraunces", serif;
+      }
 
-      .nav { display: flex; gap: 2rem; }
-      .nav a {
-        font-weight: 500;
-        color: var(--text-muted);
+      .nav {
+        display: flex;
+        gap: 1.5rem;
         font-size: 0.95rem;
+        color: var(--muted);
       }
-      .nav a:hover { color: var(--primary); }
 
-      /* --- HERO SECTION --- */
+      .nav a:hover { color: var(--accent-2); }
+
       .hero {
-        padding-top: 10rem;
-        padding-bottom: 4rem;
-        text-align: center;
-        background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.1) 0%, transparent 60%);
+        padding: 5.5rem 0 4rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-grid {
+        display: grid;
+        gap: 3rem;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        align-items: center;
       }
 
       .hero h1 {
-        font-size: clamp(2.5rem, 6vw, 4rem);
+        font-family: "Fraunces", serif;
         font-weight: 900;
-        line-height: 1.1;
-        margin-bottom: 1.5rem;
-        background: var(--accent-gradient);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
+        font-size: clamp(2.6rem, 5vw, 4rem);
+        line-height: 1.05;
+        margin-bottom: 1.2rem;
       }
 
       .hero p {
-        font-size: 1.25rem;
-        color: var(--text-muted);
-        max-width: 600px;
-        margin: 0 auto 3rem;
-      }
-
-      /* --- BUTTONS --- */
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.75rem 2rem;
-        border-radius: 50px;
-        font-weight: 600;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
-      }
-
-      .btn-primary {
-        background: var(--primary);
-        color: #0f172a;
-        box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
-      }
-      .btn-primary:hover {
-        background: var(--primary-hover);
-        transform: translateY(-2px);
-      }
-
-      .btn-ghost {
-        background-color: transparent;
-        color: var(--text-main);
-        border: 1px solid var(--border);
-      }
-      .btn-ghost:hover {
-        border-color: var(--primary);
-      }
-
-      /* --- APPS SECTION --- */
-      .app-highlight {
-        background: var(--bg-surface);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        overflow: hidden;
-        margin-bottom: 3rem;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-
-      .app-highlight:hover {
-        border-color: var(--primary);
-        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-      }
-
-      .app-header {
-        padding: 2.5rem 2.5rem 1.5rem;
-      }
-
-      .app-title {
-        font-size: 2rem;
-        font-weight: 800;
-        margin-bottom: 0.5rem;
-        color: var(--text-main);
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-      .tindrop-icon {
-        width: 1.75rem;
-        height: 1.75rem;
-        object-fit: contain;
-      }
-
-      .app-tagline {
-        font-size: 1.25rem;
-        color: var(--primary);
-        font-weight: 500;
-        margin-bottom: 1.5rem;
-      }
-
-      .app-desc {
-        color: var(--text-muted);
+        font-size: 1.15rem;
+        color: var(--muted);
         margin-bottom: 2rem;
-        font-size: 1.05rem;
+        max-width: 520px;
       }
 
-      .feature-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
-        padding: 0 2.5rem 2.5rem;
-      }
-
-      .feature-box h4 { color: var(--text-main); margin-bottom: 0.5rem; }
-      .feature-box p { color: var(--text-muted); font-size: 0.9rem; }
-
-      .app-footer {
-        background: rgba(0,0,0,0.3);
-        padding: 1.5rem 2.5rem;
+      .cta-row {
         display: flex;
         flex-wrap: wrap;
         gap: 1rem;
         align-items: center;
-        border-top: 1px solid var(--border);
       }
 
-      /* --- CONTACT --- */
-      .contact-links {
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.85rem 1.8rem;
+        border-radius: 999px;
+        font-weight: 600;
+        border: 1px solid transparent;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: #fff;
+        box-shadow: 0 14px 30px rgba(255, 107, 61, 0.35);
+      }
+
+      .btn-primary:hover { transform: translateY(-2px); }
+
+      .btn-outline {
+        border-color: var(--border);
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.6);
+      }
+
+      .hero-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 2rem;
+        box-shadow: var(--shadow);
+        position: relative;
+      }
+
+      .hero-card::after {
+        content: "";
+        position: absolute;
+        inset: 12px;
+        border-radius: calc(var(--radius) - 8px);
+        border: 1px dashed rgba(31, 26, 23, 0.15);
+        pointer-events: none;
+      }
+
+      .hero-card h3 {
+        font-family: "Fraunces", serif;
+        font-size: 1.5rem;
+        margin-bottom: 0.8rem;
+      }
+
+      .hero-card ul { list-style: none; display: grid; gap: 0.75rem; }
+      .hero-card li {
         display: flex;
-        flex-direction: column;
-        gap: 1rem;
+        gap: 0.8rem;
+        align-items: flex-start;
+        color: var(--muted);
+        font-size: 0.98rem;
       }
 
-      .contact-item {
+      .hero-card li span {
+        color: var(--accent-2);
+        font-weight: 700;
+      }
+
+      section { padding: 4.5rem 0; }
+
+      .section-title {
+        font-family: "Fraunces", serif;
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        margin-bottom: 1.5rem;
+      }
+
+      .apps-grid {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .app-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 2.2rem;
+        display: grid;
+        gap: 1.5rem;
+        box-shadow: var(--shadow);
+      }
+
+      .app-header {
         display: flex;
         align-items: center;
         gap: 1rem;
-        padding: 1.5rem;
-        background: var(--bg-surface);
+      }
+
+      .app-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        background: #fff;
+      }
+
+      .app-title {
+        font-family: "Fraunces", serif;
+        font-size: 2rem;
+        font-weight: 800;
+      }
+
+      .app-tagline { color: var(--accent-2); font-weight: 600; }
+
+      .app-body { color: var(--muted); font-size: 1.05rem; }
+
+      .pill-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        list-style: none;
+      }
+
+      .pill {
+        padding: 0.45rem 0.9rem;
+        background: rgba(31, 122, 140, 0.08);
+        border: 1px solid rgba(31, 122, 140, 0.2);
+        border-radius: 999px;
+        font-size: 0.92rem;
+        color: #1a4f5a;
+      }
+
+      .app-footer {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .availability {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .highlights-grid {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+
+      .highlight {
+        padding: 1.6rem;
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid var(--border);
+        min-height: 160px;
+      }
+
+      .highlight h4 {
+        font-family: "Fraunces", serif;
+        margin-bottom: 0.6rem;
+        font-size: 1.2rem;
+      }
+
+      .highlight p { color: var(--muted); }
+
+      .contact-card {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 2rem;
+        background: var(--card);
         border-radius: var(--radius);
         border: 1px solid var(--border);
+        box-shadow: var(--shadow);
       }
-      .contact-item:hover { border-color: var(--primary); }
-      
-      .contact-item svg { width: 24px; height: 24px; color: var(--primary); }
 
-      /* --- FOOTER --- */
-      .site-footer {
-        margin-top: 4rem;
-        padding: 3rem 0;
-        border-top: 1px solid var(--border);
-        color: var(--text-muted);
-        font-size: 0.9rem;
-        background: #020617;
+      .contact-card a {
+        font-weight: 600;
+        color: var(--accent-2);
       }
+
+      .site-footer {
+        border-top: 1px solid var(--border);
+        padding: 2.5rem 0;
+        color: var(--muted);
+      }
+
       .footer-inner {
         display: flex;
-        flex-direction: column;
-        align-items: center;
+        flex-wrap: wrap;
+        justify-content: space-between;
         gap: 1rem;
+        align-items: center;
       }
+
       .footer-nav { display: flex; gap: 1.5rem; }
-      .footer-nav a:hover { color: var(--text-main); }
-      
-      @media (min-width: 768px) {
-        .footer-inner { flex-direction: row; justify-content: space-between; }
-        .contact-links { flex-direction: row; }
-        .contact-item { flex: 1; }
+      .footer-nav a:hover { color: var(--ink); }
+
+      .fade-up {
+        opacity: 0;
+        transform: translateY(16px);
+        animation: fadeUp 0.8s ease forwards;
+      }
+
+      .delay-1 { animation-delay: 0.1s; }
+      .delay-2 { animation-delay: 0.2s; }
+      .delay-3 { animation-delay: 0.3s; }
+      .delay-4 { animation-delay: 0.4s; }
+
+      @keyframes fadeUp {
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @media (max-width: 720px) {
+        .nav { display: none; }
+        .hero { padding-top: 4.5rem; }
+        .hero-card { padding: 1.5rem; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .fade-up { animation: none; opacity: 1; transform: none; }
+        html { scroll-behavior: auto; }
       }
     </style>
   </head>
   <body>
     <header class="site-header">
       <div class="container">
-        <a class="brand" href="./" aria-label="Home">
-          <span class="brand-mark" aria-hidden="true">🦎</span>
-          <span class="brand-text">Lagartija Labs</span>
+        <a class="brand" href="./" aria-label="Lagartija Labs home">
+          <span class="brand-mark">LL</span>
+          <span>Lagartija Labs</span>
         </a>
         <nav class="nav">
           <a href="#apps">Apps</a>
+          <a href="#highlights">Highlights</a>
           <a href="#contact">Contact</a>
         </nav>
       </div>
@@ -281,83 +363,84 @@
 
     <main>
       <section class="hero">
-        <div class="container">
-          <h1>Focused Apps.</h1>
-          <p>We build software designed to be useful, private, and efficient.</p>
-          <a class="btn btn-primary" href="#apps">View Projects</a>
+        <div class="container hero-grid">
+          <div class="fade-up delay-1">
+            <h1>Lagartija Labs. Focused mobile experiences with personality.</h1>
+            <p>We craft small, fast, privacy-respecting apps with sharp UX and a playful visual edge.</p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="#apps">View work</a>
+              <a class="btn btn-outline" href="#contact">Contact</a>
+            </div>
+          </div>
+          <div class="hero-card fade-up delay-2">
+            <h3>Studio notes</h3>
+            <ul>
+              <li><span>01</span> We ship lean releases and iterate fast.</li>
+              <li><span>02</span> Privacy and speed are default requirements.</li>
+              <li><span>03</span> Visual character matters as much as function.</li>
+            </ul>
+          </div>
         </div>
       </section>
 
-      <section id="apps" class="section">
+      <section id="apps">
         <div class="container">
-          <!-- TINDROP MAIN CARD -->
-          <article class="app-highlight">
-            <div class="app-header">
-              <h2 class="app-title">
-                <img src="tindrop/tindrop.png" alt="" aria-hidden="true" class="tindrop-icon" loading="lazy">
-                Tindrop
-              </h2>
-              <p class="app-tagline">Gallery Cleaner</p>
-              <p class="app-desc">
-                Swipe to decide what stays and what goes. Tindrop makes cleaning your photo and video gallery fast, simple, and surprisingly addictive. 
-                Revive your memories while freeing up space.
-              </p>
-            </div>
-
-            <div class="feature-grid">
-              <div class="feature-box">
-                <h4>✨ How it works</h4>
-                <p>Swipe right to keep, left to delete. Review everything before confirming. Works directly with your existing gallery.</p>
+          <h2 class="section-title fade-up delay-1">Apps</h2>
+          <div class="apps-grid">
+            <article class="app-card fade-up delay-2">
+              <div class="app-header">
+                <img src="tindrop/tindrop.png" alt="Tindrop app icon" class="app-icon" loading="lazy" />
+                <div>
+                  <div class="app-title">Tindrop</div>
+                  <div class="app-tagline">Swipe to clean your gallery.</div>
+                </div>
               </div>
-              <div class="feature-box">
-                <h4>🚀 Super-fast triage</h4>
-                <p>Fly through hundreds of photos in minutes. Smart bursts group related shots so you keep the best.</p>
+              <p class="app-body">Tindrop turns photo cleanup into a fast, satisfying flow. Keep the best, drop the rest, and reclaim space without the clutter.</p>
+              <ul class="pill-list">
+                <li class="pill">Swipe triage with review before delete.</li>
+                <li class="pill">On-device processing and privacy-first design.</li>
+                <li class="pill">Smart grouping to keep the best shots.</li>
+                <li class="pill">Trash-safe behavior aligned with your OS.</li>
+              </ul>
+              <div class="app-footer">
+                <a class="btn btn-primary" href="tindrop/go/">Get Tindrop</a>
+                <span class="availability">Available for iOS and Android.</span>
               </div>
-              <div class="feature-box">
-                <h4>🛡️ Private by design</h4>
-                <p>Everything runs on-device. Your media never leaves your phone. No account required.</p>
-              </div>
-              <div class="feature-box">
-                <h4>↩️ Trash Safety</h4>
-                <p>Deletions respect your device’s recycle bin, allowing you to restore files if needed.</p>
-              </div>
-            </div>
-
-            <div class="app-footer">
-              <a class="btn btn-primary" href="https://play.google.com/store/apps/details?id=com.tindrop.tindrop" target="_blank" rel="noopener">
-                Get it on Google Play
-              </a>
-              <span style="color: var(--text-muted); font-size: 0.9rem; margin-left: auto;">
-                Requires Android 8.0+
-              </span>
-            </div>
-          </article>
+            </article>
+          </div>
         </div>
       </section>
 
-      <section id="contact" class="section">
+      <section id="highlights">
         <div class="container">
-          <h2 style="font-size: 2rem; margin-bottom: 2rem; font-weight: 800;">Get in touch</h2>
-          <div class="contact-links">
-            <a href="mailto:lagartijalabs@gmail.com" class="contact-item">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              <div>
-                <strong>Email Support</strong>
-                <div style="color:var(--text-muted); font-size:0.9rem;">lagartijalabs@gmail.com</div>
-              </div>
-            </a>
-            
-            <a href="https://play.google.com/store/apps/developer?id=Lagartija+Labs" target="_blank" rel="noopener" class="contact-item">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-              </svg>
-              <div>
-                <strong>Google Play</strong>
-                <div style="color:var(--text-muted); font-size:0.9rem;">Developer Profile</div>
-              </div>
-            </a>
+          <h2 class="section-title fade-up delay-1">Highlights</h2>
+          <div class="highlights-grid">
+            <div class="highlight fade-up delay-2">
+              <h4>Built for speed and clarity</h4>
+              <p>Every screen is tuned for quick decisions and minimal friction.</p>
+            </div>
+            <div class="highlight fade-up delay-3">
+              <h4>Privacy by default</h4>
+              <p>We avoid unnecessary data collection and keep processing on-device.</p>
+            </div>
+            <div class="highlight fade-up delay-4">
+              <h4>Delightful micro-interactions</h4>
+              <p>Small animations and tactile feedback make the flow feel alive.</p>
+            </div>
+            <div class="highlight fade-up delay-4">
+              <h4>Lean, focused releases</h4>
+              <p>We ship improvements quickly without inflating the product.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="container">
+          <h2 class="section-title fade-up delay-1">Contact</h2>
+          <div class="contact-card fade-up delay-2">
+            <p>Have a project or collaboration in mind?</p>
+            <a href="mailto:lagartijalabs@gmail.com">lagartijalabs@gmail.com</a>
           </div>
         </div>
       </section>
@@ -374,7 +457,7 @@
     </footer>
 
     <script>
-      const yearElement = document.getElementById('year');
+      const yearElement = document.getElementById("year");
       if (yearElement) {
         yearElement.textContent = new Date().getFullYear();
       }
