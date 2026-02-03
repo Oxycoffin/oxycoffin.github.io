@@ -202,7 +202,7 @@
 
       .manifesto-strip {
         position: relative;
-        margin-top: 2rem;
+        margin-top: 1rem;
         transform: rotate(-2deg);
         border-top: 1px solid rgba(246, 240, 232, 0.2);
         border-bottom: 1px solid rgba(246, 240, 232, 0.2);
@@ -322,7 +322,7 @@
       }
 
       .highlight {
-        padding: 1.7rem;
+        padding: 1.7rem 2.3rem 1.7rem 1.7rem;
         border-radius: var(--radius);
         background: rgba(255, 255, 255, 0.04);
         border: 1px solid var(--border);
@@ -334,19 +334,26 @@
         position: absolute;
         top: 16px;
         right: 16px;
-        width: 42px;
-        height: 42px;
+        width: 36px;
+        height: 36px;
         border-radius: 50%;
         border: 1px solid rgba(184, 255, 45, 0.55);
+        z-index: 0;
       }
 
       .highlight h4 {
         font-family: "Fraunces", serif;
         margin-bottom: 0.6rem;
         font-size: 1.25rem;
+        position: relative;
+        z-index: 1;
       }
 
-      .highlight p { color: var(--ink-muted); }
+      .highlight p {
+        color: var(--ink-muted);
+        position: relative;
+        z-index: 1;
+      }
 
       .contact-card {
         display: flex;
@@ -450,12 +457,12 @@
             <span>Privacy-first</span>
             <span>Mobile craft</span>
             <span>Fast UX</span>
-            <span>Neon editorial</span>
+            <span>Bold design</span>
             <span>Lagartija Labs</span>
             <span>Privacy-first</span>
             <span>Mobile craft</span>
             <span>Fast UX</span>
-            <span>Neon editorial</span>
+            <span>Bold design</span>
             <span>Lagartija Labs</span>
           </div>
         </div>
