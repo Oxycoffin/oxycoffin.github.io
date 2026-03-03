@@ -67,6 +67,22 @@ Opcionalmente actualiza el public key con:
 python3 tindrop/scripts/sign_remote_config.py --update-public-key
 ```
 
+## UI local para publicar remote config
+
+Si quieres editar valores y publicarlos con commit/push desde una UI web local:
+
+```bash
+python3 tindrop/scripts/remote_config_webapp.py
+```
+
+Luego abre `http://127.0.0.1:8787`.
+
+La UI hace este flujo:
+- Editar `tindrop/config.local.json`.
+- Firmar `tindrop/config.json` y `tindrop/config.json.sig`.
+- `git add` + `git commit`.
+- `git push origin HEAD` (si dejas marcado push automático).
+
 ## Previsualización local
 
 Opción 1: abrir directamente el archivo en el navegador (doble clic sobre `privacy.html` o `terms.html`).
