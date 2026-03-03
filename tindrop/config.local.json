@@ -1,6 +1,4 @@
 {
-  "version": 2,
-  "issued_at": 1768988985,
   "flags": {
     "show_source_selector": true,
     "enable_whats_new": true,
@@ -10,18 +8,24 @@
     "frequency": 10,
     "premium_first_ad": 3,
     "premium_ad_frequency": 7,
-    "cooldown_minutes": 3,
+    "rewarded_interstitial_cooldown_minutes": 5,
     "units": {
       "android_native": "ca-app-pub-6279728494613017/8616979665",
       "ios_native": "ca-app-pub-6279728494613017/5081354485",
       "android_interstitial": "ca-app-pub-6279728494613017/5015294938",
       "ios_interstitial": "ca-app-pub-6279728494613017/7703664303",
       "android_rewarded": "ca-app-pub-6279728494613017/4690020554",
-      "ios_rewarded": "ca-app-pub-6279728494613017/4963345117"
-    }
+      "ios_rewarded": "ca-app-pub-6279728494613017/4963345117",
+      "android_rewarded_interstitial": "ca-app-pub-6279728494613017/5015294938",
+      "ios_rewarded_interstitial": "ca-app-pub-6279728494613017/7703664303"
+    },
+    "cooldown_minutes": 3
   },
   "premium": {
+    "free_swipes_intro_limit": 100,
     "filter_trial_limit": 50,
+    "free_swipes_daily_limit": 20,
+    "rewarded_swipe_grant": 50,
     "filter_rewarded_daily_limit": 2
   },
   "rating": {
@@ -45,5 +49,73 @@
     "terms_url": "https://oxycoffin.github.io/Tindrop_pages/terms.html",
     "support_email": "lagartijalabs@gmail.com",
     "play_store_url": "https://lagartijalabs.com/tindrop/go/"
-  }
+  },
+  "monetization": {
+    "intent_high_threshold": 0.7,
+    "intent_medium_threshold": 0.45,
+    "risk_high_threshold": 0.65,
+    "high_backlog_threshold": 1200,
+    "prompt_cooldown_seconds": 45,
+    "max_prompts_per_session": 3,
+    "high_intent_prompt_cooldown_seconds": 30,
+    "fatigued_prompt_cooldown_seconds": 90,
+    "intent_bias": -0.65,
+    "intent_weight_swipes_10m": 1.4,
+    "intent_weight_gate_hits_24h": 1.1,
+    "intent_weight_pending_ratio": 0.75,
+    "intent_weight_free_remaining_inverse": 0.95,
+    "intent_weight_sessions_3d": 0.6,
+    "risk_bias": -0.75,
+    "risk_weight_pending_ratio": 1.5,
+    "risk_weight_swipes_10m": 0.9,
+    "risk_weight_gate_hits_24h": 0.75,
+    "risk_weight_sessions_3d": 0.5,
+    "intent_context": {
+      "classify_confirm_boost": 0.22,
+      "daily_clean_start_boost": 0.18,
+      "random_sort_select_boost": 0.14,
+      "size_sort_select_boost": 0.15,
+      "filter_select_boost": 0.16,
+      "drive_source_select_boost": 0.2,
+      "swipe_limit_reached_boost": 0.26,
+      "settings_premium_boost": 0.1,
+      "high_velocity_boost": 0.1,
+      "hard_gate_boost": 0.08
+    },
+    "fatigue": {
+      "dismiss_penalty_weight": 0.55,
+      "impression_penalty_weight": 0.3,
+      "gate_penalty_weight": 0.25,
+      "suppress_prompt_threshold": 0.78,
+      "close_offer_threshold": 0.58
+    },
+    "copy_policy": {
+      "max_highlights_compact": 2,
+      "social_proof_min_width": 380.0,
+      "show_swipe_limit_reset_hint": true
+    },
+    "funnel": {
+      "hard_gate_after_gate_hits_24h": 2,
+      "close_offer_after_gate_hits_24h": 4,
+      "close_offer_after_impressions_24h": 2
+    },
+    "urgency": {
+      "free_swipes_low_pressure_threshold": 8,
+      "free_swipes_high_pressure_threshold": 3,
+      "pending_assets_high_pressure_threshold": 900
+    },
+    "creative": {
+      "enable_social_proof": true,
+      "enable_value_stack": true,
+      "enable_savings_hint": true
+    },
+    "subscription_catalog": {
+      "enable_annual_trial_7d": true,
+      "enable_annual_best_value": false,
+      "enable_monthly_flex": true,
+      "enable_quarterly_bridge": false
+    }
+  },
+  "version": 2,
+  "issued_at": 1768988985
 }
