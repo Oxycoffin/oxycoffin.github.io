@@ -32,7 +32,13 @@
   "notifications": {
     "default_frequency_minutes": 10080,
     "default_min_pending_assets": 200,
-    "threshold_options": [50, 100, 200, 500, 1000]
+    "threshold_options": [
+      50,
+      100,
+      200,
+      500,
+      1000
+    ]
   },
   "links": {
     "privacy_policy_url": "https://oxycoffin.github.io/Tindrop_pages/privacy.html",
