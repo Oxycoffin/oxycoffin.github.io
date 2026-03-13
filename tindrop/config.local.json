@@ -22,10 +22,10 @@
     "cooldown_minutes": 3
   },
   "premium": {
-    "free_swipes_intro_limit": 100,
+    "free_swipes_intro_limit": 80,
     "filter_trial_limit": 50,
     "free_swipes_daily_limit": 20,
-    "rewarded_swipe_grant": 50,
+    "rewarded_swipe_grant": 40,
     "filter_rewarded_daily_limit": 2
   },
   "rating": {
