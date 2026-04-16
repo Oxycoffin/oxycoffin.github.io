@@ -84,8 +84,8 @@ SECTIONS: tuple[SectionDef, ...] = (
             FieldDef("ads.units.ios_interstitial", "ios_interstitial", "text", "ca-app-pub-6279728494613017/7703664303"),
             FieldDef("ads.units.android_rewarded", "android_rewarded", "text", "ca-app-pub-6279728494613017/4690020554"),
             FieldDef("ads.units.ios_rewarded", "ios_rewarded", "text", "ca-app-pub-6279728494613017/4963345117"),
-            FieldDef("ads.units.android_rewarded_interstitial", "android_rewarded_interstitial", "text", "ca-app-pub-6279728494613017/1656323137"),
-            FieldDef("ads.units.ios_rewarded_interstitial", "ios_rewarded_interstitial", "text", "ca-app-pub-6279728494613017/9395358143"),
+            FieldDef("ads.units.android_rewarded_interstitial", "android_rewarded_interstitial", "text", "ca-app-pub-6279728494613017/5015294938"),
+            FieldDef("ads.units.ios_rewarded_interstitial", "ios_rewarded_interstitial", "text", "ca-app-pub-6279728494613017/7703664303"),
         ),
     ),
     SectionDef(

@@ -16,8 +16,8 @@
       "ios_interstitial": "ca-app-pub-6279728494613017/7703664303",
       "android_rewarded": "ca-app-pub-6279728494613017/4690020554",
       "ios_rewarded": "ca-app-pub-6279728494613017/4963345117",
-      "android_rewarded_interstitial": "ca-app-pub-6279728494613017/1656323137",
-      "ios_rewarded_interstitial": "ca-app-pub-6279728494613017/9395358143"
+      "android_rewarded_interstitial": "ca-app-pub-6279728494613017/5015294938",
+      "ios_rewarded_interstitial": "ca-app-pub-6279728494613017/7703664303"
     },
     "cooldown_minutes": 3
   },
@@ -116,6 +116,6 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 4,
+  "version": 6,
   "issued_at": 1773272079
 }
