@@ -304,11 +304,7 @@
         border-radius: clamp(26px, 4vw, 36px);
         overflow: hidden;
         border: 1px solid var(--line);
-        background:
-          radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(214, 255, 78, 0.18), transparent 20%),
-          radial-gradient(circle at 18% 18%, rgba(255, 122, 47, 0.3), transparent 24%),
-          radial-gradient(circle at 80% 12%, rgba(74, 141, 255, 0.26), transparent 18%),
-          linear-gradient(165deg, rgba(30, 23, 19, 0.96), rgba(8, 8, 8, 0.98));
+        background: linear-gradient(165deg, rgba(30, 23, 19, 0.96), rgba(8, 8, 8, 0.98));
         box-shadow: var(--shadow);
         transform: perspective(1200px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
         transition: transform 0.18s ease-out;
@@ -317,10 +313,14 @@
       .hero-poster::before {
         content: "";
         position: absolute;
-        inset: 1rem;
-        border-radius: calc(var(--radius) - 10px);
-        border: 1px solid rgba(244, 234, 217, 0.12);
+        inset: 0;
+        background:
+          linear-gradient(180deg, rgba(10, 9, 8, 0.12), rgba(10, 9, 8, 0.2) 28%, rgba(10, 9, 8, 0.76) 100%),
+          radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(214, 255, 78, 0.16), transparent 18%),
+          radial-gradient(circle at 20% 14%, rgba(255, 122, 47, 0.18), transparent 22%),
+          radial-gradient(circle at 78% 12%, rgba(74, 141, 255, 0.16), transparent 20%);
         pointer-events: none;
+        z-index: 2;
       }
 
       .hero-poster::after {
@@ -333,6 +333,7 @@
         background-size: 54px 54px;
         opacity: 0.08;
         pointer-events: none;
+        z-index: 3;
       }
 
       .poster-meta,
@@ -347,6 +348,7 @@
         letter-spacing: 0.18em;
         font-size: 0.72rem;
         color: rgba(244, 234, 217, 0.72);
+        z-index: 4;
       }
 
       .poster-meta {
@@ -365,6 +367,7 @@
         position: absolute;
         border: 1px solid rgba(244, 234, 217, 0.18);
         border-radius: 50%;
+        z-index: 2;
       }
 
       .orbit-one {
@@ -381,54 +384,77 @@
         animation: spin 32s linear infinite reverse;
       }
 
-      .poster-center {
+      .poster-art-wrap {
         position: absolute;
-        inset: 50% auto auto 50%;
-        transform: translate(-50%, -50%);
-        width: min(50%, 280px);
-        aspect-ratio: 1;
-        display: grid;
-        place-items: center;
-      }
-
-      .poster-center::before,
-      .poster-center::after {
-        content: "";
-        position: absolute;
-        border-radius: 50%;
-      }
-
-      .poster-center::before {
         inset: 0;
-        background:
-          radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.24), transparent 32%),
-          radial-gradient(circle, rgba(214, 255, 78, 0.22), rgba(214, 255, 78, 0.02) 56%, transparent 72%);
-        box-shadow:
-          0 0 0 1px rgba(244, 234, 217, 0.12) inset,
-          0 28px 60px rgba(0, 0, 0, 0.4);
-      }
-
-      .poster-center::after {
-        inset: 15%;
-        border: 1px solid rgba(244, 234, 217, 0.12);
-      }
-
-      .poster-center img {
-        width: 100%;
-        border-radius: 26px;
-        filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.42));
-        animation: float 4.2s ease-in-out infinite;
-      }
-
-      .poster-tile {
-        position: relative;
         z-index: 1;
-        width: min(54%, 150px);
-        padding: 0.9rem;
-        border-radius: 34px;
-        background: rgba(244, 234, 217, 0.06);
-        border: 1px solid rgba(244, 234, 217, 0.14);
-        backdrop-filter: blur(12px);
+      }
+
+      .poster-art {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        transform: scale(1.03);
+        filter: saturate(0.95) contrast(1.02) brightness(0.88);
+      }
+
+      .poster-frame {
+        position: absolute;
+        inset: 1rem;
+        z-index: 4;
+        border-radius: calc(var(--radius) - 10px);
+        border: 1px solid rgba(244, 234, 217, 0.12);
+        pointer-events: none;
+      }
+
+      .poster-badge {
+        position: absolute;
+        top: 4.6rem;
+        left: 1.8rem;
+        z-index: 4;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.75rem 0.95rem;
+        border-radius: 999px;
+        background: rgba(10, 10, 10, 0.38);
+        border: 1px solid rgba(244, 234, 217, 0.1);
+        backdrop-filter: blur(16px);
+      }
+
+      .poster-badge img,
+      .feature-app-chip img {
+        width: 3.15rem;
+        height: 3.15rem;
+        flex: 0 0 auto;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 16px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+      }
+
+      .poster-badge span,
+      .feature-app-chip span {
+        display: grid;
+        gap: 0.18rem;
+      }
+
+      .poster-badge strong,
+      .feature-app-chip strong {
+        font-size: 0.76rem;
+        line-height: 1;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: rgba(244, 234, 217, 0.74);
+      }
+
+      .poster-badge small,
+      .feature-app-chip small {
+        font-family: "Instrument Serif", serif;
+        font-size: 1.35rem;
+        line-height: 1;
+        color: var(--text);
       }
 
       .poster-quote {
@@ -439,6 +465,7 @@
         font-size: clamp(2.4rem, 4vw, 3.5rem);
         line-height: 0.95;
         letter-spacing: -0.04em;
+        z-index: 4;
       }
 
       .poster-side {
@@ -450,6 +477,7 @@
         background: rgba(244, 234, 217, 0.05);
         border: 1px solid rgba(244, 234, 217, 0.1);
         backdrop-filter: blur(12px);
+        z-index: 4;
       }
 
       .poster-side p {
@@ -580,19 +608,51 @@
         margin-bottom: 1.4rem;
       }
 
-      .feature-icon-shell {
-        width: clamp(140px, 18vw, 190px);
-        aspect-ratio: 1;
-        margin: 0 auto;
-        padding: 1rem;
-        border-radius: 34px;
-        background: rgba(244, 234, 217, 0.06);
+      .feature-art {
+        position: relative;
+        margin: 0;
+        min-height: clamp(320px, 42vw, 470px);
+        overflow: hidden;
+        border-radius: 28px;
         border: 1px solid rgba(244, 234, 217, 0.12);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.28);
+        background: rgba(8, 8, 8, 0.8);
+        box-shadow: 0 22px 44px rgba(0, 0, 0, 0.24);
       }
 
-      .feature-icon-shell img {
+      .feature-art::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(180deg, rgba(10, 9, 8, 0.04), rgba(10, 9, 8, 0.64)),
+          radial-gradient(circle at 50% 16%, rgba(214, 255, 78, 0.08), transparent 24%);
+        pointer-events: none;
+      }
+
+      .feature-art-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+      }
+
+      .feature-app-chip {
+        position: absolute;
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.85rem;
+        width: fit-content;
+        max-width: calc(100% - 2rem);
+        padding: 0.8rem 0.95rem;
         border-radius: 24px;
+        background: rgba(11, 10, 9, 0.58);
+        border: 1px solid rgba(244, 234, 217, 0.12);
+        backdrop-filter: blur(12px);
       }
 
       .feature-title {
@@ -835,6 +895,12 @@
           min-height: 500px;
         }
 
+        .poster-badge {
+          top: 4.2rem;
+          left: 1.3rem;
+          padding: 0.7rem 0.85rem;
+        }
+
         .poster-side {
           width: auto;
           inset: auto 1.3rem 6.5rem 1.3rem;
@@ -859,8 +925,10 @@
           min-height: 460px;
         }
 
-        .poster-center {
-          width: 58%;
+        .poster-badge img,
+        .feature-app-chip img {
+          width: 2.7rem;
+          height: 2.7rem;
         }
       }
 
@@ -925,16 +993,28 @@
 
           <div class="hero-visual" data-reveal>
             <div class="hero-poster" id="heroPoster">
+              <div class="poster-art-wrap" aria-hidden="true">
+                <img
+                  class="poster-art"
+                  src="assets/images/lagartija-hero-art.png"
+                  alt=""
+                  width="1536"
+                  height="1024"
+                />
+              </div>
+              <div class="poster-frame" aria-hidden="true"></div>
               <div class="poster-meta">
                 <span>Focused mobile craft</span>
                 <span>Madrid • Worldwide</span>
               </div>
               <div class="orbit orbit-one" aria-hidden="true"></div>
               <div class="orbit orbit-two" aria-hidden="true"></div>
-              <div class="poster-center">
-                <div class="poster-tile">
-                  <img src="tindrop/tindrop.png" alt="Tindrop app icon" width="710" height="709" />
-                </div>
+              <div class="poster-badge">
+                <img src="tindrop/tindrop.png" alt="Tindrop app icon" width="710" height="709" />
+                <span>
+                  <strong>Current release</strong>
+                  <small>Tindrop</small>
+                </span>
               </div>
               <div class="poster-side">
                 <strong>Current mood</strong>
@@ -1008,9 +1088,22 @@
           <div class="feature-stage" data-reveal>
             <article class="feature-card" aria-labelledby="tindrop-title">
               <p class="section-label">Current release</p>
-              <div class="feature-icon-shell">
-                <img src="tindrop/tindrop.png" alt="Tindrop app icon" width="710" height="709" />
-              </div>
+              <figure class="feature-art" aria-label="Tindrop artwork">
+                <img
+                  class="feature-art-image"
+                  src="assets/images/tindrop-memory-art.png"
+                  alt="Painterly collage evoking sorting memories and cleaning a photo library"
+                  width="1024"
+                  height="1536"
+                />
+                <div class="feature-app-chip">
+                  <img src="tindrop/tindrop.png" alt="Tindrop app icon" width="710" height="709" />
+                  <span>
+                    <strong>App</strong>
+                    <small>Tindrop</small>
+                  </span>
+                </div>
+              </figure>
               <h2 class="feature-title" id="tindrop-title">Tindrop</h2>
               <p class="feature-summary">
                 Gallery cleanup built around fast swipes, clear review, and less
