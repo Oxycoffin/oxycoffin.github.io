@@ -3,569 +3,1155 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Lagartija Labs — Mobile Apps</title>
-    <meta name="description" content="Lagartija Labs builds focused, privacy-respecting mobile apps with a distinctive visual edge." />
-    <meta name="theme-color" content="#0b0a08" />
+    <title>Lagartija Labs — Small Mobile Software With Bite</title>
+    <meta
+      name="description"
+      content="Lagartija Labs builds lean mobile apps with sharp interaction, strong taste, and privacy-conscious foundations."
+    />
+    <meta name="theme-color" content="#120f0d" />
+    <link rel="canonical" href="https://oxycoffin.github.io/" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800;9..144,900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sora:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
 
     <style>
       :root {
-        --ink: #f6f0e8;
-        --ink-muted: rgba(246, 240, 232, 0.7);
-        --bg: #0b0a08;
-        --bg-2: #15120f;
-        --glow: #ff5c2a;
-        --acid: #b8ff2d;
-        --cobalt: #2e9bff;
-        --card: #14110e;
-        --border: rgba(246, 240, 232, 0.15);
-        --shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
-        --radius: 22px;
+        --bg: #120f0d;
+        --bg-deep: #0a0908;
+        --panel: rgba(28, 22, 18, 0.74);
+        --panel-strong: rgba(34, 27, 21, 0.94);
+        --text: #f4ead9;
+        --muted: rgba(244, 234, 217, 0.76);
+        --line: rgba(244, 234, 217, 0.14);
+        --line-strong: rgba(244, 234, 217, 0.24);
+        --acid: #d6ff4e;
+        --shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+        --radius: 30px;
       }
 
-      * { box-sizing: border-box; margin: 0; padding: 0; }
-      html { scroll-behavior: smooth; }
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
-        font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
-        color: var(--ink);
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Sora", system-ui, sans-serif;
+        color: var(--text);
         background:
-          radial-gradient(circle at 15% -10%, rgba(255, 92, 42, 0.25) 0%, transparent 45%),
-          radial-gradient(circle at 100% 0%, rgba(46, 155, 255, 0.2) 0%, transparent 45%),
-          linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
-        line-height: 1.6;
+          radial-gradient(circle at 12% 12%, rgba(255, 122, 47, 0.18), transparent 24%),
+          radial-gradient(circle at 88% 10%, rgba(74, 141, 255, 0.18), transparent 20%),
+          radial-gradient(circle at 70% 84%, rgba(214, 255, 78, 0.1), transparent 20%),
+          linear-gradient(180deg, #1a1410 0%, var(--bg) 32%, var(--bg-deep) 100%);
         -webkit-font-smoothing: antialiased;
         overflow-x: hidden;
       }
 
-      a { color: inherit; text-decoration: none; }
-      img { max-width: 100%; display: block; }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size: 40px 40px;
+        -webkit-mask-image: radial-gradient(circle at center, black 58%, transparent 100%);
+        mask-image: radial-gradient(circle at center, black 58%, transparent 100%);
+        opacity: 0.34;
+        z-index: -1;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      button,
+      input,
+      textarea,
+      select {
+        font: inherit;
+      }
+
+      :focus-visible {
+        outline: 2px solid var(--acid);
+        outline-offset: 4px;
+      }
 
       .container {
-        max-width: 1180px;
+        width: min(1180px, calc(100% - 2rem));
         margin: 0 auto;
-        padding: 0 1.6rem;
       }
 
       .site-header {
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        background: rgba(11, 10, 8, 0.78);
-        border-bottom: 1px solid var(--border);
-        backdrop-filter: blur(12px);
+        position: fixed;
+        inset: 0 0 auto 0;
+        z-index: 40;
+        padding: 1rem 0;
       }
 
-      .site-header .container {
+      .header-shell {
+        width: min(1180px, calc(100% - 2rem));
+        margin: 0 auto;
+        padding: 0.9rem 1.1rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 1.1rem 0;
+        gap: 1rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(15, 13, 12, 0.62);
+        backdrop-filter: blur(14px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
       }
 
       .brand {
         display: inline-flex;
         align-items: center;
-        gap: 0.9rem;
-        font-weight: 700;
-        letter-spacing: 0.04em;
+        gap: 0.8rem;
+        min-width: 0;
       }
 
       .brand-mark {
-        width: 44px;
-        height: 44px;
-        border-radius: 14px;
-        background: linear-gradient(135deg, var(--glow) 0%, #ffbe7b 100%);
-        display: grid;
-        place-items: center;
-        color: #0b0a08;
-        font-weight: 800;
-        font-family: "Fraunces", serif;
+        width: 0.9rem;
+        height: 0.9rem;
+        flex: 0 0 auto;
+        border-radius: 999px;
+        background: radial-gradient(circle at 30% 30%, #f8f0df 0%, var(--acid) 42%, #5f7a12 100%);
+        box-shadow: 0 0 0 5px rgba(214, 255, 78, 0.08);
+      }
+
+      .brand-name {
+        font-family: "Instrument Serif", serif;
+        font-size: 1.7rem;
+        line-height: 1;
+        letter-spacing: 0.01em;
       }
 
       .nav {
         display: flex;
-        gap: 1.6rem;
+        align-items: center;
+        gap: 1.1rem;
+        color: var(--muted);
         font-size: 0.95rem;
-        color: var(--ink-muted);
       }
 
-      .nav a:hover { color: var(--acid); }
-
-      .hero {
-        position: relative;
-        padding: 6rem 0 4.5rem;
-        overflow: hidden;
+      .nav a {
+        transition: color 0.2s ease;
       }
 
-      .hero-ghost {
-        position: absolute;
-        top: -30px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: clamp(6rem, 18vw, 14rem);
-        font-weight: 900;
-        letter-spacing: 0.08em;
-        font-family: "Fraunces", serif;
-        color: rgba(246, 240, 232, 0.04);
-        pointer-events: none;
-        z-index: 0;
-        transition: transform 0.2s ease;
+      .nav a:hover,
+      .nav a:focus-visible {
+        color: var(--text);
       }
 
-      .hero .container,
-      .manifesto-strip {
-        position: relative;
-        z-index: 1;
-      }
-
-      .hero-grid {
-        display: grid;
-        gap: 2.8rem;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        align-items: center;
-      }
-
-      .hero h1 {
-        font-family: "Fraunces", serif;
-        font-weight: 900;
-        font-size: clamp(2.8rem, 5vw, 4.4rem);
-        line-height: 1.02;
-        margin-bottom: 1.2rem;
-      }
-
-      .hero p {
-        font-size: 1.18rem;
-        color: var(--ink-muted);
-        margin-bottom: 2rem;
-        max-width: 540px;
-      }
-
-      .cta-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        align-items: center;
-      }
-
-      .btn {
+      .header-cta,
+      .button {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 0.9rem 2rem;
+        min-height: 46px;
+        padding: 0.75rem 1.25rem;
         border-radius: 999px;
-        font-weight: 600;
         border: 1px solid transparent;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-      }
-
-      .btn-primary {
-        background: var(--glow);
-        color: #0b0a08;
-        box-shadow: 0 16px 34px rgba(255, 92, 42, 0.4);
-      }
-
-      .btn-primary:hover { transform: translateY(-2px); }
-
-      .btn-outline {
-        border-color: var(--border);
-        color: var(--ink);
-        background: rgba(255, 255, 255, 0.05);
-      }
-
-      .manifesto {
-        position: relative;
-        padding: 1.4rem 1.8rem;
-        border-radius: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: linear-gradient(135deg, rgba(255, 92, 42, 0.08), rgba(46, 155, 255, 0.08));
-        box-shadow: var(--shadow);
-      }
-
-      .manifesto h3 {
-        font-family: "Fraunces", serif;
-        margin-bottom: 0.8rem;
-        font-size: 1.6rem;
-      }
-
-      .manifesto ul {
-        list-style: none;
-        display: grid;
-        gap: 0.7rem;
-        color: var(--ink-muted);
-        font-size: 1rem;
-      }
-
-      .manifesto li strong { color: var(--acid); }
-
-      .manifesto-strip {
-        position: relative;
-        margin-top: 1rem;
-        transform: rotate(-2deg);
-        border-top: 1px solid rgba(246, 240, 232, 0.2);
-        border-bottom: 1px solid rgba(246, 240, 232, 0.2);
-        background: rgba(255, 255, 255, 0.03);
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        padding: 0.35rem 0;
-      }
-
-      .strip-track {
-        display: flex;
-        gap: 2.5rem;
-        padding: 0;
-        align-items: center;
-        white-space: nowrap;
-        animation: stripMove 18s linear infinite;
         font-weight: 600;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        line-height: 1;
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease,
+          background-color 0.2s ease,
+          color 0.2s ease;
       }
 
-      .strip-track span {
-        color: var(--acid);
+      .header-cta:hover,
+      .button:hover {
+        transform: translateY(-1px);
       }
 
-      @keyframes stripMove {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
+      .header-cta,
+      .button-primary {
+        background: var(--acid);
+        color: #14110d;
+        box-shadow: 0 12px 30px rgba(214, 255, 78, 0.18);
       }
 
-      section { padding: 4.8rem 0; }
-
-      .section-title {
-        font-family: "Fraunces", serif;
-        font-size: clamp(2rem, 4.2vw, 3rem);
-        margin-bottom: 1.6rem;
+      .button-secondary {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.04);
+        border-color: var(--line);
       }
 
-      .apps-grid {
-        display: grid;
-        gap: 2rem;
+      main {
+        overflow-x: clip;
       }
 
-      .app-card {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        padding: 2.4rem;
-        display: grid;
-        gap: 1.6rem;
-        box-shadow: var(--shadow);
+      .hero {
         position: relative;
+        min-height: 100svh;
+        display: flex;
+        align-items: center;
+        padding: 7.5rem 0 3rem;
       }
 
-      .app-card::after {
+      .hero::before {
         content: "";
         position: absolute;
-        inset: 12px;
-        border-radius: calc(var(--radius) - 12px);
-        border: 1px dashed rgba(255, 255, 255, 0.12);
+        inset: 0;
+        background:
+          radial-gradient(circle at 18% 24%, rgba(255, 122, 47, 0.12), transparent 24%),
+          radial-gradient(circle at 78% 24%, rgba(74, 141, 255, 0.12), transparent 24%);
         pointer-events: none;
       }
 
-      .app-header {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-      }
-
-      .app-icon {
-        width: 70px;
-        height: 70px;
-        border-radius: 18px;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        background: #0b0a08;
-        padding: 4px;
-      }
-
-      .app-title {
-        font-family: "Fraunces", serif;
-        font-size: 2.2rem;
-        font-weight: 800;
-      }
-
-      .app-tagline { color: var(--acid); font-weight: 600; }
-
-      .app-body { color: var(--ink-muted); font-size: 1.05rem; }
-
-      .pill-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.8rem;
-        list-style: none;
-      }
-
-      .pill {
-        padding: 0.45rem 0.95rem;
-        border-radius: 999px;
-        font-size: 0.92rem;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        background: rgba(255, 255, 255, 0.05);
-      }
-
-      .app-footer {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 1rem;
-      }
-
-      .availability {
-        color: var(--ink-muted);
-        font-size: 0.95rem;
-      }
-
-      .highlights-grid {
+      .hero-grid {
+        position: relative;
+        z-index: 1;
         display: grid;
-        gap: 1.6rem;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+        gap: clamp(2rem, 5vw, 4.5rem);
+        align-items: center;
       }
 
-      .highlight {
-        padding: 1.7rem 2.3rem 1.7rem 1.7rem;
-        border-radius: var(--radius);
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid var(--border);
+      .eyebrow,
+      .section-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        margin: 0 0 1rem;
+        color: rgba(244, 234, 217, 0.92);
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        font-size: 0.72rem;
+      }
+
+      .eyebrow::before,
+      .section-label::before {
+        content: "";
+        width: 2.8rem;
+        height: 1px;
+        background: rgba(244, 234, 217, 0.38);
+      }
+
+      .hero-title {
+        margin: 0;
+        max-width: 10ch;
+        font-family: "Instrument Serif", serif;
+        font-size: clamp(4rem, 10vw, 7.4rem);
+        line-height: 0.88;
+        letter-spacing: -0.04em;
+      }
+
+      .hero-title em {
+        color: var(--acid);
+        font-style: italic;
+      }
+
+      .hero-summary {
+        max-width: 36rem;
+        margin: 1.35rem 0 0;
+        color: var(--muted);
+        font-size: clamp(1rem, 1.2vw, 1.14rem);
+        line-height: 1.75;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.9rem;
+        margin-top: 2rem;
+      }
+
+      .hero-footnote {
+        margin: 1.4rem 0 0;
+        color: rgba(244, 234, 217, 0.66);
+        max-width: 34rem;
+        font-size: 0.96rem;
+      }
+
+      .hero-footnote a {
+        color: var(--text);
+        text-decoration: underline;
+        text-decoration-color: rgba(214, 255, 78, 0.5);
+        text-underline-offset: 0.18em;
+      }
+
+      .hero-visual {
         position: relative;
       }
 
-      .highlight::before {
+      .hero-poster {
+        --pointer-x: 72%;
+        --pointer-y: 24%;
+        position: relative;
+        min-height: 620px;
+        border-radius: clamp(26px, 4vw, 36px);
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background:
+          radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(214, 255, 78, 0.18), transparent 20%),
+          radial-gradient(circle at 18% 18%, rgba(255, 122, 47, 0.3), transparent 24%),
+          radial-gradient(circle at 80% 12%, rgba(74, 141, 255, 0.26), transparent 18%),
+          linear-gradient(165deg, rgba(30, 23, 19, 0.96), rgba(8, 8, 8, 0.98));
+        box-shadow: var(--shadow);
+        transform: perspective(1200px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+        transition: transform 0.18s ease-out;
+      }
+
+      .hero-poster::before {
         content: "";
         position: absolute;
-        top: 16px;
-        right: 16px;
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: 1px solid rgba(184, 255, 45, 0.55);
-        z-index: 0;
+        inset: 1rem;
+        border-radius: calc(var(--radius) - 10px);
+        border: 1px solid rgba(244, 234, 217, 0.12);
+        pointer-events: none;
       }
 
-      .highlight h4 {
-        font-family: "Fraunces", serif;
-        margin-bottom: 0.6rem;
-        font-size: 1.25rem;
-        position: relative;
-        z-index: 1;
+      .hero-poster::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 54px 54px;
+        opacity: 0.08;
+        pointer-events: none;
       }
 
-      .highlight p {
-        color: var(--ink-muted);
-        position: relative;
-        z-index: 1;
-      }
-
-      .contact-card {
+      .poster-meta,
+      .poster-footer {
+        position: absolute;
+        left: 1.4rem;
+        right: 1.4rem;
         display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
-        padding: 2.2rem;
-        background: var(--card);
-        border-radius: var(--radius);
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow);
+        justify-content: space-between;
+        gap: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        font-size: 0.72rem;
+        color: rgba(244, 234, 217, 0.72);
       }
 
-      .contact-card a {
-        font-weight: 600;
+      .poster-meta {
+        top: 1.4rem;
+      }
+
+      .poster-footer {
+        bottom: 1.4rem;
+      }
+
+      .poster-footer span:last-child {
         color: var(--acid);
       }
 
-      .site-footer {
-        border-top: 1px solid var(--border);
-        padding: 2.6rem 0;
-        color: var(--ink-muted);
+      .orbit {
+        position: absolute;
+        border: 1px solid rgba(244, 234, 217, 0.18);
+        border-radius: 50%;
       }
 
-      .footer-inner {
+      .orbit-one {
+        inset: 11% 10% auto auto;
+        width: 82%;
+        aspect-ratio: 1;
+        animation: spin 24s linear infinite;
+      }
+
+      .orbit-two {
+        inset: 4% auto auto 2%;
+        width: 98%;
+        aspect-ratio: 1;
+        animation: spin 32s linear infinite reverse;
+      }
+
+      .poster-center {
+        position: absolute;
+        inset: 50% auto auto 50%;
+        transform: translate(-50%, -50%);
+        width: min(50%, 280px);
+        aspect-ratio: 1;
+        display: grid;
+        place-items: center;
+      }
+
+      .poster-center::before,
+      .poster-center::after {
+        content: "";
+        position: absolute;
+        border-radius: 50%;
+      }
+
+      .poster-center::before {
+        inset: 0;
+        background:
+          radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.24), transparent 32%),
+          radial-gradient(circle, rgba(214, 255, 78, 0.22), rgba(214, 255, 78, 0.02) 56%, transparent 72%);
+        box-shadow:
+          0 0 0 1px rgba(244, 234, 217, 0.12) inset,
+          0 28px 60px rgba(0, 0, 0, 0.4);
+      }
+
+      .poster-center::after {
+        inset: 15%;
+        border: 1px solid rgba(244, 234, 217, 0.12);
+      }
+
+      .poster-center img {
+        width: 100%;
+        border-radius: 26px;
+        filter: drop-shadow(0 16px 28px rgba(0, 0, 0, 0.42));
+        animation: float 4.2s ease-in-out infinite;
+      }
+
+      .poster-tile {
+        position: relative;
+        z-index: 1;
+        width: min(54%, 150px);
+        padding: 0.9rem;
+        border-radius: 34px;
+        background: rgba(244, 234, 217, 0.06);
+        border: 1px solid rgba(244, 234, 217, 0.14);
+        backdrop-filter: blur(12px);
+      }
+
+      .poster-quote {
+        position: absolute;
+        inset: auto 1.8rem 6rem 1.8rem;
+        max-width: 11ch;
+        font-family: "Instrument Serif", serif;
+        font-size: clamp(2.4rem, 4vw, 3.5rem);
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+      }
+
+      .poster-side {
+        position: absolute;
+        inset: 7.5rem 1.5rem auto auto;
+        width: min(190px, 38%);
+        padding: 1rem;
+        border-radius: 22px;
+        background: rgba(244, 234, 217, 0.05);
+        border: 1px solid rgba(244, 234, 217, 0.1);
+        backdrop-filter: blur(12px);
+      }
+
+      .poster-side p {
+        margin: 0;
+        font-size: 0.88rem;
+        line-height: 1.7;
+        color: rgba(244, 234, 217, 0.76);
+      }
+
+      .poster-side strong {
+        display: block;
+        margin-bottom: 0.55rem;
+        color: var(--text);
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        font-size: 0.68rem;
+      }
+
+      .section {
+        position: relative;
+        padding: clamp(4.6rem, 10vw, 8rem) 0;
+      }
+
+      .section + .section {
+        border-top: 1px solid rgba(244, 234, 217, 0.08);
+      }
+
+      .section-title {
+        margin: 0;
+        max-width: 12ch;
+        font-family: "Instrument Serif", serif;
+        font-size: clamp(2.6rem, 5vw, 4.5rem);
+        line-height: 0.95;
+        letter-spacing: -0.03em;
+      }
+
+      .section-lead {
+        max-width: 38rem;
+        margin: 1.1rem 0 0;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .approach-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: clamp(1.6rem, 4vw, 4rem);
+        align-items: start;
+      }
+
+      .principles {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .principle {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 1rem 1.1rem;
+        padding: 1.35rem 0;
+        border-top: 1px solid rgba(244, 234, 217, 0.12);
+      }
+
+      .principle:last-child {
+        border-bottom: 1px solid rgba(244, 234, 217, 0.12);
+      }
+
+      .principle-index {
+        color: var(--acid);
+        font-size: 0.84rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        padding-top: 0.2rem;
+      }
+
+      .principle h3 {
+        margin: 0;
+        font-size: 1.05rem;
+        line-height: 1.5;
+      }
+
+      .principle p {
+        margin: 0.35rem 0 0;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .feature {
+        background:
+          radial-gradient(circle at 16% 18%, rgba(255, 122, 47, 0.08), transparent 22%),
+          linear-gradient(180deg, rgba(244, 234, 217, 0.02), rgba(244, 234, 217, 0));
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
+        gap: clamp(1.8rem, 5vw, 4.8rem);
+        align-items: start;
+      }
+
+      .feature-stage {
+        position: sticky;
+        top: 7rem;
+      }
+
+      .feature-card {
+        position: relative;
+        overflow: hidden;
+        padding: 2rem;
+        border-radius: 34px;
+        border: 1px solid var(--line);
+        background:
+          radial-gradient(circle at 50% 15%, rgba(214, 255, 78, 0.16), transparent 28%),
+          linear-gradient(180deg, rgba(33, 27, 22, 0.96), rgba(13, 12, 11, 1));
+        box-shadow: var(--shadow);
+      }
+
+      .feature-card::after {
+        content: "";
+        position: absolute;
+        inset: 1rem;
+        border: 1px solid rgba(244, 234, 217, 0.1);
+        border-radius: 24px;
+        pointer-events: none;
+      }
+
+      .feature-card .section-label {
+        margin-bottom: 1.4rem;
+      }
+
+      .feature-icon-shell {
+        width: clamp(140px, 18vw, 190px);
+        aspect-ratio: 1;
+        margin: 0 auto;
+        padding: 1rem;
+        border-radius: 34px;
+        background: rgba(244, 234, 217, 0.06);
+        border: 1px solid rgba(244, 234, 217, 0.12);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.28);
+      }
+
+      .feature-icon-shell img {
+        border-radius: 24px;
+      }
+
+      .feature-title {
+        margin: 1.6rem 0 0;
+        text-align: center;
+        font-family: "Instrument Serif", serif;
+        font-size: clamp(2.3rem, 4vw, 3.6rem);
+        line-height: 0.95;
+        letter-spacing: -0.04em;
+      }
+
+      .feature-summary {
+        max-width: 22rem;
+        margin: 0.9rem auto 0;
+        text-align: center;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .feature-cta {
+        display: flex;
+        justify-content: center;
+        margin-top: 1.7rem;
+      }
+
+      .feature-copy {
+        display: grid;
+        gap: 1.2rem;
+      }
+
+      .feature-copy .section-title {
+        max-width: 11ch;
+      }
+
+      .feature-row {
+        padding: 1.45rem 0;
+        border-top: 1px solid rgba(244, 234, 217, 0.12);
+      }
+
+      .feature-row:last-of-type {
+        border-bottom: 1px solid rgba(244, 234, 217, 0.12);
+      }
+
+      .feature-row h3 {
+        margin: 0;
+        font-size: 1.24rem;
+      }
+
+      .feature-row p {
+        margin: 0.6rem 0 0;
+        max-width: 40rem;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .feature-links {
         display: flex;
         flex-wrap: wrap;
+        gap: 0.9rem;
+        margin-top: 0.8rem;
+      }
+
+      .signal-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 420px);
+        gap: clamp(1.8rem, 4vw, 4rem);
+        align-items: end;
+      }
+
+      .contact-panel {
+        padding: 1.6rem;
+        border-radius: 28px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        backdrop-filter: blur(12px);
+      }
+
+      .contact-panel p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .mail-link {
+        display: inline-block;
+        margin-bottom: 0.9rem;
+        font-family: "Instrument Serif", serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 0.95;
+        letter-spacing: -0.03em;
+      }
+
+      .contact-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1.3rem;
+        color: var(--text);
+      }
+
+      .contact-links a {
+        color: rgba(244, 234, 217, 0.9);
+        text-decoration: underline;
+        text-decoration-color: rgba(214, 255, 78, 0.34);
+        text-underline-offset: 0.18em;
+      }
+
+      .site-footer {
+        padding: 1.4rem 0 2rem;
+        color: rgba(244, 234, 217, 0.58);
+      }
+
+      .footer-shell {
+        width: min(1180px, calc(100% - 2rem));
+        margin: 0 auto;
+        padding-top: 1.2rem;
+        border-top: 1px solid rgba(244, 234, 217, 0.1);
+        display: flex;
+        align-items: center;
         justify-content: space-between;
         gap: 1rem;
-        align-items: center;
+        font-size: 0.92rem;
       }
 
-      .footer-nav { display: flex; gap: 1.5rem; }
-      .footer-nav a:hover { color: var(--ink); }
+      .footer-shell nav {
+        display: flex;
+        gap: 1rem;
+      }
 
-      .fade-up {
+      .js [data-reveal] {
         opacity: 0;
-        transform: translateY(18px);
-        animation: fadeUp 0.9s ease forwards;
+        transform: translateY(26px);
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s ease;
       }
 
-      .delay-1 { animation-delay: 0.1s; }
-      .delay-2 { animation-delay: 0.25s; }
-      .delay-3 { animation-delay: 0.4s; }
-      .delay-4 { animation-delay: 0.55s; }
-
-      @keyframes fadeUp {
-        to { opacity: 1; transform: translateY(0); }
+      .js [data-reveal].is-visible {
+        opacity: 1;
+        transform: translateY(0);
       }
 
-      @media (max-width: 760px) {
-        .nav { display: none; }
-        .hero { padding-top: 5rem; }
-        .manifesto-strip { transform: rotate(0deg); }
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      @media (max-width: 1080px) {
+        .hero {
+          min-height: auto;
+          padding-bottom: 4rem;
+        }
+
+        .hero-grid,
+        .approach-grid,
+        .feature-grid,
+        .signal-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-title,
+        .section-title {
+          max-width: none;
+        }
+
+        .hero-visual {
+          max-width: 680px;
+        }
+
+        .feature-stage {
+          position: static;
+        }
+      }
+
+      @media (max-width: 860px) {
+        .nav {
+          display: none;
+        }
+
+        .header-shell {
+          padding-inline: 1rem;
+        }
+
+        .hero {
+          padding-top: 6.6rem;
+        }
+
+        .hero-poster {
+          min-height: 540px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .container,
+        .header-shell,
+        .footer-shell {
+          width: min(100%, calc(100% - 1.25rem));
+        }
+
+        .brand-name {
+          font-size: 1.45rem;
+        }
+
+        .header-cta {
+          padding-inline: 1rem;
+          min-height: 42px;
+          font-size: 0.92rem;
+        }
+
+        .hero-actions,
+        .feature-links,
+        .contact-links,
+        .footer-shell,
+        .poster-meta,
+        .poster-footer {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .hero-actions .button,
+        .feature-links .button {
+          width: 100%;
+        }
+
+        .hero-poster {
+          min-height: 500px;
+        }
+
+        .poster-side {
+          width: auto;
+          inset: auto 1.3rem 6.5rem 1.3rem;
+        }
+
+        .poster-quote {
+          inset: auto 1.3rem 13rem 1.3rem;
+          max-width: 8ch;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero-title {
+          font-size: 3.35rem;
+        }
+
+        .section-title {
+          font-size: 2.7rem;
+        }
+
+        .hero-poster {
+          min-height: 460px;
+        }
+
+        .poster-center {
+          width: 58%;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
-        .fade-up { animation: none; opacity: 1; transform: none; }
-        .strip-track { animation: none; }
-        html { scroll-behavior: auto; }
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+
+        [data-reveal] {
+          opacity: 1;
+          transform: none;
+        }
       }
     </style>
   </head>
   <body>
     <header class="site-header">
-      <div class="container">
+      <div class="header-shell">
         <a class="brand" href="./" aria-label="Lagartija Labs home">
-          <span class="brand-mark">LL</span>
-          <span>Lagartija Labs</span>
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span class="brand-name">Lagartija Labs</span>
         </a>
-        <nav class="nav">
-          <a href="#apps">Apps</a>
-          <a href="#highlights">Highlights</a>
+        <nav class="nav" aria-label="Primary">
+          <a href="#approach">Approach</a>
+          <a href="#work">Work</a>
           <a href="#contact">Contact</a>
         </nav>
+        <a class="header-cta" href="tindrop/go/">Get Tindrop</a>
       </div>
     </header>
 
     <main>
       <section class="hero">
-        <div class="hero-ghost" aria-hidden="true">LABS</div>
         <div class="container hero-grid">
-          <div class="fade-up delay-1">
-            <h1>Lagartija Labs. Focused mobile experiences with personality.</h1>
-            <p>We craft small, fast, privacy-respecting apps with sharp UX and a playful visual edge.</p>
-            <div class="cta-row">
-              <a class="btn btn-primary" href="#apps">View work</a>
-              <a class="btn btn-outline" href="#contact">Contact</a>
+          <div class="hero-copy" data-reveal>
+            <p class="eyebrow">Lagartija Labs • Mobile software with bite</p>
+            <h1 class="hero-title">Small apps. Sharp taste. <em>Zero bloat.</em></h1>
+            <p class="hero-summary">
+              Lagartija Labs builds focused mobile software that feels fast, tactile,
+              and memorable. The goal is not to ship more screens. It is to make a
+              useful tool feel impossible to forget.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#work">See the current release</a>
+              <a class="button button-secondary" href="#contact">Start a conversation</a>
             </div>
+            <p class="hero-footnote">
+              Currently shipping <a href="tindrop/">Tindrop</a>, a faster and more
+              satisfying way to clean your camera roll without turning the process
+              into admin work.
+            </p>
           </div>
-          <div class="manifesto fade-up delay-2">
-            <h3>Studio manifesto</h3>
-            <ul>
-              <li><strong>01</strong> Ship lean and iterate fast.</li>
-              <li><strong>02</strong> Privacy and speed are non-negotiable.</li>
-              <li><strong>03</strong> Visual character matters as much as function.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="manifesto-strip" aria-hidden="true">
-          <div class="strip-track">
-            <span>Privacy-first</span>
-            <span>Mobile craft</span>
-            <span>Fast UX</span>
-            <span>Bold design</span>
-            <span>Lagartija Labs</span>
-            <span>Privacy-first</span>
-            <span>Mobile craft</span>
-            <span>Fast UX</span>
-            <span>Bold design</span>
-            <span>Lagartija Labs</span>
+
+          <div class="hero-visual" data-reveal>
+            <div class="hero-poster" id="heroPoster">
+              <div class="poster-meta">
+                <span>Focused mobile craft</span>
+                <span>Madrid • Worldwide</span>
+              </div>
+              <div class="orbit orbit-one" aria-hidden="true"></div>
+              <div class="orbit orbit-two" aria-hidden="true"></div>
+              <div class="poster-center">
+                <div class="poster-tile">
+                  <img src="tindrop/tindrop.png" alt="Tindrop app icon" width="710" height="709" />
+                </div>
+              </div>
+              <div class="poster-side">
+                <strong>Current mood</strong>
+                <p>
+                  Privacy-aware tooling, tactile motion, and visual decisions that
+                  leave an afterimage instead of blending into the store.
+                </p>
+              </div>
+              <div class="poster-quote">Make the utility feel alive.</div>
+              <div class="poster-footer">
+                <span>Featured release • Tindrop</span>
+                <span>More strange little tools soon</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="apps">
-        <div class="container">
-          <h2 class="section-title fade-up delay-1">Apps</h2>
-          <div class="apps-grid">
-            <article class="app-card fade-up delay-2">
-              <div class="app-header">
-                <img src="tindrop/tindrop.png" alt="Tindrop app icon" class="app-icon" loading="lazy" />
-                <div>
-                  <div class="app-title">Tindrop</div>
-                  <div class="app-tagline">Swipe to clean your gallery.</div>
-                </div>
+      <section class="section" id="approach">
+        <div class="container approach-grid">
+          <div data-reveal>
+            <p class="section-label">Approach</p>
+            <h2 class="section-title">Useful enough to keep. Distinct enough to recall.</h2>
+            <p class="section-lead">
+              Lagartija Labs leans into the kind of software people actually enjoy
+              revisiting: lighter releases, stronger interaction, and a visual point
+              of view that does not need ten paragraphs to justify itself.
+            </p>
+          </div>
+
+          <div class="principles">
+            <article class="principle" data-reveal>
+              <span class="principle-index">01</span>
+              <div>
+                <h3>Cut the feature cemetery.</h3>
+                <p>
+                  Ship the sharp version first. Keep what reduces friction. Remove
+                  what only makes the roadmap look impressive.
+                </p>
               </div>
-              <p class="app-body">Tindrop turns photo cleanup into a fast, satisfying flow. Keep the best, drop the rest, and reclaim space without the clutter.</p>
-              <ul class="pill-list">
-                <li class="pill">Swipe triage with review before delete.</li>
-                <li class="pill">On-device processing and privacy-first design.</li>
-                <li class="pill">Smart grouping to keep the best shots.</li>
-                <li class="pill">Trash-safe behavior aligned with your OS.</li>
-              </ul>
-              <div class="app-footer">
-                <a class="btn btn-primary" href="tindrop/go/">Get Tindrop</a>
-                <span class="availability">Available for iOS and Android.</span>
+            </article>
+
+            <article class="principle" data-reveal>
+              <span class="principle-index">02</span>
+              <div>
+                <h3>Make privacy part of the experience.</h3>
+                <p>
+                  Data restraint should be felt in the product, not buried in the
+                  legal footer. Faster flows and less collection usually belong
+                  together.
+                </p>
+              </div>
+            </article>
+
+            <article class="principle" data-reveal>
+              <span class="principle-index">03</span>
+              <div>
+                <h3>Design for memory, not just clarity.</h3>
+                <p>
+                  Clean UX matters. So does mood, texture, pacing, and the small
+                  decisions that stop a tool from feeling anonymous.
+                </p>
               </div>
             </article>
           </div>
         </div>
       </section>
 
-      <section id="highlights">
-        <div class="container">
-          <h2 class="section-title fade-up delay-1">Highlights</h2>
-          <div class="highlights-grid">
-            <div class="highlight fade-up delay-2">
-              <h4>Built for speed and clarity</h4>
-              <p>Every screen is tuned for quick decisions and minimal friction.</p>
+      <section class="section feature" id="work">
+        <div class="container feature-grid">
+          <div class="feature-stage" data-reveal>
+            <article class="feature-card" aria-labelledby="tindrop-title">
+              <p class="section-label">Current release</p>
+              <div class="feature-icon-shell">
+                <img src="tindrop/tindrop.png" alt="Tindrop app icon" width="710" height="709" />
+              </div>
+              <h2 class="feature-title" id="tindrop-title">Tindrop</h2>
+              <p class="feature-summary">
+                Gallery cleanup built around fast swipes, clear review, and less
+                dread between “too many photos” and “finally done.”
+              </p>
+              <div class="feature-cta">
+                <a class="button button-primary" href="tindrop/go/">Download Tindrop</a>
+              </div>
+            </article>
+          </div>
+
+          <div class="feature-copy">
+            <div data-reveal>
+              <p class="section-label">Why it works</p>
+              <h2 class="section-title">A chore turned into flow.</h2>
+              <p class="section-lead">
+                Tindrop earns its place on the homepage because it proves the studio
+                thesis in a real product: less hesitation, better rhythm, and no need
+                to overcomplicate a simple outcome.
+              </p>
             </div>
-            <div class="highlight fade-up delay-3">
-              <h4>Privacy by default</h4>
-              <p>We avoid unnecessary data collection and keep processing on-device.</p>
-            </div>
-            <div class="highlight fade-up delay-4">
-              <h4>Delightful micro-interactions</h4>
-              <p>Small animations and tactile feedback make the flow feel alive.</p>
-            </div>
-            <div class="highlight fade-up delay-4">
-              <h4>Lean, focused releases</h4>
-              <p>We ship improvements quickly without inflating the product.</p>
+
+            <article class="feature-row" data-reveal>
+              <h3>Swipe through decisions at actual speed.</h3>
+              <p>
+                The product is tuned around quick keep-or-drop calls, so cleaning a
+                library feels closer to a fast sorting ritual than a settings chore.
+              </p>
+            </article>
+
+            <article class="feature-row" data-reveal>
+              <h3>Review before anything leaves your device.</h3>
+              <p>
+                Confidence matters. Tindrop keeps the flow light without making users
+                feel one accidental gesture away from a mistake.
+              </p>
+            </article>
+
+            <article class="feature-row" data-reveal>
+              <h3>On-device thinking, cleaner mental load.</h3>
+              <p>
+                The app is designed to respect the private nature of personal photo
+                libraries while still feeling playful, direct, and worth opening
+                again.
+              </p>
+            </article>
+
+            <div class="feature-links" data-reveal>
+              <a class="button button-secondary" href="tindrop/">Visit product page</a>
+              <a class="button button-secondary" href="privacy.html">Read privacy policy</a>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="contact">
-        <div class="container">
-          <h2 class="section-title fade-up delay-1">Contact</h2>
-          <div class="contact-card fade-up delay-2">
-            <p>Have a project or collaboration in mind?</p>
-            <a href="mailto:lagartijalabs@gmail.com">lagartijalabs@gmail.com</a>
+      <section class="section" id="contact">
+        <div class="container signal-grid">
+          <div data-reveal>
+            <p class="section-label">Contact</p>
+            <h2 class="section-title">If the app idea is sharp, the first screen should be too.</h2>
+            <p class="section-lead">
+              Lagartija Labs is open to selective collaborations, product discussions,
+              and compact experiments that deserve more taste than a generic template.
+            </p>
+          </div>
+
+          <div class="contact-panel" data-reveal>
+            <a class="mail-link" href="mailto:lagartijalabs@gmail.com">lagartijalabs@gmail.com</a>
+            <p>
+              Reach out for product questions, collaborations, or projects that need
+              a tighter point of view.
+            </p>
+            <div class="contact-links">
+              <a href="privacy.html">Privacy policy</a>
+              <a href="app-ads.txt">app-ads.txt</a>
+            </div>
           </div>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <div class="container footer-inner">
-        <p>© <span id="year"></span> Lagartija Labs.</p>
-        <nav class="footer-nav">
-          <a href="privacy.html">Privacy Policy</a>
-          <a href="app-ads.txt">app-ads.txt</a>
+      <div class="footer-shell">
+        <p>© <span id="year"></span> Lagartija Labs</p>
+        <nav aria-label="Footer">
+          <a href="./">Home</a>
+          <a href="tindrop/">Tindrop</a>
         </nav>
       </div>
     </footer>
 
     <script>
-      const yearElement = document.getElementById("year");
-      if (yearElement) {
-        yearElement.textContent = new Date().getFullYear();
+      const year = document.getElementById("year");
+      if (year) {
+        year.textContent = new Date().getFullYear();
       }
 
-      const heroGhost = document.querySelector(".hero-ghost");
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (heroGhost && !reducedMotion) {
-        let ticking = false;
-        window.addEventListener("scroll", () => {
-          if (!ticking) {
-            window.requestAnimationFrame(() => {
-              const offset = window.scrollY * 0.18;
-              heroGhost.style.transform = `translate(-50%, ${offset}px)`;
-              ticking = false;
+      const revealItems = document.querySelectorAll("[data-reveal]");
+
+      if (!reducedMotion && "IntersectionObserver" in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
             });
-            ticking = true;
-          }
+          },
+          { threshold: 0.18 }
+        );
+
+        revealItems.forEach((item) => observer.observe(item));
+      } else {
+        revealItems.forEach((item) => item.classList.add("is-visible"));
+      }
+
+      const heroPoster = document.getElementById("heroPoster");
+      if (heroPoster && !reducedMotion) {
+        const resetPoster = () => {
+          heroPoster.style.setProperty("--tilt-x", "0deg");
+          heroPoster.style.setProperty("--tilt-y", "0deg");
+          heroPoster.style.setProperty("--pointer-x", "72%");
+          heroPoster.style.setProperty("--pointer-y", "24%");
+        };
+
+        heroPoster.addEventListener("pointermove", (event) => {
+          const bounds = heroPoster.getBoundingClientRect();
+          const x = (event.clientX - bounds.left) / bounds.width;
+          const y = (event.clientY - bounds.top) / bounds.height;
+          const rotateX = (0.5 - y) * 6;
+          const rotateY = (x - 0.5) * 8;
+
+          heroPoster.style.setProperty("--tilt-x", `${rotateX}deg`);
+          heroPoster.style.setProperty("--tilt-y", `${rotateY}deg`);
+          heroPoster.style.setProperty("--pointer-x", `${x * 100}%`);
+          heroPoster.style.setProperty("--pointer-y", `${y * 100}%`);
         });
+
+        heroPoster.addEventListener("pointerleave", resetPoster);
       }
     </script>
   </body>
