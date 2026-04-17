@@ -3,19 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Lagartija Labs — Small Mobile Software With Bite</title>
+    <title>Lagartija Labs — Small Mobile Software With Taste</title>
     <meta
       name="description"
-      content="Lagartija Labs builds lean mobile apps with sharp interaction, strong taste, and privacy-conscious foundations."
+      content="Lagartija Labs builds small mobile apps with sharp interaction, calm performance, and a distinctive visual point of view."
     />
-    <meta name="theme-color" content="#120f0d" />
+    <meta name="theme-color" content="#0e0d0a" />
     <link rel="canonical" href="https://oxycoffin.github.io/" />
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sora:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Sora:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <script>
@@ -24,17 +24,15 @@
 
     <style>
       :root {
-        --bg: #120f0d;
-        --bg-deep: #0a0908;
-        --panel: rgba(28, 22, 18, 0.74);
-        --panel-strong: rgba(34, 27, 21, 0.94);
-        --text: #f4ead9;
-        --muted: rgba(244, 234, 217, 0.76);
-        --line: rgba(244, 234, 217, 0.14);
-        --line-strong: rgba(244, 234, 217, 0.24);
-        --acid: #d6ff4e;
-        --shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+        --bg: #0e0d0a;
+        --bg-soft: #181511;
+        --text: #f3ead8;
+        --muted: rgba(243, 234, 216, 0.72);
+        --line: rgba(243, 234, 216, 0.12);
+        --accent: #d8ff3f;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
         --radius: 30px;
+        --header-height: 5.2rem;
       }
 
       * {
@@ -48,13 +46,11 @@
       body {
         margin: 0;
         min-height: 100vh;
-        font-family: "Sora", system-ui, sans-serif;
         color: var(--text);
         background:
-          radial-gradient(circle at 12% 12%, rgba(255, 122, 47, 0.18), transparent 24%),
-          radial-gradient(circle at 88% 10%, rgba(74, 141, 255, 0.18), transparent 20%),
-          radial-gradient(circle at 70% 84%, rgba(214, 255, 78, 0.1), transparent 20%),
-          linear-gradient(180deg, #1a1410 0%, var(--bg) 32%, var(--bg-deep) 100%);
+          radial-gradient(circle at 12% 0%, rgba(188, 98, 39, 0.18), transparent 28%),
+          linear-gradient(180deg, #15110d 0%, var(--bg) 28%, #0a0908 100%);
+        font-family: "Sora", system-ui, sans-serif;
         -webkit-font-smoothing: antialiased;
         overflow-x: hidden;
       }
@@ -65,12 +61,11 @@
         inset: 0;
         pointer-events: none;
         background:
-          linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-        background-size: 40px 40px;
-        -webkit-mask-image: radial-gradient(circle at center, black 58%, transparent 100%);
-        mask-image: radial-gradient(circle at center, black 58%, transparent 100%);
-        opacity: 0.34;
+          linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+        background-size: 44px 44px;
+        opacity: 0.32;
+        mask-image: radial-gradient(circle at center, black 56%, transparent 100%);
         z-index: -1;
       }
 
@@ -84,82 +79,69 @@
         max-width: 100%;
       }
 
-      button,
-      input,
-      textarea,
-      select {
-        font: inherit;
-      }
-
       :focus-visible {
-        outline: 2px solid var(--acid);
+        outline: 2px solid var(--accent);
         outline-offset: 4px;
       }
 
       .container {
-        width: min(1180px, calc(100% - 2rem));
+        width: min(1160px, calc(100% - 2rem));
         margin: 0 auto;
       }
 
       .site-header {
         position: fixed;
         inset: 0 0 auto 0;
-        z-index: 40;
+        z-index: 30;
         padding: 1rem 0;
       }
 
+      .site-header::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(8, 8, 8, 0.42), transparent);
+        pointer-events: none;
+      }
+
       .header-shell {
-        width: min(1180px, calc(100% - 2rem));
+        position: relative;
+        z-index: 1;
+        width: min(1160px, calc(100% - 2rem));
         margin: 0 auto;
-        padding: 0.9rem 1.1rem;
+        min-height: var(--header-height);
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 1rem;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        background: rgba(15, 13, 12, 0.62);
-        backdrop-filter: blur(14px);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
       }
 
       .brand {
         display: inline-flex;
         align-items: center;
-        gap: 0.8rem;
-        min-width: 0;
+        gap: 0.9rem;
+        font-family: "Instrument Serif", serif;
+        font-size: clamp(1.55rem, 2vw, 2.1rem);
+        line-height: 1;
       }
 
       .brand-mark {
-        width: 0.9rem;
-        height: 0.9rem;
-        flex: 0 0 auto;
+        width: 0.95rem;
+        height: 0.95rem;
         border-radius: 999px;
-        background: radial-gradient(circle at 30% 30%, #f8f0df 0%, var(--acid) 42%, #5f7a12 100%);
-        box-shadow: 0 0 0 5px rgba(214, 255, 78, 0.08);
-      }
-
-      .brand-name {
-        font-family: "Instrument Serif", serif;
-        font-size: 1.7rem;
-        line-height: 1;
-        letter-spacing: 0.01em;
+        background: radial-gradient(circle at 35% 35%, #f4f2cf 0%, var(--accent) 44%, #789114 100%);
+        box-shadow: 0 0 0 7px rgba(216, 255, 63, 0.09);
+        flex: 0 0 auto;
       }
 
       .nav {
         display: flex;
-        align-items: center;
-        gap: 1.1rem;
-        color: var(--muted);
+        gap: 1.2rem;
+        color: rgba(243, 234, 216, 0.82);
         font-size: 0.95rem;
       }
 
-      .nav a {
-        transition: color 0.2s ease;
-      }
-
-      .nav a:hover,
-      .nav a:focus-visible {
+      .nav a:hover {
         color: var(--text);
       }
 
@@ -169,15 +151,26 @@
         align-items: center;
         justify-content: center;
         min-height: 46px;
-        padding: 0.75rem 1.25rem;
+        padding: 0.8rem 1.25rem;
         border-radius: 999px;
         border: 1px solid transparent;
         font-weight: 600;
         transition:
           transform 0.2s ease,
-          border-color 0.2s ease,
           background-color 0.2s ease,
-          color 0.2s ease;
+          border-color 0.2s ease;
+      }
+
+      .header-cta,
+      .button-primary {
+        background: var(--accent);
+        color: #14120c;
+      }
+
+      .button-secondary {
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        border-color: rgba(243, 234, 216, 0.16);
       }
 
       .header-cta:hover,
@@ -185,89 +178,95 @@
         transform: translateY(-1px);
       }
 
-      .header-cta,
-      .button-primary {
-        background: var(--acid);
-        color: #14110d;
-        box-shadow: 0 12px 30px rgba(214, 255, 78, 0.18);
-      }
-
-      .button-secondary {
-        color: var(--text);
-        background: rgba(255, 255, 255, 0.04);
-        border-color: var(--line);
-      }
-
-      main {
-        overflow-x: clip;
-      }
-
       .hero {
         position: relative;
         min-height: 100svh;
-        display: flex;
-        align-items: center;
-        padding: 7.5rem 0 3rem;
+        overflow: clip;
       }
 
-      .hero::before {
-        content: "";
+      .hero-media {
+        position: absolute;
+        inset: 0;
+      }
+
+      .hero-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 62% center;
+        transform: scale(var(--hero-scale, 1.04)) translateY(var(--hero-shift, 0px));
+        transition: transform 0.2s ease-out;
+        filter: saturate(0.9) contrast(1.02) brightness(0.72);
+      }
+
+      .hero-overlay {
         position: absolute;
         inset: 0;
         background:
-          radial-gradient(circle at 18% 24%, rgba(255, 122, 47, 0.12), transparent 24%),
-          radial-gradient(circle at 78% 24%, rgba(74, 141, 255, 0.12), transparent 24%);
-        pointer-events: none;
+          linear-gradient(90deg, rgba(12, 10, 8, 0.86) 0%, rgba(12, 10, 8, 0.6) 36%, rgba(12, 10, 8, 0.25) 62%, rgba(12, 10, 8, 0.5) 100%),
+          linear-gradient(180deg, rgba(8, 8, 8, 0.1) 0%, rgba(8, 8, 8, 0.18) 56%, rgba(8, 8, 8, 0.78) 100%);
       }
 
-      .hero-grid {
+      .hero-inner {
         position: relative;
         z-index: 1;
-        display: grid;
-        grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
-        gap: clamp(2rem, 5vw, 4.5rem);
-        align-items: center;
+        min-height: 100svh;
+        display: flex;
+        align-items: flex-end;
+        padding: calc(var(--header-height) + 2.8rem) 0 3rem;
       }
 
-      .eyebrow,
+      .hero-copy {
+        max-width: 29rem;
+      }
+
+      .hero-kicker,
       .section-label {
         display: inline-flex;
         align-items: center;
-        gap: 0.55rem;
+        gap: 0.6rem;
         margin: 0 0 1rem;
-        color: rgba(244, 234, 217, 0.92);
-        text-transform: uppercase;
-        letter-spacing: 0.18em;
         font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: rgba(243, 234, 216, 0.78);
       }
 
-      .eyebrow::before,
+      .hero-kicker::before,
       .section-label::before {
         content: "";
         width: 2.8rem;
         height: 1px;
-        background: rgba(244, 234, 217, 0.38);
+        background: rgba(243, 234, 216, 0.3);
       }
 
-      .hero-title {
+      .hero h1 {
         margin: 0;
+        font-family: "Instrument Serif", serif;
+        font-size: clamp(4.4rem, 10vw, 8rem);
+        line-height: 0.9;
+        letter-spacing: -0.05em;
+      }
+
+      .hero-tagline {
+        margin: 1rem 0 0;
         max-width: 10ch;
         font-family: "Instrument Serif", serif;
-        font-size: clamp(4rem, 10vw, 7.4rem);
-        line-height: 0.88;
+        font-size: clamp(2.15rem, 4vw, 3.7rem);
+        line-height: 0.92;
         letter-spacing: -0.04em;
       }
 
-      .hero-title em {
-        color: var(--acid);
+      .hero-tagline em {
+        color: var(--accent);
         font-style: italic;
       }
 
       .hero-summary {
-        max-width: 36rem;
-        margin: 1.35rem 0 0;
+        margin: 1.3rem 0 0;
+        max-width: 28rem;
         color: var(--muted);
-        font-size: clamp(1rem, 1.2vw, 1.14rem);
+        font-size: 1.03rem;
         line-height: 1.75;
       }
 
@@ -278,498 +277,211 @@
         margin-top: 2rem;
       }
 
-      .hero-footnote {
-        margin: 1.4rem 0 0;
-        color: rgba(244, 234, 217, 0.66);
-        max-width: 34rem;
-        font-size: 0.96rem;
+      .hero-note {
+        margin: 1rem 0 0;
+        color: rgba(243, 234, 216, 0.66);
+        font-size: 0.95rem;
       }
 
-      .hero-footnote a {
-        color: var(--text);
+      .hero-note a {
         text-decoration: underline;
-        text-decoration-color: rgba(214, 255, 78, 0.5);
+        text-decoration-color: rgba(216, 255, 63, 0.42);
         text-underline-offset: 0.18em;
       }
 
-      .hero-visual {
-        position: relative;
+      .section {
+        padding: clamp(4.2rem, 8vw, 7rem) 0;
       }
 
-      .hero-poster {
-        --pointer-x: 72%;
-        --pointer-y: 24%;
-        position: relative;
-        min-height: 620px;
-        border-radius: clamp(26px, 4vw, 36px);
-        overflow: hidden;
-        border: 1px solid var(--line);
-        background: linear-gradient(165deg, rgba(30, 23, 19, 0.96), rgba(8, 8, 8, 0.98));
-        box-shadow: var(--shadow);
-        transform: perspective(1200px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
-        transition: transform 0.18s ease-out;
+      .section + .section {
+        border-top: 1px solid rgba(243, 234, 216, 0.08);
       }
 
-      .hero-poster::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background:
-          linear-gradient(180deg, rgba(10, 9, 8, 0.12), rgba(10, 9, 8, 0.2) 28%, rgba(10, 9, 8, 0.76) 100%),
-          radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(214, 255, 78, 0.16), transparent 18%),
-          radial-gradient(circle at 20% 14%, rgba(255, 122, 47, 0.18), transparent 22%),
-          radial-gradient(circle at 78% 12%, rgba(74, 141, 255, 0.16), transparent 20%);
-        pointer-events: none;
-        z-index: 2;
+      .principles {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 2rem;
       }
 
-      .hero-poster::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background:
-          linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-        background-size: 54px 54px;
-        opacity: 0.08;
-        pointer-events: none;
-        z-index: 3;
+      .principle {
+        padding-top: 1.4rem;
+        border-top: 1px solid rgba(243, 234, 216, 0.16);
       }
 
-      .poster-meta,
-      .poster-footer {
-        position: absolute;
-        left: 1.4rem;
-        right: 1.4rem;
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
+      .principle strong {
+        display: block;
+        margin-bottom: 0.55rem;
+        font-size: 0.78rem;
         text-transform: uppercase;
         letter-spacing: 0.18em;
-        font-size: 0.72rem;
-        color: rgba(244, 234, 217, 0.72);
-        z-index: 4;
+        color: rgba(243, 234, 216, 0.6);
       }
 
-      .poster-meta {
-        top: 1.4rem;
+      .principle h2 {
+        margin: 0;
+        font-family: "Instrument Serif", serif;
+        font-size: clamp(2rem, 3vw, 2.8rem);
+        line-height: 0.95;
+        letter-spacing: -0.04em;
       }
 
-      .poster-footer {
-        bottom: 1.4rem;
+      .principle p {
+        margin: 0.8rem 0 0;
+        color: var(--muted);
+        line-height: 1.75;
       }
 
-      .poster-footer span:last-child {
-        color: var(--acid);
+      .work {
+        display: grid;
+        grid-template-columns: minmax(320px, 0.95fr) minmax(0, 1.05fr);
+        gap: clamp(2rem, 5vw, 5rem);
+        align-items: start;
       }
 
-      .orbit {
-        position: absolute;
-        border: 1px solid rgba(244, 234, 217, 0.18);
-        border-radius: 50%;
-        z-index: 2;
+      .work-media {
+        position: relative;
       }
 
-      .orbit-one {
-        inset: 11% 10% auto auto;
-        width: 82%;
-        aspect-ratio: 1;
-        animation: spin 24s linear infinite;
-      }
-
-      .orbit-two {
-        inset: 4% auto auto 2%;
-        width: 98%;
-        aspect-ratio: 1;
-        animation: spin 32s linear infinite reverse;
-      }
-
-      .poster-art-wrap {
-        position: absolute;
-        inset: 0;
-        z-index: 1;
-      }
-
-      .poster-art {
+      .work-media img {
         width: 100%;
-        height: 100%;
+        aspect-ratio: 4 / 5;
         object-fit: cover;
         object-position: center;
-        transform: scale(1.03);
-        filter: saturate(0.95) contrast(1.02) brightness(0.88);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
       }
 
-      .poster-frame {
+      .work-chip {
         position: absolute;
-        inset: 1rem;
-        z-index: 4;
-        border-radius: calc(var(--radius) - 10px);
-        border: 1px solid rgba(244, 234, 217, 0.12);
-        pointer-events: none;
-      }
-
-      .poster-badge {
-        position: absolute;
-        top: 4.6rem;
-        left: 1.8rem;
-        z-index: 4;
+        left: 1rem;
+        bottom: 1rem;
         display: inline-flex;
         align-items: center;
-        gap: 0.8rem;
-        padding: 0.75rem 0.95rem;
-        border-radius: 999px;
-        background: rgba(10, 10, 10, 0.38);
-        border: 1px solid rgba(244, 234, 217, 0.1);
-        backdrop-filter: blur(16px);
+        gap: 0.85rem;
+        padding: 0.8rem 0.95rem;
+        border-radius: 24px;
+        background: rgba(10, 10, 10, 0.62);
+        border: 1px solid rgba(243, 234, 216, 0.14);
+        backdrop-filter: blur(12px);
       }
 
-      .poster-badge img,
-      .feature-app-chip img {
-        width: 3.15rem;
-        height: 3.15rem;
-        flex: 0 0 auto;
+      .work-chip img {
+        width: 3rem;
+        height: 3rem;
+        aspect-ratio: 1;
         object-fit: cover;
         object-position: center;
-        border-radius: 16px;
-        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+        border-radius: 15px;
+        box-shadow: none;
       }
 
-      .poster-badge span,
-      .feature-app-chip span {
+      .work-chip span {
         display: grid;
-        gap: 0.18rem;
+        gap: 0.15rem;
       }
 
-      .poster-badge strong,
-      .feature-app-chip strong {
-        font-size: 0.76rem;
-        line-height: 1;
-        letter-spacing: 0.16em;
+      .work-chip strong {
+        font-size: 0.74rem;
         text-transform: uppercase;
-        color: rgba(244, 234, 217, 0.74);
+        letter-spacing: 0.16em;
+        color: rgba(243, 234, 216, 0.68);
       }
 
-      .poster-badge small,
-      .feature-app-chip small {
+      .work-chip small {
         font-family: "Instrument Serif", serif;
         font-size: 1.35rem;
         line-height: 1;
         color: var(--text);
       }
 
-      .poster-quote {
-        position: absolute;
-        inset: auto 1.8rem 6rem 1.8rem;
-        max-width: 11ch;
-        font-family: "Instrument Serif", serif;
-        font-size: clamp(2.4rem, 4vw, 3.5rem);
-        line-height: 0.95;
-        letter-spacing: -0.04em;
-        z-index: 4;
+      .work-copy {
+        max-width: 34rem;
       }
 
-      .poster-side {
-        position: absolute;
-        inset: 7.5rem 1.5rem auto auto;
-        width: min(190px, 38%);
-        padding: 1rem;
-        border-radius: 22px;
-        background: rgba(244, 234, 217, 0.05);
-        border: 1px solid rgba(244, 234, 217, 0.1);
-        backdrop-filter: blur(12px);
-        z-index: 4;
-      }
-
-      .poster-side p {
+      .work-copy h2,
+      .contact-copy h2 {
         margin: 0;
-        font-size: 0.88rem;
-        line-height: 1.7;
-        color: rgba(244, 234, 217, 0.76);
-      }
-
-      .poster-side strong {
-        display: block;
-        margin-bottom: 0.55rem;
-        color: var(--text);
-        text-transform: uppercase;
-        letter-spacing: 0.16em;
-        font-size: 0.68rem;
-      }
-
-      .section {
-        position: relative;
-        padding: clamp(4.6rem, 10vw, 8rem) 0;
-      }
-
-      .section + .section {
-        border-top: 1px solid rgba(244, 234, 217, 0.08);
-      }
-
-      .section-title {
-        margin: 0;
-        max-width: 12ch;
         font-family: "Instrument Serif", serif;
-        font-size: clamp(2.6rem, 5vw, 4.5rem);
-        line-height: 0.95;
-        letter-spacing: -0.03em;
+        font-size: clamp(3rem, 6vw, 5rem);
+        line-height: 0.92;
+        letter-spacing: -0.05em;
       }
 
-      .section-lead {
-        max-width: 38rem;
-        margin: 1.1rem 0 0;
+      .work-lead,
+      .contact-copy p {
+        margin: 1rem 0 0;
+        max-width: 30rem;
         color: var(--muted);
         line-height: 1.8;
       }
 
-      .approach-grid {
-        display: grid;
-        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-        gap: clamp(1.6rem, 4vw, 4rem);
-        align-items: start;
-      }
-
-      .principles {
+      .work-points {
         display: grid;
         gap: 1rem;
+        margin: 1.8rem 0 0;
       }
 
-      .principle {
-        display: grid;
-        grid-template-columns: auto minmax(0, 1fr);
-        gap: 1rem 1.1rem;
-        padding: 1.35rem 0;
-        border-top: 1px solid rgba(244, 234, 217, 0.12);
+      .work-points div {
+        padding-top: 1rem;
+        border-top: 1px solid rgba(243, 234, 216, 0.12);
       }
 
-      .principle:last-child {
-        border-bottom: 1px solid rgba(244, 234, 217, 0.12);
-      }
-
-      .principle-index {
-        color: var(--acid);
-        font-size: 0.84rem;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        padding-top: 0.2rem;
-      }
-
-      .principle h3 {
-        margin: 0;
-        font-size: 1.05rem;
-        line-height: 1.5;
-      }
-
-      .principle p {
-        margin: 0.35rem 0 0;
-        color: var(--muted);
-        line-height: 1.8;
-      }
-
-      .feature {
-        background:
-          radial-gradient(circle at 16% 18%, rgba(255, 122, 47, 0.08), transparent 22%),
-          linear-gradient(180deg, rgba(244, 234, 217, 0.02), rgba(244, 234, 217, 0));
-      }
-
-      .feature-grid {
-        display: grid;
-        grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
-        gap: clamp(1.8rem, 5vw, 4.8rem);
-        align-items: start;
-      }
-
-      .feature-stage {
-        position: sticky;
-        top: 7rem;
-      }
-
-      .feature-card {
-        position: relative;
-        overflow: hidden;
-        padding: 2rem;
-        border-radius: 34px;
-        border: 1px solid var(--line);
-        background:
-          radial-gradient(circle at 50% 15%, rgba(214, 255, 78, 0.16), transparent 28%),
-          linear-gradient(180deg, rgba(33, 27, 22, 0.96), rgba(13, 12, 11, 1));
-        box-shadow: var(--shadow);
-      }
-
-      .feature-card::after {
-        content: "";
-        position: absolute;
-        inset: 1rem;
-        border: 1px solid rgba(244, 234, 217, 0.1);
-        border-radius: 24px;
-        pointer-events: none;
-      }
-
-      .feature-card .section-label {
-        margin-bottom: 1.4rem;
-      }
-
-      .feature-art {
-        position: relative;
-        margin: 0;
-        min-height: clamp(320px, 42vw, 470px);
-        overflow: hidden;
-        border-radius: 28px;
-        border: 1px solid rgba(244, 234, 217, 0.12);
-        background: rgba(8, 8, 8, 0.8);
-        box-shadow: 0 22px 44px rgba(0, 0, 0, 0.24);
-      }
-
-      .feature-art::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background:
-          linear-gradient(180deg, rgba(10, 9, 8, 0.04), rgba(10, 9, 8, 0.64)),
-          radial-gradient(circle at 50% 16%, rgba(214, 255, 78, 0.08), transparent 24%);
-        pointer-events: none;
-      }
-
-      .feature-art-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
+      .work-points strong {
         display: block;
+        font-size: 1.02rem;
       }
 
-      .feature-app-chip {
-        position: absolute;
-        left: 1rem;
-        right: 1rem;
-        bottom: 1rem;
-        z-index: 1;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.85rem;
-        width: fit-content;
-        max-width: calc(100% - 2rem);
-        padding: 0.8rem 0.95rem;
-        border-radius: 24px;
-        background: rgba(11, 10, 9, 0.58);
-        border: 1px solid rgba(244, 234, 217, 0.12);
-        backdrop-filter: blur(12px);
-      }
-
-      .feature-title {
-        margin: 1.6rem 0 0;
-        text-align: center;
-        font-family: "Instrument Serif", serif;
-        font-size: clamp(2.3rem, 4vw, 3.6rem);
-        line-height: 0.95;
-        letter-spacing: -0.04em;
-      }
-
-      .feature-summary {
-        max-width: 22rem;
-        margin: 0.9rem auto 0;
-        text-align: center;
+      .work-points p {
+        margin: 0.45rem 0 0;
         color: var(--muted);
-        line-height: 1.8;
+        line-height: 1.7;
       }
 
-      .feature-cta {
-        display: flex;
-        justify-content: center;
-        margin-top: 1.7rem;
-      }
-
-      .feature-copy {
-        display: grid;
-        gap: 1.2rem;
-      }
-
-      .feature-copy .section-title {
-        max-width: 11ch;
-      }
-
-      .feature-row {
-        padding: 1.45rem 0;
-        border-top: 1px solid rgba(244, 234, 217, 0.12);
-      }
-
-      .feature-row:last-of-type {
-        border-bottom: 1px solid rgba(244, 234, 217, 0.12);
-      }
-
-      .feature-row h3 {
-        margin: 0;
-        font-size: 1.24rem;
-      }
-
-      .feature-row p {
-        margin: 0.6rem 0 0;
-        max-width: 40rem;
-        color: var(--muted);
-        line-height: 1.8;
-      }
-
-      .feature-links {
+      .work-actions,
+      .contact-actions {
         display: flex;
         flex-wrap: wrap;
         gap: 0.9rem;
-        margin-top: 0.8rem;
+        margin-top: 1.8rem;
       }
 
-      .signal-grid {
+      .contact {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(300px, 420px);
-        gap: clamp(1.8rem, 4vw, 4rem);
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 2rem;
         align-items: end;
       }
 
-      .contact-panel {
-        padding: 1.6rem;
-        border-radius: 28px;
-        border: 1px solid var(--line);
-        background: var(--panel);
-        backdrop-filter: blur(12px);
-      }
-
-      .contact-panel p {
-        margin: 0;
-        color: var(--muted);
-        line-height: 1.8;
-      }
-
-      .mail-link {
-        display: inline-block;
-        margin-bottom: 0.9rem;
+      .contact-mail {
         font-family: "Instrument Serif", serif;
-        font-size: clamp(2rem, 4vw, 3rem);
+        font-size: clamp(2.2rem, 5vw, 4rem);
         line-height: 0.95;
-        letter-spacing: -0.03em;
+        letter-spacing: -0.04em;
       }
 
       .contact-links {
         display: flex;
-        flex-wrap: wrap;
         gap: 1rem;
-        margin-top: 1.3rem;
-        color: var(--text);
+        margin-top: 1rem;
+        color: rgba(243, 234, 216, 0.76);
       }
 
       .contact-links a {
-        color: rgba(244, 234, 217, 0.9);
         text-decoration: underline;
-        text-decoration-color: rgba(214, 255, 78, 0.34);
+        text-decoration-color: rgba(216, 255, 63, 0.38);
         text-underline-offset: 0.18em;
       }
 
       .site-footer {
-        padding: 1.4rem 0 2rem;
-        color: rgba(244, 234, 217, 0.58);
+        padding: 1.25rem 0 2rem;
+        color: rgba(243, 234, 216, 0.54);
       }
 
       .footer-shell {
-        width: min(1180px, calc(100% - 2rem));
+        width: min(1160px, calc(100% - 2rem));
         margin: 0 auto;
-        padding-top: 1.2rem;
-        border-top: 1px solid rgba(244, 234, 217, 0.1);
+        padding-top: 1rem;
+        border-top: 1px solid rgba(243, 234, 216, 0.08);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -784,10 +496,10 @@
 
       .js [data-reveal] {
         opacity: 0;
-        transform: translateY(26px);
+        transform: translateY(24px);
         transition:
-          opacity 0.8s ease,
-          transform 0.8s ease;
+          opacity 0.7s ease,
+          transform 0.7s ease;
       }
 
       .js [data-reveal].is-visible {
@@ -795,67 +507,30 @@
         transform: translateY(0);
       }
 
-      @keyframes spin {
-        from {
-          transform: rotate(0deg);
-        }
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-10px);
-        }
-      }
-
-      @media (max-width: 1080px) {
-        .hero {
-          min-height: auto;
-          padding-bottom: 4rem;
-        }
-
-        .hero-grid,
-        .approach-grid,
-        .feature-grid,
-        .signal-grid {
+      @media (max-width: 980px) {
+        .principles,
+        .work,
+        .contact {
           grid-template-columns: 1fr;
         }
 
-        .hero-title,
-        .section-title {
+        .work-copy,
+        .contact-copy {
           max-width: none;
-        }
-
-        .hero-visual {
-          max-width: 680px;
-        }
-
-        .feature-stage {
-          position: static;
         }
       }
 
-      @media (max-width: 860px) {
+      @media (max-width: 760px) {
         .nav {
           display: none;
         }
 
-        .header-shell {
-          padding-inline: 1rem;
+        .hero-inner {
+          padding-top: calc(var(--header-height) + 2rem);
         }
 
-        .hero {
-          padding-top: 6.6rem;
-        }
-
-        .hero-poster {
-          min-height: 540px;
+        .hero-media img {
+          object-position: 66% center;
         }
       }
 
@@ -866,69 +541,50 @@
           width: min(100%, calc(100% - 1.25rem));
         }
 
-        .brand-name {
-          font-size: 1.45rem;
+        .site-header {
+          padding-top: 0.8rem;
+        }
+
+        .header-shell {
+          min-height: auto;
+        }
+
+        .brand {
+          font-size: 1.55rem;
         }
 
         .header-cta {
-          padding-inline: 1rem;
           min-height: 42px;
-          font-size: 0.92rem;
+          padding-inline: 1rem;
+        }
+
+        .hero h1 {
+          font-size: 3.8rem;
+        }
+
+        .hero-tagline {
+          font-size: 2.25rem;
+          max-width: 9ch;
         }
 
         .hero-actions,
-        .feature-links,
+        .work-actions,
+        .contact-actions,
         .contact-links,
-        .footer-shell,
-        .poster-meta,
-        .poster-footer {
+        .footer-shell {
           flex-direction: column;
           align-items: flex-start;
         }
 
         .hero-actions .button,
-        .feature-links .button {
+        .work-actions .button,
+        .contact-actions .button {
           width: 100%;
         }
 
-        .hero-poster {
-          min-height: 500px;
-        }
-
-        .poster-badge {
-          top: 4.2rem;
-          left: 1.3rem;
-          padding: 0.7rem 0.85rem;
-        }
-
-        .poster-side {
-          width: auto;
-          inset: auto 1.3rem 6.5rem 1.3rem;
-        }
-
-        .poster-quote {
-          inset: auto 1.3rem 13rem 1.3rem;
-          max-width: 8ch;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .hero-title {
-          font-size: 3.35rem;
-        }
-
-        .section-title {
-          font-size: 2.7rem;
-        }
-
-        .hero-poster {
-          min-height: 460px;
-        }
-
-        .poster-badge img,
-        .feature-app-chip img {
-          width: 2.7rem;
-          height: 2.7rem;
+        .work-chip img {
+          width: 2.8rem;
+          height: 2.8rem;
         }
       }
 
@@ -946,7 +602,7 @@
           scroll-behavior: auto !important;
         }
 
-        [data-reveal] {
+        .js [data-reveal] {
           opacity: 1;
           transform: none;
         }
@@ -958,7 +614,7 @@
       <div class="header-shell">
         <a class="brand" href="./" aria-label="Lagartija Labs home">
           <span class="brand-mark" aria-hidden="true"></span>
-          <span class="brand-name">Lagartija Labs</span>
+          <span>Lagartija Labs</span>
         </a>
         <nav class="nav" aria-label="Primary">
           <a href="#approach">Approach</a>
@@ -971,211 +627,118 @@
 
     <main>
       <section class="hero">
-        <div class="container hero-grid">
+        <div class="hero-media" aria-hidden="true">
+          <img
+            id="heroImage"
+            src="assets/images/lagartija-hero-art.png"
+            alt=""
+            width="1536"
+            height="1024"
+          />
+        </div>
+        <div class="hero-overlay"></div>
+
+        <div class="container hero-inner">
           <div class="hero-copy" data-reveal>
-            <p class="eyebrow">Lagartija Labs • Mobile software with bite</p>
-            <h1 class="hero-title">Small apps. Sharp taste. <em>Zero bloat.</em></h1>
+            <p class="hero-kicker">Independent mobile studio</p>
+            <h1>Lagartija Labs</h1>
+            <p class="hero-tagline">Small mobile software with <em>taste.</em></p>
             <p class="hero-summary">
-              Lagartija Labs builds focused mobile software that feels fast, tactile,
-              and memorable. The goal is not to ship more screens. It is to make a
-              useful tool feel impossible to forget.
+              Focused apps with sharp interaction, calm performance, and a visual
+              identity that does not look assembled from a template.
             </p>
             <div class="hero-actions">
               <a class="button button-primary" href="#work">See the current release</a>
               <a class="button button-secondary" href="#contact">Start a conversation</a>
             </div>
-            <p class="hero-footnote">
-              Currently shipping <a href="tindrop/">Tindrop</a>, a faster and more
-              satisfying way to clean your camera roll without turning the process
-              into admin work.
+            <p class="hero-note">
+              Now shipping <a href="tindrop/">Tindrop</a>.
             </p>
-          </div>
-
-          <div class="hero-visual" data-reveal>
-            <div class="hero-poster" id="heroPoster">
-              <div class="poster-art-wrap" aria-hidden="true">
-                <img
-                  class="poster-art"
-                  src="assets/images/lagartija-hero-art.png"
-                  alt=""
-                  width="1536"
-                  height="1024"
-                />
-              </div>
-              <div class="poster-frame" aria-hidden="true"></div>
-              <div class="poster-meta">
-                <span>Focused mobile craft</span>
-                <span>Madrid • Worldwide</span>
-              </div>
-              <div class="orbit orbit-one" aria-hidden="true"></div>
-              <div class="orbit orbit-two" aria-hidden="true"></div>
-              <div class="poster-badge">
-                <img src="tindrop/tindrop.png" alt="Tindrop app icon" width="710" height="709" />
-                <span>
-                  <strong>Current release</strong>
-                  <small>Tindrop</small>
-                </span>
-              </div>
-              <div class="poster-side">
-                <strong>Current mood</strong>
-                <p>
-                  Privacy-aware tooling, tactile motion, and visual decisions that
-                  leave an afterimage instead of blending into the store.
-                </p>
-              </div>
-              <div class="poster-quote">Make the utility feel alive.</div>
-              <div class="poster-footer">
-                <span>Featured release • Tindrop</span>
-                <span>More strange little tools soon</span>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
       <section class="section" id="approach">
-        <div class="container approach-grid">
-          <div data-reveal>
-            <p class="section-label">Approach</p>
-            <h2 class="section-title">Useful enough to keep. Distinct enough to recall.</h2>
-            <p class="section-lead">
-              Lagartija Labs leans into the kind of software people actually enjoy
-              revisiting: lighter releases, stronger interaction, and a visual point
-              of view that does not need ten paragraphs to justify itself.
-            </p>
-          </div>
-
-          <div class="principles">
-            <article class="principle" data-reveal>
-              <span class="principle-index">01</span>
-              <div>
-                <h3>Cut the feature cemetery.</h3>
-                <p>
-                  Ship the sharp version first. Keep what reduces friction. Remove
-                  what only makes the roadmap look impressive.
-                </p>
-              </div>
-            </article>
-
-            <article class="principle" data-reveal>
-              <span class="principle-index">02</span>
-              <div>
-                <h3>Make privacy part of the experience.</h3>
-                <p>
-                  Data restraint should be felt in the product, not buried in the
-                  legal footer. Faster flows and less collection usually belong
-                  together.
-                </p>
-              </div>
-            </article>
-
-            <article class="principle" data-reveal>
-              <span class="principle-index">03</span>
-              <div>
-                <h3>Design for memory, not just clarity.</h3>
-                <p>
-                  Clean UX matters. So does mood, texture, pacing, and the small
-                  decisions that stop a tool from feeling anonymous.
-                </p>
-              </div>
-            </article>
-          </div>
+        <div class="container principles">
+          <article class="principle" data-reveal>
+            <strong>01</strong>
+            <h2>Lean</h2>
+            <p>Smaller products, tighter decisions, less dead weight.</p>
+          </article>
+          <article class="principle" data-reveal>
+            <strong>02</strong>
+            <h2>Fast</h2>
+            <p>Interfaces built to move quickly and stay out of the way.</p>
+          </article>
+          <article class="principle" data-reveal>
+            <strong>03</strong>
+            <h2>Distinct</h2>
+            <p>Useful software with enough visual character to be remembered.</p>
+          </article>
         </div>
       </section>
 
-      <section class="section feature" id="work">
-        <div class="container feature-grid">
-          <div class="feature-stage" data-reveal>
-            <article class="feature-card" aria-labelledby="tindrop-title">
-              <p class="section-label">Current release</p>
-              <figure class="feature-art" aria-label="Tindrop artwork">
-                <img
-                  class="feature-art-image"
-                  src="assets/images/tindrop-memory-art.png"
-                  alt="Painterly collage evoking sorting memories and cleaning a photo library"
-                  width="1024"
-                  height="1536"
-                />
-                <div class="feature-app-chip">
-                  <img src="tindrop/tindrop.png" alt="Tindrop app icon" width="710" height="709" />
-                  <span>
-                    <strong>App</strong>
-                    <small>Tindrop</small>
-                  </span>
-                </div>
-              </figure>
-              <h2 class="feature-title" id="tindrop-title">Tindrop</h2>
-              <p class="feature-summary">
-                Gallery cleanup built around fast swipes, clear review, and less
-                dread between “too many photos” and “finally done.”
-              </p>
-              <div class="feature-cta">
-                <a class="button button-primary" href="tindrop/go/">Download Tindrop</a>
-              </div>
-            </article>
+      <section class="section" id="work">
+        <div class="container work">
+          <div class="work-media" data-reveal>
+            <img
+              src="assets/images/tindrop-memory-art.png"
+              alt="Painterly collage evoking sorting memories and cleaning a photo library"
+              width="1024"
+              height="1536"
+            />
+            <div class="work-chip">
+              <img src="tindrop/tindrop.png" alt="Tindrop app icon" width="710" height="709" />
+              <span>
+                <strong>App</strong>
+                <small>Tindrop</small>
+              </span>
+            </div>
           </div>
 
-          <div class="feature-copy">
-            <div data-reveal>
-              <p class="section-label">Why it works</p>
-              <h2 class="section-title">A chore turned into flow.</h2>
-              <p class="section-lead">
-                Tindrop earns its place on the homepage because it proves the studio
-                thesis in a real product: less hesitation, better rhythm, and no need
-                to overcomplicate a simple outcome.
-              </p>
+          <div class="work-copy" data-reveal>
+            <p class="section-label">Current release</p>
+            <h2>Tindrop</h2>
+            <p class="work-lead">
+              A faster way to clean your camera roll without turning the process
+              into admin work.
+            </p>
+
+            <div class="work-points">
+              <div>
+                <strong>Swipe through decisions quickly.</strong>
+                <p>Keep, drop, move on.</p>
+              </div>
+              <div>
+                <strong>Review before anything leaves.</strong>
+                <p>Less hesitation, more control.</p>
+              </div>
+              <div>
+                <strong>Built for private, everyday use.</strong>
+                <p>Direct, lightweight, and easy to revisit.</p>
+              </div>
             </div>
 
-            <article class="feature-row" data-reveal>
-              <h3>Swipe through decisions at actual speed.</h3>
-              <p>
-                The product is tuned around quick keep-or-drop calls, so cleaning a
-                library feels closer to a fast sorting ritual than a settings chore.
-              </p>
-            </article>
-
-            <article class="feature-row" data-reveal>
-              <h3>Review before anything leaves your device.</h3>
-              <p>
-                Confidence matters. Tindrop keeps the flow light without making users
-                feel one accidental gesture away from a mistake.
-              </p>
-            </article>
-
-            <article class="feature-row" data-reveal>
-              <h3>On-device thinking, cleaner mental load.</h3>
-              <p>
-                The app is designed to respect the private nature of personal photo
-                libraries while still feeling playful, direct, and worth opening
-                again.
-              </p>
-            </article>
-
-            <div class="feature-links" data-reveal>
+            <div class="work-actions">
+              <a class="button button-primary" href="tindrop/go/">Download Tindrop</a>
               <a class="button button-secondary" href="tindrop/">Visit product page</a>
-              <a class="button button-secondary" href="privacy.html">Read privacy policy</a>
             </div>
           </div>
         </div>
       </section>
 
       <section class="section" id="contact">
-        <div class="container signal-grid">
-          <div data-reveal>
+        <div class="container contact">
+          <div class="contact-copy" data-reveal>
             <p class="section-label">Contact</p>
-            <h2 class="section-title">If the app idea is sharp, the first screen should be too.</h2>
-            <p class="section-lead">
-              Lagartija Labs is open to selective collaborations, product discussions,
-              and compact experiments that deserve more taste than a generic template.
+            <h2>For sharp app ideas.</h2>
+            <p>
+              Collaborations, product questions, and selective experimental work.
             </p>
           </div>
 
-          <div class="contact-panel" data-reveal>
-            <a class="mail-link" href="mailto:lagartijalabs@gmail.com">lagartijalabs@gmail.com</a>
-            <p>
-              Reach out for product questions, collaborations, or projects that need
-              a tighter point of view.
-            </p>
+          <div data-reveal>
+            <a class="contact-mail" href="mailto:lagartijalabs@gmail.com">lagartijalabs@gmail.com</a>
             <div class="contact-links">
               <a href="privacy.html">Privacy policy</a>
               <a href="app-ads.txt">app-ads.txt</a>
@@ -1214,7 +777,7 @@
               }
             });
           },
-          { threshold: 0.18 }
+          { threshold: 0.16 }
         );
 
         revealItems.forEach((item) => observer.observe(item));
@@ -1222,29 +785,16 @@
         revealItems.forEach((item) => item.classList.add("is-visible"));
       }
 
-      const heroPoster = document.getElementById("heroPoster");
-      if (heroPoster && !reducedMotion) {
-        const resetPoster = () => {
-          heroPoster.style.setProperty("--tilt-x", "0deg");
-          heroPoster.style.setProperty("--tilt-y", "0deg");
-          heroPoster.style.setProperty("--pointer-x", "72%");
-          heroPoster.style.setProperty("--pointer-y", "24%");
+      const heroImage = document.getElementById("heroImage");
+      if (heroImage && !reducedMotion) {
+        const updateHero = () => {
+          const shift = Math.min(window.scrollY * 0.08, 20);
+          heroImage.style.setProperty("--hero-shift", `${shift}px`);
+          heroImage.style.setProperty("--hero-scale", `${1.04 + window.scrollY * 0.00004}`);
         };
 
-        heroPoster.addEventListener("pointermove", (event) => {
-          const bounds = heroPoster.getBoundingClientRect();
-          const x = (event.clientX - bounds.left) / bounds.width;
-          const y = (event.clientY - bounds.top) / bounds.height;
-          const rotateX = (0.5 - y) * 6;
-          const rotateY = (x - 0.5) * 8;
-
-          heroPoster.style.setProperty("--tilt-x", `${rotateX}deg`);
-          heroPoster.style.setProperty("--tilt-y", `${rotateY}deg`);
-          heroPoster.style.setProperty("--pointer-x", `${x * 100}%`);
-          heroPoster.style.setProperty("--pointer-y", `${y * 100}%`);
-        });
-
-        heroPoster.addEventListener("pointerleave", resetPoster);
+        updateHero();
+        window.addEventListener("scroll", updateHero, { passive: true });
       }
     </script>
   </body>
