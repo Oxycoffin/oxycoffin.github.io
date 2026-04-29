@@ -112,6 +112,7 @@ a {
 .brand-text {
   font-size: 1.02rem;
   letter-spacing: 0.01em;
+  white-space: nowrap;
 }
 
 .nav,
@@ -460,20 +461,32 @@ main.section a {
 @media (max-width: 680px) {
   .site-header {
     position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
   }
 
   .site-header .container {
     min-height: auto;
-    padding-block: 0.9rem;
-    align-items: flex-start;
+    padding-block: 0.65rem;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .brand {
+    flex: 0 0 auto;
+    gap: 0.5rem;
   }
 
   .nav {
+    flex: 0 0 auto;
+    flex-wrap: nowrap;
     justify-content: flex-end;
+    gap: 0.35rem;
   }
 
   .nav a {
-    padding: 0.25rem 0.35rem;
+    padding: 0.25rem 0.2rem;
     font-size: 0.82rem;
   }
 
@@ -513,16 +526,31 @@ main.section a {
   }
 
   .brand-mark {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
+    font-size: 0.68rem;
   }
 
   .brand-text {
-    font-size: 0.94rem;
+    font-size: 0.86rem;
   }
 
   .cta-row .btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .brand-mark {
+    display: none;
+  }
+
+  .brand-text {
+    font-size: 0.82rem;
+  }
+
+  .nav a {
+    font-size: 0.78rem;
   }
 }
 
