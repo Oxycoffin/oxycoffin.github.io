@@ -311,6 +311,8 @@ a {
 }
 
 .feature-copy {
+  grid-column: 1;
+  grid-row: 1;
   max-width: 620px;
 }
 
@@ -337,8 +339,15 @@ a {
 }
 
 .feature-media {
+  grid-column: 2;
+  grid-row: 1 / span 2;
   position: relative;
   margin: 0;
+}
+
+.feature-actions {
+  grid-column: 1;
+  grid-row: 2;
 }
 
 .feature-media > img {
@@ -454,6 +463,25 @@ main.section a {
   .split,
   .feature-layout {
     grid-template-columns: 1fr;
+  }
+
+  .feature-copy,
+  .feature-media,
+  .feature-actions {
+    grid-column: 1;
+  }
+
+  .feature-copy {
+    grid-row: 1;
+  }
+
+  .feature-media {
+    grid-row: 2;
+  }
+
+  .feature-actions {
+    grid-row: 3;
+    margin-top: 0;
   }
 
 }
