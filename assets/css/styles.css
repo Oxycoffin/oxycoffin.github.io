@@ -100,7 +100,7 @@ a {
   height: 42px;
   display: block;
   flex: 0 0 auto;
-  padding: 4px;
+  padding: 2px;
   border-radius: var(--radius);
   background: var(--text);
   object-fit: contain;
@@ -554,7 +554,7 @@ main.section a {
   .brand-mark {
     width: 34px;
     height: 34px;
-    padding: 3px;
+    padding: 2px;
   }
 
   .brand-text {
