@@ -61,12 +61,17 @@
         overflow-x: hidden;
       }
 
+      body[data-lang="en"] [data-locale="es"],
+      body[data-lang="es"] [data-locale="en"] {
+        display: none !important;
+      }
+
       h1, h2, h3, .logo {
         font-family: "Fraunces", serif;
         color: var(--dark-text);
       }
       
-      .eyebrow, .btn, .nav, .tab-btn {
+      .eyebrow, .btn, .nav, .tab-btn, .language-option, .meta-pill {
         font-family: "Space Grotesk", sans-serif;
       }
 
@@ -108,6 +113,7 @@
         margin-bottom: 60px;
         padding-bottom: 20px;
         border-bottom: 1px solid rgba(0,0,0,0.04);
+        gap: 24px;
       }
 
       .logo {
@@ -133,9 +139,16 @@
       
       .logo-mark img { width: 60px; }
 
+      .header-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 24px;
+      }
+
       .nav {
         display: flex;
-        gap: 32px;
+        gap: 24px;
         font-weight: 600;
         font-size: 1.05rem;
       }
@@ -155,6 +168,61 @@
 
       .nav a:hover::after { width: 100%; }
 
+      .language-switcher {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px;
+        border: 1px solid rgba(5, 5, 5, 0.1);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.68);
+        box-shadow: 0 8px 20px rgba(31, 32, 48, 0.08);
+      }
+
+      .language-option {
+        min-height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 7px 12px;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        color: var(--muted-text);
+        font: inherit;
+        font-weight: 700;
+        font-size: 0.86rem;
+        cursor: pointer;
+      }
+
+      .language-option[aria-pressed="true"] {
+        background: #000;
+        color: #fff;
+        box-shadow: 0 8px 18px rgba(0,0,0,0.14);
+      }
+
+      .language-flag {
+        width: 20px;
+        height: 14px;
+        flex: 0 0 auto;
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.16);
+        border-radius: 3px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.14);
+      }
+
+      .language-flag-uk {
+        background:
+          #012169
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30' preserveAspectRatio='none'%3E%3Cpath fill='%23012169' d='M0 0h60v30H0z'/%3E%3Cpath stroke='%23fff' stroke-width='6' d='m0 0 60 30m0-30L0 30'/%3E%3Cpath stroke='%23c8102e' stroke-width='4' d='m0 0 60 30m0-30L0 30'/%3E%3Cpath stroke='%23fff' stroke-width='10' d='M30 0v30M0 15h60'/%3E%3Cpath stroke='%23c8102e' stroke-width='6' d='M30 0v30M0 15h60'/%3E%3C/svg%3E")
+            center / 100% 100% no-repeat;
+      }
+
+      .language-flag-es {
+        background: linear-gradient(to bottom, #aa151b 0 25%, #f1bf00 25% 75%, #aa151b 75%);
+      }
+
       /* --- HERO SECTION --- */
       .hero {
         display: grid;
@@ -165,6 +233,26 @@
 
       .hero-content {
         max-width: 600px;
+      }
+
+      .hero-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 0 0 28px;
+      }
+
+      .meta-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        border: 1px solid rgba(103, 80, 164, 0.12);
+        border-radius: 999px;
+        background: rgba(255,255,255,0.64);
+        color: var(--muted-text);
+        font-weight: 700;
+        font-size: 0.84rem;
       }
 
       .eyebrow {
@@ -190,7 +278,7 @@
       .hero-desc {
         font-size: 1.25rem;
         color: var(--body-text);
-        margin-bottom: 40px;
+        margin-bottom: 28px;
         font-weight: 400;
       }
 
@@ -378,6 +466,15 @@
         width: 100%; height: 100%; object-fit: cover;
         pointer-events: none;
       }
+
+      .card-image::after {
+        content: "";
+        position: absolute;
+        inset: auto 0 0;
+        height: 46%;
+        background: linear-gradient(180deg, transparent, rgba(0,0,0,0.62));
+        pointer-events: none;
+      }
       
       .card-tag {
         position: absolute;
@@ -390,6 +487,7 @@
         font-weight: 600;
         backdrop-filter: blur(4px);
         text-transform: uppercase;
+        z-index: 4;
       }
 
       .card-label {
@@ -406,6 +504,7 @@
         font-size: 0.78rem;
         font-weight: 600;
         backdrop-filter: blur(4px);
+        z-index: 4;
       }
       
       .card-label-size {
@@ -426,6 +525,7 @@
         border: 1px solid rgba(0,0,0,0.06);
         box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         color: #1a1a1a;
+        z-index: 4;
       }
 
       .icon {
@@ -561,6 +661,14 @@
       
       .bento-box:hover { transform: translateY(-4px); }
 
+      .bento-box.featured {
+        grid-column: span 2;
+        min-height: 260px;
+        background:
+          radial-gradient(circle at 85% 15%, rgba(3, 218, 198, 0.18), transparent 34%),
+          #fff;
+      }
+
       .bento-icon {
         width: 48px; height: 48px;
         background: #f4f1fa;
@@ -607,6 +715,23 @@
         padding: 40px;
         box-shadow: var(--shadow-medium);
       }
+
+      .feature-card {
+        position: relative;
+        overflow: hidden;
+        min-height: 240px;
+      }
+
+      .feature-card::after {
+        content: "";
+        position: absolute;
+        right: 24px;
+        bottom: 24px;
+        width: 86px;
+        height: 86px;
+        border-radius: 28px;
+        background: linear-gradient(135deg, rgba(103, 80, 164, 0.16), rgba(3, 218, 198, 0.22));
+      }
       
       .feature-card h3 { font-size: 1.5rem; margin: 0 0 12px; color: #000; }
       .feature-card p { font-size: 1.1rem; color: var(--muted-text); margin: 0; }
@@ -640,16 +765,25 @@
       /* Responsive */
       @media (max-width: 960px) {
         header { flex-direction: column; gap: 24px; align-items: center; }
+        .header-actions { flex-direction: column; gap: 16px; }
         .hero { grid-template-columns: 1fr; text-align: center; justify-items: center; }
         .hero-content { margin: 0 auto; }
+        .hero-meta { justify-content: center; }
         .cta-row { justify-content: center; }
         .stats-grid, .features-grid { grid-template-columns: 1fr; }
+        .bento-box.featured { grid-column: auto; }
         footer { flex-direction: column; gap: 20px; align-items: center; }
         .footer-links a { margin: 0 12px; }
       }
 
       @media (max-width: 600px) {
+        .wrap { padding: 24px 14px 80px; }
         .main-glass { padding: 24px; }
+        .logo { font-size: 2rem; }
+        .logo-mark { width: 72px; height: 72px; border-radius: 18px; }
+        .logo-mark img { width: 50px; }
+        .nav { gap: 16px; font-size: 0.94rem; }
+        .language-option { padding: 7px 10px; }
         .phone-container {
           width: min(340px, 100%);
           height: auto;
@@ -660,7 +794,7 @@
       }
     </style>
   </head>
-  <body>
+  <body data-page="tindrop" data-lang="en">
     <div class="wrap">
       
       <!-- Glassmorphism main container -->
@@ -672,22 +806,69 @@
             </div>
             <span>Tindrop</span>
           </div>
-          <nav class="nav">
-            <a href="#how-it-works">How it works</a>
-            <a href="#benefits">Benefits</a>
-          </nav>
+          <div class="header-actions">
+            <nav class="nav" aria-label="Primary navigation" data-label-en="Primary navigation" data-label-es="Navegación principal">
+              <a href="#demo">
+                <span data-locale="en">Demo</span>
+                <span data-locale="es">Demo</span>
+              </a>
+              <a href="#how-it-works">
+                <span data-locale="en">How it works</span>
+                <span data-locale="es">Cómo funciona</span>
+              </a>
+              <a href="#benefits">
+                <span data-locale="en">Benefits</span>
+                <span data-locale="es">Ventajas</span>
+              </a>
+            </nav>
+            <div class="language-switcher" role="group" aria-label="Language selector" data-label-en="Language selector" data-label-es="Selector de idioma">
+              <button class="language-option" type="button" data-set-lang="en" aria-pressed="true">
+                <span class="language-flag language-flag-uk" aria-hidden="true"></span>
+                <span>EN</span>
+              </button>
+              <button class="language-option" type="button" data-set-lang="es" aria-pressed="false">
+                <span class="language-flag language-flag-es" aria-hidden="true"></span>
+                <span>ES</span>
+              </button>
+            </div>
+          </div>
         </header>
 
         <section class="hero">
           <div class="hero-content">
-            <span class="eyebrow">✨ Smart cleanup 2.0</span>
-            <h1>Reclaim space with a single swipe.</h1>
+            <span class="eyebrow">
+              <span data-locale="en">Smart cleanup 2.0</span>
+              <span data-locale="es">Limpieza inteligente 2.0</span>
+            </span>
+            <h1>
+              <span data-locale="en">Reclaim space with a single swipe.</span>
+              <span data-locale="es">Recupera espacio con un solo gesto.</span>
+            </h1>
             <p class="hero-desc">
-              Tindrop turns the dull job of cleaning your gallery and Google Drive into a quick game. Swipe right to keep, left to delete.
+              <span data-locale="en">Tindrop turns the dull job of cleaning your gallery and Google Drive into a focused, fast flow. Swipe right to keep, left to delete, then review before anything disappears.</span>
+              <span data-locale="es">Tindrop convierte la limpieza de tu galería y Google Drive en un flujo rápido y enfocado. Desliza a la derecha para conservar, a la izquierda para eliminar, y revisa antes de que desaparezca nada.</span>
             </p>
+            <div class="hero-meta" aria-label="Tindrop highlights" data-label-en="Tindrop highlights" data-label-es="Aspectos destacados de Tindrop">
+              <span class="meta-pill">
+                <span class="icon">photo_library</span>
+                <span data-locale="en">Gallery + Drive</span>
+                <span data-locale="es">Galería + Drive</span>
+              </span>
+              <span class="meta-pill">
+                <span class="icon">lock</span>
+                <span data-locale="en">On-device first</span>
+                <span data-locale="es">Primero en tu dispositivo</span>
+              </span>
+            </div>
             <div class="cta-row">
-              <button class="btn btn-primary">Download App</button>
-              <a href="#demo" class="btn btn-secondary">Watch Demo</a>
+              <a class="btn btn-primary" href="go/">
+                <span data-locale="en">Download App</span>
+                <span data-locale="es">Descargar app</span>
+              </a>
+              <a href="#demo" class="btn btn-secondary">
+                <span data-locale="en">Try the demo</span>
+                <span data-locale="es">Probar la demo</span>
+              </a>
             </div>
           </div>
 
@@ -702,8 +883,8 @@
             </div>
 
             <div class="phone-body">
-              <div class="drag-overlay left" id="dragLeft"><span>Trash it</span></div>
-              <div class="drag-overlay right" id="dragRight"><span>Save it</span></div>
+              <div class="drag-overlay left" id="dragLeft"><span data-i18n="trashIt">Trash it</span></div>
+              <div class="drag-overlay right" id="dragRight"><span data-i18n="saveIt">Save it</span></div>
               <div class="card-stack" id="cardStack">
                 <!-- Cards are generated with JS -->
               </div>
@@ -714,10 +895,10 @@
                 <span class="icon">photo_library</span>
                 <span>128</span>
               </div>
-              <div class="counter-button counter-secondary" id="statsButton" title="Stats">
+              <div class="counter-button counter-secondary" id="statsButton" title="Stats" data-i18n-title="stats">
                 <span class="icon">bar_chart</span>
               </div>
-              <div class="counter-button counter-secondary" id="filterButton" title="Filters">
+              <div class="counter-button counter-secondary" id="filterButton" title="Filters" data-i18n-title="filters">
                 <span class="icon">filter_list</span>
               </div>
               <div class="counter-pill counter-tertiary">
@@ -729,15 +910,15 @@
             <div class="bottom-nav">
               <div class="nav-item active">
                 <span class="icon icon-lg">photo_library</span>
-                <span>Gallery</span>
+                <span data-i18n="gallery">Gallery</span>
               </div>
               <div class="nav-item">
                 <span class="icon icon-lg">delete</span>
-                <span>Trash</span>
+                <span data-i18n="trash">Trash</span>
               </div>
               <div class="nav-item">
                 <span class="icon icon-lg">settings</span>
-                <span>Settings</span>
+                <span data-i18n="settings">Settings</span>
               </div>
             </div>
           </div>
@@ -746,60 +927,126 @@
 
       <!-- Benefits grid (Bento style) -->
       <section class="stats-grid" id="benefits">
-        <div class="bento-box">
-          <div class="bento-icon">⚡</div>
-          <h3>Instant decisions</h3>
-          <p>Make calls in milliseconds. No complex menus, just you and your photos.</p>
+        <div class="bento-box featured">
+          <div class="bento-icon icon">swipe</div>
+          <h3>
+            <span data-locale="en">Built for fast decisions</span>
+            <span data-locale="es">Pensada para decidir rápido</span>
+          </h3>
+          <p>
+            <span data-locale="en">A single card at a time keeps the cleanup flow focused. You decide quickly, then Tindrop keeps the queue organized for a final review.</span>
+            <span data-locale="es">Una tarjeta cada vez mantiene la limpieza enfocada. Decides rápido y Tindrop mantiene la cola ordenada para una revisión final.</span>
+          </p>
         </div>
         <div class="bento-box">
-          <div class="bento-icon">☁️</div>
-          <h3>Cloud-ready</h3>
-          <p>Link your Google account and clean Drive with the same ease as your local gallery.</p>
+          <div class="bento-icon icon">cloud</div>
+          <h3>
+            <span data-locale="en">Cloud-ready</span>
+            <span data-locale="es">Listo para la nube</span>
+          </h3>
+          <p>
+            <span data-locale="en">Clean Google Drive with the same gesture language as your local gallery.</span>
+            <span data-locale="es">Limpia Google Drive con los mismos gestos que tu galería local.</span>
+          </p>
         </div>
         <div class="bento-box">
-          <div class="bento-icon">🔒</div>
-          <h3>Full privacy</h3>
-          <p>Processing happens on your device. Your photos never touch our servers.</p>
+          <div class="bento-icon icon">shield_lock</div>
+          <h3>
+            <span data-locale="en">Privacy-first</span>
+            <span data-locale="es">Privacidad primero</span>
+          </h3>
+          <p>
+            <span data-locale="en">The experience is designed around control: review before deleting and keep destructive actions explicit.</span>
+            <span data-locale="es">La experiencia está pensada para darte control: revisa antes de eliminar y confirma las acciones destructivas.</span>
+          </p>
         </div>
       </section>
 
       <section class="section" id="how-it-works">
         <div class="section-header">
-          <h2>Zen cleanup flow</h2>
-          <p>Designed to erase digital stress.</p>
+          <h2>
+            <span data-locale="en">A calmer cleanup flow</span>
+            <span data-locale="es">Una limpieza más tranquila</span>
+          </h2>
+          <p>
+            <span data-locale="en">The app keeps the interaction narrow, predictable, and easy to resume whenever your camera roll gets heavy.</span>
+            <span data-locale="es">La app mantiene una interacción clara, predecible y fácil de retomar cuando el carrete se acumula.</span>
+          </p>
         </div>
         <div class="features-grid">
           <div class="feature-card">
-            <h3>1. Focus Mode</h3>
-            <p>We show one image at a time. No distractions, no overwhelming grids.</p>
+            <h3>
+              <span data-locale="en">1. Focus mode</span>
+              <span data-locale="es">1. Modo foco</span>
+            </h3>
+            <p>
+              <span data-locale="en">One item, one decision. No overwhelming grids when you are trying to clear space.</span>
+              <span data-locale="es">Un elemento, una decisión. Sin parrillas abrumadoras cuando quieres liberar espacio.</span>
+            </p>
           </div>
           <div class="feature-card">
-            <h3>2. Smart Bursts</h3>
-            <p>We group similar photos automatically so you can pick the best and delete the rest in one tap.</p>
+            <h3>
+              <span data-locale="en">2. Similar sets</span>
+              <span data-locale="es">2. Grupos similares</span>
+            </h3>
+            <p>
+              <span data-locale="en">Move through near-duplicates and repeated moments without losing the best shot.</span>
+              <span data-locale="es">Avanza entre duplicados y momentos repetidos sin perder la mejor foto.</span>
+            </p>
           </div>
           <div class="feature-card">
-            <h3>3. Infinite Undo</h3>
-            <p>Messed up? No problem. The undo button is always there to bail you out.</p>
+            <h3>
+              <span data-locale="en">3. Undo anytime</span>
+              <span data-locale="es">3. Deshacer cuando quieras</span>
+            </h3>
+            <p>
+              <span data-locale="en">A mistake should not break the flow. Rewind and keep going.</span>
+              <span data-locale="es">Un error no debería romper el flujo. Retrocede y sigue limpiando.</span>
+            </p>
           </div>
           <div class="feature-card">
-            <h3>4. Final Sweep</h3>
-            <p>Nothing is deleted permanently until you review the trash and confirm.</p>
+            <h3>
+              <span data-locale="en">4. Final review</span>
+              <span data-locale="es">4. Revisión final</span>
+            </h3>
+            <p>
+              <span data-locale="en">Nothing is removed permanently until you review the queue and confirm.</span>
+              <span data-locale="es">Nada se elimina de forma permanente hasta que revisas la cola y confirmas.</span>
+            </p>
           </div>
         </div>
       </section>
 
       <section class="cta-box">
-        <h2>Stop paying for extra storage.</h2>
-        <p>Start freeing space intelligently today.</p>
-        <button class="btn btn-primary">Download on Google Play</button>
+        <h2>
+          <span data-locale="en">Stop paying for clutter.</span>
+          <span data-locale="es">Deja de pagar por desorden.</span>
+        </h2>
+        <p>
+          <span data-locale="en">Free space with a tool that respects your attention and your files.</span>
+          <span data-locale="es">Libera espacio con una herramienta que respeta tu atención y tus archivos.</span>
+        </p>
+        <a class="btn btn-primary" href="go/">
+          <span data-locale="en">Download on Google Play</span>
+          <span data-locale="es">Descargar en Google Play</span>
+        </a>
       </section>
 
       <footer>
         <span>&copy; <span id="year"></span> Tindrop by <a href="../">Lagartija Labs</a>.</span>
         <div class="footer-links" id="privacy">
-          <a href="terms.html">Terms</a>
-          <a href="privacy.html">Privacy</a>
-          <a href="mailto:lagartijalabs@gmail.com">Support</a>
+          <a href="terms.html">
+            <span data-locale="en">Terms</span>
+            <span data-locale="es">Términos</span>
+          </a>
+          <a href="privacy.html">
+            <span data-locale="en">Privacy</span>
+            <span data-locale="es">Privacidad</span>
+          </a>
+          <a href="mailto:lagartijalabs@gmail.com">
+            <span data-locale="en">Support</span>
+            <span data-locale="es">Soporte</span>
+          </a>
         </div>
       </footer>
 
@@ -807,54 +1054,121 @@
 
     <!-- Swipe interaction logic -->
     <script>
-      document.getElementById('year').textContent = new Date().getFullYear();
-
       const cardStack = document.getElementById('cardStack');
       const dragLeft = document.getElementById('dragLeft');
       const dragRight = document.getElementById('dragRight');
       const filterButton = document.getElementById('filterButton');
+      const pageMeta = {
+        en: {
+          title: "Tindrop — Intelligent cleanup",
+          description: "Clean your gallery and Google Drive with swipes. Fast, secure, and fun.",
+        },
+        es: {
+          title: "Tindrop — Limpieza inteligente",
+          description: "Limpia tu galería y Google Drive con gestos. Rápido, seguro y entretenido.",
+        },
+      };
+      const uiText = {
+        en: {
+          trashIt: "Trash it",
+          saveIt: "Save it",
+          gallery: "Gallery",
+          trash: "Trash",
+          settings: "Settings",
+          stats: "Stats",
+          filters: "Filters",
+        },
+        es: {
+          trashIt: "Eliminar",
+          saveIt: "Guardar",
+          gallery: "Galería",
+          trash: "Papelera",
+          settings: "Ajustes",
+          stats: "Estadísticas",
+          filters: "Filtros",
+        },
+      };
       let currentMode = 'local'; // 'local' or 'drive'
+      let currentLanguage = 'en';
       let overlayWidth = 0;
       let overlayHeight = 0;
       
       // Mock data
       const data = {
         local: [
-          { color: 'linear-gradient(135deg, #1B3A57 0%, #2E6E8C 100%)', text: 'IMG_2024.jpg', size: '3.2 MB', label: 'Sep 18' },
-          { color: 'linear-gradient(135deg, #1E7F74 0%, #3A9D62 100%)', text: 'Selfie_01.jpg', size: '4.5 MB', label: 'Sep 20' },
-          { color: 'linear-gradient(135deg, #B04F3D 0%, #D27D2D 100%)', text: 'Cafe_02.jpg', size: '2.8 MB', label: 'Sep 22' },
-          { color: 'linear-gradient(135deg, #2E3A5B 0%, #6B4E94 100%)', text: 'Screenshot_02.png', size: '1.1 MB', label: 'Sep 23' }
+          { image: 'assets/demo-cafe.jpg', text: 'Cafe_02.jpg', size: '2.8 MB', label: 'Sep 22', alt: { en: 'Cafe table photo', es: 'Foto de mesa de café' } },
+          { image: 'assets/demo-mountain.jpg', text: 'Trail_18.jpg', size: '3.2 MB', label: 'Sep 18', alt: { en: 'Mountain trail photo', es: 'Foto de sendero de montaña' } },
+          { image: 'assets/demo-desk.jpg', text: 'Desk_23.jpg', size: '4.5 MB', label: 'Sep 23', alt: { en: 'Desk and plants photo', es: 'Foto de escritorio con plantas' } },
+          { image: 'assets/demo-city.jpg', text: 'City_24.jpg', size: '3.9 MB', label: 'Sep 24', alt: { en: 'Rainy city street photo', es: 'Foto de calle lluviosa' } }
         ],
         drive: [
-           { color: 'linear-gradient(135deg, #6B4E94 0%, #B63D59 100%)', text: 'Project_Final.pdf', size: '12 MB', tag: 'Drive', label: 'Oct 02' },
-           { color: 'linear-gradient(135deg, #3D6B6B 0%, #1B3A57 100%)', text: 'Backup_2023.zip', size: '150 MB', tag: 'Drive', label: 'Oct 03' },
-           { color: 'linear-gradient(135deg, #6E8C2E 0%, #8A6F3A 100%)', text: 'Doc_scan.jpg', size: '500 KB', tag: 'Drive', label: 'Oct 05' }
+           { image: 'assets/demo-desk.jpg', text: 'Workspace.jpg', size: '4.5 MB', tag: 'Drive', label: 'Oct 02', alt: { en: 'Workspace photo', es: 'Foto de escritorio' } },
+           { image: 'assets/demo-city.jpg', text: 'Evening_city.jpg', size: '3.9 MB', tag: 'Drive', label: 'Oct 03', alt: { en: 'Evening city photo', es: 'Foto de ciudad al atardecer' } },
+           { image: 'assets/demo-mountain.jpg', text: 'Trip_backup.jpg', size: '3.2 MB', tag: 'Drive', label: 'Oct 05', alt: { en: 'Mountain trip photo', es: 'Foto de viaje a la montaña' } }
         ]
       };
 
       let activeCards = [];
 
-      function updateOverlayLayout() {
-        const phoneBody = document.querySelector('.phone-body');
-        if (!phoneBody || !dragLeft || !dragRight) return;
-        const bodyRect = phoneBody.getBoundingClientRect();
-        const leftSpan = dragLeft.querySelector('span');
-        const rightSpan = dragRight.querySelector('span');
-        if (!leftSpan || !rightSpan) return;
+      function saveLanguage(language) {
+        try {
+          localStorage.setItem("siteLanguage", language);
+        } catch (error) {
+          return;
+        }
+      }
 
-        const leftLabelWidth = leftSpan.getBoundingClientRect().width;
-        const rightLabelWidth = rightSpan.getBoundingClientRect().width;
-        const labelWidth = Math.max(leftLabelWidth, rightLabelWidth);
-        const overlayRect = dragLeft.getBoundingClientRect();
-        const overlayWidth = overlayRect.width || bodyRect.width * 0.88;
-        const radius = overlayRect.height / 2;
-        const textPadding = 22 * 2;
-        const visibleNeeded = Math.max(labelWidth + textPadding + 12, radius * 0.78);
-        const visible = Math.min(overlayWidth - 16, visibleNeeded);
-        const offset = Math.max(0, overlayWidth - visible);
-        dragLeft.style.left = `-${offset}px`;
-        dragRight.style.right = `-${offset}px`;
-        overlayShiftPx = Math.min(16, Math.max(8, visible * 0.18));
+      function getSavedLanguage() {
+        try {
+          return localStorage.getItem("siteLanguage");
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function getInitialLanguage() {
+        const savedLanguage = getSavedLanguage();
+        if (savedLanguage) {
+          return savedLanguage;
+        }
+
+        const browserLanguages = navigator.languages || [navigator.language || ""];
+        return browserLanguages.some((language) => /^es(?:-|$)/i.test(language)) ? "es" : "en";
+      }
+
+      function setLanguage(language) {
+        const lang = language === "es" ? "es" : "en";
+        const metadata = pageMeta[lang];
+        currentLanguage = lang;
+        document.documentElement.lang = lang;
+        document.body.dataset.lang = lang;
+        saveLanguage(lang);
+
+        document.querySelectorAll("[data-set-lang]").forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.setLang === lang));
+        });
+
+        document.querySelectorAll("[data-label-en][data-label-es]").forEach((element) => {
+          element.setAttribute("aria-label", element.dataset[lang === "es" ? "labelEs" : "labelEn"]);
+        });
+
+        document.querySelectorAll("[data-i18n]").forEach((element) => {
+          element.textContent = uiText[lang][element.dataset.i18n];
+        });
+
+        document.querySelectorAll("[data-i18n-title]").forEach((element) => {
+          element.setAttribute("title", uiText[lang][element.dataset.i18nTitle]);
+        });
+
+        document.title = metadata.title;
+        const description = document.querySelector('meta[name="description"]');
+        if (description) {
+          description.setAttribute("content", metadata.description);
+        }
+
+        initCards();
+        updateOverlayLayout();
+        resetDragOverlay();
       }
 
       function updateOverlayLayout() {
@@ -935,8 +1249,10 @@
              card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
           }
 
+          const altText = item.alt ? item.alt[currentLanguage] : item.text;
           card.innerHTML = `
-            <div class="card-image" style="background: ${item.color}">
+            <div class="card-image">
+              <img src="${item.image}" alt="${altText}" width="720" height="900" draggable="false" />
               ${item.tag ? `<span class="card-tag">${item.tag}</span>` : ''}
               <div class="card-label">
                 <span>${labelText}</span>
@@ -1052,6 +1368,11 @@
       }
 
       // Inicializar
+      document.getElementById('year').textContent = new Date().getFullYear();
+      document.querySelectorAll("[data-set-lang]").forEach((button) => {
+        button.addEventListener("click", () => setLanguage(button.dataset.setLang));
+      });
+
       if (filterButton) {
         filterButton.addEventListener('click', toggleMode);
       }
@@ -1059,8 +1380,7 @@
         updateOverlayLayout();
         resetDragOverlay();
       });
-      updateOverlayLayout();
-      initCards();
+      setLanguage(getInitialLanguage());
     </script>
   </body>
 </html>
