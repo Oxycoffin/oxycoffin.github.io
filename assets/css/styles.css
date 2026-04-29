@@ -104,6 +104,7 @@ a {
   border-radius: var(--radius);
   background: var(--text);
   object-fit: contain;
+  object-position: center;
 }
 
 .brand-text {
