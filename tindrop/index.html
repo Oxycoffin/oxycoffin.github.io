@@ -10,6 +10,7 @@
       content="Clean your gallery and Google Drive with swipes. Fast, secure, and fun."
     />
     <meta name="theme-color" content="#6750A4" />
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -794,11 +795,11 @@
       </section>
 
       <footer>
-        <span>© 2025 Tindrop Inc.</span>
+        <span>&copy; <span id="year"></span> Tindrop by <a href="../">Lagartija Labs</a>.</span>
         <div class="footer-links" id="privacy">
           <a href="terms.html">Terms</a>
           <a href="privacy.html">Privacy</a>
-          <a href="#">Support</a>
+          <a href="mailto:lagartijalabs@gmail.com">Support</a>
         </div>
       </footer>
 
@@ -806,6 +807,8 @@
 
     <!-- Swipe interaction logic -->
     <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+
       const cardStack = document.getElementById('cardStack');
       const dragLeft = document.getElementById('dragLeft');
       const dragRight = document.getElementById('dragRight');

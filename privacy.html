@@ -1,17 +1,19 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Privacy Policy — Lagartija Labs</title>
     <meta name="description" content="Privacy policy for Lagartija Labs applications." />
+    <meta name="theme-color" content="#111214" />
     <link rel="canonical" href="https://oxycoffin.github.io/privacy.html" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/styles.css" />
   </head>
   <body>
     <header class="site-header">
       <div class="container">
-        <a class="brand" href="./">
+        <a class="brand" href="./" aria-label="Lagartija Labs home">
           <img
             class="brand-mark"
             src="assets/images/lagartija-labs-symbol.svg"
@@ -22,7 +24,7 @@
           />
           <span class="brand-text">Lagartija Labs</span>
         </a>
-        <nav class="nav">
+        <nav class="nav" aria-label="Primary navigation">
           <a href="./">Home</a>
         </nav>
       </div>
@@ -79,8 +81,18 @@
 
     <footer class="site-footer">
       <div class="container footer-inner">
-        <p>© <span id="year"></span> Lagartija Labs</p>
-        <nav class="footer-nav">
+        <p class="footer-brand">
+          <img
+            class="footer-brand-mark"
+            src="assets/images/lagartija-labs-symbol.svg"
+            alt=""
+            width="28"
+            height="28"
+            aria-hidden="true"
+          />
+          <span>&copy; <span id="year"></span> Lagartija Labs</span>
+        </p>
+        <nav class="footer-nav" aria-label="Footer navigation">
           <a href="./">Home</a>
           <a href="app-ads.txt">app-ads.txt</a>
         </nav>

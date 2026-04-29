@@ -413,6 +413,22 @@ a {
   margin: 0;
 }
 
+.footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--text);
+  font-weight: 750;
+}
+
+.footer-brand-mark {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  filter: brightness(0) invert(1);
+  object-fit: contain;
+}
+
 .footer-nav {
   justify-content: flex-end;
 }
