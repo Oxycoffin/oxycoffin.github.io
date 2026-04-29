@@ -580,7 +580,7 @@ main.section a {
 
 }
 
-@media (max-width: 720px) {
+@media (max-width: 520px) {
   .brand-text {
     display: none;
   }
