@@ -11,7 +11,8 @@
 - No build step; edit HTML/CSS/asset files directly.
 - Keep relative links and asset paths stable to avoid broken pages.
 - Preserve verification files (`google*.html`) and `app-ads.txt` contents unless explicitly asked.
-- Keep the privacy policy content in English.
+- Keep all user-facing website additions available in both English and Spanish, including navigation, calls to action, metadata, accessibility labels, and legal/privacy copy.
+- Keep the privacy policy content available in both English and Spanish.
 - Prefer small, readable HTML/CSS changes; avoid adding frameworks or heavy tooling.
 - For Tindrop pages, keep them self-contained (inline CSS) unless refactor is requested.
 

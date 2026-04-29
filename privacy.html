@@ -10,10 +10,16 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/styles.css" />
   </head>
-  <body>
+  <body data-page="privacy" data-lang="en">
     <header class="site-header">
       <div class="container">
-        <a class="brand" href="./" aria-label="Lagartija Labs home">
+        <a
+          class="brand"
+          href="./"
+          aria-label="Lagartija Labs home"
+          data-label-en="Lagartija Labs home"
+          data-label-es="Inicio de Lagartija Labs"
+        >
           <img
             class="brand-mark"
             src="assets/images/lagartija-labs-symbol.svg"
@@ -24,58 +30,133 @@
           />
           <span class="brand-text">Lagartija Labs</span>
         </a>
-        <nav class="nav" aria-label="Primary navigation">
-          <a href="./">Home</a>
-        </nav>
+        <div class="header-actions">
+          <nav
+            class="nav"
+            aria-label="Primary navigation"
+            data-label-en="Primary navigation"
+            data-label-es="Navegación principal"
+          >
+            <a href="./">
+              <span data-locale="en">Home</span>
+              <span data-locale="es">Inicio</span>
+            </a>
+          </nav>
+          <div
+            class="language-switcher"
+            role="group"
+            aria-label="Language selector"
+            data-label-en="Language selector"
+            data-label-es="Selector de idioma"
+          >
+            <button class="language-option" type="button" data-set-lang="en" aria-pressed="true">
+              <span aria-hidden="true">🇺🇸</span>
+              <span>EN</span>
+            </button>
+            <button class="language-option" type="button" data-set-lang="es" aria-pressed="false">
+              <span aria-hidden="true">🇪🇸</span>
+              <span>ES</span>
+            </button>
+          </div>
+        </div>
       </div>
     </header>
 
     <main class="section">
       <div class="container">
-        <h1>Privacy Policy</h1>
-        <p class="section-lead">Last updated: <time id="updated"></time></p>
+        <section data-locale="en" aria-labelledby="privacy-title-en">
+          <h1 id="privacy-title-en">Privacy Policy</h1>
+          <p class="section-lead">Last updated: <time class="updated"></time></p>
 
-        <p>
-          At Lagartija Labs, we take privacy seriously. This policy explains what
-          data our apps may collect, why we collect it, and how you can exercise
-          your rights.
-        </p>
+          <p>
+            At Lagartija Labs, we take privacy seriously. This policy explains what
+            data our apps may collect, why we collect it, and how you can exercise
+            your rights.
+          </p>
 
-        <h2>Data we collect</h2>
-        <ul class="bullets">
-          <li><strong>Anonymous usage data</strong> to improve stability and performance.</li>
-          <li><strong>Required data</strong> to enable explicit app features.</li>
-          <li><strong>We never</strong> sell personal data or collect more than necessary.</li>
-        </ul>
+          <h2>Data we collect</h2>
+          <ul class="bullets">
+            <li><strong>Anonymous usage data</strong> to improve stability and performance.</li>
+            <li><strong>Required data</strong> to enable explicit app features.</li>
+            <li><strong>We never</strong> sell personal data or collect more than necessary.</li>
+          </ul>
 
-        <h2>Purposes and legal basis</h2>
-        <p>We use data only to:</p>
-        <ul class="bullets">
-          <li>Provide and maintain the service.</li>
-          <li>Detect, prevent, and resolve issues.</li>
-          <li>Improve user experience in aggregate.</li>
-        </ul>
+          <h2>Purposes and legal basis</h2>
+          <p>We use data only to:</p>
+          <ul class="bullets">
+            <li>Provide and maintain the service.</li>
+            <li>Detect, prevent, and resolve issues.</li>
+            <li>Improve user experience in aggregate.</li>
+          </ul>
 
-        <h2>Retention</h2>
-        <p>We retain data only as long as needed for the purposes above.</p>
+          <h2>Retention</h2>
+          <p>We retain data only as long as needed for the purposes above.</p>
 
-        <h2>Third parties</h2>
-        <p>Some apps may integrate third-party services (e.g., Google Play Services). Check each app listing for specific details.</p>
+          <h2>Third parties</h2>
+          <p>Some apps may integrate third-party services (e.g., Google Play Services). Check each app listing for specific details.</p>
 
-        <h2>Crash/Diagnostics</h2>
-        <ul class="bullets">
-          <li><strong>Provider:</strong> Sentry.</li>
-          <li><strong>Data:</strong> stack traces, app version/build, OS/device info, breadcrumbs, background errors, attached diagnostics.log.</li>
-          <li><strong>Purpose:</strong> stability and improvements.</li>
-          <li><strong>Retention:</strong> per Sentry's policy.</li>
-          <li><strong>Opt-out:</strong> Settings → Privacy → "Share diagnostics".</li>
-        </ul>
+          <h2>Crash/Diagnostics</h2>
+          <ul class="bullets">
+            <li><strong>Provider:</strong> Sentry.</li>
+            <li><strong>Data:</strong> stack traces, app version/build, OS/device info, breadcrumbs, background errors, attached diagnostics.log.</li>
+            <li><strong>Purpose:</strong> stability and improvements.</li>
+            <li><strong>Retention:</strong> per Sentry's policy.</li>
+            <li><strong>Opt-out:</strong> Settings → Privacy → "Share diagnostics".</li>
+          </ul>
 
-        <h2>Your rights</h2>
-        <p>You can request access, correction, or deletion by emailing <a href="mailto:lagartijalabs@gmail.com">lagartijalabs@gmail.com</a>.</p>
+          <h2>Your rights</h2>
+          <p>You can request access, correction, or deletion by emailing <a href="mailto:lagartijalabs@gmail.com">lagartijalabs@gmail.com</a>.</p>
 
-        <h2>Contact</h2>
-        <p>For any privacy questions: <a href="mailto:lagartijalabs@gmail.com">lagartijalabs@gmail.com</a>.</p>
+          <h2>Contact</h2>
+          <p>For any privacy questions: <a href="mailto:lagartijalabs@gmail.com">lagartijalabs@gmail.com</a>.</p>
+        </section>
+
+        <section data-locale="es" aria-labelledby="privacy-title-es">
+          <h1 id="privacy-title-es">Política de privacidad</h1>
+          <p class="section-lead">Última actualización: <time class="updated"></time></p>
+
+          <p>
+            En Lagartija Labs nos tomamos la privacidad en serio. Esta política
+            explica qué datos pueden recopilar nuestras apps, por qué los
+            recopilamos y cómo puedes ejercer tus derechos.
+          </p>
+
+          <h2>Datos que recopilamos</h2>
+          <ul class="bullets">
+            <li><strong>Datos de uso anónimos</strong> para mejorar la estabilidad y el rendimiento.</li>
+            <li><strong>Datos necesarios</strong> para activar funciones explícitas de la app.</li>
+            <li><strong>Nunca</strong> vendemos datos personales ni recopilamos más de lo necesario.</li>
+          </ul>
+
+          <h2>Finalidades y base legal</h2>
+          <p>Usamos datos solo para:</p>
+          <ul class="bullets">
+            <li>Proporcionar y mantener el servicio.</li>
+            <li>Detectar, prevenir y resolver problemas.</li>
+            <li>Mejorar la experiencia de usuario de forma agregada.</li>
+          </ul>
+
+          <h2>Retención</h2>
+          <p>Conservamos los datos solo durante el tiempo necesario para las finalidades anteriores.</p>
+
+          <h2>Terceros</h2>
+          <p>Algunas apps pueden integrar servicios de terceros (por ejemplo, Google Play Services). Consulta cada ficha de app para ver detalles específicos.</p>
+
+          <h2>Fallos/Diagnósticos</h2>
+          <ul class="bullets">
+            <li><strong>Proveedor:</strong> Sentry.</li>
+            <li><strong>Datos:</strong> stack traces, versión/build de la app, información del sistema operativo/dispositivo, breadcrumbs, errores en segundo plano y diagnostics.log adjunto.</li>
+            <li><strong>Finalidad:</strong> estabilidad y mejoras.</li>
+            <li><strong>Retención:</strong> según la política de Sentry.</li>
+            <li><strong>Exclusión:</strong> Settings → Privacy → "Share diagnostics".</li>
+          </ul>
+
+          <h2>Tus derechos</h2>
+          <p>Puedes solicitar acceso, corrección o eliminación escribiendo a <a href="mailto:lagartijalabs@gmail.com">lagartijalabs@gmail.com</a>.</p>
+
+          <h2>Contacto</h2>
+          <p>Para cualquier pregunta sobre privacidad: <a href="mailto:lagartijalabs@gmail.com">lagartijalabs@gmail.com</a>.</p>
+        </section>
       </div>
     </main>
 
@@ -92,16 +173,96 @@
           />
           <span>&copy; <span id="year"></span> Lagartija Labs</span>
         </p>
-        <nav class="footer-nav" aria-label="Footer navigation">
-          <a href="./">Home</a>
+        <nav
+          class="footer-nav"
+          aria-label="Footer navigation"
+          data-label-en="Footer navigation"
+          data-label-es="Navegación del pie de página"
+        >
+          <a href="./">
+            <span data-locale="en">Home</span>
+            <span data-locale="es">Inicio</span>
+          </a>
           <a href="app-ads.txt">app-ads.txt</a>
         </nav>
       </div>
     </footer>
 
     <script>
-      document.getElementById('year').textContent = new Date().getFullYear();
-      document.getElementById('updated').textContent = new Date().toISOString().slice(0, 10);
+      const pageMeta = {
+        privacy: {
+          en: {
+            title: "Privacy Policy — Lagartija Labs",
+            description: "Privacy policy for Lagartija Labs applications.",
+          },
+          es: {
+            title: "Política de privacidad — Lagartija Labs",
+            description: "Política de privacidad para las aplicaciones de Lagartija Labs.",
+          },
+        },
+      };
+
+      function setLanguage(language) {
+        const lang = language === "es" ? "es" : "en";
+        const page = document.body.dataset.page;
+        const metadata = pageMeta[page] && pageMeta[page][lang];
+        document.documentElement.lang = lang;
+        document.body.dataset.lang = lang;
+        saveLanguage(lang);
+
+        document.querySelectorAll("[data-set-lang]").forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.setLang === lang));
+        });
+
+        document.querySelectorAll("[data-label-en][data-label-es]").forEach((element) => {
+          element.setAttribute("aria-label", element.dataset[lang === "es" ? "labelEs" : "labelEn"]);
+        });
+
+        if (metadata) {
+          document.title = metadata.title;
+          const description = document.querySelector('meta[name="description"]');
+          if (description) {
+            description.setAttribute("content", metadata.description);
+          }
+        }
+      }
+
+      function saveLanguage(language) {
+        try {
+          localStorage.setItem("siteLanguage", language);
+        } catch (error) {
+          return;
+        }
+      }
+
+      function getSavedLanguage() {
+        try {
+          return localStorage.getItem("siteLanguage");
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function getInitialLanguage() {
+        const savedLanguage = getSavedLanguage();
+        if (savedLanguage) {
+          return savedLanguage;
+        }
+
+        const browserLanguages = navigator.languages || [navigator.language || ""];
+        return browserLanguages.some((language) => /^es(?:-|$)/i.test(language)) ? "es" : "en";
+      }
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+      document.querySelectorAll(".updated").forEach((time) => {
+        time.textContent = new Date().toISOString().slice(0, 10);
+      });
+
+      document.querySelectorAll("[data-set-lang]").forEach((button) => {
+        button.addEventListener("click", () => setLanguage(button.dataset.setLang));
+      });
+
+      setLanguage(getInitialLanguage());
     </script>
   </body>
   </html>
