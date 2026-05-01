@@ -426,6 +426,22 @@ body[data-lang="es"] [data-locale="en"] {
   grid-row: 2;
 }
 
+.feature-layout-reverse {
+  grid-template-columns: minmax(280px, 0.74fr) minmax(0, 0.86fr);
+}
+
+.feature-layout-reverse .feature-copy {
+  grid-column: 2;
+}
+
+.feature-layout-reverse .feature-media {
+  grid-column: 1;
+}
+
+.feature-layout-reverse .feature-actions {
+  grid-column: 2;
+}
+
 .feature-media > img {
   width: 100%;
   aspect-ratio: 4 / 5;
@@ -561,7 +577,10 @@ main.section a {
 
   .feature-copy,
   .feature-media,
-  .feature-actions {
+  .feature-actions,
+  .feature-layout-reverse .feature-copy,
+  .feature-layout-reverse .feature-media,
+  .feature-layout-reverse .feature-actions {
     grid-column: 1;
   }
 

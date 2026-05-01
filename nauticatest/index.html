@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NauticaTest · Nautical exam practice</title>
+    <meta
+      name="description"
+      content="NauticaTest is a web platform for practicing Spanish nautical exams with official-style simulations, regional question banks, progress tracking, and chart study tools."
+    />
+    <meta name="theme-color" content="#111827" />
+    <link rel="canonical" href="https://lagartijalabs.com/nauticatest/" />
+    <link rel="icon" href="../assets/favicon.svg?v=20260501" type="image/svg+xml" />
+    <link rel="stylesheet" href="../assets/css/styles.css?v=20260501-1" />
+    <style>
+      body[data-lang="en"] [data-locale="es"],
+      body[data-lang="es"] [data-locale="en"] {
+        display: none !important;
+      }
+
+      body.nauticatest-page {
+        --nt-ink: #101827;
+        --nt-panel: #1b2535;
+        --nt-blue: #2563eb;
+        --nt-gold: #facc15;
+        --nt-green: #19c37d;
+        --nt-red: #ef4444;
+        background: #101827;
+        color: #f8fafc;
+      }
+
+      .product-hero {
+        position: relative;
+        min-height: calc(100svh - 72px);
+        display: grid;
+        align-items: center;
+        overflow: hidden;
+        padding: clamp(3.5rem, 7vw, 6rem) 0;
+        background:
+          radial-gradient(circle at 12% 18%, rgba(37, 99, 235, 0.22), transparent 32%),
+          radial-gradient(circle at 80% 12%, rgba(250, 204, 21, 0.12), transparent 26%),
+          linear-gradient(180deg, #111827 0%, #172234 100%);
+      }
+
+      .product-hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        opacity: 0.08;
+        background-image:
+          linear-gradient(135deg, transparent 0 46%, rgba(255,255,255,0.45) 47% 49%, transparent 50%),
+          radial-gradient(circle, rgba(255,255,255,0.35) 0 1px, transparent 1.5px);
+        background-size: 130px 130px, 38px 38px;
+        pointer-events: none;
+      }
+
+      .product-hero .container {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: minmax(0, 0.82fr) minmax(320px, 0.9fr);
+        gap: clamp(2.2rem, 6vw, 5rem);
+        align-items: center;
+      }
+
+      .product-mark {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1.1rem;
+      }
+
+      .product-mark img {
+        width: 54px;
+        height: 54px;
+        border-radius: var(--radius);
+      }
+
+      .product-mark span {
+        font-size: 1.06rem;
+        font-weight: 850;
+      }
+
+      .product-hero h1 {
+        max-width: 8.5ch;
+        margin: 0;
+        color: #ffffff;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(4rem, 10vw, 8.6rem);
+        font-weight: 400;
+        line-height: 0.86;
+        letter-spacing: 0;
+      }
+
+      .product-hero p:not(.eyebrow) {
+        max-width: 650px;
+        margin: 1.35rem 0 0;
+        color: rgba(248, 250, 252, 0.78);
+        font-size: clamp(1.04rem, 1.5vw, 1.22rem);
+      }
+
+      .hero-product-art {
+        margin: 0;
+      }
+
+      .hero-product-art img {
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        object-fit: cover;
+        border: 1px solid rgba(248, 250, 252, 0.14);
+        border-radius: var(--radius);
+        box-shadow: 0 34px 80px rgba(0, 0, 0, 0.38);
+      }
+
+      .product-section {
+        padding: clamp(4rem, 8vw, 6.8rem) 0;
+        background: var(--paper);
+        color: var(--body);
+      }
+
+      .product-section.dark {
+        background:
+          radial-gradient(circle at 86% 20%, rgba(37, 99, 235, 0.2), transparent 28%),
+          linear-gradient(180deg, #172234, #101827);
+        color: #f8fafc;
+      }
+
+      .product-section.dark .section h2,
+      .product-section.dark h2 {
+        color: #ffffff;
+      }
+
+      .product-section.dark .section-lead,
+      .product-section.dark .feature-list span {
+        color: rgba(248, 250, 252, 0.72);
+      }
+
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .product-card {
+        min-height: 100%;
+        padding: 1.1rem;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.62);
+      }
+
+      .product-card strong {
+        display: block;
+        color: var(--ink);
+        font-size: 1.02rem;
+      }
+
+      .product-card span {
+        display: block;
+        margin-top: 0.42rem;
+        color: var(--body-muted);
+      }
+
+      .product-band {
+        display: grid;
+        grid-template-columns: minmax(0, 0.82fr) minmax(300px, 0.72fr);
+        gap: clamp(2rem, 6vw, 4rem);
+        align-items: center;
+      }
+
+      .metric-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.8rem;
+        margin-top: 1.8rem;
+      }
+
+      .metric {
+        padding: 1rem;
+        border: 1px solid rgba(248, 250, 252, 0.14);
+        border-radius: var(--radius);
+        background: rgba(248, 250, 252, 0.06);
+      }
+
+      .metric strong {
+        display: block;
+        color: #ffffff;
+        font-size: clamp(1.6rem, 3vw, 2.4rem);
+        line-height: 1;
+      }
+
+      .metric span {
+        display: block;
+        margin-top: 0.45rem;
+        color: rgba(248, 250, 252, 0.68);
+      }
+
+      .product-cta-panel {
+        padding: clamp(1.6rem, 4vw, 2.2rem);
+        border: 1px solid rgba(248, 250, 252, 0.14);
+        border-radius: var(--radius);
+        background: rgba(248, 250, 252, 0.06);
+      }
+
+      .product-cta-panel h2 {
+        margin: 0;
+        color: #ffffff;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(2.2rem, 5vw, 4rem);
+        font-weight: 400;
+        line-height: 0.95;
+      }
+
+      .product-cta-panel p {
+        margin: 1rem 0 0;
+        color: rgba(248, 250, 252, 0.72);
+      }
+
+      @media (max-width: 900px) {
+        .product-hero .container,
+        .product-band {
+          grid-template-columns: 1fr;
+        }
+
+        .product-grid,
+        .metric-row {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 680px) {
+        .product-hero {
+          padding-top: 6.4rem;
+        }
+
+        .product-hero h1 {
+          font-size: clamp(3.6rem, 20vw, 6.2rem);
+        }
+      }
+    </style>
+  </head>
+  <body class="nauticatest-page" data-page="nauticatest" data-lang="en">
+    <header class="site-header">
+      <div class="container">
+        <a
+          class="brand"
+          href="../"
+          aria-label="Lagartija Labs home"
+          data-label-en="Lagartija Labs home"
+          data-label-es="Inicio de Lagartija Labs"
+        >
+          <img
+            class="brand-mark"
+            src="../assets/images/lagartija-labs-symbol.svg"
+            alt=""
+            width="42"
+            height="42"
+            aria-hidden="true"
+          />
+          <span class="brand-text">Lagartija Labs</span>
+        </a>
+        <div class="header-actions">
+          <nav
+            class="nav"
+            aria-label="Primary navigation"
+            data-label-en="Primary navigation"
+            data-label-es="Navegación principal"
+          >
+            <a href="../#tindrop">Tindrop</a>
+            <a href="./">NauticaTest</a>
+            <a href="#details">
+              <span data-locale="en">Details</span>
+              <span data-locale="es">Detalles</span>
+            </a>
+          </nav>
+          <div
+            class="language-switcher"
+            role="group"
+            aria-label="Language selector"
+            data-label-en="Language selector"
+            data-label-es="Selector de idioma"
+          >
+            <button class="language-option" type="button" data-set-lang="en" aria-pressed="true">
+              <span class="language-flag language-flag-uk" aria-hidden="true"></span>
+              <span>EN</span>
+            </button>
+            <button class="language-option" type="button" data-set-lang="es" aria-pressed="false">
+              <span class="language-flag language-flag-es" aria-hidden="true"></span>
+              <span>ES</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="product-hero" aria-labelledby="product-title">
+        <div class="container">
+          <div>
+            <p class="eyebrow">
+              <span data-locale="en">Web exam platform</span>
+              <span data-locale="es">Plataforma web de exámenes</span>
+            </p>
+            <div class="product-mark">
+              <img src="../assets/images/nauticatest-symbol.png" alt="" width="512" height="512" aria-hidden="true" />
+              <span>NauticaTest</span>
+            </div>
+            <h1 id="product-title">NauticaTest</h1>
+            <p>
+              <span data-locale="en">
+                Official-style nautical exam practice for PNB, PER, Patrón de Yate,
+                and Capitán de Yate, built for quick sessions on desktop and mobile.
+              </span>
+              <span data-locale="es">
+                Simulacros náuticos tipo oficial para PNB, PER, Patrón de Yate y
+                Capitán de Yate, pensados para estudiar en escritorio y móvil.
+              </span>
+            </p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="https://nauticatest.app/landing">
+                <span data-locale="en">Open NauticaTest</span>
+                <span data-locale="es">Abrir NauticaTest</span>
+              </a>
+              <a class="btn btn-ghost" href="https://nauticatest.app/landing/pro">
+                <span data-locale="en">See Pro</span>
+                <span data-locale="es">Ver Pro</span>
+              </a>
+            </div>
+          </div>
+          <figure class="hero-product-art">
+            <img
+              src="../assets/images/nauticatest-product-art.webp"
+              alt="NauticaTest exam interface shown on desktop and mobile"
+              data-label-en="NauticaTest exam interface shown on desktop and mobile"
+              data-label-es="Interfaz de examen de NauticaTest en escritorio y móvil"
+              width="1003"
+              height="1568"
+              fetchpriority="high"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <section class="product-section" id="details" aria-labelledby="details-title">
+        <div class="container split">
+          <div>
+            <p class="eyebrow dark">
+              <span data-locale="en">Practice flow</span>
+              <span data-locale="es">Flujo de estudio</span>
+            </p>
+            <h2 id="details-title">
+              <span data-locale="en">A simulator for the way nautical exams are studied.</span>
+              <span data-locale="es">Un simulador para la forma real de preparar náutica.</span>
+            </h2>
+          </div>
+          <p class="section-lead">
+            <span data-locale="en">
+              NauticaTest combines official-style exam sessions, topic practice,
+              mistake review, progress stats, and chart-focused tools so students
+              can keep a clear routine before exam day.
+            </span>
+            <span data-locale="es">
+              NauticaTest combina exámenes tipo oficial, práctica por temas,
+              repetición de fallos, estadísticas y herramientas de carta para
+              mantener una rutina clara antes del examen.
+            </span>
+          </p>
+        </div>
+        <div class="container product-grid">
+          <div class="product-card">
+            <strong>
+              <span data-locale="en">Official simulations</span>
+              <span data-locale="es">Simulacros oficiales</span>
+            </strong>
+            <span>
+              <span data-locale="en">Choose title and region, then practice with an exam-like interface.</span>
+              <span data-locale="es">Elige titulación y comunidad, y practica con una interfaz tipo examen.</span>
+            </span>
+          </div>
+          <div class="product-card">
+            <strong>
+              <span data-locale="en">Review and repeat</span>
+              <span data-locale="es">Repasar y repetir</span>
+            </strong>
+            <span>
+              <span data-locale="en">Turn wrong answers into a focused study loop instead of loose notes.</span>
+              <span data-locale="es">Convierte los fallos en un ciclo de repaso, no en apuntes sueltos.</span>
+            </span>
+          </div>
+          <div class="product-card">
+            <strong>
+              <span data-locale="en">Chart practice</span>
+              <span data-locale="es">Práctica de carta</span>
+            </strong>
+            <span>
+              <span data-locale="en">Work through navigation exercises with dedicated tools for chart questions.</span>
+              <span data-locale="es">Resuelve ejercicios de navegación con herramientas dedicadas para carta.</span>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section class="product-section dark" aria-labelledby="coverage-title">
+        <div class="container product-band">
+          <div>
+            <p class="eyebrow">
+              <span data-locale="en">Coverage</span>
+              <span data-locale="es">Cobertura</span>
+            </p>
+            <h2 id="coverage-title">
+              <span data-locale="en">Made for Spain's recreational boating licenses.</span>
+              <span data-locale="es">Pensada para las titulaciones náuticas españolas.</span>
+            </h2>
+            <p class="section-lead">
+              <span data-locale="en">
+                The platform is organized around the titles, regions, and recurring
+                practice patterns students actually use while preparing.
+              </span>
+              <span data-locale="es">
+                La plataforma se organiza alrededor de las titulaciones, comunidades
+                y patrones de repaso que los alumnos usan al prepararse.
+              </span>
+            </p>
+            <div class="metric-row">
+              <div class="metric">
+                <strong>PNB</strong>
+                <span>Patrón de Navegación Básica</span>
+              </div>
+              <div class="metric">
+                <strong>PER</strong>
+                <span>Patrón de Embarcaciones de Recreo</span>
+              </div>
+              <div class="metric">
+                <strong>PY/CY</strong>
+                <span>Patrón y Capitán de Yate</span>
+              </div>
+            </div>
+          </div>
+          <div class="product-cta-panel">
+            <h2>
+              <span data-locale="en">Start with a real exam flow.</span>
+              <span data-locale="es">Empieza con un flujo de examen real.</span>
+            </h2>
+            <p>
+              <span data-locale="en">
+                Open NauticaTest and practice from the web without waiting for an app install.
+              </span>
+              <span data-locale="es">
+                Abre NauticaTest y practica desde la web sin esperar a instalar una app.
+              </span>
+            </p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="https://nauticatest.app/landing">
+                <span data-locale="en">Go to NauticaTest</span>
+                <span data-locale="es">Ir a NauticaTest</span>
+              </a>
+              <a class="btn btn-secondary" href="../">
+                <span data-locale="en">Back to Lagartija Labs</span>
+                <span data-locale="es">Volver a Lagartija Labs</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p class="footer-brand">
+          <img
+            class="footer-brand-mark"
+            src="../assets/images/lagartija-labs-symbol.svg"
+            alt=""
+            width="22"
+            height="22"
+            aria-hidden="true"
+          />
+          <span>&copy; <span id="year"></span> Lagartija Labs</span>
+        </p>
+        <nav
+          class="footer-nav"
+          aria-label="Footer navigation"
+          data-label-en="Footer navigation"
+          data-label-es="Navegación del pie de página"
+        >
+          <a href="../">
+            <span data-locale="en">Home</span>
+            <span data-locale="es">Inicio</span>
+          </a>
+          <a href="../privacy.html">
+            <span data-locale="en">Privacy</span>
+            <span data-locale="es">Privacidad</span>
+          </a>
+          <a href="../tindrop/">Tindrop</a>
+          <a href="./">NauticaTest</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script>
+      const pageMeta = {
+        nauticatest: {
+          en: {
+            title: "NauticaTest · Nautical exam practice",
+            description:
+              "NauticaTest is a web platform for practicing Spanish nautical exams with official-style simulations, regional question banks, progress tracking, and chart study tools.",
+          },
+          es: {
+            title: "NauticaTest · Simulacros náuticos online",
+            description:
+              "NauticaTest es una plataforma web para preparar exámenes náuticos españoles con simulacros tipo oficial, bancos por comunidad, progreso y herramientas de carta.",
+          },
+        },
+      };
+
+      function setLanguage(language) {
+        const lang = language === "es" ? "es" : "en";
+        const page = document.body.dataset.page;
+        const metadata = pageMeta[page] && pageMeta[page][lang];
+        document.documentElement.lang = lang;
+        document.body.dataset.lang = lang;
+        saveLanguage(lang);
+
+        document.querySelectorAll("[data-set-lang]").forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.setLang === lang));
+        });
+
+        document.querySelectorAll("[data-label-en][data-label-es]").forEach((element) => {
+          element.setAttribute("aria-label", element.dataset[lang === "es" ? "labelEs" : "labelEn"]);
+          if (element.hasAttribute("alt")) {
+            element.setAttribute("alt", element.dataset[lang === "es" ? "labelEs" : "labelEn"]);
+          }
+        });
+
+        if (metadata) {
+          document.title = metadata.title;
+          const description = document.querySelector('meta[name="description"]');
+          if (description) {
+            description.setAttribute("content", metadata.description);
+          }
+        }
+      }
+
+      function saveLanguage(language) {
+        try {
+          localStorage.setItem("siteLanguage", language);
+        } catch (error) {
+          return;
+        }
+      }
+
+      function getSavedLanguage() {
+        try {
+          return localStorage.getItem("siteLanguage");
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function getInitialLanguage() {
+        const savedLanguage = getSavedLanguage();
+        if (savedLanguage) {
+          return savedLanguage;
+        }
+
+        const browserLanguages = navigator.languages || [navigator.language || ""];
+        return browserLanguages.some((language) => /^es(?:-|$)/i.test(language)) ? "es" : "en";
+      }
+
+      const year = document.getElementById("year");
+      if (year) {
+        year.textContent = new Date().getFullYear();
+      }
+
+      document.querySelectorAll("[data-set-lang]").forEach((button) => {
+        button.addEventListener("click", () => setLanguage(button.dataset.setLang));
+      });
+
+      setLanguage(getInitialLanguage());
+    </script>
+  </body>
+</html>
