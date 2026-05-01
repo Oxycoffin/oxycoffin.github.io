@@ -622,7 +622,7 @@ main.section a {
   }
 
   .brand {
-    flex: 0 0 42px;
+    flex: 0 0 70px;
     gap: 0.5rem;
   }
 
@@ -700,7 +700,7 @@ main.section a {
   }
 
   .brand {
-    flex-basis: 34px;
+    flex-basis: 58px;
   }
 
   .brand-text {
@@ -719,7 +719,7 @@ main.section a {
   }
 
   .brand {
-    flex-basis: 32px;
+    flex-basis: 52px;
   }
 
   .brand-text {
@@ -732,6 +732,10 @@ main.section a {
 
   .nav a {
     font-size: 0.78rem;
+  }
+
+  .nav a[href="#contact"] {
+    display: none;
   }
 
   .language-option span:last-child {
