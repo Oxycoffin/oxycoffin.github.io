@@ -57,6 +57,16 @@ SECTIONS: tuple[SectionDef, ...] = (
         ),
     ),
     SectionDef(
+        key="app_update",
+        title="App Update Gate",
+        description="Claves activas en RemoteConfigAppUpdate. mode admite none, soft o hard.",
+        fields=(
+            FieldDef("app_update.current_version", "current_version", "text", "1.19.8+262", "Version actual publicada, incluyendo build suffix."),
+            FieldDef("app_update.current_build_number", "current_build_number", "int", 262, "Build number publicado. Usado para evitar falsos positivos."),
+            FieldDef("app_update.mode", "mode (none | soft | hard)", "text", "none", "none no muestra gate, soft se puede cerrar, hard bloquea."),
+        ),
+    ),
+    SectionDef(
         key="ads_core",
         title="Ads Core",
         description="Claves activas en RemoteConfigAds.",
