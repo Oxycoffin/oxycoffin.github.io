@@ -617,19 +617,27 @@ main.section a {
     min-height: auto;
     padding-block: 0.65rem;
     align-items: center;
+    justify-content: flex-start;
     gap: 0.7rem;
   }
 
   .brand {
-    flex: 0 0 auto;
+    flex: 0 0 42px;
     gap: 0.5rem;
   }
 
+  .header-actions {
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 0.45rem;
+  }
+
   .nav {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
     flex-wrap: nowrap;
     justify-content: flex-end;
     gap: 0.35rem;
+    min-width: 0;
   }
 
   .nav a {
@@ -637,11 +645,8 @@ main.section a {
     font-size: 0.82rem;
   }
 
-  .header-actions {
-    gap: 0.45rem;
-  }
-
   .language-switcher {
+    flex: 0 0 auto;
     padding: 0.16rem;
   }
 
@@ -694,6 +699,10 @@ main.section a {
     padding: 2px;
   }
 
+  .brand {
+    flex-basis: 34px;
+  }
+
   .brand-text {
     font-size: 0.86rem;
   }
@@ -707,6 +716,10 @@ main.section a {
   .brand-mark {
     width: 32px;
     height: 32px;
+  }
+
+  .brand {
+    flex-basis: 32px;
   }
 
   .brand-text {
