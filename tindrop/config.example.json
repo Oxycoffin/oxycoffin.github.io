@@ -7,9 +7,9 @@
     "enable_interactive_tutorial": true
   },
   "app_update": {
-    "current_version": "1.20.0+263",
-    "current_build_number": 263,
-    "mode": "soft"
+    "current_version": "1.19.8+262",
+    "current_build_number": 262,
+    "mode": "none"
   },
   "ads": {
     "frequency": 10,
@@ -45,6 +45,8 @@
     "privacy_policy_url": "https://oxycoffin.github.io/Tindrop_pages/privacy.html",
     "terms_url": "https://oxycoffin.github.io/Tindrop_pages/terms.html",
     "support_email": "lagartijalabs@gmail.com",
+    "share_url": "https://lagartijalabs.com/tindrop/go/",
+    "app_store_url": "https://apps.apple.com/app/id6756980913",
     "play_store_url": "https://play.google.com/store/apps/details?id=com.tindrop.tindrop"
   }
 }

@@ -61,9 +61,9 @@ SECTIONS: tuple[SectionDef, ...] = (
         title="App Update Gate",
         description="Claves activas en RemoteConfigAppUpdate. mode admite none, soft o hard.",
         fields=(
-            FieldDef("app_update.current_version", "current_version", "text", "1.20.0+263", "Version actual publicada, incluyendo build suffix."),
-            FieldDef("app_update.current_build_number", "current_build_number", "int", 263, "Build number publicado. Usado para evitar falsos positivos."),
-            FieldDef("app_update.mode", "mode (none | soft | hard)", "text", "soft", "none no muestra gate, soft se puede cerrar, hard bloquea."),
+            FieldDef("app_update.current_version", "current_version", "text", "1.19.8+262", "Version actual publicada, incluyendo build suffix."),
+            FieldDef("app_update.current_build_number", "current_build_number", "int", 262, "Build number publicado. Usado para evitar falsos positivos."),
+            FieldDef("app_update.mode", "mode (none | soft | hard)", "text", "none", "none no muestra gate, soft se puede cerrar, hard bloquea."),
         ),
     ),
     SectionDef(
@@ -137,7 +137,9 @@ SECTIONS: tuple[SectionDef, ...] = (
             FieldDef("links.privacy_policy_url", "privacy_policy_url", "text", "https://oxycoffin.github.io/Tindrop_pages/privacy.html"),
             FieldDef("links.terms_url", "terms_url", "text", "https://oxycoffin.github.io/Tindrop_pages/terms.html"),
             FieldDef("links.support_email", "support_email", "text", "lagartijalabs@gmail.com"),
-            FieldDef("links.play_store_url", "play_store_url", "text", "https://lagartijalabs.com/tindrop/go/"),
+            FieldDef("links.share_url", "share_url", "text", "https://lagartijalabs.com/tindrop/go/"),
+            FieldDef("links.app_store_url", "app_store_url", "text", "https://apps.apple.com/app/id6756980913"),
+            FieldDef("links.play_store_url", "play_store_url", "text", "https://play.google.com/store/apps/details?id=com.tindrop.tindrop"),
         ),
     ),
     SectionDef(
