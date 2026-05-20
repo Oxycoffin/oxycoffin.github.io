@@ -116,6 +116,7 @@ SECTIONS: tuple[SectionDef, ...] = (
         fields=(
             FieldDef("rating.swipe_threshold", "swipe_threshold", "int", 200),
             FieldDef("rating.cooldown_days", "cooldown_days", "int", 7),
+            FieldDef("rating.share_reward_cooldown_days", "share_reward_cooldown_days", "int", 7),
             FieldDef("rating.ios_app_store_id", "ios_app_store_id", "text", "6756980913"),
         ),
     ),

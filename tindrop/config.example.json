@@ -34,6 +34,7 @@
   "rating": {
     "swipe_threshold": 200,
     "cooldown_days": 7,
+    "share_reward_cooldown_days": 7,
     "ios_app_store_id": "6756980913"
   },
   "notifications": {
