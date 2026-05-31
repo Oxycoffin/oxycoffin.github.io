@@ -75,11 +75,11 @@ SECTIONS: tuple[SectionDef, ...] = (
             FieldDef("ads.premium_first_ad", "premium_first_ad", "int", 3),
             FieldDef("ads.premium_ad_frequency", "premium_ad_frequency", "int", 7),
             FieldDef(
-                "ads.rewarded_interstitial_cooldown_minutes",
-                "rewarded_interstitial_cooldown_minutes",
+                "ads.action_interstitial_cooldown_minutes",
+                "action_interstitial_cooldown_minutes",
                 "int",
                 5,
-                "Reemplaza al legacy cooldown_minutes.",
+                "Cooldown compartido por los action gates con interstitial.",
             ),
         ),
     ),
@@ -94,8 +94,6 @@ SECTIONS: tuple[SectionDef, ...] = (
             FieldDef("ads.units.ios_interstitial", "ios_interstitial", "text", "ca-app-pub-6279728494613017/7703664303"),
             FieldDef("ads.units.android_rewarded", "android_rewarded", "text", "ca-app-pub-6279728494613017/4690020554"),
             FieldDef("ads.units.ios_rewarded", "ios_rewarded", "text", "ca-app-pub-6279728494613017/4963345117"),
-            FieldDef("ads.units.android_rewarded_interstitial", "android_rewarded_interstitial", "text", "ca-app-pub-6279728494613017/1656323137"),
-            FieldDef("ads.units.ios_rewarded_interstitial", "ios_rewarded_interstitial", "text", "ca-app-pub-6279728494613017/9395358143"),
         ),
     ),
     SectionDef(

@@ -13,16 +13,14 @@
     "frequency": 10,
     "premium_first_ad": 3,
     "premium_ad_frequency": 7,
-    "rewarded_interstitial_cooldown_minutes": 5,
+    "action_interstitial_cooldown_minutes": 5,
     "units": {
       "android_native": "ca-app-pub-6279728494613017/8616979665",
       "ios_native": "ca-app-pub-6279728494613017/5081354485",
       "android_interstitial": "ca-app-pub-6279728494613017/5015294938",
       "ios_interstitial": "ca-app-pub-6279728494613017/7703664303",
       "android_rewarded": "ca-app-pub-6279728494613017/4690020554",
-      "ios_rewarded": "ca-app-pub-6279728494613017/4963345117",
-      "android_rewarded_interstitial": "ca-app-pub-6279728494613017/1656323137",
-      "ios_rewarded_interstitial": "ca-app-pub-6279728494613017/9395358143"
+      "ios_rewarded": "ca-app-pub-6279728494613017/4963345117"
     },
     "cooldown_minutes": 3
   },
@@ -124,6 +122,6 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 14,
+  "version": 15,
   "issued_at": 1773272079
 }
