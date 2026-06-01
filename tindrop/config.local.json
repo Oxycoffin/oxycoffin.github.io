@@ -5,8 +5,8 @@
     "enable_interactive_tutorial": true
   },
   "app_update": {
-    "current_version": "1.25.0+273",
-    "current_build_number": 273,
+    "current_version": "1.25.4+277",
+    "current_build_number": 277,
     "mode": "none"
   },
   "ads": {
@@ -125,6 +125,6 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 16,
+  "version": 17,
   "issued_at": 1773272079
 }
