@@ -112,7 +112,7 @@
           </a>
 
           <a class="badge-link" id="androidLink"
-             href="intent://details?id=com.tindrop.tindrop#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.tindrop.tindrop;end"
+             href="https://play.google.com/store/apps/details?id=com.tindrop.tindrop"
              rel="noopener">
             <img class="badge"
                  src="https://joshbuchea.com/images/notes/app-store-badge-android-get-it-on-google-play.png"
@@ -143,12 +143,16 @@
 
     (function autoRedirect() {
       try {
+        var androidLink = document.getElementById("androidLink");
         var androidIntentUrl = "intent://details?id=com.tindrop.tindrop#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.tindrop.tindrop;end";
         var ua = navigator.userAgent || "";
         var isAndroid = /Android/i.test(ua);
         var isIOS = /iPhone|iPad|iPod/i.test(ua);
 
         if (isAndroid) {
+          if (androidLink) {
+            androidLink.href = androidIntentUrl;
+          }
           location.replace(androidIntentUrl);
           return;
         }
