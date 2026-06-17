@@ -61,8 +61,8 @@ SECTIONS: tuple[SectionDef, ...] = (
         title="App Update Gate",
         description="Claves activas en RemoteConfigAppUpdate. mode admite none, soft o hard.",
         fields=(
-            FieldDef("app_update.current_version", "current_version", "text", "1.25.7+280", "Version actual publicada, incluyendo build suffix."),
-            FieldDef("app_update.current_build_number", "current_build_number", "int", 280, "Build number publicado. Usado para evitar falsos positivos."),
+            FieldDef("app_update.current_version", "current_version", "text", "1.27.0+283", "Version actual publicada, incluyendo build suffix."),
+            FieldDef("app_update.current_build_number", "current_build_number", "int", 283, "Build number publicado. Usado para evitar falsos positivos."),
             FieldDef("app_update.mode", "mode (none | soft | hard)", "text", "none", "none no muestra gate, soft se puede cerrar, hard bloquea."),
         ),
     ),
