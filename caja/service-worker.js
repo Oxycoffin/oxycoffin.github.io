@@ -1,4 +1,4 @@
-const CACHE_NAME = "caja-clara-v1";
+const CACHE_NAME = "caja-clara-v2";
 const APP_FILES = ["./", "index.html", "styles.css", "app.js", "manifest.webmanifest"];
 
 self.addEventListener("install", event => {
