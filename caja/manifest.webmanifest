@@ -1,0 +1,11 @@
+{
+  "name": "Caja Clara · Arqueo de caja",
+  "short_name": "Caja Clara",
+  "description": "Conteo de billetes y monedas con historial local.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f3eb",
+  "theme_color": "#173f35"
+}

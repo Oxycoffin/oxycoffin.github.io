@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#173f35">
+  <meta name="description" content="Cuenta billetes y monedas, comprueba el descuadre y guarda el historial de caja en tu dispositivo.">
+  <title>Caja Clara · Arqueo de caja</title>
+  <link rel="icon" href="data:,">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="#inicio" aria-label="Caja Clara, inicio">
+        <span class="brand__mark" aria-hidden="true">€</span>
+        <span>Caja Clara</span>
+      </a>
+      <button class="quiet-button" id="historyShortcut" type="button" aria-label="Ir al historial">
+        Historial <span class="history-count" id="historyCount">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="app" id="inicio">
+    <section class="hero" aria-labelledby="pageTitle">
+      <div>
+        <p class="eyebrow">Arqueo rápido y privado</p>
+        <h1 id="pageTitle">Cuenta la caja<br><span>sin perder la cuenta.</span></h1>
+        <p class="hero__copy">Introduce las unidades o pesa las monedas. Tu progreso y tu historial se guardan solo en este dispositivo.</p>
+      </div>
+      <div class="live-total" aria-live="polite">
+        <span>Total contado</span>
+        <strong id="heroTotal">0,00&nbsp;€</strong>
+        <small id="draftStatus">Listo para empezar</small>
+      </div>
+    </section>
+
+    <form id="cashForm" novalidate>
+      <section class="panel setup-panel" aria-labelledby="setupTitle">
+        <div class="section-heading compact-heading">
+          <div>
+            <p class="step">01 · Datos del arqueo</p>
+            <h2 id="setupTitle">Sitúa el cierre</h2>
+          </div>
+        </div>
+        <div class="setup-grid">
+          <label class="field">
+            <span>Nombre o turno <small>opcional</small></span>
+            <input id="sessionName" type="text" maxlength="60" autocomplete="off" placeholder="Ej. Cierre de tarde">
+          </label>
+          <label class="field">
+            <span>Total esperado <small>opcional</small></span>
+            <span class="money-field">
+              <input id="expectedTotal" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00" aria-describedby="expectedHint">
+              <span aria-hidden="true">€</span>
+            </span>
+            <small id="expectedHint">Para calcular sobrante o faltante</small>
+          </label>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="billsTitle">
+        <div class="section-heading">
+          <div>
+            <p class="step">02 · Billetes</p>
+            <h2 id="billsTitle">Cuenta por unidades</h2>
+          </div>
+          <strong class="section-total" id="billSubtotal">0,00&nbsp;€</strong>
+        </div>
+        <div class="cash-grid" id="billGrid"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="coinsTitle">
+        <div class="section-heading section-heading--coins">
+          <div>
+            <p class="step">03 · Monedas</p>
+            <h2 id="coinsTitle">Cuenta o pesa</h2>
+          </div>
+          <strong class="section-total" id="coinSubtotal">0,00&nbsp;€</strong>
+        </div>
+
+        <fieldset class="segmented" aria-label="Método para contar las monedas">
+          <legend class="sr-only">Método de conteo</legend>
+          <button id="quantityButton" class="active" type="button" aria-pressed="true">Por cantidad</button>
+          <button id="weightButton" type="button" aria-pressed="false">Por peso</button>
+        </fieldset>
+        <p class="mode-help" id="modeHelp">Indica cuántas monedas tienes de cada tipo.</p>
+        <div class="cash-grid" id="coinGrid"></div>
+      </section>
+
+      <section class="result-card" aria-labelledby="resultTitle">
+        <div class="result-card__main">
+          <p id="resultTitle">Total en caja</p>
+          <strong id="grandTotal">0,00&nbsp;€</strong>
+          <div class="difference is-neutral" id="difference" hidden>
+            <span id="differenceLabel">Diferencia</span>
+            <strong id="differenceValue">0,00&nbsp;€</strong>
+          </div>
+        </div>
+        <div class="result-card__actions">
+          <button class="button button--primary" id="saveButton" type="button">Guardar arqueo</button>
+          <button class="button button--secondary" id="copyButton" type="button">Copiar resumen</button>
+          <button class="button button--danger-text" id="clearButton" type="button">Empezar de nuevo</button>
+        </div>
+      </section>
+    </form>
+
+    <section class="history" id="historial" aria-labelledby="historyTitle">
+      <div class="section-heading history__heading">
+        <div>
+          <p class="step">Historial local</p>
+          <h2 id="historyTitle">Arqueos guardados</h2>
+        </div>
+        <button class="quiet-button" id="exportButton" type="button">Exportar CSV</button>
+      </div>
+      <p class="privacy-note"><span aria-hidden="true">●</span> Nada sale de tu dispositivo. Si borras los datos del navegador, también se borrará el historial.</p>
+      <div class="empty-state" id="emptyHistory">
+        <span aria-hidden="true">€</span>
+        <h3>Aún no hay arqueos</h3>
+        <p>Cuando guardes el primero, aparecerá aquí.</p>
+      </div>
+      <div class="history-list" id="historyList"></div>
+    </section>
+  </main>
+
+  <div class="mobile-dock" aria-label="Resumen del arqueo">
+    <div>
+      <span>Total</span>
+      <strong id="dockTotal">0,00&nbsp;€</strong>
+    </div>
+    <button class="button button--primary" id="dockSaveButton" type="button">Guardar</button>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <dialog id="confirmDialog" class="dialog">
+    <form method="dialog">
+      <h2 id="dialogTitle">¿Empezar de nuevo?</h2>
+      <p id="dialogMessage">Se borrará el conteo actual. Los arqueos ya guardados seguirán en el historial.</p>
+      <div class="dialog__actions">
+        <button class="button button--secondary" value="cancel">Cancelar</button>
+        <button class="button button--danger" id="confirmAction" value="confirm">Sí, borrar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="cashCardTemplate">
+    <article class="cash-card">
+      <div class="denomination" aria-hidden="true"><span class="denomination__value"></span></div>
+      <div class="cash-card__body">
+        <label class="cash-label"><span class="cash-label__text">Cantidad</span>
+          <input class="cash-input" type="text" inputmode="numeric" autocomplete="off" placeholder="0">
+        </label>
+        <div class="stepper" aria-label="Cambiar cantidad">
+          <button class="stepper__button decrement" type="button" aria-label="Restar una">−</button>
+          <button class="stepper__button increment" type="button" aria-label="Sumar una">+</button>
+        </div>
+      </div>
+      <div class="cash-card__footer">
+        <span class="detail"></span>
+        <strong class="amount">0,00&nbsp;€</strong>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
