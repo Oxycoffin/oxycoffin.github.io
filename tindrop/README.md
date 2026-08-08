@@ -17,6 +17,18 @@ Incluye la Política de Privacidad y los Términos de Uso con un encabezado de m
 
 Se publica en `tindrop/config.json` y se firma en `tindrop/config.json.sig`.
 
+Desde Tindrop 1.30.0, el payload puede conservar snapshots completos dentro de
+`app_versions`. La app selecciona primero `x.y.z+build`, después `x.y.z` y, si
+no existe ninguno, usa el bloque raíz compatible con las versiones antiguas.
+Antes de cambiar valores para una versión nueva, guarda el perfil actual:
+
+```bash
+python3 tindrop/scripts/snapshot_remote_config_version.py 1.30.0+286
+```
+
+El script no reemplaza un perfil existente salvo que se indique `--replace`,
+para evitar perder accidentalmente la configuración histórica.
+
 Flujo recomendado:
 
 1. Copia `tindrop/config.example.json` a `tindrop/config.local.json`.
@@ -37,6 +49,10 @@ python3 tindrop/scripts/sign_remote_config.py --interactive
 Esto genera:
 - `tindrop/config.json`
 - `tindrop/config.json.sig`
+
+El firmado también persiste el nuevo `version` e `issued_at` en
+`config.local.json`, por lo que cada ejecución posterior avanza de forma
+monotónica y no puede reutilizar accidentalmente la misma versión.
 
 Opcionalmente actualiza el public key con:
 

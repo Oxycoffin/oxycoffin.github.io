@@ -7,6 +7,7 @@ import argparse
 import copy
 import html
 import json
+import re
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -24,6 +25,8 @@ CONFIG_OUT = TINDROP_DIR / "config.json"
 SIG_OUT = TINDROP_DIR / "config.json.sig"
 SIGN_SCRIPT = TINDROP_DIR / "scripts" / "sign_remote_config.py"
 DEFAULT_COMMIT = "chore: update tindrop remote config"
+APP_VERSION_PATTERN = re.compile(r"^\d+\.\d+\.\d+(?:\+\d+)?$")
+PROFILE_ENVELOPE_KEYS = {"version", "issued_at", "expires_at", "app_versions"}
 
 
 @dataclass(frozen=True)
@@ -61,8 +64,8 @@ SECTIONS: tuple[SectionDef, ...] = (
         title="App Update Gate",
         description="Claves activas en RemoteConfigAppUpdate. mode admite none, soft o hard.",
         fields=(
-            FieldDef("app_update.current_version", "current_version", "text", "1.27.0+283", "Version actual publicada, incluyendo build suffix."),
-            FieldDef("app_update.current_build_number", "current_build_number", "int", 283, "Build number publicado. Usado para evitar falsos positivos."),
+            FieldDef("app_update.current_version", "current_version", "text", "1.29.0+285", "Version actual publicada, incluyendo build suffix."),
+            FieldDef("app_update.current_build_number", "current_build_number", "int", 285, "Build number publicado. Usado para evitar falsos positivos."),
             FieldDef("app_update.mode", "mode (none | soft | hard)", "text", "none", "none no muestra gate, soft se puede cerrar, hard bloquea."),
         ),
     ),
@@ -348,6 +351,52 @@ def _editable_config(source: dict[str, Any]) -> dict[str, Any]:
     return _deep_merge(config, source)
 
 
+def _default_target_version(source: dict[str, Any]) -> str:
+    profiles = source.get("app_versions")
+    if isinstance(profiles, dict) and profiles:
+        return next(reversed(profiles))
+    return "legacy"
+
+
+def _config_for_target(source: dict[str, Any], target: str) -> dict[str, Any]:
+    if target == "legacy":
+        return _editable_config(source)
+    profiles = source.get("app_versions")
+    profile = profiles.get(target, {}) if isinstance(profiles, dict) else {}
+    if not isinstance(profile, dict):
+        raise ValueError(f"Invalid profile for {target}")
+    legacy = {
+        key: copy.deepcopy(value)
+        for key, value in source.items()
+        if key != "app_versions"
+    }
+    return _editable_config(_deep_merge(legacy, profile))
+
+
+def _store_target_config(
+    source: dict[str, Any],
+    target: str,
+    edited: dict[str, Any],
+) -> dict[str, Any]:
+    if target == "legacy":
+        profiles = copy.deepcopy(source.get("app_versions", {}))
+        result = copy.deepcopy(edited)
+        if profiles:
+            result["app_versions"] = profiles
+        return result
+    if not APP_VERSION_PATTERN.fullmatch(target):
+        raise ValueError("Target app version must be legacy, x.y.z, or x.y.z+build")
+    profiles = source.setdefault("app_versions", {})
+    if not isinstance(profiles, dict):
+        raise ValueError("app_versions must be a JSON object")
+    profiles[target] = {
+        key: copy.deepcopy(value)
+        for key, value in edited.items()
+        if key not in PROFILE_ENVELOPE_KEYS
+    }
+    return source
+
+
 def _normalize_bool(value: Any) -> bool:
     if isinstance(value, bool):
         return value
@@ -493,6 +542,7 @@ def _render_page(
     log_text: str,
     notice: str,
     advanced_json: str,
+    target_app_version: str,
     form_values: Optional[dict[str, str]] = None,
     form_keys: Optional[set[str]] = None,
 ) -> bytes:
@@ -500,6 +550,7 @@ def _render_page(
     escaped_notice = html.escape(notice)
     escaped_message = html.escape(commit_message)
     escaped_advanced = html.escape(advanced_json)
+    escaped_target_app_version = html.escape(target_app_version)
     checked = "checked" if push_enabled else ""
     generated = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -648,6 +699,14 @@ def _render_page(
       </div>
 
       <form method="post" class="layout">
+        <section class="section-card">
+          <h2>Version profile</h2>
+          <p class="section-desc">Edita un perfil exacto. Usa <code>legacy</code> solo para el fallback de builds anteriores a 1.30.0.</p>
+          <div class="field">
+            <label for="target_app_version">target_app_version</label>
+            <input id="target_app_version" name="target_app_version" type="text" value="{escaped_target_app_version}" />
+          </div>
+        </section>
         {sections_html}
 
         <section class="section-card">
@@ -702,7 +761,9 @@ class RemoteConfigHandler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
     def do_GET(self) -> None:  # noqa: N802
-        config = _editable_config(_load_config_dict())
+        source = _load_config_dict()
+        target_app_version = _default_target_version(source)
+        config = _config_for_target(source, target_app_version)
         body = _render_page(
             config=config,
             commit_message=DEFAULT_COMMIT,
@@ -710,6 +771,7 @@ class RemoteConfigHandler(BaseHTTPRequestHandler):
             log_text="Esperando cambios.",
             notice="",
             advanced_json="",
+            target_app_version=target_app_version,
         )
         self._send_html(body)
 
@@ -724,12 +786,14 @@ class RemoteConfigHandler(BaseHTTPRequestHandler):
         commit_message = form_values.get("commit_message", DEFAULT_COMMIT).strip() or DEFAULT_COMMIT
         push_enabled = form_values.get("push", "") == "1"
         advanced_json_raw = form_values.get("advanced_json", "").strip()
+        target_app_version = form_values.get("target_app_version", "").strip() or "legacy"
 
         logs: list[str] = []
         notice = ""
 
         try:
-            config = _editable_config(_load_config_dict())
+            source = _load_config_dict()
+            config = _config_for_target(source, target_app_version)
 
             for field in ALL_FIELDS:
                 _deep_set(config, field.path, _field_value_from_form(field, form))
@@ -740,7 +804,8 @@ class RemoteConfigHandler(BaseHTTPRequestHandler):
                     raise ValueError("advanced_json must be a JSON object")
                 _deep_merge(config, advanced_payload)
 
-            CONFIG_LOCAL.write_text(json.dumps(config, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+            source = _store_target_config(source, target_app_version, config)
+            CONFIG_LOCAL.write_text(json.dumps(source, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
             logs.append(f"Updated: {CONFIG_LOCAL}")
 
             sign_cmd = [
@@ -792,7 +857,11 @@ class RemoteConfigHandler(BaseHTTPRequestHandler):
                 else:
                     notice = "Config firmada y commit creado (sin push)."
 
-            rendered_config = _editable_config(_load_config_dict())
+            rendered_source = _load_config_dict()
+            rendered_config = _config_for_target(
+                rendered_source,
+                target_app_version,
+            )
             body = _render_page(
                 config=rendered_config,
                 commit_message=commit_message,
@@ -800,6 +869,7 @@ class RemoteConfigHandler(BaseHTTPRequestHandler):
                 log_text="\n\n".join(logs) if logs else "Sin logs.",
                 notice=notice,
                 advanced_json="",
+                target_app_version=target_app_version,
             )
             self._send_html(body)
             return
@@ -808,7 +878,11 @@ class RemoteConfigHandler(BaseHTTPRequestHandler):
             logs.append(f"ERROR: {exc}")
             notice = "Error durante el flujo. Revisa el log."
 
-        fallback_config = _editable_config(_load_config_dict())
+        fallback_source = _load_config_dict()
+        fallback_config = _config_for_target(
+            fallback_source,
+            target_app_version,
+        )
         body = _render_page(
             config=fallback_config,
             commit_message=commit_message,
@@ -816,6 +890,7 @@ class RemoteConfigHandler(BaseHTTPRequestHandler):
             log_text="\n\n".join(logs) if logs else "Sin logs.",
             notice=notice,
             advanced_json=advanced_json_raw,
+            target_app_version=target_app_version,
             form_values=form_values,
             form_keys=form_keys,
         )

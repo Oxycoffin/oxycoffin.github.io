@@ -91,6 +91,10 @@ def _run_sign(
     payload = _canonical_json(data)
     config_out.write_bytes(payload)
     _write_signature(sig_out, payload, key_path)
+    config_in.write_text(
+        json.dumps(data, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
 
 
 def _prompt_path(label: str, default: Path) -> Path:
