@@ -54,28 +54,25 @@ El firmado también persiste el nuevo `version` e `issued_at` en
 `config.local.json`, por lo que cada ejecución posterior avanza de forma
 monotónica y no puede reutilizar accidentalmente la misma versión.
 
-Opcionalmente actualiza el public key con:
+### Flujo de publicación para una nueva versión de la app
 
-```bash
-python3 tindrop/scripts/sign_remote_config.py --update-public-key
-```
-## Remote config (Tindrop)
+La configuración de una nueva versión se publica **antes de distribuir el
+build**. No hay que esperar a que la versión esté disponible en la tienda:
 
-Se publica en `tindrop/config.json` y se firma en `tindrop/config.json.sig`.
+1. Conserva en el bloque raíz una configuración segura para las versiones
+   antiguas.
+2. Añade a `app_versions` el perfil exacto `x.y.z+build` del nuevo build.
+3. Mantén `app_update` apuntando a la última versión que ya esté disponible en
+   las tiendas, con `mode: none`.
+4. Firma, haz commit y publica `config.json` junto con `config.json.sig`.
+5. Verifica en la URL pública, usando un parámetro anticaché, que `version` ha
+   avanzado y que aparece la clave exacta dentro de `app_versions`.
 
-Flujo recomendado:
-
-1. Copia `tindrop/config.example.json` a `tindrop/config.local.json`.
-2. Edita `tindrop/config.local.json` (este archivo está ignorado por Git).
-3. Ejecuta el script de firmado:
-
-```bash
-python3 tindrop/scripts/sign_remote_config.py --stamp
-```
-
-Esto genera:
-- `tindrop/config.json`
-- `tindrop/config.json.sig`
+La app nueva reconocerá automáticamente su perfil. Las versiones anteriores a
+1.30.0 ignoran `app_versions` y siguen leyendo el bloque raíz. Publicar el
+perfil y activar una actualización son operaciones distintas: `mode: soft` o
+`mode: hard` solo se activa después de comprobar que la nueva versión ya está
+disponible en la tienda.
 
 Opcionalmente actualiza el public key con:
 

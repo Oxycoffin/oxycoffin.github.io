@@ -35,4 +35,10 @@
   - Tests line: `Tests: not run (not requested)` unless the user asked for tests.
   - Closing line: `Next: <one required follow-up before merging>`.
 - Never amend commits unless explicitly requested.
-- Do not run `git push` from this environment.
+- Do not run `git push` from this environment unless the user directly asks to
+  publish or deploy the completed change. For Tindrop Remote Config, wording
+  such as "publica" or "déjala publicada", or an explicitly authorized app
+  release, includes permission to push the signed config commit. Before
+  pushing, verify a clean worktree, no remote divergence, a valid signature,
+  and a monotonically increasing config version; afterward, verify the public
+  payload.
