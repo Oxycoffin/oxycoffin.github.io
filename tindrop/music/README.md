@@ -9,7 +9,9 @@ For every track / Para cada pista:
 - use a stable ID and immutable public URL;
 - archive authorship/commission or CC0 evidence under `licenses/`;
 - verify duration, byte size and SHA-256 from the exact upload candidate;
-- provide a manually reviewed beat map;
+- generate the full-track beat map with Tindrop's canonical Dart analyzer and
+  review its confidence/continuity without hand-authoring a catalog-only cue
+  path;
 - assign one stable mood (`upbeat`, `chill`, `cinematic`, `playful` or `ambient`), deterministic `sortOrder`, a useful `previewStartMs` and a normalized waveform;
 - run `python3 tindrop/music/validate_catalog.py <catalog>`;
 - sign only after approval with `python3 tindrop/music/sign_catalog.py tindrop/music/catalog.local.json --key ~/.tindrop_remote_config/remote_config_ed25519 --catalog-output tindrop/music/catalog.json --output tindrop/music/catalog.json.sig`;
@@ -20,7 +22,58 @@ Never commit the private Ed25519 key or unlicensed music.
 `catalog.local.json` is the auditable source manifest. The deterministic
 `generate_original_catalog.py` command recreates the eight Tindrop Originals v1
 AAC candidates under the ignored `.artifacts/tindrop_music_v1/` directory and
-refreshes hashes, sizes, waveforms, beat maps and per-track provenance. Signing
-refreshes `catalog.json` and `catalog.json.sig` only after explicit approval;
-R2 audio and GitHub Pages catalog publication remain separate gated writes and
-must both be verified by public readback.
+refreshes hashes, sizes, waveforms, beat maps and per-track provenance without
+removing curated third-party CC0 tracks already present in the manifest.
+
+```bash
+python3 tindrop/music/generate_original_catalog.py \
+  --tindrop-root /path/to/Tindrop2/tindrop \
+  --reuse-encoded
+```
+
+`prepare_cc0_catalog.py` owns the curated CC0 expansion. Its non-negotiable
+policy for future additions is:
+
+- publish the complete song so the user, not the catalog curator, chooses the
+  fragment used by the collage;
+- start from the author's exact downloadable source and pin its SHA-256;
+- accept only an individually verifiable CC0 dedication from the
+  artist/rightsholder; generic "royalty-free" or video-only licences are not
+  sufficient for hosting the audio on Tindrop's R2;
+- keep lossless/high-bitrate source files only in ignored local artifacts and
+  publish AAC-LC/M4A at the mobile delivery profile (currently 128 kbps,
+  44.1 kHz stereo, -16 LUFS and fast-start metadata);
+- retain the artist name in the UI voluntarily even when CC0 does not require
+  attribution;
+- classify every track with the existing stable mood vocabulary and provide a
+  full-track waveform, beat/onset map, energy sections and useful preview point;
+- mark ambiguous material as low confidence instead of presenting a false exact
+  beat grid.
+
+Prepare the complete CC0 set with an explicit manifest timestamp:
+
+```bash
+python3 tindrop/music/prepare_cc0_catalog.py \
+  --tindrop-root /path/to/Tindrop2/tindrop \
+  --issued-at-ms "$(date +%s000)"
+```
+
+Both preparers decode the mobile candidate to mono PCM and delegate all cue
+generation to `tool/beat_video_catalog_analyzer.dart` in the Tindrop app. That
+tool calls the same `BeatVideoTrackAnalyzer` and `BeatAudioAnalyzer` used for a
+user-imported song; the catalog must not grow a second Python cue algorithm or
+hand-authored timing semantics that imported audio cannot reproduce.
+
+The current mobile set is deliberately download-on-demand and ranges from about
+2 to 4.3 MiB per complete song. Signing refreshes `catalog.json` and
+`catalog.json.sig` only after explicit approval; R2 audio and GitHub Pages
+catalog publication remain separate gated writes and must both be verified by
+public readback.
+
+Validate the composed manifest against both ignored candidate collections:
+
+```bash
+python3 tindrop/music/validate_catalog.py tindrop/music/catalog.local.json \
+  --audio-root .artifacts/tindrop_music_v1 \
+  --audio-root .artifacts/tindrop_music_cc0_v1/encoded
+```

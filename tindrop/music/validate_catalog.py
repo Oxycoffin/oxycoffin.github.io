@@ -16,7 +16,7 @@ ALLOWED_MOODS = {"upbeat", "chill", "cinematic", "playful", "ambient"}
 HEX = set("0123456789abcdef")
 
 
-def validate(path: Path, audio_root: Path | None) -> None:
+def validate(path: Path, audio_roots: list[Path]) -> None:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict) or int(payload.get("version", 0)) <= 0:
         raise ValueError("version must be a positive integer")
@@ -68,9 +68,13 @@ def validate(path: Path, audio_root: Path | None) -> None:
             raise ValueError(f"{track_id}: reviewed waveform is missing")
         if any(not isinstance(value, (int, float)) or value < 0 or value > 1 for value in waveform):
             raise ValueError(f"{track_id}: waveform values must be normalized")
-        if audio_root is not None:
-            candidate = audio_root / Path(parsed.path).name
-            if not candidate.is_file():
+        if audio_roots:
+            file_name = Path(parsed.path).name
+            candidate = next(
+                (root / file_name for root in audio_roots if (root / file_name).is_file()),
+                None,
+            )
+            if candidate is None:
                 raise ValueError(f"{track_id}: local audio candidate is missing")
             if candidate.stat().st_size != int(track["sizeBytes"]):
                 raise ValueError(f"{track_id}: size mismatch")
@@ -86,7 +90,13 @@ def validate(path: Path, audio_root: Path | None) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("catalog", type=Path)
-    parser.add_argument("--audio-root", type=Path)
+    parser.add_argument(
+        "--audio-root",
+        type=Path,
+        action="append",
+        default=[],
+        help="Local candidate directory; repeat for catalogs composed from multiple collections.",
+    )
     args = parser.parse_args()
     validate(args.catalog, args.audio_root)
     print("catalog valid")
