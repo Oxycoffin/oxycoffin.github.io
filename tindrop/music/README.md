@@ -1,8 +1,8 @@
 # Tindrop music catalog / Catálogo musical de Tindrop
 
-This directory contains only the versioned contract and local validation/signing tools. Production audio, the live `catalog.json`, and its signature are intentionally absent until the R2 upload and publication are explicitly approved.
+This directory contains the auditable source manifest, the live signed catalog, licensing evidence and the local validation/signing tools. Production audio is served from the dedicated R2 domain and is not committed to this repository.
 
-Este directorio contiene únicamente el contrato versionado y las herramientas locales de validación/firma. El audio de producción, el `catalog.json` público y su firma se omiten de forma intencionada hasta que se autoricen explícitamente la carga a R2 y la publicación.
+Este directorio contiene el manifiesto fuente auditable, el catálogo firmado publicado, la evidencia de licencia y las herramientas locales de validación/firma. El audio de producción se sirve desde el dominio R2 dedicado y no se incluye en este repositorio.
 
 For every track / Para cada pista:
 
@@ -21,6 +21,6 @@ Never commit the private Ed25519 key or unlicensed music.
 `generate_original_catalog.py` command recreates the eight Tindrop Originals v1
 AAC candidates under the ignored `.artifacts/tindrop_music_v1/` directory and
 refreshes hashes, sizes, waveforms, beat maps and per-track provenance. Signing
-creates the public `catalog.json` and `catalog.json.sig` only after explicit
-approval; R2 audio and GitHub Pages catalog publication are separate gated
-writes and must both be verified by public readback.
+refreshes `catalog.json` and `catalog.json.sig` only after explicit approval;
+R2 audio and GitHub Pages catalog publication remain separate gated writes and
+must both be verified by public readback.
