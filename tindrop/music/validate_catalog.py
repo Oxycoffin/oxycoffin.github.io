@@ -12,14 +12,13 @@ from urllib.parse import urlparse
 
 ALLOWED_AUDIO_HOST = "media.lagartijalabs.com"
 ALLOWED_LICENSES = {"CC0-1.0", "proprietary"}
-ALLOWED_MOODS = {"upbeat", "chill", "cinematic", "playful", "ambient"}
 HEX = set("0123456789abcdef")
 
 
 def validate(path: Path, audio_roots: list[Path]) -> None:
     payload = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(payload, dict) or int(payload.get("version", 0)) <= 0:
-        raise ValueError("version must be a positive integer")
+    if not isinstance(payload, dict) or int(payload.get("version", 0)) < 3:
+        raise ValueError("version must be at least 3")
     if int(payload.get("issuedAtMs", 0)) <= 0:
         raise ValueError("issuedAtMs must be a positive timestamp")
     tracks = payload.get("tracks")
@@ -45,8 +44,10 @@ def validate(path: Path, audio_roots: list[Path]) -> None:
             raise ValueError(f"{track_id}: invalid durationMs")
         if track.get("licenseId") not in ALLOWED_LICENSES:
             raise ValueError(f"{track_id}: unsupported licenseId")
-        if track.get("mood") not in ALLOWED_MOODS:
-            raise ValueError(f"{track_id}: unsupported mood")
+        if "mood" in track or "pace" in track:
+            raise ValueError(
+                f"{track_id}: speed classification must be derived from beatMap.bpm"
+            )
         if int(track.get("sortOrder", -1)) < 0:
             raise ValueError(f"{track_id}: invalid sortOrder")
         preview_start = int(track.get("previewStartMs", -1))

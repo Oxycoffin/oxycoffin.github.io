@@ -12,7 +12,10 @@ For every track / Para cada pista:
 - generate the full-track beat map with Tindrop's canonical Dart analyzer and
   review its confidence/continuity without hand-authoring a catalog-only cue
   path;
-- assign one stable mood (`upbeat`, `chill`, `cinematic`, `playful` or `ambient`), deterministic `sortOrder`, a useful `previewStartMs` and a normalized waveform;
+- do not author genre, mood or pace labels: the app derives Slow (<90 BPM),
+  Medium (90–<120 BPM) or Fast (>=120 BPM) exclusively from the canonical
+  `beatMap.bpm`; provide a deterministic `sortOrder` only as a same-title
+  tie-breaker, a useful `previewStartMs` and a normalized waveform;
 - run `python3 tindrop/music/validate_catalog.py <catalog>`;
 - sign only after approval with `python3 tindrop/music/sign_catalog.py tindrop/music/catalog.local.json --key ~/.tindrop_remote_config/remote_config_ed25519 --catalog-output tindrop/music/catalog.json --output tindrop/music/catalog.json.sig`;
 - upload audio, catalog and signature only after a second explicit approval, then read them back from the public CDN.
@@ -54,8 +57,9 @@ policy for future additions is:
   44.1 kHz stereo, -16 LUFS and fast-start metadata);
 - retain the artist name in the UI voluntarily even when CC0 does not require
   attribution;
-- classify every track with the existing stable mood vocabulary and provide a
-  full-track waveform, beat/onset map, energy sections and useful preview point;
+- provide a full-track waveform, beat/onset map, energy sections and useful
+  preview point; the UI classifies speed from canonical BPM and sorts every
+  complete or filtered list alphabetically by title;
 - mark ambiguous material as low confidence instead of presenting a false exact
   beat grid.
 

@@ -166,7 +166,6 @@ def main() -> None:
             "sha256": sha256(encoded),
             "licenseId": "CC0-1.0",
             "licenseUrl": CC0_URL,
-            "mood": track["mood"],
             "sortOrder": track["sortOrder"],
             "previewStartMs": preview_start(beat_map, total_ms),
             "featured": track["featured"],
@@ -179,7 +178,7 @@ def main() -> None:
             f"{beat_map['bpm']:.1f} BPM, {beat_map['confidence']} confidence",
             flush=True,
         )
-    payload["version"] = max(2, int(payload.get("version", 1)))
+    payload["version"] = max(3, int(payload.get("version", 1)))
     payload["issuedAtMs"] = args.issued_at_ms
     payload["tracks"] = sorted(existing.values(), key=lambda track: track["sortOrder"])
     args.catalog.write_text(

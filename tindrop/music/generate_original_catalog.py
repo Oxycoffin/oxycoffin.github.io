@@ -28,7 +28,6 @@ MEDIA_ROOT = "https://media.lagartijalabs.com/tindrop/music/v1"
 class Track:
     id: str
     title: str
-    mood: str
     bpm: int
     beats: int
     root: int
@@ -38,17 +37,18 @@ class Track:
     sort_order: int
     featured: bool = False
     softness: float = 0.0
+    dense_melody: bool = False
 
 
 TRACKS = (
-    Track("sunlit-steps", "Sunlit Steps", "upbeat", 120, 96, 60, (0, 5, 9, 7), (0, 4, 7, 11, 7, 4, 2, 7), 11, 10, True),
-    Track("neon-sprint", "Neon Sprint", "upbeat", 140, 112, 57, (0, 8, 5, 10), (0, 7, 10, 12, 10, 7, 5, 3), 23, 20),
-    Track("slow-current", "Slow Current", "chill", 92, 72, 55, (0, 7, 3, 10), (7, 10, 12, 10, 7, 3, 5, 7), 31, 30, True, 0.35),
-    Track("golden-hour", "Golden Hour", "chill", 104, 80, 62, (0, 5, 7, 4), (0, 2, 4, 7, 9, 7, 4, 2), 41, 40, False, 0.2),
-    Track("wide-horizon", "Wide Horizon", "cinematic", 108, 88, 50, (0, 8, 5, 10), (0, 7, 12, 10, 8, 7, 3, 5), 53, 50, True, 0.15),
-    Track("rising-frames", "Rising Frames", "cinematic", 126, 100, 52, (0, 5, 9, 7), (0, 4, 7, 12, 11, 7, 9, 4), 67, 60),
-    Track("pocket-confetti", "Pocket Confetti", "playful", 132, 88, 65, (0, 7, 5, 9), (0, 4, 7, 9, 12, 9, 7, 4), 79, 70, True),
-    Track("soft-orbit", "Soft Orbit", "ambient", 76, 64, 48, (0, 5, 10, 7), (0, 7, 10, 14, 12, 10, 7, 5), 97, 80, False, 0.65),
+    Track("sunlit-steps", "Sunlit Steps", 120, 96, 60, (0, 5, 9, 7), (0, 4, 7, 11, 7, 4, 2, 7), 11, 10, True),
+    Track("neon-sprint", "Neon Sprint", 140, 112, 57, (0, 8, 5, 10), (0, 7, 10, 12, 10, 7, 5, 3), 23, 20),
+    Track("slow-current", "Slow Current", 92, 72, 55, (0, 7, 3, 10), (7, 10, 12, 10, 7, 3, 5, 7), 31, 30, True, 0.35),
+    Track("golden-hour", "Golden Hour", 104, 80, 62, (0, 5, 7, 4), (0, 2, 4, 7, 9, 7, 4, 2), 41, 40, False, 0.2),
+    Track("wide-horizon", "Wide Horizon", 108, 88, 50, (0, 8, 5, 10), (0, 7, 12, 10, 8, 7, 3, 5), 53, 50, True, 0.15),
+    Track("rising-frames", "Rising Frames", 126, 100, 52, (0, 5, 9, 7), (0, 4, 7, 12, 11, 7, 9, 4), 67, 60),
+    Track("pocket-confetti", "Pocket Confetti", 132, 88, 65, (0, 7, 5, 9), (0, 4, 7, 9, 12, 9, 7, 4), 79, 70, True, dense_melody=True),
+    Track("soft-orbit", "Soft Orbit", 76, 64, 48, (0, 5, 10, 7), (0, 7, 10, 14, 12, 10, 7, 5), 97, 80, False, 0.65),
 )
 
 
@@ -180,7 +180,7 @@ def synthesize(track: Track) -> np.ndarray:
             add_noise_hit(mix, onset, drum_gain * 0.19 * energy, rng, short=True)
             melody_index = (beat * 2 + half + bar) % len(track.melody)
             melody_note = track.root + 12 + track.melody[melody_index]
-            if (beat + half) % 3 != 1 or track.mood == "playful":
+            if (beat + half) % 3 != 1 or track.dense_melody:
                 add_tone(
                     mix,
                     onset,
@@ -300,7 +300,6 @@ def main() -> None:
                 "sha256": digest,
                 "licenseId": "proprietary",
                 "licenseUrl": LICENSE_URL,
-                "mood": track.mood,
                 "sortOrder": track.sort_order,
                 "previewStartMs": preview_start(cues, duration_ms),
                 "featured": track.featured,
@@ -323,7 +322,7 @@ def main() -> None:
         key=lambda track: int(track["sortOrder"]),
     )
     payload = {
-        "version": max(1, int((existing_payload or {}).get("version", 1))),
+        "version": max(3, int((existing_payload or {}).get("version", 1))),
         "issuedAtMs": int((existing_payload or {}).get("issuedAtMs", 1787356800000)),
         "tracks": all_tracks,
     }

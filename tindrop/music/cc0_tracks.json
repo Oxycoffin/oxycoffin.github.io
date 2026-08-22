@@ -6,7 +6,6 @@
     "sourceUrl": "https://files.freemusicarchive.org/storage-freemusicarchive-org/tracks/mmejh2WUiSgYYUiVyzc8YPSrKmKpYCFg3G3mS9cj.mp3",
     "sourcePage": "https://freemusicarchive.org/music/holiznacc0/waves-of-nostalgia-2/machines-with-feelings/",
     "sourceSha256": "abe5a49446af9a06514277dd4e585694cd0be70a4191ed9932a419f3086a4930",
-    "mood": "upbeat",
     "sortOrder": 90,
     "featured": true
   },
@@ -17,7 +16,6 @@
     "sourceUrl": "https://files.freemusicarchive.org/storage-freemusicarchive-org/tracks/yYvl1UOJqmrvHNetZJWEu6TOkQPLZwqszdca7fGf.mp3",
     "sourcePage": "https://freemusicarchive.org/music/holiznacc0/waves-of-nostalgia-2/night-life/",
     "sourceSha256": "119b628fece763ccaf3da607d848258e6a281d6a45d0e27ac6c6841ee3022b21",
-    "mood": "upbeat",
     "sortOrder": 100,
     "featured": false
   },
@@ -28,7 +26,6 @@
     "sourceUrl": "https://files.freemusicarchive.org/storage-freemusicarchive-org/tracks/Xnd9Hr5AVzB68IlWcImKtXPlwCePD2G2m8ZFSVj4.mp3",
     "sourcePage": "https://freemusicarchive.org/music/holiznacc0/public-domain-lofi/tokyo-sunset-lofi-peaceful-soft/",
     "sourceSha256": "83b9208ab781af9b2da86e6885c4ec0fc1270457848609a1f96267539518fb9b",
-    "mood": "chill",
     "sortOrder": 110,
     "featured": true
   },
@@ -39,7 +36,6 @@
     "sourceUrl": "https://files.freemusicarchive.org/storage-freemusicarchive-org/tracks/jZCjMLhNU3T6APLZgxzqkLTGAuHY8RJzH29w0iFe.mp3",
     "sourcePage": "https://freemusicarchive.org/music/holiznacc0/lazy-summer-lofi-1/windows-downmp3/",
     "sourceSha256": "54dc5dfb84c8ea71fa16866c4ad14d10ae4063e68d03f0f284156826ad882fac",
-    "mood": "chill",
     "sortOrder": 120,
     "featured": true
   },
@@ -50,7 +46,6 @@
     "sourceUrl": "https://files.freemusicarchive.org/storage-freemusicarchive-org/tracks/7KkRfJDj7UGWOt25IdkSNisMJSHXC7P9LwIUxIVL.mp3",
     "sourcePage": "https://freemusicarchive.org/music/holiznacc0/rock-montage/classic/",
     "sourceSha256": "eb9f2e7f92278f1ee39990b4a4ecf948c9b5cee0892c57d0fac29e614717d739",
-    "mood": "cinematic",
     "sortOrder": 130,
     "featured": false
   },
@@ -61,7 +56,6 @@
     "sourceUrl": "https://files.freemusicarchive.org/storage-freemusicarchive-org/tracks/Abb9uO4mRmose8NbER3XSh0DDvXwSh7xdyh3gkSP.mp3",
     "sourcePage": "https://freemusicarchive.org/music/holiznacc0/rock-montage/punk/",
     "sourceSha256": "c71408dafca5c34ff66c7376ea873ee662bf78052f6e0991384947f3cbb8cf4d",
-    "mood": "upbeat",
     "sortOrder": 140,
     "featured": false
   },
@@ -72,7 +66,6 @@
     "sourceUrl": "https://files.freemusicarchive.org/storage-freemusicarchive-org/tracks/KOgtsN5Jgr4xKq7UPz3l0XJOYvV9yZYptq3N18bx.mp3",
     "sourcePage": "https://freemusicarchive.org/music/holiznacc0/gamer-beats/coins/",
     "sourceSha256": "276a4854073c6cc176998d68e345dd93815013df78ff609168904fd4c2b6d3ed",
-    "mood": "playful",
     "sortOrder": 150,
     "featured": true
   },
@@ -83,7 +76,6 @@
     "sourceUrl": "https://files.freemusicarchive.org/storage-freemusicarchive-org/tracks/DdGp8GQnQdt86CUuKRioGCiEeB9wrYK1UtKbRTCc.mp3",
     "sourcePage": "https://freemusicarchive.org/music/holiznacc0/gamer-beats/legends/",
     "sourceSha256": "8b1767800c4d5047edd2e59dea96c071c3e313be7536f6954c7bab2a9d5b041c",
-    "mood": "playful",
     "sortOrder": 160,
     "featured": false
   },
@@ -94,7 +86,6 @@
     "sourceUrl": "https://opengameart.org/sites/default/files/ChillLofiR.mp3",
     "sourcePage": "https://opengameart.org/content/chill-lofi-inspired",
     "sourceSha256": "1796a480e3db0c02d5e58059b2ae7cfbeab344f95e0443496790da022cbe91b5",
-    "mood": "chill",
     "sortOrder": 170,
     "featured": false
   },
@@ -105,7 +96,6 @@
     "sourceUrl": "https://opengameart.org/sites/default/files/CVP701Jam.ogg",
     "sourcePage": "https://opengameart.org/content/funky-hip-hop-lofi-jam",
     "sourceSha256": "7c213d1c6fe01bc6b67d6c1124c6cd88afae7149ee8ec966c7f55f517eb22af9",
-    "mood": "playful",
     "sortOrder": 180,
     "featured": false
   }

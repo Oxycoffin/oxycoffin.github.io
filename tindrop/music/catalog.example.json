@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 3,
   "issuedAtMs": 1787356800000,
   "tracks": [
     {
@@ -12,7 +12,6 @@
       "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
       "licenseId": "proprietary",
       "licenseUrl": "https://lagartijalabs.com/tindrop/music/licenses/replace-with-stable-id.html",
-      "mood": "upbeat",
       "sortOrder": 10,
       "previewStartMs": 10000,
       "featured": true,
