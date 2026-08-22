@@ -20,7 +20,7 @@ def main() -> None:
     parser.add_argument("--catalog-output", type=Path)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    validate(args.catalog, None)
+    validate(args.catalog, [])
     key_bytes = args.key.read_bytes()
     try:
         private_key = serialization.load_ssh_private_key(key_bytes, password=None)
