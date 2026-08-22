@@ -12,6 +12,7 @@ from urllib.parse import urlparse
 
 ALLOWED_AUDIO_HOST = "media.lagartijalabs.com"
 ALLOWED_LICENSES = {"CC0-1.0", "proprietary"}
+ALLOWED_MOODS = {"upbeat", "chill", "cinematic", "playful", "ambient"}
 HEX = set("0123456789abcdef")
 
 
@@ -44,6 +45,15 @@ def validate(path: Path, audio_root: Path | None) -> None:
             raise ValueError(f"{track_id}: invalid durationMs")
         if track.get("licenseId") not in ALLOWED_LICENSES:
             raise ValueError(f"{track_id}: unsupported licenseId")
+        if track.get("mood") not in ALLOWED_MOODS:
+            raise ValueError(f"{track_id}: unsupported mood")
+        if int(track.get("sortOrder", -1)) < 0:
+            raise ValueError(f"{track_id}: invalid sortOrder")
+        preview_start = int(track.get("previewStartMs", -1))
+        if preview_start < 0 or preview_start >= int(track["durationMs"]):
+            raise ValueError(f"{track_id}: invalid previewStartMs")
+        if not isinstance(track.get("featured", False), bool):
+            raise ValueError(f"{track_id}: featured must be a boolean")
         evidence = path.parent / "licenses" / f"{track_id}.md"
         if not evidence.is_file():
             raise ValueError(f"{track_id}: archived license evidence is missing")
@@ -51,6 +61,13 @@ def validate(path: Path, audio_root: Path | None) -> None:
         beats = beat_map.get("beatTimesMs") if isinstance(beat_map, dict) else None
         if not isinstance(beats, list) or len(beats) < 2 or beats != sorted(beats):
             raise ValueError(f"{track_id}: invalid beat map")
+        if beats[0] < 0 or beats[-1] >= int(track["durationMs"]):
+            raise ValueError(f"{track_id}: beat map exceeds track duration")
+        waveform = beat_map.get("waveform") if isinstance(beat_map, dict) else None
+        if not isinstance(waveform, list) or len(waveform) < 8:
+            raise ValueError(f"{track_id}: reviewed waveform is missing")
+        if any(not isinstance(value, (int, float)) or value < 0 or value > 1 for value in waveform):
+            raise ValueError(f"{track_id}: waveform values must be normalized")
         if audio_root is not None:
             candidate = audio_root / Path(parsed.path).name
             if not candidate.is_file():
