@@ -70,6 +70,14 @@ SECTIONS: tuple[SectionDef, ...] = (
         ),
     ),
     SectionDef(
+        key="beat_video",
+        title="Beat Video",
+        description="Activación gradual del creador de vídeo. Mantener apagada hasta completar catálogo y smoke nativo.",
+        fields=(
+            FieldDef("beat_video.enabled", "enabled", "bool", False),
+        ),
+    ),
+    SectionDef(
         key="ads_core",
         title="Ads Core",
         description="Claves activas en RemoteConfigAds.",

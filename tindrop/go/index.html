@@ -79,6 +79,7 @@
     }
     .links a{color:#2563eb;text-decoration:none}
     .links a:hover{text-decoration:underline}
+    .origin-note{display:none;margin:0 auto 18px;max-width:620px;padding:12px 14px;border-radius:12px;background:#f8fafc;border:1px solid #e2e8f0;color:#334155;text-align:center}
 
     footer{padding:18px;border-top:1px solid var(--border);background:#fff;color:#475569;text-align:center}
     footer a{color:#2563eb;text-decoration:none}
@@ -102,6 +103,10 @@
       </header>
 
       <div class="content">
+        <div class="origin-note" id="beatVideoOrigin" role="status">
+          <span lang="es">Has recibido un vídeo creado al ritmo con Tindrop.</span><br />
+          <span lang="en">You received a beat-synced video made with Tindrop.</span>
+        </div>
         <div class="badges" aria-label="Store badges">
           <a class="badge-link" id="iosLink"
              href="https://apps.apple.com/app/tindrop/id6756980913"
@@ -122,9 +127,9 @@
 
         <div class="links">
           <div>
-            <a href="https://apps.apple.com/es/app/tindrop/id6756980913">App Store</a>
+            <a id="iosTextLink" href="https://apps.apple.com/es/app/tindrop/id6756980913">App Store</a>
             &nbsp;·&nbsp;
-            <a href="https://play.google.com/store/apps/details?id=com.tindrop.tindrop">Google Play</a>
+            <a id="androidTextLink" href="https://play.google.com/store/apps/details?id=com.tindrop.tindrop">Google Play</a>
           </div>
           <noscript>
             <div style="margin-top:10px;">(JavaScript está desactivado, usa los enlaces de arriba.)</div>
@@ -143,8 +148,27 @@
 
     (function autoRedirect() {
       try {
+        var params = new URLSearchParams(location.search);
+        var rawSource = params.get("source") || "direct";
+        var source = /^[a-z0-9_-]{1,40}$/i.test(rawSource) ? rawSource : "direct";
+        var campaign = source === "beat_video" ? "beat_video" : source;
+        var appStoreUrl = new URL("https://apps.apple.com/es/app/tindrop/id6756980913");
+        appStoreUrl.searchParams.set("ct", campaign);
+        appStoreUrl.searchParams.set("mt", "8");
+        var playStoreUrl = new URL("https://play.google.com/store/apps/details?id=com.tindrop.tindrop");
+        playStoreUrl.searchParams.set("referrer", "utm_source=tindrop&utm_medium=share&utm_campaign=" + campaign);
+        var iosLink = document.getElementById("iosLink");
         var androidLink = document.getElementById("androidLink");
-        var androidIntentUrl = "intent://details?id=com.tindrop.tindrop#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.tindrop.tindrop;end";
+        if (iosLink) iosLink.href = appStoreUrl.toString();
+        if (androidLink) androidLink.href = playStoreUrl.toString();
+        var iosTextLink = document.getElementById("iosTextLink");
+        var androidTextLink = document.getElementById("androidTextLink");
+        if (iosTextLink) iosTextLink.href = appStoreUrl.toString();
+        if (androidTextLink) androidTextLink.href = playStoreUrl.toString();
+        if (source === "beat_video") {
+          document.getElementById("beatVideoOrigin").style.display = "block";
+        }
+        var androidIntentUrl = "intent://details?id=com.tindrop.tindrop&referrer=" + encodeURIComponent("utm_source=tindrop&utm_medium=share&utm_campaign=" + campaign) + "#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url=" + encodeURIComponent(playStoreUrl.toString()) + ";end";
         var ua = navigator.userAgent || "";
         var isAndroid = /Android/i.test(ua);
         var isIOS = /iPhone|iPad|iPod/i.test(ua);
@@ -157,7 +181,7 @@
           return;
         }
         if (isIOS) {
-          location.replace("https://apps.apple.com/es/app/tindrop/id6756980913");
+          location.replace(appStoreUrl.toString());
           return;
         }
       } catch (e) {

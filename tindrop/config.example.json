@@ -6,6 +6,9 @@
     "enable_whats_new": true,
     "enable_interactive_tutorial": true
   },
+  "beat_video": {
+    "enabled": false
+  },
   "app_update": {
     "current_version": "1.32.0+288",
     "current_build_number": 288,
@@ -64,6 +67,9 @@
         "show_source_selector": true,
         "enable_whats_new": true,
         "enable_interactive_tutorial": true
+      },
+      "beat_video": {
+        "enabled": false
       },
       "app_update": {
         "current_version": "1.30.0+286",
@@ -124,6 +130,9 @@
         "enable_whats_new": true,
         "enable_interactive_tutorial": true
       },
+      "beat_video": {
+        "enabled": false
+      },
       "app_update": {
         "current_version": "1.30.0+286",
         "current_build_number": 286,
@@ -182,6 +191,9 @@
         "show_source_selector": true,
         "enable_whats_new": true,
         "enable_interactive_tutorial": true
+      },
+      "beat_video": {
+        "enabled": false
       },
       "app_update": {
         "current_version": "1.30.0+286",
@@ -242,6 +254,9 @@
         "enable_whats_new": true,
         "enable_interactive_tutorial": true
       },
+      "beat_video": {
+        "enabled": false
+      },
       "app_update": {
         "current_version": "1.30.0+286",
         "current_build_number": 286,
@@ -300,6 +315,9 @@
         "show_source_selector": true,
         "enable_whats_new": true,
         "enable_interactive_tutorial": true
+      },
+      "beat_video": {
+        "enabled": false
       },
       "app_update": {
         "current_version": "1.32.0+288",

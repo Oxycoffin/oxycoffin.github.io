@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "issuedAtMs": 1787356800000,
+  "tracks": [
+    {
+      "id": "replace-with-stable-id",
+      "title": "Replace with track title",
+      "artist": "Lagartija Labs",
+      "audioUrl": "https://media.lagartijalabs.com/tindrop/music/replace.m4a",
+      "durationMs": 30000,
+      "sizeBytes": 1000000,
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "licenseId": "proprietary",
+      "licenseUrl": "https://lagartijalabs.com/tindrop/music/licenses/replace-with-stable-id.html",
+      "beatMap": {
+        "schemaVersion": 1,
+        "bpm": 120.0,
+        "beatTimesMs": [0, 500, 1000, 1500, 2000],
+        "downbeatTimesMs": [0, 2000],
+        "onsetTimesMs": [0, 500, 1000, 1500, 2000],
+        "sections": [
+          {"startMs": 0, "endMs": 30000, "energy": 0.75}
+        ],
+        "confidence": "high",
+        "confidenceScore": 1.0
+      }
+    }
+  ]
+}
