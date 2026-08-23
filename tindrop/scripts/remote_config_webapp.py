@@ -72,9 +72,9 @@ SECTIONS: tuple[SectionDef, ...] = (
     SectionDef(
         key="beat_video",
         title="Beat Video",
-        description="Activación gradual del creador de vídeo. Mantener apagada hasta completar catálogo y smoke nativo.",
+        description="Creador de vídeo musical habilitado por defecto.",
         fields=(
-            FieldDef("beat_video.enabled", "enabled", "bool", False),
+            FieldDef("beat_video.enabled", "enabled", "bool", True),
         ),
     ),
     SectionDef(
