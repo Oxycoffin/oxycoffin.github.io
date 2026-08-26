@@ -1,13 +1,19 @@
 "use strict";
 
 (function(){
-  const ROWS_PER_PAGE = 37;
-  const MARGIN_X = 5;
-  const TABLE_W = 287;
-  const COLS = [18, 195, 15, 59];
-  const HEADER_Y = 14.2;
-  const HEADER_H = 4.4;
-  const ROW_H = 4.25;
+  // Layout tuned for a real printed A4 landscape sheet.
+  // Pages are balanced and row height is calculated so the table uses almost
+  // the full printable height instead of being compressed into the top half.
+  const MAX_ROWS_PER_PAGE = 37;
+  const MARGIN_X = 4.5;
+  const TABLE_W = 288;
+  const COLS = [18, 196, 15, 59];
+  const HEADER_Y = 15.0;
+  const HEADER_H = 5.0;
+  const BODY_BOTTOM = 199.2;
+  const FOOTER_Y = 206.0;
+  const MIN_ROW_H = 4.7;
+  const MAX_ROW_H = 5.55;
 
   function reportConfig(){
     const est = location.pathname.includes("/estupas");
@@ -72,9 +78,9 @@
     return s;
   }
 
-  function drawExpiryRuns(doc,groups,x,y,w){
+  function drawExpiryRuns(doc,groups,x,y,w,fontBase){
     doc.setFont("helvetica","normal");
-    let font=5.55;
+    let font=fontBase;
     const widthFor=(fs)=>{
       doc.setFontSize(fs); let total=0;
       groups.forEach((g,i)=>{
@@ -84,12 +90,12 @@
       });
       return total;
     };
-    while(font>4.5 && widthFor(font)>w-1.7)font-=0.2;
+    while(font>4.8 && widthFor(font)>w-1.7)font-=0.2;
     doc.setFontSize(font);
     let cx=x+1.0;
     for(let i=0;i<groups.length;i++){
       const g=groups[i];
-      if(g.upcoming){drawTriangle(doc,cx,y,0.9);cx+=1.35;}
+      if(g.upcoming){drawTriangle(doc,cx,y,0.95);cx+=1.4;}
       let txt=g.text+(g.count>1?` ×${g.count}`:"");
       if(i<groups.length-1)txt+=" · ";
       const room=x+w-0.7-cx;
@@ -133,22 +139,22 @@
   function drawPageHeader(doc, cfg, now, cutoff, page, pages){
     const dateText=fmtDate(now), pageText=`${page}/${pages}`;
     doc.setTextColor(15,15,15);
-    doc.setFont("helvetica","bold"); doc.setFontSize(11.8);
-    doc.text(cfg.title,7,8.3);
+    doc.setFont("helvetica","bold"); doc.setFontSize(12.4);
+    doc.text(cfg.title,6.2,8.3);
     const titleW=doc.getTextWidth(cfg.title);
-    const dateX=Math.max(69,7+titleW+4.5);
-    doc.setFont("helvetica","normal"); doc.setFontSize(7.1);
+    const dateX=Math.max(71,6.2+titleW+4.8);
+    doc.setFont("helvetica","normal"); doc.setFontSize(7.4);
     doc.text(dateText,dateX,8.25);
-    doc.text(pageText,dateX+16.2,8.25);
+    doc.text(pageText,dateX+16.5,8.25);
 
-    const ly=12.1;
-    drawTriangle(doc,7.1,ly,1.05);
-    doc.setFontSize(6.15); doc.text(`PRÓXIMA CADUCIDAD (hasta ${fmtDate(cutoff)})`,9.0,ly);
+    const ly=12.3;
+    drawTriangle(doc,6.3,ly,1.08);
+    doc.setFontSize(6.35); doc.text(`PRÓXIMA CADUCIDAD (hasta ${fmtDate(cutoff)})`,8.25,ly);
     const firstW=doc.getTextWidth(`PRÓXIMA CADUCIDAD (hasta ${fmtDate(cutoff)})`);
-    const x2=9.0+firstW+4.1;
-    drawCross(doc,x2,ly,0.85);
-    doc.text("NO LOCALIZADO",x2+1.65,ly);
-    const x3=x2+1.65+doc.getTextWidth("NO LOCALIZADO")+4.2;
+    const x2=8.25+firstW+4.1;
+    drawCross(doc,x2,ly,0.86);
+    doc.text("NO LOCALIZADO",x2+1.7,ly);
+    const x3=x2+1.7+doc.getTextWidth("NO LOCALIZADO")+4.2;
     doc.text("Stock: contado; si difiere, contado/Farmatic",x3,ly);
   }
 
@@ -156,34 +162,35 @@
     let x=MARGIN_X;
     doc.setFillColor(35,35,35); doc.setDrawColor(35,35,35);
     doc.rect(MARGIN_X,HEADER_Y,TABLE_W,HEADER_H,"F");
-    doc.setFont("helvetica","bold"); doc.setFontSize(5.65); doc.setTextColor(255,255,255);
+    doc.setFont("helvetica","bold"); doc.setFontSize(6.05); doc.setTextColor(255,255,255);
     const labels=["CÓDIGO","DESCRIPCIÓN","STOCK","CADUCIDAD(ES)"];
     for(let i=0;i<COLS.length;i++){
       const cx=x+COLS[i]/2;
-      doc.text(labels[i],cx,HEADER_Y+2.85,{align:"center"});
+      doc.text(labels[i],cx,HEADER_Y+3.25,{align:"center"});
       x+=COLS[i];
     }
   }
 
-  function drawRow(doc,row,index){
-    const y=HEADER_Y+HEADER_H+index*ROW_H;
+  function drawRow(doc,row,index,rowH){
+    const y=HEADER_Y+HEADER_H+index*rowH;
     const fill=row.missing?[224,224,224]:row.unknown?[246,246,246]:[255,255,255];
-    doc.setFillColor(...fill); doc.setDrawColor(184,184,184); doc.setLineWidth(0.10);
+    doc.setFillColor(...fill); doc.setDrawColor(177,177,177); doc.setLineWidth(0.10);
     let x=MARGIN_X;
-    for(const w of COLS){doc.rect(x,y,w,ROW_H,"FD");x+=w;}
-    const baseline=y+2.78;
-    doc.setTextColor(20,20,20); doc.setFontSize(5.45); doc.setFont("helvetica","normal");
+    for(const w of COLS){doc.rect(x,y,w,rowH,"FD");x+=w;}
+    const baseline=y+rowH*0.67;
+    const rowFont=Math.min(6.35,Math.max(5.75,5.75+(rowH-MIN_ROW_H)*0.7));
+    doc.setTextColor(20,20,20); doc.setFontSize(rowFont); doc.setFont("helvetica","normal");
 
     x=MARGIN_X;
     doc.text(fitText(doc,row.code,COLS[0]-1.2),x+COLS[0]/2,baseline,{align:"center"});
     x+=COLS[0];
 
     if(row.missing){
-      drawCross(doc,x+1.1,baseline,0.78);
+      drawCross(doc,x+1.1,baseline,0.80);
       doc.setFont("helvetica","bold");
       const prefix="NO LOCALIZADO - ";
-      doc.text(prefix,x+2.55,baseline);
-      const px=x+2.55+doc.getTextWidth(prefix);
+      doc.text(prefix,x+2.6,baseline);
+      const px=x+2.6+doc.getTextWidth(prefix);
       doc.setFont("helvetica","normal");
       doc.text(fitText(doc,row.description,COLS[1]-(px-x)-1.0),px,baseline);
     }else{
@@ -192,23 +199,32 @@
     x+=COLS[1];
 
     if(row.missing){
-      drawCross(doc,x+3.7,baseline,0.72);
+      drawCross(doc,x+3.7,baseline,0.74);
       doc.text(row.stock,x+7.0,baseline);
     }else doc.text(row.stock,x+COLS[2]/2,baseline,{align:"center"});
     x+=COLS[2];
 
-    drawExpiryRuns(doc,row.expiries,x,baseline,COLS[3]);
+    drawExpiryRuns(doc,row.expiries,x,baseline,COLS[3],rowFont);
   }
 
   function drawFooter(doc,page,pages){
-    doc.setFont("helvetica","normal"); doc.setFontSize(5.6); doc.setTextColor(40,40,40);
-    doc.text(`${page}/${pages}`,291.8,206.1,{align:"right"});
+    doc.setFont("helvetica","normal"); doc.setFontSize(6.2); doc.setTextColor(40,40,40);
+    doc.text(`${page}/${pages}`,291.8,FOOTER_Y,{align:"right"});
   }
 
   function generateStockExpiryReport(){
     if(!window.jspdf?.jsPDF){feedback("No se ha cargado el generador PDF.","bad");return;}
     const cfg=reportConfig(), now=new Date(), cutoff=cutoffDate(now), c=calc();
-    const rows=makeRows(c,cutoff), pages=Math.max(1,Math.ceil(rows.length/ROWS_PER_PAGE));
+    const rows=makeRows(c,cutoff);
+
+    // First decide how many pages are needed with the same maximum density as
+    // the reference report. Then balance the rows across pages so neither page
+    // is unnecessarily sparse.
+    const pages=Math.max(1,Math.ceil(rows.length/MAX_ROWS_PER_PAGE));
+    const rowsPerPage=Math.max(1,Math.ceil(rows.length/pages));
+    const availableBody=BODY_BOTTOM-(HEADER_Y+HEADER_H);
+    const rowH=Math.max(MIN_ROW_H,Math.min(MAX_ROW_H,availableBody/rowsPerPage));
+
     const {jsPDF}=window.jspdf;
     const doc=new jsPDF({orientation:"landscape",unit:"mm",format:"a4",compress:true});
     doc.setProperties({title:cfg.title,subject:"Stock y caducidades",creator:"Inventario Farmatic"});
@@ -217,8 +233,8 @@
       if(p>1)doc.addPage("a4","landscape");
       drawPageHeader(doc,cfg,now,cutoff,p,pages);
       drawTableHeader(doc);
-      const start=(p-1)*ROWS_PER_PAGE,end=Math.min(start+ROWS_PER_PAGE,rows.length);
-      for(let i=start;i<end;i++)drawRow(doc,rows[i],i-start);
+      const start=(p-1)*rowsPerPage,end=Math.min(start+rowsPerPage,rows.length);
+      for(let i=start;i<end;i++)drawRow(doc,rows[i],i-start,rowH);
       drawFooter(doc,p,pages);
     }
     doc.save(cfg.filename);
