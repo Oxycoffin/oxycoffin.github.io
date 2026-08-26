@@ -84,7 +84,7 @@ async function prepareWasm(){
   if(wasmInitPromise) return wasmInitPromise;
   if(!window.ZXingWASM?.readBarcodes) return false;
 
-  wasmInitPromise=(async()=>{
+  const init=(async()=>{
     try{
       if(typeof ZXingWASM.prepareZXingModule==="function"){
         await ZXingWASM.prepareZXingModule({
@@ -104,6 +104,7 @@ async function prepareWasm(){
       return false;
     }
   })();
+  wasmInitPromise=Promise.race([init,new Promise(resolve=>setTimeout(()=>resolve(false),3500))]);
   return wasmInitPromise;
 }
 
