@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FRIGO">
+<title>FRIGO · Inventario Farmatic</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--text:#111827;--muted:#667085;--line:#e5e7eb;--accent:#111827;--good:#137a3d;--goodbg:#eaf8ef;--warn:#9a6700;--warnbg:#fff5d6;--bad:#b42318;--badbg:#feeceb;--info:#175cd3;--infobg:#eff8ff}
+@media(prefers-color-scheme:dark){:root{--bg:#090d14;--card:#121821;--text:#f5f7fa;--muted:#98a2b3;--line:#273142;--accent:#f5f7fa;--good:#75e0a7;--goodbg:#103522;--warn:#fec84b;--warnbg:#3a2b08;--bad:#fda29b;--badbg:#421917;--info:#84caff;--infobg:#102a43}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+.app{max-width:760px;margin:0 auto;padding:calc(12px + env(safe-area-inset-top)) 10px calc(28px + env(safe-area-inset-bottom))}
+h1{font-size:21px;margin:4px 2px 2px}.sub{font-size:12px;color:var(--muted);margin:0 2px 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0}
+.hidden{display:none!important}.load{padding:18px 14px;text-align:center}.load h2{font-size:18px;margin:0 0 7px}.load p{color:var(--muted);font-size:14px;line-height:1.45}
+input[type=file]{display:none}.big{width:100%;min-height:52px;border:0;border-radius:14px;background:var(--accent);color:var(--bg);font-size:16px;font-weight:800;padding:0 16px}
+button{min-height:44px;border-radius:12px;border:0;font:inherit;font-weight:750;padding:0 13px;cursor:pointer}.secondary{background:var(--bg);color:var(--text);border:1px solid var(--line)}.danger{background:var(--badbg);color:var(--bad)}
+.meta{font-size:12px;color:var(--muted);margin-top:9px}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.metric{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:9px;min-width:0}.metric strong{font-size:19px;display:block;overflow:hidden;text-overflow:ellipsis}.metric span{font-size:10px;color:var(--muted);display:block;margin-top:3px}
+.videoWrap{position:relative;aspect-ratio:4/3;background:#000;border-radius:14px;overflow:hidden}video{width:100%;height:100%;object-fit:cover;display:block}.cameraOff{position:absolute;inset:0;display:flex;justify-content:center;align-items:center;text-align:center;padding:25px;color:#fff;background:#111827;font-size:14px}.aim{position:absolute;left:10%;right:10%;top:26%;bottom:26%;border:2px solid rgba(255,255,255,.85);border-radius:15px;box-shadow:0 0 0 999px rgba(0,0,0,.16);pointer-events:none}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}.actions button{flex:1 1 auto}.primary{background:var(--accent);color:var(--bg)}
+.feedback{margin-top:9px;padding:10px 11px;border-radius:12px;font-size:13px;line-height:1.35;background:var(--infobg);color:var(--info)}.feedback.good{background:var(--goodbg);color:var(--good)}.feedback.warn{background:var(--warnbg);color:var(--warn)}.feedback.bad{background:var(--badbg);color:var(--bad)}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 5px}.tab{white-space:nowrap;min-height:38px;border-radius:999px;background:var(--card);color:var(--text);border:1px solid var(--line);font-size:12px}.tab.active{background:var(--accent);color:var(--bg)}
+.search{width:100%;min-height:44px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--text);font-size:16px;padding:0 12px;margin:7px 0}
+.row{padding:10px 0;border-top:1px solid var(--line)}.row:first-child{border-top:0}.rowgrid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px}.name{font-weight:750;font-size:13px;line-height:1.3}.code{font-size:11px;color:var(--muted);margin-top:3px}.count{text-align:right}.count b{font-size:17px}.delta{font-size:11px;margin-top:2px}.goodtxt{color:var(--good)}.badtxt{color:var(--bad)}.infotxt{color:var(--info)}.warntxt{color:var(--warn)}
+details{margin-top:5px}summary{font-size:11px;color:var(--muted)}.units{font-size:11px;color:var(--muted);line-height:1.5;overflow-wrap:anywhere;margin-top:4px}.empty{text-align:center;color:var(--muted);font-size:13px;padding:16px}
+.foot{font-size:11px;color:var(--muted);line-height:1.4;margin:8px 1px 0}
+@media(max-width:480px){.summary{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="app">
+<h1>Inventario FRIGO</h1>
+<div class="sub">Farmatic → comprobación física por Data Matrix</div>
+<section class="card load" id="loadCard">
+  <h2>Carga la lista de Farmatic</h2>
+  <p>Selecciona el XLS/XLSX exportado por Farmatic. El archivo se lee <b>solo en este iPhone</b>; no se sube al servidor.</p>
+  <label for="fileInput"><span class="big" style="display:flex;align-items:center;justify-content:center">Elegir archivo de Farmatic</span></label>
+  <input id="fileInput" type="file" accept=".xls,.xlsx,.csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv">
+  <div class="meta" id="loadStatus">Compatible con el XLS antiguo de Farmatic.</div>
+</section>
+<div id="inventory" class="hidden">
+  <div class="summary">
+    <div class="metric"><strong id="mScan">0</strong><span>uds. escaneadas</span></div>
+    <div class="metric"><strong id="mMissing">0</strong><span>uds. que faltan</span></div>
+    <div class="metric"><strong id="mCorrect">0</strong><span>líneas cuadradas</span></div>
+    <div class="metric"><strong id="mIssues">0</strong><span>incidencias</span></div>
+  </div>
+  <section class="card">
+    <div class="videoWrap">
+      <video id="video" playsinline muted></video>
+      <div class="aim"></div>
+      <div class="cameraOff" id="cameraOff">Pulsa <b>&nbsp;Escanear&nbsp;</b> para abrir la cámara trasera.</div>
+    </div>
+    <div class="actions">
+      <button class="primary" id="startBtn">Escanear</button>
+      <button class="secondary" id="stopBtn" disabled>Parar</button>
+      <button class="secondary" id="undoBtn" disabled>Deshacer</button>
+    </div>
+    <div class="feedback" id="feedback" aria-live="polite">Cada caja individual cuenta una vez. Si vuelves a leer el mismo número de serie, no suma.</div>
+  </section>
+  <input class="search" id="search" placeholder="Buscar medicamento o código">
+  <div class="tabs" id="tabs"></div>
+  <section class="card"><div id="rows"></div></section>
+  <section class="card">
+    <div class="actions">
+      <button class="secondary" id="exportBtn">Exportar resultado CSV</button>
+      <button class="secondary" id="changeListBtn">Cambiar lista</button>
+      <button class="danger" id="resetBtn">Borrar sesión</button>
+    </div>
+    <div class="foot">Diferencia = contado físico − stock de Farmatic. Un positivo implica que físicamente hay más unidades; un negativo, que faltan.</div>
+  </section>
+</div>
+</div>
+<script src="https://cdn.sheetjs.com/xlsx-0.18.5/package/dist/xlsx.full.min.js"></script>
+<script src="https://unpkg.com/@zxing/browser@0.2.1/umd/zxing-browser.min.js"></script>
+<script>
+(()=>{
+"use strict";
+const K_LIST="frigo_farmatic_list_v3",K_SCANS="frigo_farmatic_scans_v3";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+let expected=load(K_LIST,[]),scans=load(K_SCANS,[]),filter="pending",controls=null,reader=null,lastRaw="",lastAt=0;
+function load(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
+function norm(s){return String(s??"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function parseWorkbook(buf){
+  if(!window.XLSX)throw new Error("No se pudo cargar el lector de Excel");
+  const wb=XLSX.read(buf,{type:"array",cellDates:false});
+  for(const name of wb.SheetNames){
+    const a=XLSX.utils.sheet_to_json(wb.Sheets[name],{header:1,raw:true,defval:""});
+    let hr=-1,ci=-1,di=-1,si=-1;
+    for(let r=0;r<Math.min(a.length,30);r++){
+      const row=a[r].map(norm);
+      const c=row.findIndex(x=>x==="codigo"||x.includes("codigo"));
+      const d=row.findIndex(x=>x==="descripcion"||x.includes("descripcion"));
+      const s=row.findIndex(x=>x.includes("stock actual"));
+      if(c>=0&&d>=0&&s>=0){hr=r;ci=c;di=d;si=s;break}
+    }
+    if(hr<0)continue;
+    const out=[];
+    for(let r=hr+1;r<a.length;r++){
+      const row=a[r],rawCode=row[ci],desc=String(row[di]??"").trim();
+      if(rawCode===""||!desc)continue;
+      const digits=String(rawCode).replace(/\D/g,"");
+      if(digits.length<6)continue;
+      let code7=digits.padStart(7,"0").slice(-7);
+      const stockNum=typeof row[si]==="number"?row[si]:Number(String(row[si]).replace(",",".").replace(/[^\d.-]/g,""));
+      if(!Number.isFinite(stockNum))continue;
+      out.push({code7,cn6:code7.slice(0,6),name:desc,expected:Math.max(0,Math.round(stockNum))});
+    }
+    if(out.length)return out;
+  }
+  throw new Error("No encuentro las columnas Código, Descripción y Stock Actual");
+}
+function normalizeRaw(raw){return String(raw??"").replace(/^\]d2/,"").replace(/\r?\n/g,"").trim()}
+function parseGs1(input){
+  const raw=normalizeRaw(input),f={};if(!raw)return{raw};
+  if(/\((?:01|10|17|21|712)\)/.test(raw)){
+    const re=/\((01|10|17|21|712)\)/g,m=[...raw.matchAll(re)];
+    for(let i=0;i<m.length;i++){const st=m[i].index+m[i][0].length,en=i+1<m.length?m[i+1].index:raw.length;f[m[i][1]]=raw.slice(st,en).replace(/\x1D/g,"")}
+  }else{
+    let i=0;
+    while(i<raw.length){
+      if(raw.charCodeAt(i)===29){i++;continue}
+      let ai="",fixed=0,max=0;
+      if(raw.slice(i,i+3)==="712"){ai="712";max=20;i+=3}
+      else{const a=raw.slice(i,i+2);if(a==="01"){ai=a;fixed=14;i+=2}else if(a==="17"){ai=a;fixed=6;i+=2}else if(a==="10"||a==="21"){ai=a;max=20;i+=2}else{i++;continue}}
+      if(fixed){f[ai]=raw.slice(i,i+fixed);i+=fixed}
+      else{const gs=raw.indexOf("\x1D",i),en=gs>=0?Math.min(gs,i+max):Math.min(raw.length,i+max);f[ai]=raw.slice(i,en);i=gs>=0?gs+1:en}
+    }
+  }
+  const gtin=(f["01"]||"").replace(/\D/g,""),nhrn=(f["712"]||"").replace(/\D/g,"");
+  let code7="",cn6="";
+  if(nhrn.length>=7){code7=nhrn.slice(0,7);cn6=code7.slice(0,6)}
+  else if(nhrn.length===6){cn6=nhrn}
+  if(!code7&&/^0847000\d{7}$/.test(gtin)){code7=gtin.slice(7);cn6=code7.slice(0,6)}
+  return{raw,gtin,code7,cn6,serial:f["21"]||"",lot:f["10"]||"",expiry:f["17"]||"",fingerprint:gtin&&f["21"]?gtin+"|"+f["21"]:raw}
+}
+function maps(){return{by7:new Map(expected.map(x=>[x.code7,x])),by6:new Map(expected.map(x=>[x.cn6,x]))}}
+function resolve(p){const m=maps();return p.code7&&m.by7.has(p.code7)?p.code7:p.cn6&&m.by6.has(p.cn6)?m.by6.get(p.cn6).code7:""}
+function feedback(t,c=""){const e=$("feedback");e.className="feedback "+c;e.innerHTML=t}
+function vibrate(type){if(navigator.vibrate)navigator.vibrate(type==="dup"?[30,35,30]:type==="bad"?60:25)}
+function addScan(p){
+  const exp=resolve(p),id=p.fingerprint||p.raw;
+  if(scans.some(s=>s.id===id)){feedback("<b>Duplicado bloqueado.</b> Esa caja individual ya se había leído.","warn");vibrate("dup");return}
+  const s={id,expectedCode:exp,raw:p.raw,gtin:p.gtin||"",code7:p.code7||"",cn6:p.cn6||"",serial:p.serial||"",lot:p.lot||"",expiry:p.expiry||"",at:new Date().toISOString()};
+  scans.push(s);save(K_SCANS,scans);
+  if(exp){const item=expected.find(x=>x.code7===exp),n=scans.filter(x=>x.expectedCode===exp).length,d=n-item.expected;
+    if(d<0)feedback("<b>"+esc(item.name)+"</b><br>"+n+" / "+item.expected+" · faltan "+(-d),"");
+    else if(d===0)feedback("<b>✓ "+esc(item.name)+"</b><br>Stock cuadrado: "+n+" / "+item.expected,"good");
+    else{feedback("<b>"+esc(item.name)+"</b><br>"+n+" / "+item.expected+" · sobra "+d,"bad");vibrate("bad")}
+  }else{feedback("<b>No aparece en la lista.</b><br>"+esc(p.code7||p.cn6||p.gtin||"Data Matrix desconocido"),"warn");vibrate("bad")}
+  render();
+}
+function calc(){
+  const counts=new Map();for(const s of scans)counts.set(s.expectedCode||("u:"+(s.code7||s.cn6||s.gtin||s.raw)),(counts.get(s.expectedCode||("u:"+(s.code7||s.cn6||s.gtin||s.raw)))||0)+1);
+  const rows=expected.map(x=>({...x,physical:counts.get(x.code7)||0})).map(x=>({...x,diff:x.physical-x.expected}));
+  let missing=0,correct=0,over=0;for(const r of rows){if(r.physical<r.expected)missing+=r.expected-r.physical;if(r.expected>0&&r.diff===0)correct++;if(r.diff>0)over++}
+  const unknown=new Map();for(const s of scans)if(!s.expectedCode){const k=s.code7||s.cn6||s.gtin||s.raw;if(!unknown.has(k))unknown.set(k,{key:k,scans:[]});unknown.get(k).scans.push(s)}
+  return{rows,missing,correct,over,unknown:[...unknown.values()]};
+}
+function render(){
+  const has=expected.length>0;$("loadCard").classList.toggle("hidden",has);$("inventory").classList.toggle("hidden",!has);if(!has)return;
+  const c=calc(),positive=expected.filter(x=>x.expected>0).length;
+  $("mScan").textContent=scans.length;$("mMissing").textContent=c.missing;$("mCorrect").textContent=c.correct+"/"+positive;$("mIssues").textContent=c.over+c.unknown.length;$("undoBtn").disabled=!scans.length;
+  const tabs=[["pending","Pendientes",c.rows.filter(r=>r.physical<r.expected).length],["correct","Cuadrados",c.rows.filter(r=>r.expected>0&&r.diff===0).length],["over","Sobran",c.rows.filter(r=>r.diff>0).length],["unknown","No previstos",c.unknown.length],["all","Todos",c.rows.length]];
+  $("tabs").innerHTML=tabs.map(([id,l,n])=>'<button class="tab '+(filter===id?"active":"")+'" data-f="'+id+'">'+l+" "+n+"</button>").join("");
+  document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{filter=b.dataset.f;render()});
+  const q=norm($("search").value),data=[];
+  if(filter==="unknown"){for(const g of c.unknown)data.push({unknown:true,name:"No previsto",code:g.key,physical:g.scans.length,scans:g.scans})}
+  else for(const r of c.rows){if(filter==="pending"&&!(r.physical<r.expected))continue;if(filter==="correct"&&!(r.expected>0&&r.diff===0))continue;if(filter==="over"&&!(r.diff>0))continue;data.push(r)}
+  const filtered=q?data.filter(r=>norm((r.name||"")+" "+(r.code7||r.code||"")).includes(q)):data;
+  $("rows").innerHTML=filtered.length?filtered.map(r=>{
+    if(r.unknown)return '<div class="row"><div class="rowgrid"><div><div class="name">'+esc(r.name)+'</div><div class="code">'+esc(r.code)+'</div></div><div class="count"><b>'+r.physical+'</b><div class="delta warntxt">añadir/revisar</div></div></div></div>';
+    let cls="infotxt",txt="faltan "+(r.expected-r.physical);if(r.diff===0){cls="goodtxt";txt="correcto"}if(r.diff>0){cls="badtxt";txt="sobra "+r.diff}
+    const us=scans.filter(s=>s.expectedCode===r.code7);
+    return '<div class="row"><div class="rowgrid"><div><div class="name">'+esc(r.name)+'</div><div class="code">Farmatic '+esc(r.code7)+' · CN '+esc(r.cn6)+'</div></div><div class="count"><b>'+r.physical+" / "+r.expected+'</b><div class="delta '+cls+'">'+txt+'</div></div></div>'+(us.length?'<details><summary>Ver '+us.length+' caja(s)</summary><div class="units">'+us.map(s=>esc([s.serial&&("serie "+s.serial),s.lot&&("lote "+s.lot),s.expiry&&("cad "+s.expiry)].filter(Boolean).join(" · ")||s.raw)).join("<br>")+"</div></details>":"")+"</div>";
+  }).join(""):'<div class="empty">No hay elementos en esta vista.</div>';
+}
+async function start(){
+  if(controls)return;if(!window.ZXingBrowser){feedback("No se ha cargado el lector Data Matrix. Revisa la conexión.","bad");return}
+  try{
+    reader=new ZXingBrowser.BrowserDatamatrixCodeReader();
+    controls=await reader.decodeFromConstraints({audio:false,video:{facingMode:{ideal:"environment"},width:{ideal:1920},height:{ideal:1080}}},$("video"),res=>{
+      if(!res)return;const raw=typeof res.getText==="function"?res.getText():res.text,now=performance.now();if(raw===lastRaw&&now-lastAt<1200)return;lastRaw=raw;lastAt=now;addScan(parseGs1(raw));
+    });
+    $("cameraOff").classList.add("hidden");$("startBtn").disabled=true;$("stopBtn").disabled=false;feedback("Cámara activa. Pasa las cajas una a una por el recuadro.");
+  }catch(e){controls=null;reader=null;feedback("<b>No pude abrir la cámara.</b><br>"+esc(e?.message||e),"bad")}
+}
+function stop(){try{controls?.stop()}catch{}controls=null;reader=null;$("video").srcObject=null;$("cameraOff").classList.remove("hidden");$("startBtn").disabled=false;$("stopBtn").disabled=true}
+function csvCell(v){return '"'+String(v??"").replace(/"/g,'""')+'"'}
+function exportCsv(){
+ const c=calc(),rows=[["Codigo_Farmatic","CN","Descripcion","Stock_Farmatic","Contado","Diferencia","Estado"]];
+ for(const r of c.rows)rows.push([r.code7,r.cn6,r.name,r.expected,r.physical,r.diff,r.diff===0?"CORRECTO":r.diff>0?"SOBRA":"FALTA"]);
+ for(const g of c.unknown)rows.push(["",g.scans[0].cn6||"", "NO PREVISTO",0,g.scans.length,g.scans.length,"AÑADIR/REVISAR"]);
+ const blob=new Blob(["\uFEFF"+rows.map(x=>x.map(csvCell).join(";")).join("\r\n")],{type:"text/csv;charset=utf-8"}),u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="resultado_frigo.csv";a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)
+}
+$("fileInput").addEventListener("change",async e=>{
+ const f=e.target.files?.[0];if(!f)return;$("loadStatus").textContent="Leyendo "+f.name+"…";
+ try{const buf=await f.arrayBuffer(),list=parseWorkbook(buf);expected=list;scans=[];save(K_LIST,expected);save(K_SCANS,scans);$("loadStatus").textContent="Lista cargada";render();feedback("Lista cargada: "+expected.length+" artículos. Ya puedes escanear.");}
+ catch(err){$("loadStatus").textContent="Error: "+(err?.message||err)}
+});
+$("startBtn").onclick=start;$("stopBtn").onclick=stop;$("undoBtn").onclick=()=>{if(scans.length){scans.pop();save(K_SCANS,scans);feedback("Último escaneo deshecho.");render()}};
+$("search").oninput=render;$("exportBtn").onclick=exportCsv;
+$("changeListBtn").onclick=()=>{stop();localStorage.removeItem(K_LIST);localStorage.removeItem(K_SCANS);expected=[];scans=[];$("fileInput").value="";render()};
+$("resetBtn").onclick=()=>{if(confirm("¿Borrar todos los escaneos de esta sesión?")){scans=[];save(K_SCANS,scans);render();feedback("Sesión borrada.")}};
+window.addEventListener("pagehide",stop);render();
+})();
+</script>
+</body>
+</html>
