@@ -1,27 +1,99 @@
 "use strict";
 
 let scanEngine="wasm",wasmReady=false,wasmInitPromise=null,wasmErrors=0,jsReader=null,cropCanvas=null,cropIndex=0;
+let dmGtinLive=new Map(),linearCandidates=[];
 
 function center(r,w,h){
   const p=r?.position,pts=p?[p.topLeft,p.topRight,p.bottomRight,p.bottomLeft].filter(Boolean):[];
   return pts.length?{x:pts.reduce((a,q)=>a+(q.x||0),0)/pts.length/w,y:pts.reduce((a,q)=>a+(q.y||0),0)/pts.length/h}:{x:.5,y:.5};
 }
+function bounds(r,w,h){
+  const p=r?.position,pts=p?[p.topLeft,p.topRight,p.bottomRight,p.bottomLeft].filter(Boolean):[];
+  if(!pts.length)return null;
+  const xs=pts.map(q=>(q.x||0)/w),ys=pts.map(q=>(q.y||0)/h);
+  return{x1:Math.min(...xs),y1:Math.min(...ys),x2:Math.max(...xs),y2:Math.max(...ys)};
+}
+function overlapRatio(a,b){
+  if(!a||!b)return 0;
+  const iw=Math.max(0,Math.min(a.x2,b.x2)-Math.max(a.x1,b.x1)),ih=Math.max(0,Math.min(a.y2,b.y2)-Math.max(a.y1,b.y1));
+  const inter=iw*ih;if(!inter)return 0;
+  const aa=Math.max(1e-6,(a.x2-a.x1)*(a.y2-a.y1)),ba=Math.max(1e-6,(b.x2-b.x1)*(b.y2-b.y1));
+  return inter/Math.min(aa,ba);
+}
+function gtinVariants(v){
+  const d=String(v||"").replace(/\D/g,"");if(!d)return new Set();
+  const out=new Set([d]);
+  if(d.length===14&&d.startsWith("0"))out.add(d.slice(1));
+  if(d.length===13)out.add("0"+d);
+  if(d.length===12){out.add("0"+d);out.add("00"+d)}
+  return out;
+}
+function gtinEquivalent(a,b){
+  const A=gtinVariants(a),B=gtinVariants(b);for(const x of A)if(B.has(x))return true;return false;
+}
+function isDataMatrix(p){return (p?.format||"")==="DataMatrix"||!!p?.serial}
+function isLinear(p){return !isDataMatrix(p)}
+function purgeRecentLinearForDataMatrix(p){
+  if(!p?.gtin)return 0;
+  const cutoff=Date.now()-3500,before=scans.length;
+  scans=scans.filter(s=>{
+    if((s.format||"")==="DataMatrix"||s.serial)return true;
+    const t=Date.parse(s.at||"");
+    return !(Number.isFinite(t)&&t>=cutoff&&gtinEquivalent(s.gtin||s.raw,p.gtin));
+  });
+  const removed=before-scans.length;if(removed)save(KS,scans);return removed;
+}
 function collect(results,w,h){
-  const now=performance.now(),items=[];let dup=0;
+  const now=performance.now(),items=[];let dup=0,purged=0;
   linearTracks=linearTracks.filter(t=>now-t.last<1700);
+  linearCandidates=linearCandidates.filter(t=>now-t.last<900);
+  for(const [k,t] of dmGtinLive)if(now-t>2800)dmGtinLive.delete(k);
   const used=new Set(),batchIds=new Set(),frameSeen=[];
+
+  const recs=[];
   for(const r of results){
     if(!r||r.isValid===false||!r.text)continue;
     const p=parseDetected(r);if(!p)continue;
-    if(p.serial){
+    recs.push({r,p,c:center(r,w,h),b:bounds(r,w,h)});
+  }
+  const dms=recs.filter(x=>isDataMatrix(x.p));
+  for(const d of dms){
+    for(const k of gtinVariants(d.p.gtin))dmGtinLive.set(k,now);
+    purged+=purgeRecentLinearForDataMatrix(d.p);
+  }
+
+  for(const rec of recs){
+    const {r,p,c,b}=rec;
+    if(isDataMatrix(p)){
       const id=p.fingerprint||p.raw;if(batchIds.has(id))continue;batchIds.add(id);
       const last=dmLive.get(id)||0;dmLive.set(id,now);
       if(scans.some(s=>s.id===id)){if(now-last>1800)dup++;continue}
+      if(last&&now-last<900)continue;
       items.push({p,id});continue;
     }
-    const c=center(r,w,h),key=(p.format||"BAR")+":"+p.raw;
+
+    let shadowed=false;
+    for(const d of dms){
+      if((p.gtin&&d.p.gtin&&gtinEquivalent(p.gtin,d.p.gtin)) || overlapRatio(b,d.b)>.22 || Math.hypot(c.x-d.c.x,c.y-d.c.y)<.065){shadowed=true;break}
+    }
+    if(!shadowed&&p.gtin){
+      for(const k of gtinVariants(p.gtin))if(dmGtinLive.has(k)){shadowed=true;break}
+    }
+    if(shadowed)continue;
+
+    const key=(p.format||"BAR")+":"+p.raw;
     if(frameSeen.some(x=>x.key===key&&Math.hypot(x.x-c.x,x.y-c.y)<.12))continue;
     frameSeen.push({key,x:c.x,y:c.y});
+
+    let ci=-1,cd=99;
+    for(let i=0;i<linearCandidates.length;i++){
+      const q=linearCandidates[i];if(q.key!==key)continue;const d=Math.hypot(q.x-c.x,q.y-c.y);if(d<cd){cd=d;ci=i}
+    }
+    if(ci<0||cd>.18){linearCandidates.push({key,x:c.x,y:c.y,first:now,last:now,hits:1});continue}
+    const cand=linearCandidates[ci];cand.x=c.x;cand.y=c.y;cand.last=now;cand.hits++;
+    if(cand.hits<2)continue;
+    linearCandidates.splice(ci,1);
+
     let best=-1,dist=99;
     for(let i=0;i<linearTracks.length;i++){
       const t=linearTracks[i];if(used.has(i)||t.key!==key)continue;const d=Math.hypot(t.x-c.x,t.y-c.y);if(d<dist){dist=d;best=i}
@@ -30,6 +102,7 @@ function collect(results,w,h){
     linearTracks.push({key,x:c.x,y:c.y,last:now});used.add(linearTracks.length-1);items.push({p,id:`linear:${Date.now()}:${frame}:${items.length}:${Math.random()}`});
   }
   for(const [id,t] of dmLive)if(now-t>2300)dmLive.delete(id);
+  if(purged)render();
   return{items,dup};
 }
 
@@ -93,7 +166,6 @@ async function scanFrame(){
         const img=ctx.getImageData(0,0,c.width,c.height),hard=frame%5===0;
         const normal=await ZXingWASM.readBarcodes(img,{formats:FORMATS,maxNumberOfSymbols:24,tryHarder:hard,tryRotate:true,tryDownscale:true,tryInvert:true,tryDenoise:hard,binarizer:"LocalAverage",returnErrors:false});
         valid=(normal||[]).filter(x=>x?.text&&x.isValid!==false);
-        // Dedicated DPM/inverted Data Matrix pass for white dotted modules on black backgrounds.
         if(valid.length===0||frame%4===0){
           const dpm=await ZXingWASM.readBarcodes(img,{formats:["DataMatrix"],maxNumberOfSymbols:16,tryHarder:true,tryRotate:true,tryDownscale:false,tryInvert:true,tryDenoise:true,binarizer:"LocalAverage",returnErrors:false});
           valid=mergeResults(valid,(dpm||[]).filter(x=>x?.text&&x.isValid!==false));
@@ -119,12 +191,12 @@ async function start(){
     stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:"environment"},width:{ideal:1920},height:{ideal:1080},frameRate:{ideal:30,max:60}}});
     const v=$("video");v.srcObject=stream;await v.play();const tr=stream.getVideoTracks()[0],caps=tr.getCapabilities?.();
     if(caps?.focusMode?.includes?.("continuous"))try{await tr.applyConstraints({advanced:[{focusMode:"continuous"}]})}catch{}
-    running=true;linearTracks=[];dmLive.clear();frame=0;wasmErrors=0;cropIndex=0;$("cameraOff").classList.add("hidden");$("startBtn").disabled=true;$("stopBtn").disabled=false;
+    running=true;linearTracks=[];linearCandidates=[];dmLive.clear();dmGtinLive.clear();frame=0;wasmErrors=0;cropIndex=0;$("cameraOff").classList.add("hidden");$("startBtn").disabled=true;$("stopBtn").disabled=false;
     feedback(scanEngine==="wasm"?"<b>Multicódigo activo.</b> También busco Data Matrix blancos sobre negro / punteados.":"<b>Modo compatible iPhone activo.</b> Escaneo continuo de Data Matrix y códigos de barras.");
     $("scanStatus").textContent=scanEngine==="wasm"?"Motor multicódigo listo":"Motor compatible listo";scanFrame();
   }catch(e){stop();feedback("No pude abrir la cámara: "+esc(e?.message||e),"bad")}
 }
 function stop(){
-  running=false;busy=false;if(timer)clearTimeout(timer);timer=null;try{stream?.getTracks().forEach(t=>t.stop())}catch{}stream=null;$("video").srcObject=null;$("cameraOff").classList.remove("hidden");$("startBtn").disabled=false;$("stopBtn").disabled=true;$("scanStatus").textContent="Parado";linearTracks=[];dmLive.clear();
+  running=false;busy=false;if(timer)clearTimeout(timer);timer=null;try{stream?.getTracks().forEach(t=>t.stop())}catch{}stream=null;$("video").srcObject=null;$("cameraOff").classList.remove("hidden");$("startBtn").disabled=false;$("stopBtn").disabled=true;$("scanStatus").textContent="Parado";linearTracks=[];linearCandidates=[];dmLive.clear();dmGtinLive.clear();
 }
 $("startBtn").onclick=start;$("stopBtn").onclick=stop;addEventListener("pagehide",stop);
