@@ -22,6 +22,7 @@ function migratePersistent(){
 migratePersistent();
 
 let expected=load(KL,[]),scans=load(KS,[]),filter="pending",stream=null,timer=null,busy=false,running=false,frame=0,linearTracks=[],dmLive=new Map();
+let renderDeferred=false;
 function load(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}}
 function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
 function feedback(t,c=""){const e=$("feedback");e.className="feedback "+c;e.innerHTML=t}
@@ -188,7 +189,9 @@ function deleteUnknownGroup(groupKey){
   scans=scans.filter(s=>!(!s.expectedKey&&unknownGroupKey(s)===groupKey));save(KS,scans);render();feedback(`${n} escaneo(s) eliminados. Puedes volver a escanear ese producto.`);
 }
 function setExpiry(scanId,value){
-  scans=scans.map(s=>s.id===scanId?{...s,manualExpiry:String(value||"")}:s);save(KS,scans);render();
+  // Persist immediately, but never rebuild the DOM while Safari's month picker is open.
+  scans=scans.map(s=>s.id===scanId?{...s,manualExpiry:String(value||"")}:s);
+  save(KS,scans);
 }
 function deleteScan(scanId){
   const s=scans.find(x=>x.id===scanId);
@@ -204,8 +207,23 @@ function deleteKnownGroup(expectedKey){
   feedback(`${n} caja(s) eliminadas del recuento. Puedes volver a escanear el producto.`);
 }
 
+function finishInlineEdit(){
+  // iOS can emit change before closing the native picker. Wait for focus to settle.
+  setTimeout(()=>{
+    const a=document.activeElement;
+    if(a?.matches?.(".expiryInput,.cnInput"))return;
+    if(renderDeferred){renderDeferred=false;render();}
+    else render();
+  },120);
+}
+
 function wireRowActions(){
-  document.querySelectorAll("[data-expiry-id]").forEach(el=>el.addEventListener("change",()=>setExpiry(decodeURIComponent(el.dataset.expiryId),el.value)));
+  document.querySelectorAll("[data-expiry-id]").forEach(el=>{
+    const saveValue=()=>setExpiry(decodeURIComponent(el.dataset.expiryId),el.value);
+    el.addEventListener("input",saveValue);
+    el.addEventListener("change",saveValue);
+    el.addEventListener("blur",()=>{saveValue();finishInlineEdit();});
+  });
   document.querySelectorAll("[data-assign-group]").forEach(btn=>btn.addEventListener("click",()=>{const g=decodeURIComponent(btn.dataset.assignGroup),inp=document.querySelector(`[data-cn-group="${CSS.escape(btn.dataset.assignGroup)}"]`);assignUnknownCN(g,inp?.value||"")}));
   document.querySelectorAll("[data-delete-group]").forEach(btn=>btn.addEventListener("click",()=>deleteUnknownGroup(decodeURIComponent(btn.dataset.deleteGroup))));
   document.querySelectorAll("[data-delete-scan]").forEach(btn=>btn.addEventListener("click",()=>deleteScan(decodeURIComponent(btn.dataset.deleteScan))));
@@ -213,6 +231,14 @@ function wireRowActions(){
 }
 
 function render(){
+  // Scanner updates must not destroy an input while the user is editing it.
+  // This is especially important for <input type="month"> on iOS Safari.
+  const active=document.activeElement;
+  if(active?.matches?.(".expiryInput,.cnInput")){
+    renderDeferred=true;
+    return;
+  }
+  renderDeferred=false;
   const has=expected.length>0;$("loadCard").classList.toggle("hidden",has);$("inventory").classList.toggle("hidden",!has);if(!has)return;
   const c=calc(),positive=expected.filter(x=>x.expected>0).length;
   $("mScan").textContent=scans.length;$("mMissing").textContent=c.missing;$("mCorrect").textContent=`${c.correct}/${positive}`;$("mIssues").textContent=c.over+c.unknown.length;$("undoBtn").disabled=!scans.length;
@@ -243,28 +269,20 @@ function exportCSV(){
   for(const g of c.unknown){const cn=g.scans.find(s=>s.assignedCN)?.assignedCN||"";rows.push([cn,"NO PREVISTO",0,g.scans.length,g.scans.length,"AÑADIR/REVISAR",expirySummary(g.scans),g.scans.map(s=>`[${s.format||""}] ${s.gtin||s.raw}`).join(" | ")])}
   const b=new Blob(["\uFEFF"+rows.map(r=>r.map(csv).join(";")).join("\r\n")],{type:"text/csv;charset=utf-8"}),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download="resultado_frigo.csv";a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);
 }
-
-function exportPDF(){
-  const JsPDF=window.jspdf?.jsPDF;
-  if(!JsPDF){feedback("No se ha cargado el generador PDF. Recarga con conexión.","bad");return}
-  const c=calc(),doc=new JsPDF({orientation:"landscape",unit:"mm",format:"a4"});
-  const now=new Date(),stamp=now.toLocaleString("es-ES");
-  doc.setFont("helvetica","bold");doc.setFontSize(16);doc.text("INVENTARIO FRIGO · FARMATIC",12,13);
-  doc.setFont("helvetica","normal");doc.setFontSize(9);doc.text(`Generado: ${stamp}    ·    Unidades escaneadas: ${scans.length}    ·    Faltan: ${c.missing}    ·    Incidencias: ${c.over+c.unknown.length}`,12,19);
-  const body=c.rows.map(r=>{const rs=scans.filter(s=>s.expectedKey===r.key);return[r.farmaticCode,r.name,String(r.expected),String(r.physical),r.diff>0?`+${r.diff}`:String(r.diff),r.diff===0?"CORRECTO":r.diff>0?"SOBRA":"FALTA",expirySummary(rs)]});
-  doc.autoTable({startY:24,head:[["Código","Descripción","Farmatic","Físico","Dif.","Estado","Caducidades"]],body,theme:"grid",styles:{fontSize:7,cellPadding:1.8,valign:"middle"},headStyles:{fillColor:[35,40,50]},columnStyles:{0:{cellWidth:22},1:{cellWidth:96},2:{cellWidth:16,halign:"center"},3:{cellWidth:16,halign:"center"},4:{cellWidth:14,halign:"center"},5:{cellWidth:22},6:{cellWidth:75}},margin:{left:10,right:10}});
-  if(c.unknown.length){
-    let y=(doc.lastAutoTable?.finalY||24)+8;if(y>175){doc.addPage();y=14}
-    doc.setFont("helvetica","bold");doc.setFontSize(11);doc.text("ARTÍCULOS NO PREVISTOS",10,y);y+=4;
-    const ub=c.unknown.map(g=>{const s=g.scans[0],cn=g.scans.find(x=>x.assignedCN)?.assignedCN||"";return[s.format||"código",s.gtin||s.raw,cn,String(g.scans.length),expirySummary(g.scans)]});
-    doc.autoTable({startY:y,head:[["Formato","Código leído","CN asignado","Unidades","Caducidades"]],body:ub,theme:"grid",styles:{fontSize:7,cellPadding:1.8},headStyles:{fillColor:[35,40,50]},columnStyles:{0:{cellWidth:28},1:{cellWidth:95},2:{cellWidth:28},3:{cellWidth:20,halign:"center"},4:{cellWidth:95}},margin:{left:10,right:10}});
-  }
-  doc.save(`inventario_frigo_${now.toISOString().slice(0,10)}.pdf`);feedback("Informe PDF generado.","good");
+function generatePDF(){
+  if(!window.jspdf?.jsPDF){feedback("No se ha cargado el generador PDF.","bad");return}
+  const {jsPDF}=window.jspdf,doc=new jsPDF({orientation:"landscape",unit:"mm",format:"a4"}),c=calc();
+  doc.setFontSize(16);doc.text("Inventario FRIGO · Farmatic",14,14);doc.setFontSize(9);doc.text(`Generado ${new Date().toLocaleString("es-ES")} · Escaneadas ${scans.length} uds.`,14,20);
+  const body=c.rows.map(r=>{const rs=scans.filter(s=>s.expectedKey===r.key);return[r.farmaticCode,r.name,String(r.expected),String(r.physical),String(r.diff),r.diff===0?"CORRECTO":r.diff>0?"SOBRA":"FALTA",expirySummary(rs)]});
+  doc.autoTable({startY:25,head:[["Código","Descripción","Farmatic","Físico","Dif.","Estado","Caducidades"]],body,styles:{fontSize:7,cellPadding:1.4},headStyles:{fontSize:7.5},columnStyles:{0:{cellWidth:22},1:{cellWidth:78},2:{cellWidth:16},3:{cellWidth:16},4:{cellWidth:14},5:{cellWidth:22},6:{cellWidth:95}},didParseCell:data=>{if(data.section==="body"&&data.column.index===5){const v=String(data.cell.raw);if(v==="FALTA"||v==="SOBRA")data.cell.styles.fontStyle="bold"}}});
+  if(c.unknown.length){let y=doc.lastAutoTable.finalY+8;if(y>175){doc.addPage();y=14}doc.setFontSize(12);doc.text("Artículos no previstos / por identificar",14,y);const ub=c.unknown.map(g=>{const s=g.scans[0],cn=g.scans.find(x=>x.assignedCN)?.assignedCN||"";return[s.format||"código",s.gtin||s.raw||"",cn,String(g.scans.length),expirySummary(g.scans)]});doc.autoTable({startY:y+4,head:[["Tipo","Código leído","CN asignado","Uds.","Caducidades"]],body:ub,styles:{fontSize:7,cellPadding:1.5},columnStyles:{0:{cellWidth:25},1:{cellWidth:72},2:{cellWidth:28},3:{cellWidth:16},4:{cellWidth:105}}})}
+  const pages=doc.getNumberOfPages();for(let p=1;p<=pages;p++){doc.setPage(p);doc.setFontSize(7);doc.text(`Página ${p}/${pages}`,270,202,{align:"right"})}
+  doc.save("inventario_frigo_farmatic.pdf");
 }
 
 $("fileInput").onchange=async e=>{const f=e.target.files?.[0];if(!f)return;$("loadStatus").textContent="Leyendo…";try{expected=parseWorkbook(await f.arrayBuffer());scans=[];save(KL,expected);save(KS,scans);render();feedback(`Lista cargada: ${expected.length} artículos.`,"good")}catch(err){$("loadStatus").textContent="Error: "+(err?.message||err)}};
 $("undoBtn").onclick=()=>{if(scans.length){scans.pop();save(KS,scans);render();feedback("Último escaneo deshecho.")}};
-$("search").oninput=render;$("exportBtn").onclick=exportCSV;$("pdfBtn").onclick=exportPDF;
+$("search").oninput=render;$("exportBtn").onclick=exportCSV;$("pdfBtn").onclick=generatePDF;
 $("changeListBtn").onclick=()=>{stop();expected=[];scans=[];localStorage.removeItem(KL);localStorage.removeItem(KS);$("fileInput").value="";render()};
 $("resetBtn").onclick=()=>{if(confirm("¿Borrar los escaneos?")){scans=[];save(KS,scans);render()}};
 render();
