@@ -22,6 +22,7 @@ function collect(results,w,h){
   linearTracks=linearTracks.filter(t=>now-t.last<1700);
   const used=new Set();
   const batchIds=new Set();
+  const frameSeen=[];
 
   for(const r of results){
     if(!r||r.isValid===false||!r.text) continue;
@@ -43,6 +44,8 @@ function collect(results,w,h){
     }
 
     const c=center(r,w,h),key=(p.format||"BAR")+":"+p.raw;
+    if(frameSeen.some(x=>x.key===key&&Math.hypot(x.x-c.x,x.y-c.y)<.12)) continue;
+    frameSeen.push({key,x:c.x,y:c.y});
     let best=-1,dist=99;
     for(let i=0;i<linearTracks.length;i++){
       const t=linearTracks[i];
