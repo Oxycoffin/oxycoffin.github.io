@@ -162,12 +162,12 @@ function expirySummary(arr){
 }
 
 function scanUnitHtml(s,i){
-  const fmt=esc(s.format||"código"),serial=s.serial?` · serie ${esc(s.serial)}`:"",lot=s.lot?` · lote ${esc(s.lot)}`:"";
+  const fmt=esc(s.format||"código"),serial=s.serial?` · serie ${esc(s.serial)}`:"",lot=s.lot?` · lote ${esc(s.lot)}`:"",sid=encodeURIComponent(s.id);
   if((s.format||"")==="DataMatrix"||s.serial){
-    return`<div class="unitRow"><div class="unitLabel">Caja ${i+1} · ${fmt}${serial}${lot}</div><div class="autoExpiry">Cad. ${esc(expiryDisplay(scanExpiry(s)))}</div></div>`;
+    return`<div class="scanUnit"><div class="unitRow"><div class="unitLabel">Caja ${i+1} · ${fmt}${serial}${lot}</div><div class="autoExpiry">Cad. ${esc(expiryDisplay(scanExpiry(s)))}</div></div><div class="unitActions"><button class="danger miniBtn" data-delete-scan="${sid}">Borrar caja</button></div></div>`;
   }
   const val=esc(expiryToMonth(s.manualExpiry||s.expiry||""));
-  return`<div class="unitRow"><div class="unitLabel">Caja ${i+1} · ${fmt} · ${esc(s.gtin||s.raw||"")}</div><input class="expiryInput" type="month" value="${val}" data-expiry-id="${encodeURIComponent(s.id)}" aria-label="Caducidad caja ${i+1}"></div>`;
+  return`<div class="scanUnit"><div class="unitRow"><div class="unitLabel">Caja ${i+1} · ${fmt} · ${esc(s.gtin||s.raw||"")}</div><input class="expiryInput" type="month" value="${val}" data-expiry-id="${sid}" aria-label="Caducidad caja ${i+1}"></div><div class="unitActions"><button class="danger miniBtn" data-delete-scan="${sid}">Borrar caja</button></div></div>`;
 }
 
 function assignUnknownCN(groupKey,cn){
@@ -190,11 +190,26 @@ function deleteUnknownGroup(groupKey){
 function setExpiry(scanId,value){
   scans=scans.map(s=>s.id===scanId?{...s,manualExpiry:String(value||"")}:s);save(KS,scans);render();
 }
+function deleteScan(scanId){
+  const s=scans.find(x=>x.id===scanId);
+  if(!s)return;
+  scans=scans.filter(x=>x.id!==scanId);save(KS,scans);render();
+  feedback(`Caja eliminada del recuento${s.serial?` · serie ${esc(s.serial)}`:""}.`);
+}
+function deleteKnownGroup(expectedKey){
+  const item=expected.find(x=>x.key===expectedKey),n=scans.filter(s=>s.expectedKey===expectedKey).length;
+  if(!n)return;
+  if(!confirm(`¿Borrar las ${n} caja(s) contadas de ${item?.name||"este producto"}? La línea de Farmatic se conserva.`))return;
+  scans=scans.filter(s=>s.expectedKey!==expectedKey);save(KS,scans);render();
+  feedback(`${n} caja(s) eliminadas del recuento. Puedes volver a escanear el producto.`);
+}
 
 function wireRowActions(){
   document.querySelectorAll("[data-expiry-id]").forEach(el=>el.addEventListener("change",()=>setExpiry(decodeURIComponent(el.dataset.expiryId),el.value)));
   document.querySelectorAll("[data-assign-group]").forEach(btn=>btn.addEventListener("click",()=>{const g=decodeURIComponent(btn.dataset.assignGroup),inp=document.querySelector(`[data-cn-group="${CSS.escape(btn.dataset.assignGroup)}"]`);assignUnknownCN(g,inp?.value||"")}));
   document.querySelectorAll("[data-delete-group]").forEach(btn=>btn.addEventListener("click",()=>deleteUnknownGroup(decodeURIComponent(btn.dataset.deleteGroup))));
+  document.querySelectorAll("[data-delete-scan]").forEach(btn=>btn.addEventListener("click",()=>deleteScan(decodeURIComponent(btn.dataset.deleteScan))));
+  document.querySelectorAll("[data-delete-known]").forEach(btn=>btn.addEventListener("click",()=>deleteKnownGroup(decodeURIComponent(btn.dataset.deleteKnown))));
 }
 
 function render(){
@@ -215,7 +230,8 @@ function render(){
     }
     const d=r.diff,txt=d===0?"correcto":d>0?`sobra ${d}`:`faltan ${-d}`,cls=d===0?"goodtxt":d>0?"badtxt":"";
     const rs=scans.filter(s=>s.expectedKey===r.key);
-    return`<div class="row"><div class="rowgrid"><div><div class="name">${esc(r.name)}</div><div class="code">Farmatic ${esc(r.farmaticCode)}</div></div><div class="count"><b>${r.physical} / ${r.expected}</b><div class="delta ${cls}">${txt}</div></div></div>${rs.length?`<details><summary>Caducidades · ${esc(expirySummary(rs))}</summary><div class="unitList">${rs.map(scanUnitHtml).join("")}</div></details>`:""}</div>`;
+    const rk=encodeURIComponent(r.key);
+    return`<div class="row"><div class="rowgrid"><div><div class="name">${esc(r.name)}</div><div class="code">Farmatic ${esc(r.farmaticCode)}</div></div><div class="count"><b>${r.physical} / ${r.expected}</b><div class="delta ${cls}">${txt}</div></div></div>${rs.length?`<div class="knownTools"><button class="danger miniBtn" data-delete-known="${rk}">Borrar recuento (${rs.length})</button></div><details><summary>Caducidades · ${esc(expirySummary(rs))}</summary><div class="unitList">${rs.map(scanUnitHtml).join("")}</div></details>`:""}</div>`;
   }).join(""):'<div class="empty">No hay elementos.</div>';
   wireRowActions();
 }
