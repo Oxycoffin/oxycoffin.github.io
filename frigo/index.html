@@ -17,8 +17,8 @@
 <body>
 <div class="app">
   <nav class="inventoryNav" aria-label="Inventario">
-    <a class="active" href="./?v=8">FRIGO</a>
-    <a href="../estupas/?v=1">ESTUPEFACIENTES</a>
+    <a class="active" href="./?v=9">FRIGO</a>
+    <a href="../estupas/?v=2">ESTUPEFACIENTES</a>
   </nav>
 
   <h1>Inventario FRIGO</h1>
@@ -67,7 +67,7 @@
         <button class="secondary" id="changeListBtn">Cambiar lista</button>
         <button class="danger" id="resetBtn">Borrar sesión</button>
       </div>
-      <div class="meta reportNote">El PDF sale en A4 apaisado con stock Farmatic, recuento físico, diferencias, caducidades y artículos no previstos.</div>
+      <div class="meta reportNote">El PDF replica el formato “STOCK Y CADUCIDADES”: 4 columnas, caducidades próximas, no localizados y stock contado/Farmatic.</div>
     </section>
   </div>
 </div>
@@ -79,5 +79,6 @@
 <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
 <script src="./core.js?v=7"></script>
 <script src="./scanner.js?v=7"></script>
+<script src="./report.js?v=1"></script>
 </body>
 </html>
