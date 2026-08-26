@@ -8,9 +8,19 @@
   <meta name="apple-mobile-web-app-title" content="FRIGO">
   <title>FRIGO · Inventario</title>
   <link rel="stylesheet" href="./style.css?v=7">
+  <style>
+    .inventoryNav{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:4px 0 12px}
+    .inventoryNav a{display:flex;align-items:center;justify-content:center;min-height:42px;border:1px solid var(--line);border-radius:12px;text-decoration:none;font-size:12px;font-weight:800;color:var(--text);background:var(--card)}
+    .inventoryNav a.active{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+  </style>
 </head>
 <body>
 <div class="app">
+  <nav class="inventoryNav" aria-label="Inventario">
+    <a class="active" href="./?v=8">FRIGO</a>
+    <a href="../estupas/?v=1">ESTUPEFACIENTES</a>
+  </nav>
+
   <h1>Inventario FRIGO</h1>
   <div class="sub">Farmatic · Data Matrix + códigos de barras · multicódigo</div>
 
