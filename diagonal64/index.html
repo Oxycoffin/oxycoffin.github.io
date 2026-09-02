@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#efe7d3" />
+  <title>Diagonal 64 · Damas españolas contra IA</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand" aria-label="Diagonal 64">
+        <div class="brand-glyph" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <div class="brand-copy">
+          <div class="eyebrow">Werkstatt digital · edición 01</div>
+          <h1>Diagonal <span>64</span></h1>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="text-button" data-dialog="rules" type="button">Reglas</button>
+        <button class="text-button" data-dialog="notes" type="button">Cuaderno de diseño</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="left-rail rail" aria-label="Controles de partida">
+        <section class="panel">
+          <p class="panel-kicker micro">Partida / 01</p>
+          <div class="player-stack">
+            <article class="player-card human" id="humanCard">
+              <div class="mini-piece" id="humanMiniPiece" aria-hidden="true"></div>
+              <div>
+                <div class="player-name">Tú · <span id="humanColorLabel">Marfil</span></div>
+                <div class="player-sub" id="humanRoleLabel">Abres la partida</div>
+              </div>
+              <div class="piece-total" id="humanPieceCount">12</div>
+            </article>
+            <article class="player-card ai" id="aiCard">
+              <div class="mini-piece dark" id="aiMiniPiece" aria-hidden="true"></div>
+              <div>
+                <div class="player-name">IA · <span id="aiColorLabel">Tinta</span></div>
+                <div class="player-sub" id="aiDepthLabel">Taller · adaptativa</div>
+              </div>
+              <div class="piece-total" id="aiPieceCount">12</div>
+            </article>
+          </div>
+
+          <div class="balance-block">
+            <div class="meter-label"><span>Tu pulso</span><span>IA</span></div>
+            <div class="balance-meter" role="meter" aria-label="Balance material de la partida" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+              <div class="balance-human" id="balanceHuman"></div>
+            </div>
+          </div>
+
+          <div class="capture-racks">
+            <div>
+              <div class="rack-title micro">Capturas tuyas</div>
+              <div class="pip-rack" id="humanCaptures" aria-hidden="true"></div>
+            </div>
+            <div>
+              <div class="rack-title micro">Capturas IA</div>
+              <div class="pip-rack" id="aiCaptures" aria-hidden="true"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <p class="panel-kicker micro">Ajustes / antes o durante</p>
+
+          <div class="control-group" style="margin-top:0">
+            <span class="control-label">Juegas con</span>
+            <div class="segmented" role="group" aria-label="Elegir color">
+              <button type="button" data-side="white" class="is-selected">Marfil</button>
+              <button type="button" data-side="black">Tinta</button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <span class="control-label">Nivel de la IA</span>
+            <div class="difficulty-grid" role="group" aria-label="Dificultad">
+              <button class="difficulty-option" data-level="calma" type="button"><i></i><span>Calma</span><small>rápida</small></button>
+              <button class="difficulty-option is-selected" data-level="taller" type="button"><i></i><span>Taller</span><small>equilibrada</small></button>
+              <button class="difficulty-option" data-level="maestra" type="button"><i></i><span>Maestra</span><small>profunda</small></button>
+            </div>
+          </div>
+
+          <div class="control-group toggle-row">
+            <div>
+              <span class="control-label" style="margin:0">Sonido táctil</span>
+              <div style="font-size:9px;opacity:.5;margin-top:3px">Síntesis local, sin archivos</div>
+            </div>
+            <button class="switch" id="soundSwitch" type="button" role="switch" aria-checked="true" aria-label="Activar sonido"></button>
+          </div>
+
+          <div class="button-row">
+            <button class="primary-button" id="newGameButton" type="button">Nueva</button>
+            <button class="secondary-button" id="undoButton" type="button" disabled>Deshacer</button>
+          </div>
+        </section>
+      </aside>
+
+      <section class="board-zone" aria-label="Tablero de damas">
+        <div class="board-caption">
+          <div class="board-caption-main">
+            <h2>Damas españolas</h2>
+            <p>8 × 8 · casillas claras · ley de cantidad + calidad</p>
+          </div>
+          <div class="rule-flag"><i></i><span>Captura obligatoria</span></div>
+        </div>
+
+        <div class="board-card">
+          <div class="board-frame">
+            <div class="board" id="board" role="grid" aria-label="Tablero de damas españolas"></div>
+          </div>
+          <div class="board-footer micro">
+            <span id="orientationLabel">Marfil abajo · notación 1–32</span>
+            <span id="saveLabel">Guardado local</span>
+          </div>
+        </div>
+      </section>
+
+      <aside class="right-rail rail" aria-label="Estado y anotación">
+        <section class="status-panel" id="statusPanel" aria-live="polite">
+          <div class="status-top">
+            <div class="status-symbol" aria-hidden="true"></div>
+            <div class="status-label micro" id="statusLabel">En juego</div>
+          </div>
+          <h2 class="status-title" id="statusTitle">Tu turno</h2>
+          <p class="status-detail" id="statusDetail">Elige una ficha marcada y llévala a uno de los destinos rojos.</p>
+        </section>
+
+        <section class="panel move-panel">
+          <div class="move-header">
+            <h3>Anotación</h3>
+            <span class="micro" id="moveCountLabel">0 jugadas</span>
+          </div>
+          <div class="move-list" id="moveList"></div>
+        </section>
+
+        <section class="principle-card">
+          <div class="micro">Principio activo / 01</div>
+          <strong>La forma explica la regla.</strong>
+          <p>La barra diagonal del peón señala avance. Al coronarse se convierte en rombo de cuatro direcciones: la pieza cambia antes de que necesites leer una etiqueta.</p>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <div class="toast-stack" id="toastStack" aria-live="assertive"></div>
+
+  <dialog id="rulesDialog">
+    <div class="dialog-head">
+      <h2>Reglas de esta edición</h2>
+      <button class="dialog-close" type="button" aria-label="Cerrar">×</button>
+    </div>
+    <div class="dialog-body">
+      <p class="dialog-intro">Damas españolas, no una variante genérica.</p>
+      <div class="rules-list">
+        <article class="rule-item"><div><h3>Tablero y salida</h3><p>Doce piezas por bando sobre las casillas claras. Marfil mueve primero; el tablero gira cuando eliges jugar con tinta.</p></div></article>
+        <article class="rule-item"><div><h3>Peones</h3><p>Avanzan una casilla en diagonal y capturan únicamente hacia delante. Al alcanzar la última fila se coronan.</p></div></article>
+        <article class="rule-item"><div><h3>Damas voladoras</h3><p>Las coronadas recorren cualquier número de casillas libres en diagonal, hacia delante o atrás, y pueden aterrizar en cualquier hueco válido tras la pieza capturada.</p></div></article>
+        <article class="rule-item"><div><h3>Captura obligatoria</h3><p>Si hay captura no se permite un movimiento simple. Una secuencia empezada debe completarse.</p></div></article>
+        <article class="rule-item"><div><h3>Cantidad y calidad</h3><p>Entre varias rutas, el juego obliga a capturar el mayor número de piezas; en caso de empate, la ruta que toma más damas.</p></div></article>
+        <article class="rule-item"><div><h3>Final y tablas</h3><p>Ganas al dejar al rival sin piezas o sin movimiento legal. Se declaran tablas por triple repetición o 40 movimientos sin captura ni avance de peón.</p></div></article>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="notesDialog">
+    <div class="dialog-head">
+      <h2>Cuaderno de diseño</h2>
+      <button class="dialog-close" type="button" aria-label="Cerrar">×</button>
+    </div>
+    <div class="dialog-body">
+      <p class="dialog-intro">Werkstatt 1923 × color como materia activa.</p>
+      <p style="font-size:12px;line-height:1.65;opacity:.72;max-width:62ch">La dirección artística evita “ponerle un filtro Bauhaus” al tablero. Toma dos ideas verificables y las convierte en interfaz: geometría que comunica función y color que cambia de lectura según su campo.</p>
+
+      <div class="notes-grid">
+        <article class="note-card">
+          <div class="micro">Referencia / Hartwig</div>
+          <h3>Forma = movimiento</h3>
+          <p>El juego de ajedrez de Josef Hartwig reduce cada pieza a una geometría ligada a su forma de moverse. Aquí el peón conserva una única diagonal y la dama recibe un rombo abierto a cuatro direcciones.</p>
+        </article>
+        <article class="note-card">
+          <div class="micro">Referencia / Albers</div>
+          <h3>Color = relación</h3>
+          <p>El rojo no es decoración: aparece como destino, captura y tensión. El azul organiza estructura y cálculo. Ambos cambian de presencia sobre papel cálido y tinta fría.</p>
+        </article>
+        <article class="note-card">
+          <div class="micro">Regla / legibilidad</div>
+          <h3>La obligación se ve</h3>
+          <p>Cuando existe una captura, sólo se marcan las piezas y rutas legalmente compatibles con las leyes de cantidad y calidad. La interfaz no te deja cometer una infracción invisible.</p>
+        </article>
+        <article class="note-card">
+          <div class="micro">Material / digital</div>
+          <h3>Papel, tinta, fricción</h3>
+          <p>Sombras secas, marcos duros y grano generado con CSS evocan un objeto de taller sin simular madera fotográfica. Toda la pieza es autónoma y funciona sin red.</p>
+        </article>
+      </div>
+
+      <div class="palette" aria-label="Paleta de papel, tinta, azul, rojo y amarillo"><i></i><i></i><i></i><i></i><i></i></div>
+
+      <h3 style="margin:26px 0 6px">Fuentes de investigación</h3>
+      <p style="font-size:10px;line-height:1.5;opacity:.56;margin:0">Referencias utilizadas como principios, no como activos copiados. El tablero, las piezas, la composición y el sonido son originales.</p>
+      <div class="source-list">
+        <a href="https://www.moma.org/collection/works/4240" target="_blank" rel="noreferrer">MoMA · Josef Hartwig, Chess Set, 1924</a>
+        <a href="https://www.metmuseum.org/art/collection/search/208019" target="_blank" rel="noreferrer">The Met · Chess Set, ca. 1923</a>
+        <a href="https://www.albersfoundation.org/alberses/teaching/interaction-of-color" target="_blank" rel="noreferrer">The Josef & Anni Albers Foundation · Interaction of Color</a>
+        <a href="https://www.ludoteka.com/juegos/damas-espa%C3%B1olas/reglas" target="_blank" rel="noreferrer">Ludoteka · Reglas de las damas españolas</a>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="gameOverDialog">
+    <div class="dialog-head">
+      <h2>Fin de partida</h2>
+      <button class="dialog-close" type="button" aria-label="Cerrar">×</button>
+    </div>
+    <div class="dialog-body gameover-copy">
+      <div class="gameover-mark" aria-hidden="true"><i></i></div>
+      <p class="dialog-intro" id="gameOverTitle">Victoria.</p>
+      <p id="gameOverDetail">La diagonal queda en tus manos.</p>
+      <div class="gameover-actions">
+        <button class="primary-button" id="rematchButton" type="button">Revancha</button>
+        <button class="secondary-button" id="swapSideButton" type="button">Cambiar color</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="app1.js"></script>
+  <script src="app2.js"></script>
+</body>
+</html>
