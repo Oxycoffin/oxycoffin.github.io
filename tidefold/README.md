@@ -6,8 +6,8 @@
 
 ## Diseño / Design
 
-- Cada pliegue identifica los anillos por número y muestra sus dos sentidos reales. El primer toque abre una vista previa animada con destinos fantasma; el segundo confirma el movimiento.
-- La vista previa indica explícitamente si la célula recién sembrada cambia de cámara o permanece fija. Los pronósticos de floración son opcionales y su estado se guarda localmente.
+- Cada pliegue identifica los anillos por número y muestra sus dos sentidos reales. El primer toque dibuja una flecha discreta sobre cada anillo afectado; el segundo toque sobre el mismo botón confirma el movimiento.
+- La vista previa no proyecta posiciones finales ni añade paneles: únicamente enseña el sentido de giro. Los pronósticos de floración son opcionales y su estado se guarda localmente.
 - Genealogía reconocida: “colocar + transformar” toma precedente de *Pentago*; puntuar y retirar una formación toma precedente de *YINSH*. La contrarrotación concéntrica, las floraciones radiales simultáneas y la combinación completa son propias de TIDEFOLD.
 - Dirección visual: geometría marina de Ernst Haeckel, persistencia de fósforo de sonar y océano científico en falso color. Todos los gráficos son SVG/CSS originales.
 - IA local MCTS/UCT en Web Worker, sin cuentas, anuncios, telemetría remota ni API.
@@ -22,4 +22,4 @@ node tests/run.js
 node --check interaction.js
 ```
 
-El test desempaqueta el mismo payload publicado, valida la presencia de la capa de interacción, las rotaciones, las floraciones, los movimientos legales y una búsqueda real de la IA. La interfaz se comprobó en escritorio y 390 px, incluyendo cambio de pliegue antes de confirmar, célula móvil/fija y ocultación de pronósticos.
+El test desempaqueta el mismo payload publicado, valida la capa de interacción, las rotaciones, las floraciones, los movimientos legales y una búsqueda real de la IA. La previsualización se limita a flechas de giro y la confirmación permanece en el propio botón.
