@@ -1,9 +1,7 @@
-const assert=require('node:assert/strict');
-const E=require('../engine.js');
-let s=E.initial();
-assert.equal(E.CELLS,21);
-assert.equal(E.legalMoves(s).length,84);
-const ring=Array.from({length:21},(_,i)=>i);const rot=E.rotateRing(ring,0,1);assert.equal(rot[E.idx(0,1)],0);assert.equal(rot[E.idx(0,0)],6);
-s=E.initial();s.board[E.idx(0,0)]=1;s.board[E.idx(1,1)]=1;const t=E.transition(s,{place:E.idx(2,6),seam:1,dir:-1});assert.equal(t.blooms.length,1);assert.deepEqual(t.state.scores,[1,0]);assert.equal(t.state.board.filter(Boolean).length,0);
-const ranked=E.rankMoves(E.initial(),E.LUMEN,5);assert.equal(ranked.length,5);assert.ok(ranked.every(x=>E.legalMoves(E.initial()).some(m=>m.place===x.move.place&&m.seam===x.move.seam&&m.dir===x.move.dir)));
-console.log('TIDEFOLD engine: OK');
+const assert=require('node:assert/strict');const fs=require('node:fs');const path=require('node:path');const zlib=require('node:zlib');const vm=require('node:vm');
+const root=path.resolve(__dirname,'..');const parts=fs.readdirSync(root).filter(x=>/^payload\.\d+\.b64$/.test(x)).sort().map(x=>fs.readFileSync(path.join(root,x),'utf8')).join('');const payload=JSON.parse(zlib.gunzipSync(Buffer.from(parts,'base64')));
+const mod={exports:{}};vm.runInNewContext(payload.engine,{module:mod,exports:mod.exports,globalThis:{},self:undefined});const E=mod.exports;
+assert.equal(E.CELLS,21);let state=E.createInitialState();assert.equal(E.generateMoves(state).length,84);
+const ring=Array.from({length:21},(_,i)=>i);const rotated=E.rotateRing(ring,0,1);assert.equal(rotated[E.cellIndex(0,1)],0);assert.equal(rotated[E.cellIndex(0,0)],6);
+state=E.createInitialState();state.board[E.cellIndex(0,0)]=1;state.board[E.cellIndex(1,1)]=1;const tr=E.transition(state,{place:E.cellIndex(2,6),seam:1,dir:-1});assert.equal(tr.blooms.length,1);assert.deepEqual(Array.from(tr.state.scores),[1,0]);assert.equal(tr.state.board.filter(Boolean).length,0);
+const aiModule={exports:{}};const requireEngine=()=>E;new Function('module','exports','require',payload.worker)(aiModule,aiModule.exports,requireEngine);const AI=aiModule.exports;const result=AI.search(E.createInitialState(),'drift',{seed:7,maxIterations:24,timeMs:1000});assert.ok(E.generateMoves(E.createInitialState()).some(m=>E.encodeMove(m)===E.encodeMove(result.move)));assert.ok(result.stats.iterations>0);console.log('TIDEFOLD payload, engine and AI: OK');
