@@ -10,8 +10,8 @@
     "enabled": true
   },
   "app_update": {
-    "current_version": "1.32.0+288",
-    "current_build_number": 288,
+    "current_version": "1.33.0+290",
+    "current_build_number": 290,
     "mode": "none"
   },
   "ads": {
@@ -556,6 +556,13 @@
         "share_url": "https://lagartijalabs.com/tindrop/go/",
         "app_store_url": "https://apps.apple.com/app/id6756980913",
         "play_store_url": "https://play.google.com/store/apps/details?id=com.tindrop.tindrop"
+      }
+    },
+    "1.36.0+295": {
+      "app_update": {
+        "current_version": "1.33.0+290",
+        "current_build_number": 290,
+        "mode": "none"
       }
     }
   }
