@@ -14,7 +14,7 @@
     "run_worker_first": true
   },
   "kv_namespaces": [
-    { "binding": "PULSE_CACHE", "id": "db95576046d84a06bdcf988e687b46a7" }
+    { "binding": "PULSE_CACHE", "id": "55a75137c4fb4f8781849c03fdd0a7d1" }
   ],
   "triggers": {
     "crons": ["*/30 * * * *"]
