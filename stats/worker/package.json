@@ -1,0 +1,14 @@
+{
+  "name": "tindrop-pulse-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check src/index.js && node --check src/auth.js && node --check src/providers/apple.js && node --check src/providers/google.js && node --check src/providers/admob.js && node --test test/*.test.js",
+    "dev": "wrangler dev --local --var ENVIRONMENT:local",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.128.0"
+  }
+}

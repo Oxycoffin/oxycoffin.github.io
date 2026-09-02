@@ -1,0 +1,17 @@
+# Local-only values. Copy to .dev.vars, never commit the resulting file.
+DEV_AUTH_BYPASS="true"
+ACCESS_TEAM_DOMAIN="your-team.cloudflareaccess.com"
+ACCESS_AUD="cloudflare-access-application-audience"
+ACCESS_ALLOWED_EMAIL="you@example.com"
+
+APPLE_ISSUER_ID=""
+APPLE_KEY_ID=""
+APPLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
+APPLE_VENDOR_NUMBER=""
+
+GOOGLE_SERVICE_ACCOUNT_JSON='{"client_email":"...","private_key":"..."}'
+
+ADMOB_CLIENT_ID=""
+ADMOB_CLIENT_SECRET=""
+ADMOB_REFRESH_TOKEN=""
+ADMOB_ACCOUNT=""

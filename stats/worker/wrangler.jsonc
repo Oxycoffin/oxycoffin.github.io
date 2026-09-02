@@ -1,0 +1,49 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tindrop-pulse",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-02",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    { "pattern": "stats.lagartijalabs.com", "custom_domain": true }
+  ],
+  "assets": {
+    "directory": "../public",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  "kv_namespaces": [
+    { "binding": "PULSE_CACHE", "id": "REPLACE_WITH_KV_NAMESPACE_ID" }
+  ],
+  "triggers": {
+    "crons": ["*/30 * * * *"]
+  },
+  "vars": {
+    "ENVIRONMENT": "production",
+    "APPLE_APP_ID": "6756980913",
+    "APPLE_APP_SKU": "com.tindrop.tindrop",
+    "GOOGLE_PLAY_PACKAGE": "com.tindrop.tindrop",
+    "DEFAULT_CURRENCY": "EUR"
+  },
+  "secrets": {
+    "required": [
+      "ACCESS_TEAM_DOMAIN",
+      "ACCESS_AUD",
+      "ACCESS_ALLOWED_EMAIL",
+      "DEV_AUTH_BYPASS",
+      "APPLE_ISSUER_ID",
+      "APPLE_KEY_ID",
+      "APPLE_PRIVATE_KEY",
+      "APPLE_VENDOR_NUMBER",
+      "GOOGLE_SERVICE_ACCOUNT_JSON",
+      "ADMOB_CLIENT_ID",
+      "ADMOB_CLIENT_SECRET",
+      "ADMOB_REFRESH_TOKEN"
+    ]
+  },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+}
