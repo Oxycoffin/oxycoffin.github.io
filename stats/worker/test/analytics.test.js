@@ -5,6 +5,7 @@ import { addDays, isoDay } from "../src/dates.js";
 import { parseDelimited } from "../src/parsers.js";
 import { appleInternals } from "../src/providers/apple.js";
 import { admobInternals } from "../src/providers/admob.js";
+import { googleInternals } from "../src/providers/google.js";
 
 function stateWithData() {
   const today = isoDay();
@@ -63,9 +64,28 @@ test("empty dashboard reports missing coverage instead of fake zero data", () =>
 test("AdMob streamed rows normalize micros and dates", () => {
   const result = admobInternals.reportRows([{ row: {
     dimensionValues: { DATE: { value: "20260901" } },
-    metricValues: { ESTIMATED_EARNINGS: { microsValue: "1230000" }, IMPRESSIONS: { integerValue: "42" } }
+    metricValues: {
+      ESTIMATED_EARNINGS: { microsValue: "1230000" },
+      IMPRESSIONS: { integerValue: "42" },
+      IMPRESSION_RPM: { microsValue: "2450000" }
+    }
   } }], "EUR");
   assert.equal(result[0].date, "2026-09-01");
   assert.equal(result[0].estimatedEarnings, 1.23);
   assert.equal(result[0].impressions, 42);
+  assert.equal(result[0].impressionRpm, 2.45);
+});
+
+test("Play daily timelines use the metric set default timezone", () => {
+  assert.deepEqual(googleInternals.dateTime("2026-09-01"), { year: 2026, month: 9, day: 1 });
+});
+
+test("Play daily timelines stop at each metric set freshness", () => {
+  assert.deepEqual(googleInternals.dailyWindow({ freshnessInfo: { freshnesses: [{
+    aggregationPeriod: "DAILY",
+    latestEndTime: { year: 2026, month: 8, day: 31, timeZone: "America/Los_Angeles" }
+  }] } }), {
+    startTime: { year: 2026, month: 7, day: 30, timeZone: "America/Los_Angeles" },
+    endTime: { year: 2026, month: 8, day: 31, timeZone: "America/Los_Angeles" }
+  });
 });

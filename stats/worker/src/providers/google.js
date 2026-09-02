@@ -1,5 +1,5 @@
 import { pemBytes, signJwt } from "../crypto.js";
-import { dayParts, daysAgo, isoDay } from "../dates.js";
+import { addDays, dayParts } from "../dates.js";
 import { decimalValue } from "../parsers.js";
 
 let cachedToken = null;
@@ -35,15 +35,38 @@ async function googleToken(env) {
 }
 
 function dateTime(day) {
-  return { ...dayParts(day), timeZone: { id: "UTC" } };
+  // Daily Play metrics use the metric set's default timezone. Google rejects
+  // an explicit UTC timezone for metric sets that aggregate in another zone.
+  return dayParts(day);
+}
+
+function dailyWindow(metricSet) {
+  const freshness = metricSet.freshnessInfo?.freshnesses?.find(item => item.aggregationPeriod === "DAILY");
+  if (!freshness?.latestEndTime) throw new Error("Play metric set has no DAILY freshness window");
+  const latest = freshness.latestEndTime;
+  const endDay = [latest.year, String(latest.month).padStart(2, "0"), String(latest.day).padStart(2, "0")].join("-");
+  const zone = latest.timeZone ? { timeZone: latest.timeZone } : latest.utcOffset ? { utcOffset: latest.utcOffset } : {};
+  return {
+    startTime: { ...dateTime(addDays(endDay, -32)), ...zone },
+    endTime: { ...dateTime(endDay), ...zone }
+  };
+}
+
+async function metricSetWindow(env, set) {
+  const response = await fetch(`https://playdeveloperreporting.googleapis.com/v1beta1/apps/${env.GOOGLE_PLAY_PACKAGE}/${set}`, {
+    headers: { Authorization: `Bearer ${await googleToken(env)}` }
+  });
+  if (!response.ok) throw new Error(`Play ${set} metadata returned ${response.status}`);
+  return dailyWindow(await response.json());
 }
 
 async function queryMetricSet(env, set, metrics) {
+  const window = await metricSetWindow(env, set);
   const response = await fetch(`https://playdeveloperreporting.googleapis.com/v1beta1/apps/${env.GOOGLE_PLAY_PACKAGE}/${set}:query`, {
     method: "POST",
     headers: { Authorization: `Bearer ${await googleToken(env)}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      timelineSpec: { aggregationPeriod: "DAILY", startTime: dateTime(daysAgo(32)), endTime: dateTime(isoDay()) },
+      timelineSpec: { aggregationPeriod: "DAILY", ...window },
       metrics,
       pageSize: 1000
     })
@@ -104,4 +127,4 @@ export async function refreshPlay(env) {
   return { daily: mergeVitals(crashes, anrs), reviews };
 }
 
-export const googleInternals = { mergeVitals, metricDate };
+export const googleInternals = { dailyWindow, dateTime, mergeVitals, metricDate };

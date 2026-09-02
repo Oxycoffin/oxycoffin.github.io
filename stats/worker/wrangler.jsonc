@@ -14,7 +14,7 @@
     "run_worker_first": true
   },
   "kv_namespaces": [
-    { "binding": "PULSE_CACHE", "id": "REPLACE_WITH_KV_NAMESPACE_ID" }
+    { "binding": "PULSE_CACHE", "id": "db95576046d84a06bdcf988e687b46a7" }
   ],
   "triggers": {
     "crons": ["*/30 * * * *"]

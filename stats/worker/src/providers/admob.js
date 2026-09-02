@@ -56,7 +56,7 @@ function reportRows(parts, currency) {
     clicks: decimalValue(row.metricValues?.CLICKS) || 0,
     matchedRequests: decimalValue(row.metricValues?.MATCHED_REQUESTS) || 0,
     adRequests: decimalValue(row.metricValues?.AD_REQUESTS) || 0,
-    observedEcpm: decimalValue(row.metricValues?.OBSERVED_ECPM) || 0,
+    impressionRpm: decimalValue(row.metricValues?.IMPRESSION_RPM) || 0,
     currency
   })).filter(row => row.date).sort((left, right) => left.date.localeCompare(right.date));
 }
@@ -71,11 +71,14 @@ export async function refreshAdmob(env) {
     body: JSON.stringify({ reportSpec: {
       dateRange: { startDate: dayParts(daysAgo(60)), endDate: dayParts(isoDay()) },
       dimensions: ["DATE"],
-      metrics: ["ESTIMATED_EARNINGS", "IMPRESSIONS", "CLICKS", "MATCHED_REQUESTS", "AD_REQUESTS", "OBSERVED_ECPM"],
+      metrics: ["ESTIMATED_EARNINGS", "IMPRESSIONS", "CLICKS", "MATCHED_REQUESTS", "AD_REQUESTS", "IMPRESSION_RPM"],
       localizationSettings: { currencyCode: currency, languageCode: "en-US" }
     } })
   });
-  if (!response.ok) throw new Error(`AdMob report returned ${response.status}`);
+  if (!response.ok) {
+    const detail = (await response.text()).replace(/\s+/gu, " ").slice(0, 220);
+    throw new Error(`AdMob report returned ${response.status}: ${detail}`);
+  }
   return { account, daily: reportRows(await parseStreamingJson(response), currency) };
 }
 
