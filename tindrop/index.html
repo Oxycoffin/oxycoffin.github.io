@@ -677,37 +677,6 @@
         border-radius: inherit;
         background: var(--violet);
       }
-      .tape {
-        overflow: hidden;
-        border-top: 2px solid var(--ink);
-        border-bottom: 2px solid var(--ink);
-        background: var(--violet);
-        color: #fff;
-        transform: rotate(-1deg) scale(1.02);
-      }
-      .tape-track {
-        display: flex;
-        width: max-content;
-        padding: 12px 0;
-        animation: ticker 28s linear infinite;
-      }
-      .tape-track span {
-        padding: 0 22px;
-        font-size: 0.8rem;
-        font-weight: 900;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-      }
-      .tape-track span::after {
-        content: "✦";
-        margin-left: 42px;
-        color: var(--mint);
-      }
-      @keyframes ticker {
-        to {
-          transform: translateX(-50%);
-        }
-      }
       .section {
         padding: 112px 0;
       }
@@ -1406,14 +1375,6 @@
           </div>
         </div>
       </section>
-      <div class="tape" aria-hidden="true">
-        <div class="tape-track">
-          <span>Swipe</span><span>Keep</span><span>Classify</span
-          ><span>Review</span><span>Cloud</span><span>Duplicate cleaner</span
-          ><span>Swipe</span><span>Keep</span><span>Classify</span
-          ><span>Review</span><span>Cloud</span><span>Duplicate cleaner</span>
-        </div>
-      </div>
       <section class="shell section" id="como-funciona">
         <div class="section-heading">
           <div>
