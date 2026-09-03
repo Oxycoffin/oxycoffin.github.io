@@ -1,0 +1,170 @@
+{
+  "project": "POTAMORSE",
+  "date": "2026-09-03",
+  "seed_hex": "6ba910032e277de76e2a491e5f450166",
+  "seed_decimal": "143105218488600583363142126385989222758",
+  "random_source": {
+    "method": "MediaWiki Action API list=random, namespace 0",
+    "note": "The API randomizes the starting point; the returned pool was frozen so this design audit remains reproducible.",
+    "batches": [
+      [
+        "Crater Lake–Klamath Regional Airport",
+        "Cui",
+        "Fauna of Barbados",
+        "List of statutory rules and orders of Northern Ireland, 2023",
+        "Culchie",
+        "Kazuharu Ishida",
+        "King Kelly (film)",
+        "Mr. Wonderful (album)",
+        "Petah Tikva–Kiryat Aryeh railway station",
+        "Suphisellus grammopterus"
+      ],
+      [
+        "Teresa Hill",
+        "Adaptive immune system",
+        "Misterioso (Paul Motian album)",
+        "Timeline of the 2006 Atlantic hurricane season",
+        "David C. Mowery",
+        "Zaqatala",
+        "Vest Buss",
+        "Giorgos Koudas",
+        "Pál Funk",
+        "Shudai Harada"
+      ]
+    ]
+  },
+  "seeded_sample_indices": [
+    12,
+    6,
+    15,
+    4,
+    16,
+    1,
+    10,
+    9
+  ],
+  "seeded_sample": [
+    "Misterioso (Paul Motian album)",
+    "King Kelly (film)",
+    "Zaqatala",
+    "Culchie",
+    "Vest Buss",
+    "Cui",
+    "Teresa Hill",
+    "Suphisellus grammopterus"
+  ],
+  "second_hops": [
+    {
+      "from": "Misterioso (Paul Motian album)",
+      "to": "Free jazz",
+      "decision": "keep",
+      "mechanical_translation": "A visible rhythmic phrase constrains local improvisation."
+    },
+    {
+      "from": "King Kelly (film)",
+      "to": "Webcam",
+      "decision": "discard",
+      "reason": "Suggested presentation and spectatorship, not a necessary rule."
+    },
+    {
+      "from": "Zaqatala",
+      "to": "Shaki-Zagatala Economic Region",
+      "decision": "discard",
+      "reason": "Geography was too generic and mechanically redundant with the river source."
+    },
+    {
+      "from": "Culchie",
+      "to": "Inglenook",
+      "decision": "keep",
+      "mechanical_translation": "Small protected niches sit just outside a larger shared space."
+    },
+    {
+      "from": "Vest Buss",
+      "to": "Vest Contrast",
+      "decision": "discard",
+      "reason": "The target was unavailable and produced no verifiable mechanical idea."
+    },
+    {
+      "from": "Cui",
+      "to": "Cui-ui",
+      "decision": "keep",
+      "mechanical_translation": "A whole bank migrates upstream; flow and passage determine successful spawning."
+    },
+    {
+      "from": "Teresa Hill",
+      "to": "Nemesis",
+      "decision": "discard",
+      "reason": "A revenge theme pushed the design toward combat and capture, contrary to the emerging system."
+    },
+    {
+      "from": "Suphisellus grammopterus",
+      "to": "Adephaga",
+      "decision": "keep_as_form",
+      "mechanical_translation": "Compact aquatic bodies and line pressure informed silhouettes and the reversible pin."
+    }
+  ],
+  "retained_core": {
+    "nature": "potamodromous migration of the Cui-ui",
+    "architecture": "inglenook-like protected recesses",
+    "music": "free-jazz freedom inside a legible phrase",
+    "mathematics": "the first 16 terms of the Thue–Morse sequence",
+    "interaction": "aquatic pressure represented as reversible line-of-sight anchoring, never capture"
+  },
+  "prototype_changes": [
+    {
+      "version": "P0",
+      "rule": "First bank to place two or three pieces in refuges wins.",
+      "result": "Rejected: competent agents produced very short races and late pulse order dominated."
+    },
+    {
+      "version": "P1",
+      "rule": "A piece may leave from any row.",
+      "result": "Rejected: scoring was insufficiently telegraphed and central interaction arrived too late."
+    },
+    {
+      "version": "P2",
+      "rule": "Adjacent enemy pieces immobilize a bracketed piece.",
+      "result": "Rejected: too local; the board rarely produced meaningful pressure."
+    },
+    {
+      "version": "P3",
+      "rule": "Two-row spawning shelf, line-of-sight anchoring, fixed 16-pulse distance score.",
+      "result": "Kept: visible threats, reversible pressure, guaranteed termination and measurable balance."
+    },
+    {
+      "version": "P4",
+      "rule": "Two mirrored legs with swapped shores and aggregate score.",
+      "result": "Kept: each identity receives every temporal slot and both colors exactly once."
+    }
+  ],
+  "final_core": {
+    "board": "5×5",
+    "pieces_per_side": 4,
+    "turn_sequence": "ABBABAABBAABABBA",
+    "geometry_sequence": "++××++××++××++××",
+    "leg_length": 16,
+    "match_length": 32,
+    "randomness_during_play": "none",
+    "capture": "none",
+    "score": "sum of upstream rows for all pieces; a refuge is distance 5"
+  },
+  "morphology": {
+    "dimensions": {
+      "geometries": 3,
+      "interactions": 3,
+      "objectives": 3,
+      "rhythms": 3,
+      "boards": 2
+    },
+    "candidate_count": 162,
+    "method": "Exhaustive declared-weight scoring; the seed provides stable tie-breaking only.",
+    "winner": {
+      "geometry": "dual_slider",
+      "interaction": "line_of_sight_pin",
+      "objective": "fixed_bank_distance",
+      "rhythm": "thue_morse",
+      "board": "5x5",
+      "score": 14.655
+    }
+  }
+}
