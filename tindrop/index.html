@@ -370,13 +370,15 @@
       .mini-cta {
         display: inline-flex;
         align-items: center;
-        padding: 11px 16px;
+        padding: 9px 15px;
+        border: 2px solid var(--ink);
         color: #fff;
         background: var(--gradient-splash);
-        box-shadow: 0 8px 22px rgba(71, 54, 119, 0.25);
+        box-shadow: 4px 4px 0 #3f326c;
         border-radius: 999px;
         font-size: 0.86rem;
         font-weight: 850;
+        text-shadow: 0 1px 2px rgba(24, 19, 48, 0.28);
       }
       .hero {
         min-height: 750px;
@@ -431,9 +433,11 @@
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+        -webkit-text-stroke: 1.25px rgba(35, 27, 66, 0.32);
         font-weight: inherit;
         border-bottom: 0.1em solid transparent;
         border-image: var(--gradient-brand) 1;
+        filter: drop-shadow(2px 3px 0 rgba(3, 218, 198, 0.14));
       }
       .hero-copy > p {
         max-width: 640px;
@@ -798,18 +802,7 @@
       }
       .feature-board {
         color: var(--ink);
-        background:
-          radial-gradient(
-            circle at 6% 12%,
-            rgba(3, 218, 198, 0.14),
-            transparent 30rem
-          ),
-          radial-gradient(
-            circle at 94% 18%,
-            rgba(103, 80, 164, 0.12),
-            transparent 32rem
-          ),
-          var(--paper-deep);
+        background: transparent;
       }
       .feature-board .section-heading > p {
         color: var(--ink-soft);
@@ -986,18 +979,7 @@
         color: var(--brand-primary);
       }
       .faq {
-        background:
-          radial-gradient(
-            circle at 12% 18%,
-            rgba(103, 80, 164, 0.2),
-            transparent 34rem
-          ),
-          radial-gradient(
-            circle at 88% 76%,
-            rgba(3, 218, 198, 0.22),
-            transparent 30rem
-          ),
-          linear-gradient(135deg, #eef7ff, #e9e1ff);
+        background: transparent;
       }
       .faq .section-number {
         color: #57418e;
