@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import json
 from pathlib import Path
 
 from cryptography.hazmat.primitives import serialization
@@ -28,10 +29,12 @@ def main() -> None:
         private_key = serialization.load_pem_private_key(key_bytes, password=None)
     if not isinstance(private_key, Ed25519PrivateKey):
         raise TypeError("the catalog key must be Ed25519")
-    payload = args.catalog.read_bytes()
+    payload_data = json.loads(args.catalog.read_text(encoding="utf-8"))
+    payload = (
+        json.dumps(payload_data, ensure_ascii=False, separators=(",", ":")) + "\n"
+    ).encode("utf-8")
     catalog_output = args.catalog_output or args.catalog
-    if catalog_output != args.catalog:
-        catalog_output.write_bytes(payload)
+    catalog_output.write_bytes(payload)
     signature = private_key.sign(payload)
     output = args.output or Path(f"{catalog_output}.sig")
     output.write_text(base64.b64encode(signature).decode("ascii") + "\n", encoding="ascii")

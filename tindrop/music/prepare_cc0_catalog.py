@@ -132,7 +132,7 @@ def main() -> None:
     parser.add_argument(
         "--artifacts",
         type=Path,
-        default=root.parent.parent / ".artifacts" / "tindrop_music_cc0_v1",
+        default=root.parent.parent / ".artifacts" / "tindrop_music_cc0_v2",
     )
     parser.add_argument("--catalog", type=Path, default=root / "catalog.local.json")
     parser.add_argument("--tracks", type=Path, default=root / "cc0_tracks.json")
@@ -142,7 +142,10 @@ def main() -> None:
     args = parser.parse_args()
     tracks = json.loads(args.tracks.read_text(encoding="utf-8"))
     payload = json.loads(args.catalog.read_text(encoding="utf-8"))
-    existing = {track["id"]: track for track in payload["tracks"]}
+    # The curated CC0 manifest is authoritative. Rebuilding from it deliberately
+    # drops proprietary or retired tracks instead of carrying stale catalog
+    # entries forward from the previous signed payload.
+    existing: dict[str, dict] = {}
     source_root = args.artifacts / "sources"
     encoded_root = args.artifacts / "encoded"
     source_root.mkdir(parents=True, exist_ok=True)

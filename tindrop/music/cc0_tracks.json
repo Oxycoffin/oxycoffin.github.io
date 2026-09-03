@@ -98,5 +98,105 @@
     "sourceSha256": "7c213d1c6fe01bc6b67d6c1124c6cd88afae7149ee8ec966c7f55f517eb22af9",
     "sortOrder": 180,
     "featured": false
+  },
+  {
+    "id": "to-be-continued-orchestral",
+    "title": "To Be Continued",
+    "artist": "Bobjt",
+    "sourceUrl": "https://opengameart.org/sites/default/files/to-be-continued_orchestral_2022_0.mp3",
+    "sourcePage": "https://opengameart.org/content/to-be-continued-orchestral",
+    "sourceSha256": "3150bc19c147a6f7443e57a1f4783d5b9ebd286e9efd79896e38dac35071b303",
+    "sortOrder": 190,
+    "featured": true
+  },
+  {
+    "id": "dance-field",
+    "title": "Dance Field",
+    "artist": "Centurion_of_war",
+    "sourceUrl": "https://opengameart.org/sites/default/files/dance_field_2_1.mp3",
+    "sourcePage": "https://opengameart.org/content/dance-field",
+    "sourceSha256": "b870a7f47d0a0aecad67da5cfd9e18b3c0ac8174bfa3a5ea050737a59f885509",
+    "sortOrder": 220,
+    "featured": false
+  },
+  {
+    "id": "bossa-nova",
+    "title": "Bossa Nova",
+    "artist": "Joth",
+    "sourceUrl": "https://opengameart.org/sites/default/files/8bit%20Bossa.mp3",
+    "sourcePage": "https://opengameart.org/content/bossa-nova",
+    "sourceSha256": "0ee835fd279ac5fa15f9346744cbafc2ba800c1c0671b78ca9abe2b4353402f7",
+    "sortOrder": 230,
+    "featured": true
+  },
+  {
+    "id": "reggae",
+    "title": "Reggae",
+    "artist": "Alex McCulloch",
+    "sourceUrl": "https://opengameart.org/sites/default/files/regea_0.mp3",
+    "sourcePage": "https://opengameart.org/content/reggae",
+    "sourceSha256": "e276b0afddff4eb483d4ae13e9b7f95a04cc46d03180ebf1c3d58084f415adfd",
+    "sortOrder": 240,
+    "featured": true
+  },
+  {
+    "id": "emotional-piano",
+    "title": "Emotional Piano",
+    "artist": "Centurion_of_war",
+    "sourceUrl": "https://opengameart.org/sites/default/files/emotional_piano_2.ogg",
+    "sourcePage": "https://opengameart.org/content/emotional-piano-0",
+    "sourceSha256": "98cdf9400acb75b2dc9af999c7722e631b46f5ae525cd8f15b67a9697592afde",
+    "sortOrder": 250,
+    "featured": false
+  },
+  {
+    "id": "at-the-end-of-hope",
+    "title": "At the End of Hope",
+    "artist": "Emma_MA",
+    "sourceUrl": "https://opengameart.org/sites/default/files/at%20the%20end%20of%20hope_0.mp3",
+    "sourcePage": "https://opengameart.org/content/at-the-end-of-hope",
+    "sourceSha256": "c5c9a612ff8650b62b4be6c9276263b7c21ec4bcf6f28d1ba73d0b29034ae12a",
+    "sortOrder": 260,
+    "featured": true
+  },
+  {
+    "id": "sunset-plains",
+    "title": "Sunset Plains",
+    "artist": "Yoiyami",
+    "sourceUrl": "https://opengameart.org/sites/default/files/sunset_plains.wav",
+    "sourcePage": "https://opengameart.org/content/sunset-plains",
+    "sourceSha256": "f3750f8eda8bf42662b12f5726404675689b50f05ccaa968c5cb2e33d9172a62",
+    "sortOrder": 270,
+    "featured": true
+  },
+  {
+    "id": "asianoriental1",
+    "title": "Koto and Shakuhachi",
+    "artist": "Tozan",
+    "sourceUrl": "https://opengameart.org/sites/default/files/asianoriental1_0.ogg",
+    "sourcePage": "https://opengameart.org/content/asianoriental1",
+    "sourceSha256": "172d95262348d020d7d1428046b100aefbad0a6cbaa93ef87efafeb8add107d0",
+    "sortOrder": 290,
+    "featured": false
+  },
+  {
+    "id": "funked-up",
+    "title": "Funked Up",
+    "artist": "Joth",
+    "sourceUrl": "https://opengameart.org/sites/default/files/Funked%20Up.mp3",
+    "sourcePage": "https://opengameart.org/content/funked-up",
+    "sourceSha256": "57cd81254a0f4e068535c5421f93b586514332ad2377f81aea190dd91659fff3",
+    "sortOrder": 300,
+    "featured": true
+  },
+  {
+    "id": "wednesday-night",
+    "title": "Wednesday Night",
+    "artist": "Zane Little Music",
+    "sourceUrl": "https://opengameart.org/sites/default/files/wednesday_night.ogg",
+    "sourcePage": "https://opengameart.org/content/wednesday-night-funk-fusion",
+    "sourceSha256": "514f0665f7eaa74e9fc687e01e8633b67f8bab3e26de53b66ee68499762f18f3",
+    "sortOrder": 310,
+    "featured": false
   }
 ]

@@ -12,11 +12,17 @@ from urllib.parse import urlparse
 
 ALLOWED_AUDIO_HOST = "media.lagartijalabs.com"
 ALLOWED_LICENSES = {"CC0-1.0", "proprietary"}
+MAX_DELIVERY_BYTES = 2 * 1024 * 1024
 HEX = set("0123456789abcdef")
 
 
 def validate(path: Path, audio_roots: list[Path]) -> None:
     payload = json.loads(path.read_text(encoding="utf-8"))
+    delivery_bytes = (
+        json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n"
+    ).encode("utf-8")
+    if len(delivery_bytes) > MAX_DELIVERY_BYTES:
+        raise ValueError("compacted delivery catalog exceeds the app size limit")
     if not isinstance(payload, dict) or int(payload.get("version", 0)) < 3:
         raise ValueError("version must be at least 3")
     if int(payload.get("issuedAtMs", 0)) <= 0:
