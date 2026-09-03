@@ -6,7 +6,8 @@
 
 ## Diseño / Design
 
-- Decisiones compactas, objetivo visible, pronóstico de los cuatro pliegues y feedback inmediato, siguiendo principios de GameFlow, teoría de la autodeterminación y estudios sobre incertidumbre dominable.
+- Cada pliegue identifica los anillos por número y muestra sus dos sentidos reales. El primer toque dibuja una flecha discreta sobre cada anillo afectado; el segundo toque sobre el mismo botón confirma el movimiento.
+- La vista previa no proyecta posiciones finales ni añade paneles: únicamente enseña el sentido de giro. Los pronósticos de floración son opcionales y su estado se guarda localmente.
 - Genealogía reconocida: “colocar + transformar” toma precedente de *Pentago*; puntuar y retirar una formación toma precedente de *YINSH*. La contrarrotación concéntrica, las floraciones radiales simultáneas y la combinación completa son propias de TIDEFOLD.
 - Dirección visual: geometría marina de Ernst Haeckel, persistencia de fósforo de sonar y océano científico en falso color. Todos los gráficos son SVG/CSS originales.
 - IA local MCTS/UCT en Web Worker, sin cuentas, anuncios, telemetría remota ni API.
@@ -18,6 +19,7 @@ Las fuentes completas y enlazadas se encuentran en **Cuaderno de campo / Field n
 
 ```bash
 node tests/run.js
+node --check interaction.js
 ```
 
-El test desempaqueta el mismo payload publicado, valida rotaciones, floraciones, movimientos legales y una búsqueda real de la IA. La interfaz se comprobó en escritorio y 390 px, en español e inglés, incluyendo una ronda humano–IA.
+El test desempaqueta el mismo payload publicado, valida la capa de interacción, las rotaciones, las floraciones, los movimientos legales y una búsqueda real de la IA. La previsualización se limita a flechas de giro y la confirmación permanece en el propio botón.
