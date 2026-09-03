@@ -566,7 +566,7 @@
       .phone::before {
         content: "";
         position: absolute;
-        z-index: 6;
+        z-index: 50;
         left: 50%;
         top: 16px;
         width: 94px;
@@ -574,38 +574,70 @@
         transform: translateX(-50%);
         border-radius: 999px;
         background: var(--ink);
+        pointer-events: none;
       }
       .phone-screen {
+        --deck-height: 378px;
         position: relative;
         height: 100%;
         overflow: hidden;
+        overflow: clip;
         border-radius: 34px;
-        background: #f2eee8;
+        color: #e6e0e9;
+        background: var(--gradient-brand);
+        font-family: Poppins, "Avenir Next", Avenir, system-ui, sans-serif;
       }
-      .phone-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 46px 18px 10px;
-        font-size: 0.74rem;
-        font-weight: 900;
+      .app-safe-top {
+        height: 42px;
       }
-      .phone-head strong {
-        font-size: 1rem;
+      .rewind-control {
+        position: absolute;
+        z-index: 20;
+        left: 50%;
+        top: 51px;
+        display: grid;
+        place-items: center;
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        transform: translateX(-50%) scale(0.9);
+        border: 0;
+        border-radius: 18px;
+        color: #000;
+        background: rgba(255, 255, 255, 0.85);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+        transition:
+          opacity 0.15s,
+          transform 0.15s;
+      }
+      .rewind-control.is-visible {
+        transform: translateX(-50%) scale(1);
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .rewind-control svg {
+        width: 24px;
+        height: 24px;
+        fill: currentColor;
       }
       .deck {
         position: relative;
-        height: 390px;
-        margin: 0 15px;
+        z-index: 2;
+        height: var(--deck-height);
+        margin: 0 12px;
+        outline: none;
       }
       .demo-card {
         position: absolute;
         inset: 0;
         overflow: hidden;
-        border: 1px solid rgba(23, 21, 30, 0.15);
-        border-radius: 25px;
-        background: #fff;
-        box-shadow: 0 14px 28px rgba(24, 20, 35, 0.13);
+        border: 0;
+        border-radius: 24px;
+        background: #000;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.26);
         touch-action: none;
         user-select: none;
         cursor: grab;
@@ -619,93 +651,383 @@
         object-fit: cover;
         pointer-events: none;
       }
-      .card-stamp {
+      .media-label,
+      .media-share {
         position: absolute;
-        top: 25px;
-        padding: 7px 12px;
-        border: 3px solid currentColor;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.85);
-        font-size: 1rem;
-        font-weight: 950;
-        letter-spacing: 0.08em;
-        opacity: 0;
-      }
-      .card-stamp.keep {
-        left: 20px;
-        color: #128d7e;
-        transform: rotate(-8deg);
-      }
-      .card-stamp.review {
-        right: 20px;
-        color: #d9463a;
-        transform: rotate(8deg);
-      }
-      .gesture-tip {
-        position: absolute;
-        left: 50%;
-        bottom: 12px;
-        transform: translateX(-50%);
-        padding: 7px 10px;
-        border-radius: 999px;
-        background: rgba(23, 21, 30, 0.78);
+        bottom: 16px;
         color: #fff;
-        white-space: nowrap;
-        font-size: 0.68rem;
-        font-weight: 800;
+        background: rgba(0, 0, 0, 0.6);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
       }
-      .demo-controls {
+      .media-label {
+        left: 16px;
+        padding: 6px 12px;
+        border-radius: 12px;
+        font-size: 0.65rem;
+        font-weight: 600;
+      }
+      .media-share {
+        right: 16px;
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        border-radius: 16px;
+        color: #17151e;
+        background: rgba(255, 255, 255, 0.85);
+      }
+      .media-share svg,
+      .app-counter svg,
+      .app-nav-item svg {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2;
+      }
+      .app-counters {
+        position: relative;
+        z-index: 3;
+        display: grid;
+        grid-template-columns: 1fr 42px 42px 1fr;
+        gap: 6px;
+        margin: 13px 12px 0;
+      }
+      .app-counter {
+        display: flex;
+        min-width: 0;
+        height: 42px;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 0 8px;
+        border: 0;
+        border-radius: 16px;
+        color: #e6e0e9;
+        background: rgba(20, 18, 24, 0.9);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        font-size: 0.72rem;
+        font-weight: 700;
+      }
+      button.app-counter {
+        padding: 0;
+        cursor: default;
+      }
+      .app-counter.pending,
+      .app-counter.stats,
+      .app-counter.filter {
+        color: #cfbcff;
+      }
+      .app-counter.saved {
+        color: #ef5350;
+      }
+      .app-counter b {
+        color: #e6e0e9;
+      }
+      .app-bottom-nav {
+        position: relative;
+        z-index: 3;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        padding: 16px 15px 0;
+        gap: 2px;
+        margin: 8px 12px 0;
+        padding: 6px 8px 8px;
+        border: 1px solid rgba(230, 224, 233, 0.06);
+        border-radius: 24px 24px 20px 20px;
+        background: rgba(20, 18, 24, 0.92);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
       }
-      .demo-controls button {
-        min-height: 48px;
-        border: 1px solid var(--line);
-        border-radius: 15px;
-        background: #fff;
-        color: var(--ink);
-        cursor: pointer;
-        font-size: 0.68rem;
-        font-weight: 900;
+      .app-nav-item {
+        position: relative;
+        display: grid;
+        min-width: 0;
+        height: 54px;
+        place-items: center;
+        align-content: center;
+        gap: 2px;
+        border: 0;
+        border-radius: 16px;
+        color: #cac4d0;
+        background: transparent;
+        font: inherit;
+        font-size: 0.54rem;
+        font-weight: 600;
       }
-      .demo-controls button span:first-child {
-        display: block;
-        font-size: 1.15rem;
+      .app-nav-item.active {
+        color: #cfbcff;
+        background: rgba(207, 188, 255, 0.12);
       }
-      .demo-controls .delete {
-        color: #c83f35;
+      .app-nav-item svg {
+        width: 24px;
+        height: 24px;
       }
-      .demo-controls .classify {
-        color: var(--brand-primary);
+      .app-nav-badge {
+        position: absolute;
+        left: calc(50% + 10px);
+        top: 1px;
+        display: none;
+        min-width: 15px;
+        height: 15px;
+        place-items: center;
+        padding: 0 4px;
+        border-radius: 999px;
+        color: #fff;
+        background: #ef5350;
+        font-size: 0.46rem;
+        line-height: 1;
       }
-      .demo-controls .keep {
-        color: #087e71;
-      }
-      .demo-progress {
+      .gesture-overlay {
+        position: absolute;
+        z-index: 12;
         display: flex;
         align-items: center;
-        gap: 10px;
-        padding: 13px 18px;
-        color: var(--ink-soft);
-        font-size: 0.68rem;
-        font-weight: 850;
+        gap: 7px;
+        pointer-events: none;
+        color: #fff;
+        font-size: 0.64rem;
+        font-weight: 600;
+        opacity: 0;
+        will-change: transform, opacity;
       }
-      .demo-progress i {
-        flex: 1;
-        height: 5px;
+      .gesture-overlay svg {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2;
+      }
+      .gesture-overlay.side {
+        top: 42px;
+        width: 142px;
+        height: 378px;
+      }
+      .gesture-overlay.left {
+        left: -116px;
+        justify-content: flex-end;
+        padding-right: 18px;
+        border-radius: 0 190px 190px 0;
+        background: rgba(244, 67, 54, 0.5);
+      }
+      .gesture-overlay.right {
+        right: -116px;
+        padding-left: 18px;
+        border-radius: 190px 0 0 190px;
+        background: rgba(76, 175, 80, 0.5);
+      }
+      .gesture-overlay.vertical {
+        left: 12px;
+        right: 12px;
+        height: 0;
+        justify-content: center;
         overflow: hidden;
-        border-radius: 99px;
-        background: #ddd5cb;
       }
-      .demo-progress i::after {
-        content: "";
-        display: block;
-        width: 43%;
-        height: 100%;
-        border-radius: inherit;
-        background: var(--gradient-splash);
+      .gesture-overlay.top {
+        top: 42px;
+        align-items: center;
+        border-radius: 24px 24px 28px 28px;
+        background: rgba(255, 193, 7, 0.55);
+      }
+      .gesture-overlay.bottom {
+        top: auto;
+        bottom: auto;
+        bottom: calc(100% - 42px - var(--deck-height));
+        align-items: center;
+        border-radius: 28px 28px 24px 24px;
+        background: rgba(3, 169, 244, 0.55);
+      }
+      .trash-view {
+        position: absolute;
+        z-index: 25;
+        inset: 0 0 104px;
+        overflow: hidden;
+        color: #e6e0e9;
+        background: #141218;
+        transform: translateX(102%);
+        transition: transform 0.24s ease-out;
+      }
+      .trash-view.is-open {
+        transform: translateX(0);
+      }
+      .trash-appbar {
+        display: flex;
+        height: 82px;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 0 16px 13px;
+        color: #17151e;
+        background: var(--gradient-brand);
+        font-size: 0.88rem;
+        font-weight: 700;
+      }
+      .trash-action-bar {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        margin: 12px;
+        padding: 8px;
+        border-radius: 20px;
+        background: #211f26;
+      }
+      .trash-action-bar span {
+        display: grid;
+        min-width: 0;
+        min-height: 42px;
+        place-items: center;
+        padding: 0 4px;
+        border-right: 1px solid rgba(230, 224, 233, 0.08);
+        color: #cac4d0;
+        text-align: center;
+        font-size: 0.48rem;
+        font-weight: 600;
+      }
+      .trash-action-bar span:last-child {
+        border-right: 0;
+        color: #ef5350;
+      }
+      .trash-content {
+        position: relative;
+        height: 290px;
+        padding: 0;
+      }
+      .trash-empty {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        align-content: center;
+        gap: 8px;
+        padding: 20px;
+        color: #cac4d0;
+        text-align: center;
+        font-size: 0.6rem;
+      }
+      .trash-empty strong {
+        font-size: 0.78rem;
+      }
+      .trash-empty .trash-empty-icon {
+        font-size: 2.2rem;
+      }
+      .trash-empty[hidden] {
+        display: none;
+      }
+      .trash-grid {
+        display: none;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        padding: 16px;
+      }
+      .trash-grid.has-items {
+        display: grid;
+      }
+      .trash-grid img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+        object-fit: cover;
+        border-radius: 12px;
+        background: #211f26;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.24);
+      }
+      .classify-sheet {
+        position: absolute;
+        z-index: 30;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 14px 16px 18px;
+        border: 1px solid #49454f;
+        border-bottom: 0;
+        border-radius: 24px 24px 0 0;
+        color: #e6e0e9;
+        background: #141218;
+        box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.32);
+        transform: translateY(115%);
+        opacity: 0;
+        transition:
+          transform 0.22s ease-out,
+          opacity 0.18s;
+      }
+      .classify-sheet.is-open {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      .classify-head {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.72rem;
+        font-weight: 700;
+      }
+      .classify-head .folder-mark {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        border-radius: 12px;
+        color: #4fc3f7;
+        background: rgba(79, 195, 247, 0.16);
+      }
+      .classify-head svg {
+        width: 20px;
+        height: 20px;
+        fill: none;
+        stroke: currentColor;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2;
+      }
+      .classify-close {
+        margin-left: auto;
+        border: 0;
+        color: #e6e0e9;
+        background: transparent;
+        font-size: 1.15rem;
+      }
+      .classify-search {
+        margin: 8px 0;
+        padding: 8px 10px;
+        border: 1px solid #49454f;
+        border-radius: 12px;
+        color: #938f99;
+        background: #211f26;
+        font-size: 0.56rem;
+      }
+      .classify-options {
+        display: grid;
+        gap: 5px;
+      }
+      .classify-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 8px;
+        border: 0;
+        border-radius: 12px;
+        color: #e6e0e9;
+        background: #211f26;
+        font: inherit;
+        font-size: 0.58rem;
+        text-align: left;
+      }
+      .classify-option i {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--folder-color, #4fc3f7);
+      }
+      .demo-progress {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        white-space: nowrap;
       }
       .section {
         padding: 112px 0;
@@ -1196,8 +1518,8 @@
           width: 290px;
           height: 580px;
         }
-        .deck {
-          height: 360px;
+        .phone-screen {
+          --deck-height: 360px;
         }
         .photo-strip {
           display: none;
@@ -1385,14 +1707,77 @@
           </figure>
           <div class="phone">
             <div class="phone-screen">
-              <div class="phone-head">
-                <strong>Tindrop</strong
-                ><span
-                  ><span data-locale="es">128 pendientes</span
-                  ><span data-locale="en">128 to review</span></span
-                >
+              <div class="app-safe-top" aria-hidden="true"></div>
+              <button
+                class="rewind-control"
+                type="button"
+                data-demo-rewind
+                aria-label="Deshacer el último gesto"
+                data-label-es="Deshacer el último gesto"
+                data-label-en="Undo the last gesture"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M7.34 6.41 5.93 5 2 8.93l3.93 3.93 1.41-1.41-1.51-1.51H13a5 5 0 1 1-4.9 6H6.07A7 7 0 1 0 13 7.94H5.83Z"
+                  />
+                </svg>
+              </button>
+              <div
+                class="gesture-overlay side left"
+                data-gesture-overlay="left"
+                aria-hidden="true"
+              >
+                <span data-locale="es">¡Tirar!</span
+                ><span data-locale="en">Trash it!</span>
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13" />
+                </svg>
               </div>
-              <div class="deck" id="cardDeck" aria-live="polite">
+              <div
+                class="gesture-overlay side right"
+                data-gesture-overlay="right"
+                aria-hidden="true"
+              >
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M20.8 5.8a5.4 5.4 0 0 0-7.6 0L12 7l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 22l8.8-8.6a5.4 5.4 0 0 0 0-7.6Z"
+                  />
+                </svg>
+                <span data-locale="es">¡Guardar!</span
+                ><span data-locale="en">Save it!</span>
+              </div>
+              <div
+                class="gesture-overlay vertical top"
+                data-gesture-overlay="up"
+                aria-hidden="true"
+              >
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="8" />
+                  <path d="M12 8v5l3 2" />
+                </svg>
+                <span data-locale="es">Revisar mañana</span
+                ><span data-locale="en">Review tomorrow</span>
+              </div>
+              <div
+                class="gesture-overlay vertical bottom"
+                data-gesture-overlay="down"
+                aria-hidden="true"
+              >
+                <svg viewBox="0 0 24 24">
+                  <path d="M3 7h7l2 2h9v10H3Z" />
+                </svg>
+                <span data-locale="es">Clasificar</span
+                ><span data-locale="en">Classify</span>
+              </div>
+              <div
+                class="deck"
+                id="cardDeck"
+                tabindex="0"
+                aria-live="polite"
+                aria-label="Desliza la foto: izquierda para papelera, derecha para guardar y abajo para clasificar"
+                data-label-es="Desliza la foto: izquierda para papelera, derecha para guardar y abajo para clasificar"
+                data-label-en="Swipe the photo: left for trash, right to save and down to classify"
+              >
                 <article class="demo-card">
                   <img
                     src="assets/demo-mountain-480.webp"
@@ -1402,12 +1787,14 @@
                     width="480"
                     height="600"
                     draggable="false"
-                  /><span class="card-stamp keep">KEEP</span
-                  ><span class="card-stamp review">REVIEW</span
-                  ><span class="gesture-tip"
-                    ><span data-locale="es">Arrastra ← o →</span
-                    ><span data-locale="en">Drag ← or →</span></span
-                  >
+                  /><span class="media-label"
+                    ><span data-locale="es">3 sept 2026</span
+                    ><span data-locale="en">Sep 3, 2026</span></span
+                  ><span class="media-share" aria-hidden="true"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M12 3v12M7 8l5-5 5 5" />
+                      <path d="M5 13v6h14v-6" /></svg
+                  ></span>
                 </article>
                 <article class="demo-card">
                   <img
@@ -1418,7 +1805,14 @@
                     width="480"
                     height="600"
                     draggable="false"
-                  />
+                  /><span class="media-label"
+                    ><span data-locale="es">2 sept 2026</span
+                    ><span data-locale="en">Sep 2, 2026</span></span
+                  ><span class="media-share" aria-hidden="true"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M12 3v12M7 8l5-5 5 5" />
+                      <path d="M5 13v6h14v-6" /></svg
+                  ></span>
                 </article>
                 <article class="demo-card">
                   <img
@@ -1429,29 +1823,190 @@
                     width="480"
                     height="600"
                     draggable="false"
-                  />
+                  /><span class="media-label"
+                    ><span data-locale="es">1 sept 2026</span
+                    ><span data-locale="en">Sep 1, 2026</span></span
+                  ><span class="media-share" aria-hidden="true"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M12 3v12M7 8l5-5 5 5" />
+                      <path d="M5 13v6h14v-6" /></svg
+                  ></span>
                 </article>
               </div>
-              <div class="demo-controls">
-                <button class="delete" type="button" data-demo-action="left">
-                  <span aria-hidden="true">←</span
-                  ><span data-locale="es">Revisar</span
-                  ><span data-locale="en">Review</span></button
-                ><button class="classify" type="button" data-demo-action="down">
-                  <span aria-hidden="true">↓</span
-                  ><span data-locale="es">Clasificar</span
-                  ><span data-locale="en">Classify</span></button
-                ><button class="keep" type="button" data-demo-action="right">
-                  <span aria-hidden="true">→</span
-                  ><span data-locale="es">Conservar</span
-                  ><span data-locale="en">Keep</span>
+              <div class="app-counters" aria-hidden="true">
+                <div class="app-counter pending">
+                  <svg viewBox="0 0 24 24">
+                    <rect x="5" y="5" width="14" height="14" rx="2" />
+                    <path d="m7 16 3.5-4 2.5 3 2-2 2 3" />
+                  </svg>
+                  <b id="pendingCount">128</b>
+                </div>
+                <button class="app-counter stats" type="button" tabindex="-1">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M6 19v-7M12 19V5M18 19v-10" />
+                  </svg>
+                </button>
+                <button class="app-counter filter" type="button" tabindex="-1">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M4 7h16M7 12h10M10 17h4" />
+                  </svg>
+                </button>
+                <div class="app-counter saved">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M20.8 5.8a5.4 5.4 0 0 0-7.6 0L12 7l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 22l8.8-8.6a5.4 5.4 0 0 0 0-7.6Z"
+                    />
+                  </svg>
+                  <b id="savedCount">0</b>
+                </div>
+              </div>
+              <section class="trash-view" data-trash-view aria-hidden="true">
+                <header class="trash-appbar">
+                  <span data-locale="es">Papelera</span
+                  ><span data-locale="en">Trash</span>
+                </header>
+                <div class="trash-action-bar" aria-hidden="true">
+                  <span data-locale="es">Seleccionar todo</span
+                  ><span data-locale="en">Select all</span>
+                  <span data-locale="es">Restaurar selección</span
+                  ><span data-locale="en">Restore selected</span>
+                  <span data-locale="es">Eliminar selección</span
+                  ><span data-locale="en">Delete selected</span>
+                </div>
+                <div class="trash-content">
+                  <div class="trash-empty" data-trash-empty>
+                    <span class="trash-empty-icon" aria-hidden="true">🗑</span>
+                    <strong data-locale="es">La papelera está vacía</strong
+                    ><strong data-locale="en">Trash is empty</strong>
+                    <span data-locale="es"
+                      >Las fotos que deslices a la izquierda aparecerán
+                      aquí.</span
+                    ><span data-locale="en"
+                      >Photos you swipe left will appear here.</span
+                    >
+                  </div>
+                  <div class="trash-grid" data-trash-grid></div>
+                </div>
+              </section>
+              <div
+                class="app-bottom-nav"
+                aria-label="Navegación de Tindrop"
+                data-label-es="Navegación de Tindrop"
+                data-label-en="Tindrop navigation"
+              >
+                <button
+                  class="app-nav-item active"
+                  type="button"
+                  data-app-tab="gallery"
+                  aria-label="Galería"
+                  data-label-es="Galería"
+                  data-label-en="Gallery"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <rect x="4" y="4" width="16" height="16" rx="3" />
+                    <path d="m6.5 16 4-4 3 3 2-2 2 3" />
+                  </svg>
+                  <span data-locale="es">Galería</span
+                  ><span data-locale="en">Gallery</span>
+                </button>
+                <button
+                  class="app-nav-item"
+                  type="button"
+                  data-app-tab="trash"
+                  aria-label="Papelera"
+                  data-label-es="Papelera"
+                  data-label-en="Trash"
+                >
+                  <span class="app-nav-badge" id="trashCount">0</span>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13" />
+                  </svg>
+                  <span data-locale="es">Papelera</span
+                  ><span data-locale="en">Trash</span>
+                </button>
+                <button
+                  class="app-nav-item"
+                  type="button"
+                  data-app-tab="more"
+                  aria-label="Más"
+                  data-label-es="Más"
+                  data-label-en="More"
+                  aria-disabled="true"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <rect x="4" y="4" width="6" height="6" rx="1" />
+                    <rect x="14" y="4" width="6" height="6" rx="1" />
+                    <rect x="4" y="14" width="6" height="6" rx="1" />
+                    <rect x="14" y="14" width="6" height="6" rx="1" />
+                  </svg>
+                  <span data-locale="es">Más</span
+                  ><span data-locale="en">More</span>
                 </button>
               </div>
-              <div class="demo-progress">
-                <span
-                  ><span data-locale="es">Tu sesión</span
-                  ><span data-locale="en">Your session</span></span
-                ><i aria-hidden="true"></i><b id="demoCount">0/3</b>
+              <section
+                class="classify-sheet"
+                data-classify-sheet
+                aria-hidden="true"
+                inert
+                aria-label="Clasificar en una colección"
+                data-label-es="Clasificar en una colección"
+                data-label-en="Classify into a collection"
+              >
+                <div class="classify-head">
+                  <span class="folder-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M3 7h7l2 2h9v10H3Z" />
+                    </svg>
+                  </span>
+                  <span data-locale="es">Clasificar</span
+                  ><span data-locale="en">Classify</span>
+                  <button
+                    class="classify-close"
+                    type="button"
+                    data-classify-close
+                    aria-label="Cerrar"
+                    data-label-es="Cerrar"
+                    data-label-en="Close"
+                  >
+                    ×
+                  </button>
+                </div>
+                <div class="classify-search" aria-hidden="true">
+                  <span data-locale="es">Buscar colecciones</span
+                  ><span data-locale="en">Search collections</span>
+                </div>
+                <div class="classify-options">
+                  <button
+                    class="classify-option"
+                    type="button"
+                    data-classify-option
+                  >
+                    <i style="--folder-color: #4fc3f7"></i
+                    ><span data-locale="es">Viajes</span
+                    ><span data-locale="en">Travel</span>
+                  </button>
+                  <button
+                    class="classify-option"
+                    type="button"
+                    data-classify-option
+                  >
+                    <i style="--folder-color: #ef5350"></i
+                    ><span data-locale="es">Familia</span
+                    ><span data-locale="en">Family</span>
+                  </button>
+                  <button
+                    class="classify-option"
+                    type="button"
+                    data-classify-option
+                  >
+                    <i style="--folder-color: #cfbcff"></i
+                    ><span data-locale="es">Favoritas</span
+                    ><span data-locale="en">Favorites</span>
+                  </button>
+                </div>
+              </section>
+              <div class="demo-progress" aria-live="polite">
+                <b id="demoCount">0/3</b>
               </div>
             </div>
           </div>
@@ -1989,8 +2544,7 @@
           </div>
         </div>
         <div class="copyright">
-          © <span id="year"></span> Tindrop by
-          <a href="../">Lagartija Labs</a>.
+          © <span id="year"></span> Tindrop by <a href="../">Lagartija Labs</a>.
         </div>
       </div>
     </footer>
@@ -2064,11 +2618,77 @@
         language(q || stored || browser, false);
         document.getElementById("year").textContent = new Date().getFullYear();
         const deck = document.getElementById("cardDeck"),
-          counter = document.getElementById("demoCount");
+          counter = document.getElementById("demoCount"),
+          pendingCounter = document.getElementById("pendingCount"),
+          savedCounter = document.getElementById("savedCount"),
+          trashCounter = document.getElementById("trashCount"),
+          rewindControl = document.querySelector("[data-demo-rewind]"),
+          classifySheet = document.querySelector("[data-classify-sheet]"),
+          classifyClose = document.querySelector("[data-classify-close]"),
+          trashView = document.querySelector("[data-trash-view]"),
+          trashEmpty = document.querySelector("[data-trash-empty]"),
+          trashGrid = document.querySelector("[data-trash-grid]"),
+          appTabs = [...document.querySelectorAll("[data-app-tab]")],
+          overlays = Object.fromEntries(
+            [...document.querySelectorAll("[data-gesture-overlay]")].map(
+              (overlay) => [overlay.dataset.gestureOverlay, overlay],
+            ),
+          );
         let done = 0,
-          drag = null;
+          drag = null,
+          actions = [],
+          trashImages = [],
+          animating = false;
         function top() {
           return deck.querySelector(".demo-card");
+        }
+        function resetOverlays() {
+          Object.values(overlays).forEach((overlay) => {
+            overlay.style.opacity = "0";
+            overlay.style.transform = "";
+            if (overlay.classList.contains("vertical"))
+              overlay.style.height = "0px";
+          });
+        }
+        function paintOverlay(x, y) {
+          resetOverlays();
+          const horizontal = Math.abs(x) > Math.abs(y),
+            direction = horizontal
+              ? x > 0
+                ? "right"
+                : "left"
+              : y > 0
+                ? "down"
+                : "up",
+            distance = horizontal ? Math.abs(x) : Math.abs(y),
+            progress = Math.min(1, distance / 105),
+            overlay = overlays[direction];
+          if (!overlay || distance < 8) return;
+          overlay.style.opacity = String(progress);
+          if (horizontal) {
+            const movement = progress * 96;
+            overlay.style.transform = `translateX(${direction === "left" ? movement : -movement}px)`;
+          } else {
+            overlay.style.height = `${Math.round(progress * 112)}px`;
+          }
+        }
+        function syncTrashView() {
+          const hasItems = trashImages.length > 0;
+          trashGrid.classList.toggle("has-items", hasItems);
+          trashEmpty.hidden = hasItems;
+          trashGrid.replaceChildren(
+            ...trashImages.map((src, index) => {
+              const image = document.createElement("img");
+              image.src = src;
+              image.width = 480;
+              image.height = 480;
+              image.alt =
+                document.documentElement.lang === "es"
+                  ? `Foto ${index + 1} pendiente en la papelera`
+                  : `Photo ${index + 1} pending in trash`;
+              return image;
+            }),
+          );
         }
         function update() {
           [...deck.children].forEach((c, i) => {
@@ -2080,12 +2700,23 @@
               c.style.transform = "translateY(14px) scale(.93) rotate(-2deg)";
           });
           counter.textContent = done + "/3";
+          pendingCounter.textContent = Math.max(0, 128 - actions.length);
+          savedCounter.textContent = actions.filter(
+            (a) => a === "right",
+          ).length;
+          const trashTotal = actions.filter((a) => a === "left").length;
+          trashCounter.textContent = trashTotal;
+          trashCounter.style.display = trashTotal > 0 ? "grid" : "none";
+          rewindControl.classList.toggle("is-visible", actions.length > 0);
+          syncTrashView();
         }
         function cycle(dir) {
           const c = top();
-          if (!c) return;
+          if (!c || animating) return;
+          animating = true;
+          const image = c.querySelector("img")?.src;
           const x = dir === "left" ? -430 : dir === "right" ? 430 : 0,
-            y = dir === "down" ? 520 : 25,
+            y = dir === "down" ? 520 : dir === "up" ? -520 : 25,
             r = dir === "left" ? -18 : dir === "right" ? 18 : 0;
           c.style.transform = `translate(${x}px,${y}px) rotate(${r}deg)`;
           c.style.opacity = "0";
@@ -2097,45 +2728,131 @@
             c.offsetHeight;
             c.style.transition = "";
             done = (done + 1) % 4;
+            actions.push(dir);
+            if (dir === "left" && image) trashImages.push(image);
+            animating = false;
             update();
           }, 280);
         }
-        document
-          .querySelectorAll("[data-demo-action]")
-          .forEach((b) =>
-            b.addEventListener("click", () => cycle(b.dataset.demoAction)),
-          );
-        deck.addEventListener("pointerdown", (e) => {
-          const c = top();
-          drag = { c, x: e.clientX, y: e.clientY };
-          c.setPointerCapture(e.pointerId);
+        function openClassify() {
+          if (animating || trashView.classList.contains("is-open")) return;
+          classifySheet.classList.add("is-open");
+          classifySheet.setAttribute("aria-hidden", "false");
+          classifySheet.inert = false;
+        }
+        function closeClassify({ restoreFocus = true } = {}) {
+          classifySheet.classList.remove("is-open");
+          classifySheet.setAttribute("aria-hidden", "true");
+          classifySheet.inert = true;
+          if (restoreFocus) deck.focus({ preventScroll: true });
+        }
+        function requestAction(dir) {
+          if (dir === "down") openClassify();
+          else cycle(dir);
+        }
+        function rewind() {
+          if (animating) return;
+          const dir = actions.pop();
+          const c = deck.lastElementChild;
+          if (!dir || !c) return;
+          if (dir === "left") trashImages.pop();
+          const x = dir === "left" ? -430 : dir === "right" ? 430 : 0,
+            y = dir === "down" ? 520 : dir === "up" ? -520 : 25,
+            r = dir === "left" ? -18 : dir === "right" ? 18 : 0;
+          deck.insertBefore(c, deck.firstElementChild);
+          update();
           c.style.transition = "none";
+          c.style.transform = `translate(${x}px,${y}px) rotate(${r}deg)`;
+          c.style.opacity = "0";
+          c.offsetHeight;
+          c.style.transition = "";
+          requestAnimationFrame(() => {
+            c.style.transform = "";
+            c.style.opacity = "1";
+          });
+          done = Math.max(0, done - 1);
+          counter.textContent = done + "/3";
+        }
+        function setTab(tab) {
+          if (tab === "more") return;
+          const showTrash = tab === "trash";
+          closeClassify({ restoreFocus: false });
+          trashView.classList.toggle("is-open", showTrash);
+          trashView.setAttribute("aria-hidden", String(!showTrash));
+          appTabs.forEach((button) =>
+            button.classList.toggle("active", button.dataset.appTab === tab),
+          );
+          if (!showTrash) deck.focus({ preventScroll: true });
+        }
+        appTabs.forEach((button) =>
+          button.addEventListener("click", () => setTab(button.dataset.appTab)),
+        );
+        classifyClose.addEventListener("click", () => closeClassify());
+        document.querySelectorAll("[data-classify-option]").forEach((button) =>
+          button.addEventListener("click", () => {
+            closeClassify();
+            cycle("down");
+          }),
+        );
+        rewindControl.addEventListener("click", rewind);
+        deck.addEventListener("keydown", (e) => {
+          const direction = {
+            ArrowLeft: "left",
+            ArrowRight: "right",
+            ArrowDown: "down",
+            ArrowUp: "up",
+          }[e.key];
+          if (!direction) return;
+          e.preventDefault();
+          requestAction(direction);
         });
-        deck.addEventListener("pointermove", (e) => {
-          if (!drag) return;
+        deck.addEventListener("pointerdown", (e) => {
+          if (
+            e.button !== 0 ||
+            animating ||
+            classifySheet.classList.contains("is-open") ||
+            trashView.classList.contains("is-open")
+          )
+            return;
+          const c = top();
+          if (!c) return;
+          drag = { c, x: e.clientX, y: e.clientY, pointerId: e.pointerId };
+          deck.setPointerCapture?.(e.pointerId);
+          c.style.transition = "none";
+          c.style.cursor = "grabbing";
+        });
+        function move(e) {
+          if (!drag || e.pointerId !== drag.pointerId) return;
+          e.preventDefault();
           const x = e.clientX - drag.x,
             y = e.clientY - drag.y;
           drag.c.style.transform = `translate(${x}px,${y}px) rotate(${x / 18}deg)`;
-          const keep = drag.c.querySelector(".keep"),
-            review = drag.c.querySelector(".review");
-          if (keep) keep.style.opacity = Math.min(1, Math.max(0, x / 90));
-          if (review) review.style.opacity = Math.min(1, Math.max(0, -x / 90));
-        });
-        function end(e) {
-          if (!drag) return;
-          const x = e.clientX - drag.x,
-            y = e.clientY - drag.y;
-          drag.c.style.transition = "";
-          drag.c
-            .querySelectorAll(".card-stamp")
-            .forEach((s) => (s.style.opacity = 0));
-          drag = null;
-          if (Math.abs(x) > 70) cycle(x > 0 ? "right" : "left");
-          else if (y > 85) cycle("down");
-          else top().style.transform = "";
+          paintOverlay(x, y);
         }
-        deck.addEventListener("pointerup", end);
-        deck.addEventListener("pointercancel", end);
+        function end(e) {
+          if (!drag || e.pointerId !== drag.pointerId) return;
+          const x = e.clientX - drag.x,
+            y = e.clientY - drag.y,
+            c = drag.c,
+            pointerId = drag.pointerId;
+          c.style.transition = "";
+          c.style.cursor = "";
+          drag = null;
+          resetOverlays();
+          if (deck.hasPointerCapture?.(pointerId))
+            deck.releasePointerCapture(pointerId);
+          if (Math.abs(x) > Math.abs(y) && Math.abs(x) > 70)
+            cycle(x > 0 ? "right" : "left");
+          else if (Math.abs(y) > 85) requestAction(y > 0 ? "down" : "up");
+          else c.style.transform = "";
+        }
+        window.addEventListener("pointermove", move, { passive: false });
+        window.addEventListener("pointerup", end);
+        window.addEventListener("pointercancel", end);
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && classifySheet.classList.contains("is-open"))
+            closeClassify();
+        });
         update();
       })();
     </script>
