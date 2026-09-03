@@ -1,0 +1,31 @@
+# Tindrop
+
+> Tindrop is an iOS and Android app for reviewing, cleaning, organizing and rediscovering photos and videos one decision at a time.
+
+Official product page: https://lagartijalabs.com/tindrop/
+Download router: https://lagartijalabs.com/tindrop/go/
+App Store: https://apps.apple.com/app/tindrop/id6756980913
+Google Play: https://play.google.com/store/apps/details?id=com.tindrop.tindrop
+Privacy: https://lagartijalabs.com/tindrop/privacy.html
+Terms: https://lagartijalabs.com/tindrop/terms.html
+Support: lagartijalabs@gmail.com
+
+## What Tindrop does
+
+- Reviews one photo or video at a time with a card-based gesture flow.
+- Swipes right to keep, left to stage for deletion review, and down to classify into collections.
+- Requires a review and confirmation step before selected local items move to the device trash or Recently Deleted area.
+- Scans for exact duplicate photos, groups the copies and lets the user choose which copies to remove.
+- Offers short Daily Clean sessions that help prevent the camera roll from piling up again.
+- Reviews photos from the local device, Google Drive, OneDrive and Dropbox.
+- Creates and manages colored photo collections while reviewing.
+- Backs up and restores saved, trashed, statistics and collection state.
+- Creates shareable music collages from saved photos or collections.
+
+## Privacy and accuracy notes
+
+Tindrop processes the local photo library on the user's device and does not upload that library to a Tindrop server. Connected cloud sources require network access and are accessed through the selected provider. Tindrop's duplicate cleaner is described as detecting exact copies; the product page does not claim that visual similarity alone is enough for automatic deletion.
+
+## Spanish summary
+
+Tindrop es una app para iPhone y Android que permite limpiar y organizar fotos y vídeos con gestos. El usuario conserva, clasifica o envía cada elemento a revisión, confirma antes de borrar y puede trabajar con la galería local, Google Drive, OneDrive y Dropbox.

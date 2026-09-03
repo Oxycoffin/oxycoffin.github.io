@@ -1,1368 +1,2100 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Tindrop — Intelligent cleanup</title>
-    <meta name="google-site-verification" content="QkEcEMa1r8XIJjp8nC9ovbMAYlx9SjgG6K0Gp5jMMKo" />
+    <title>Tindrop — Limpia y organiza tu galería deslizando</title>
+    <meta
+      name="google-site-verification"
+      content="QkEcEMa1r8XIJjp8nC9ovbMAYlx9SjgG6K0Gp5jMMKo"
+    />
     <meta
       name="description"
-      content="Clean your gallery and Google Drive with swipes. Fast, secure, and fun."
+      content="Limpia y organiza fotos y vídeos con gestos. Revisa antes de borrar, encuentra duplicados exactos y ordena tu galería, Google Drive, OneDrive y Dropbox con Tindrop."
     />
-    <meta name="theme-color" content="#6750A4" />
-    <link rel="icon" href="../assets/favicon.svg?v=20260430" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta
+      name="keywords"
+      content="limpiar galería, limpiar fotos, borrar fotos duplicadas, organizar fotos, liberar espacio móvil, camera roll cleaner, photo cleaner, Tindrop"
+    />
+    <meta name="author" content="Lagartija Labs" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="theme-color" content="#6d4aff" />
+    <meta name="color-scheme" content="light" />
+    <link rel="canonical" href="https://lagartijalabs.com/tindrop/" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap"
-      rel="stylesheet"
+      rel="alternate"
+      hreflang="es"
+      href="https://lagartijalabs.com/tindrop/?lang=es"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,600,0,0&display=swap"
-      rel="stylesheet"
+      rel="alternate"
+      hreflang="en"
+      href="https://lagartijalabs.com/tindrop/?lang=en"
     />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://lagartijalabs.com/tindrop/"
+    />
+    <link
+      rel="alternate"
+      type="text/plain"
+      title="Tindrop for language models"
+      href="llms.txt"
+    />
+    <link rel="sitemap" type="application/xml" href="sitemap.xml" />
+    <link
+      rel="icon"
+      href="../assets/favicon.svg?v=20260430"
+      type="image/svg+xml"
+    />
+    <link rel="apple-touch-icon" href="tindrop.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Tindrop" />
+    <meta property="og:title" content="Tindrop — Tu galería, foto a foto" />
+    <meta
+      property="og:description"
+      content="Desliza para conservar, clasificar o mandar a revisión. Limpia tu galería y tus nubes sin perder el control."
+    />
+    <meta property="og:url" content="https://lagartijalabs.com/tindrop/" />
+    <meta
+      property="og:image"
+      content="https://lagartijalabs.com/tindrop/tindrop.png"
+    />
+    <meta
+      property="og:image:alt"
+      content="Icono de Tindrop, la app para limpiar y organizar fotos"
+    />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Tindrop — Tu galería, foto a foto" />
+    <meta
+      name="twitter:description"
+      content="Decide qué se queda, qué se clasifica y qué pasa a revisión con un gesto."
+    />
+    <meta
+      name="twitter:image"
+      content="https://lagartijalabs.com/tindrop/tindrop.png"
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://lagartijalabs.com/tindrop/#app",
+            "name": "Tindrop",
+            "alternateName": "Tindrop: Swipe to Clean your Gallery",
+            "url": "https://lagartijalabs.com/tindrop/",
+            "image": "https://lagartijalabs.com/tindrop/tindrop.png",
+            "description": "Aplicación para limpiar y organizar fotos y vídeos con gestos, revisión antes del borrado, detección de duplicados exactos, colecciones y acceso a Google Drive, OneDrive y Dropbox.",
+            "applicationCategory": "MultimediaApplication",
+            "applicationSubCategory": "Photo organizer and gallery cleaner",
+            "operatingSystem": "iOS, Android",
+            "inLanguage": ["es", "en"],
+            "downloadUrl": "https://lagartijalabs.com/tindrop/go/",
+            "installUrl": "https://lagartijalabs.com/tindrop/go/",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "EUR",
+              "category": "Freemium"
+            },
+            "publisher": { "@id": "https://lagartijalabs.com/#organization" },
+            "sameAs": [
+              "https://apps.apple.com/app/tindrop/id6756980913",
+              "https://play.google.com/store/apps/details?id=com.tindrop.tindrop"
+            ],
+            "featureList": [
+              "Swipe right to keep photos",
+              "Swipe left to stage photos for deletion review",
+              "Swipe down to classify photos into collections",
+              "Exact duplicate photo cleaner",
+              "Daily Clean short review sessions",
+              "Google Drive, OneDrive and Dropbox photo review",
+              "Backup and restore of review state and collections",
+              "Music collages from saved photos"
+            ]
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://lagartijalabs.com/#organization",
+            "name": "Lagartija Labs",
+            "url": "https://lagartijalabs.com/",
+            "logo": "https://lagartijalabs.com/tindrop/tindrop.png",
+            "email": "lagartijalabs@gmail.com"
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://lagartijalabs.com/tindrop/#webpage",
+            "url": "https://lagartijalabs.com/tindrop/",
+            "name": "Tindrop — Limpia y organiza tu galería deslizando",
+            "about": { "@id": "https://lagartijalabs.com/tindrop/#app" },
+            "inLanguage": ["es", "en"]
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://lagartijalabs.com/tindrop/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "¿Qué es Tindrop?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Tindrop es una app para iOS y Android que ayuda a revisar, limpiar y organizar fotos y vídeos con gestos. Puedes conservar, enviar a revisión o clasificar cada foto sin enfrentarte a toda la galería a la vez."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Tindrop borra las fotos inmediatamente al deslizar?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. El gesto de eliminar prepara una selección para que puedas revisarla y confirmarla. En la galería local, el sistema operativo mantiene además sus propias protecciones de papelera o eliminados recientemente."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Tindrop encuentra fotos duplicadas?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sí. El limpiador de duplicados busca copias exactas, las agrupa y te permite revisar qué copias mover a la papelera."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Tindrop funciona con fotos en la nube?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sí. Además de la galería del dispositivo, Tindrop permite conectar Google Drive, OneDrive y Dropbox y cambiar de fuente desde la app."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "¿Tindrop está disponible en iPhone y Android?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sí. Tindrop está disponible para iPhone en App Store y para dispositivos Android en Google Play."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
     <style>
       :root {
-        /* Refined palette */
-        --primary: #6750a4;
-        --secondary: #03dac6;
-        --dark-text: #050505; /* Near-absolute black for titles/logo */
-        --body-text: #2c2e3a; /* Dark gray for comfortable reading */
-        --muted-text: #5e6275;
-        
-        /* Glassmorphism System */
-        --glass-bg: rgba(255, 255, 255, 0.88);
-        --glass-border: rgba(255, 255, 255, 0.6);
-        --glass-shine: rgba(255, 255, 255, 0.4);
-        
-        /* Spacing & Radius */
-        --radius-lg: 32px;
-        --radius-md: 20px;
-        --radius-sm: 12px;
-        
-        /* Shadows "Super Pro" */
-        --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.03);
-        --shadow-medium: 0 12px 32px rgba(31, 32, 48, 0.06);
-        --shadow-float: 0 24px 60px rgba(31, 32, 48, 0.12), 0 0 0 1px rgba(255,255,255,0.5) inset;
+        --ink: #17151e;
+        --ink-soft: #4d485b;
+        --paper: #f8f4ea;
+        --paper-deep: #eee7d8;
+        --white: #fffdf8;
+        --violet: #6d4aff;
+        --violet-dark: #4d2bd7;
+        --mint: #27d8c1;
+        --coral: #ff6f61;
+        --yellow: #ffd84d;
+        --line: rgba(23, 21, 30, 0.17);
+        --shadow: 0 22px 70px rgba(57, 35, 108, 0.14);
+        --radius-xl: 42px;
+        --radius-lg: 28px;
       }
-
       * {
         box-sizing: border-box;
-        -webkit-font-smoothing: antialiased;
       }
-
+      html {
+        scroll-behavior: smooth;
+      }
       body {
         margin: 0;
-        font-family: "Inter", system-ui, sans-serif; /* Inter for a clean UI */
-        color: var(--body-text);
-        /* The gradient that doesn't budge */
-        background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) fixed;
-        line-height: 1.6;
+        color: var(--ink);
+        background:
+          radial-gradient(
+            circle at 7% 7%,
+            rgba(255, 216, 77, 0.28),
+            transparent 23rem
+          ),
+          radial-gradient(
+            circle at 94% 18%,
+            rgba(39, 216, 193, 0.22),
+            transparent 27rem
+          ),
+          var(--paper);
+        font-family: "Avenir Next", Avenir, "Segoe UI", system-ui, sans-serif;
+        line-height: 1.55;
         overflow-x: hidden;
       }
-
-      body[data-lang="en"] [data-locale="es"],
-      body[data-lang="es"] [data-locale="en"] {
+      body[data-lang="es"] [data-locale="en"],
+      body[data-lang="en"] [data-locale="es"] {
         display: none !important;
       }
-
-      h1, h2, h3, .logo {
-        font-family: "Fraunces", serif;
-        color: var(--dark-text);
+      a {
+        color: inherit;
+        text-decoration: none;
       }
-      
-      .eyebrow, .btn, .nav, .tab-btn, .language-option, .meta-pill {
-        font-family: "Space Grotesk", sans-serif;
+      img {
+        display: block;
+        max-width: 100%;
       }
-
-      a { text-decoration: none; color: inherit; transition: color 0.2s; }
-      img { max-width: 100%; display: block; }
-
-      .wrap {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 40px 24px 120px;
-      }
-
-      /* --- GLASS MAIN CONTAINER --- */
-      .main-glass {
-        background: var(--glass-bg);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        border: 1px solid var(--glass-border);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-float);
-        padding: 40px;
-        position: relative;
-        overflow: hidden;
-      }
-
-      /* Top glare for a premium sheen */
-      .main-glass::after {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0; height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
-      }
-
-      /* --- HEADER --- */
-      header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 60px;
-        padding-bottom: 20px;
-        border-bottom: 1px solid rgba(0,0,0,0.04);
-        gap: 24px;
-      }
-
-      .logo {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        font-weight: 700;
-        font-size: 2.5rem; /* Aumentado */
-        letter-spacing: -1px;
-        color: #000000;
-      }
-
-      .logo-mark {
-        width: 88px;
-        height: 88px;
-        background: #fff;
-        border-radius: 22px;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-        box-shadow: 0 6px 16px rgba(103, 80, 164, 0.18);
-        display: grid;
-        place-items: center;
-      }
-      
-      .logo-mark img { width: 60px; }
-
-      .header-actions {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 24px;
-      }
-
-      .nav {
-        display: flex;
-        gap: 24px;
-        font-weight: 600;
-        font-size: 1.05rem;
-      }
-
-      .nav a {
-        color: #000000; /* Strict black */
-        position: relative;
-      }
-
-      .nav a::after {
-        content: '';
-        position: absolute;
-        bottom: -4px; left: 0; width: 0; height: 2px;
-        background: var(--primary);
-        transition: width 0.3s ease;
-      }
-
-      .nav a:hover::after { width: 100%; }
-
-      .language-switcher {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        padding: 4px;
-        border: 1px solid rgba(5, 5, 5, 0.1);
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.68);
-        box-shadow: 0 8px 20px rgba(31, 32, 48, 0.08);
-      }
-
-      .language-option {
-        min-height: 36px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 7px 12px;
-        border: 0;
-        border-radius: 999px;
-        background: transparent;
-        color: var(--muted-text);
-        font: inherit;
-        font-weight: 700;
-        font-size: 0.86rem;
-        cursor: pointer;
-      }
-
-      .language-option[aria-pressed="true"] {
-        background: #000;
-        color: #fff;
-        box-shadow: 0 8px 18px rgba(0,0,0,0.14);
-      }
-
-      .language-flag {
-        width: 20px;
-        height: 14px;
-        flex: 0 0 auto;
-        overflow: hidden;
-        border: 1px solid rgba(0, 0, 0, 0.16);
-        border-radius: 3px;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.14);
-      }
-
-      .language-flag-uk {
-        background:
-          #012169
-            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30' preserveAspectRatio='none'%3E%3Cpath fill='%23012169' d='M0 0h60v30H0z'/%3E%3Cpath stroke='%23fff' stroke-width='6' d='m0 0 60 30m0-30L0 30'/%3E%3Cpath stroke='%23c8102e' stroke-width='4' d='m0 0 60 30m0-30L0 30'/%3E%3Cpath stroke='%23fff' stroke-width='10' d='M30 0v30M0 15h60'/%3E%3Cpath stroke='%23c8102e' stroke-width='6' d='M30 0v30M0 15h60'/%3E%3C/svg%3E")
-            center / 100% 100% no-repeat;
-      }
-
-      .language-flag-es {
-        background: linear-gradient(to bottom, #aa151b 0 25%, #f1bf00 25% 75%, #aa151b 75%);
-      }
-
-      /* --- HERO SECTION --- */
-      .hero {
-        display: grid;
-        grid-template-columns: 1fr 400px; /* Space reserved for the phone */
-        gap: 60px;
-        align-items: center;
-      }
-
-      .hero-content {
-        max-width: 600px;
-      }
-
-      .hero-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin: 0 0 28px;
-      }
-
-      .meta-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 8px 12px;
-        border: 1px solid rgba(103, 80, 164, 0.12);
-        border-radius: 999px;
-        background: rgba(255,255,255,0.64);
-        color: var(--muted-text);
-        font-weight: 700;
-        font-size: 0.84rem;
-      }
-
-      .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 16px;
-        background: rgba(103, 80, 164, 0.08);
-        color: var(--primary);
-        border-radius: 100px;
-        font-weight: 700;
-        font-size: 0.9rem;
-        margin-bottom: 24px;
-      }
-
-      h1 {
-        font-size: clamp(3rem, 5vw, 4.5rem);
-        line-height: 1.05;
-        margin: 0 0 24px;
-        letter-spacing: -1.5px;
-      }
-
-      .hero-desc {
-        font-size: 1.25rem;
-        color: var(--body-text);
-        margin-bottom: 28px;
-        font-weight: 400;
-      }
-
-      .cta-row {
-        display: flex;
-        gap: 16px;
-        flex-wrap: wrap;
-      }
-
-      .btn {
-        padding: 18px 32px;
-        border-radius: 100px;
-        font-weight: 700;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: transform 0.2s cubic-bezier(0.3, 0, 0.4, 1), box-shadow 0.2s;
-        border: none;
-      }
-
-      .btn:active { transform: scale(0.98); }
-
-      .btn-primary {
-        background: #000000;
-        color: #fff;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      }
-      
-      .btn-primary:hover {
-        background: #1a1a1a;
-        transform: translateY(-2px);
-      }
-
-      .btn-secondary {
-        background: #fff;
-        color: #000;
-        border: 1px solid rgba(0,0,0,0.1);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      }
-      
-      .btn-secondary:hover {
-        background: #fcfcfc;
-        transform: translateY(-2px);
-      }
-
-      /* --- PHONE MOCKUP INTERACTIVO --- */
-      .phone-container {
-        position: relative;
-        width: 340px;
-        height: 660px;
-        background: #0f0f14;
-        border-radius: 48px;
-        box-shadow: 
-          0 0 0 12px #ffffff, /* Marco interior */
-          0 0 0 14px rgba(0,0,0,0.1), /* Borde sutil */
-          0 40px 80px -20px rgba(50, 50, 93, 0.25), /* Elevation shadow */
-          0 30px 60px -30px rgba(0, 0, 0, 0.3);
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        font-family: "Inter", sans-serif;
-        border: 1px solid #e1e1e1;
-        color: #f2f3f7;
-        user-select: none;
-        -webkit-user-select: none;
-      }
-      
-      /* Simulated notch */
-      .phone-notch {
-        position: absolute;
-        top: 0; left: 50%; transform: translateX(-50%);
-        width: 120px; height: 30px;
-        background: #fff;
-        border-bottom-left-radius: 16px;
-        border-bottom-right-radius: 16px;
-        z-index: 100;
-      }
-
-      .phone-header {
-        padding: 26px 18px 6px;
-        background: transparent;
-        z-index: 10;
-        display: flex;
-        justify-content: center;
-      }
-
-      .rewind-btn {
-        background: rgba(255,255,255,0.85);
-        border-radius: 20px;
-        padding: 12px;
-        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-        border: 1px solid rgba(255,255,255,0.4);
-        display: inline-flex;
-        align-items: center;
-        color: #111;
-        font-weight: 600;
-        font-size: 0.85rem;
-        margin-top: 8px;
-      }
-
-      .rewind-btn svg {
-        width: 18px;
-        height: 18px;
-        stroke: #111;
-      }
-
-      .phone-body {
-        flex: 1;
-        position: relative;
-        padding: 18px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        background: transparent;
-        overflow: hidden; /* Importante para que las cartas salgan */
-      }
-
-      .phone-body::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, #6750a4 0%, #03dac6 100%);
-        z-index: 0;
-      }
-
-      .phone-body::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: rgba(0,0,0,0.16);
-        z-index: 1;
-      }
-
-      .phone-body > * {
-        position: relative;
-        z-index: 2;
-      }
-
-      /* Card stack */
-      .card-stack {
-        position: relative;
-        width: 100%;
-        height: 400px;
-        perspective: 1000px;
-        z-index: 3;
-        margin-bottom: 18px;
-      }
-
-      .swipe-card {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background: #fff;
-        border-radius: 24px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.14);
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        border: 1px solid rgba(0,0,0,0.06);
-        cursor: grab;
-        transform-origin: 50% 100%;
-        transition: transform 0.1s; /* Fast drag response */
-        user-select: none;
-        -webkit-user-select: none;
-        touch-action: none;
+      button,
+      a {
         -webkit-tap-highlight-color: transparent;
       }
-      
-      .swipe-card:active { cursor: grabbing; }
-
-      /* Estilo cuando la carta vuelve al centro (release) */
-      .swipe-card.resetting {
-        transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+      button {
+        font: inherit;
       }
-
-      /* Estilo cuando la carta se va (swipe out) */
-      .swipe-card.flying {
-        transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s;
-        opacity: 0;
+      :focus-visible {
+        outline: 3px solid var(--mint);
+        outline-offset: 4px;
       }
-
-      .card-image {
-        flex: 1;
-        background: #111;
-        position: relative;
-        overflow: hidden;
-        user-select: none;
-        -webkit-user-select: none;
-      }
-      
-      .card-image img {
-        width: 100%; height: 100%; object-fit: cover;
-        pointer-events: none;
-        user-select: none;
-        -webkit-user-select: none;
-        -webkit-user-drag: none;
-      }
-
-      .card-image::after {
-        content: "";
-        position: absolute;
-        inset: auto 0 0;
-        height: 46%;
-        background: linear-gradient(180deg, transparent, rgba(0,0,0,0.62));
-        pointer-events: none;
-      }
-      
-      .card-tag {
-        position: absolute;
-        top: 20px; right: 20px;
-        background: rgba(0,0,0,0.55);
-        color: #fff;
-        font-size: 0.75rem;
-        padding: 4px 10px;
-        border-radius: 8px;
-        font-weight: 600;
-        backdrop-filter: blur(4px);
-        text-transform: uppercase;
-        z-index: 4;
-      }
-
-      .card-label {
-        position: absolute;
+      .skip-link {
+        position: fixed;
         left: 16px;
-        bottom: 16px;
+        top: -60px;
+        z-index: 100;
+        padding: 12px 18px;
+        background: var(--ink);
+        color: #fff;
+        border-radius: 999px;
+      }
+      .skip-link:focus {
+        top: 16px;
+      }
+      .shell {
+        width: min(1180px, calc(100% - 36px));
+        margin: 0 auto;
+      }
+      .topbar {
+        position: sticky;
+        top: 12px;
+        z-index: 50;
+        margin-top: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 10px 12px 10px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.72);
+        border-radius: 999px;
+        background: rgba(255, 253, 248, 0.82);
+        box-shadow: 0 12px 35px rgba(61, 45, 88, 0.09);
+        backdrop-filter: blur(18px);
+      }
+      .brand {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 6px 12px;
-        background: rgba(0,0,0,0.6);
-        color: #fff;
-        border-radius: 12px;
-        font-size: 0.78rem;
-        font-weight: 600;
-        backdrop-filter: blur(4px);
-        z-index: 4;
+        gap: 10px;
+        font-weight: 900;
+        letter-spacing: -0.04em;
+        font-size: 1.28rem;
       }
-      
-      .card-label-size {
-        color: rgba(255,255,255,0.8);
-        font-weight: 500;
-      }
-
-      .card-share {
-        position: absolute;
-        right: 16px;
-        bottom: 16px;
+      .brand img {
         width: 38px;
         height: 38px;
-        border-radius: 14px;
-        display: grid;
-        place-items: center;
-        background: rgba(255,255,255,0.85);
-        border: 1px solid rgba(0,0,0,0.06);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        color: #1a1a1a;
-        z-index: 4;
+        border-radius: 11px;
+        box-shadow: 0 5px 12px rgba(77, 43, 215, 0.22);
       }
-
-      .icon {
-        font-family: "Material Symbols Rounded";
-        font-variation-settings: "FILL" 0, "wght" 600, "GRAD" 0, "opsz" 24;
-        font-size: 18px;
-        line-height: 1;
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        font-size: 0.9rem;
+        font-weight: 750;
+      }
+      .nav a {
+        position: relative;
+      }
+      .nav a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 100%;
+        bottom: -4px;
+        height: 2px;
+        background: var(--violet);
+        transition: right 0.2s;
+      }
+      .nav a:hover::after {
+        right: 0;
+      }
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .lang-switch {
+        display: flex;
+        padding: 3px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+      }
+      .lang-switch button {
+        border: 0;
+        background: transparent;
+        color: var(--ink-soft);
+        padding: 7px 10px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-size: 0.78rem;
+        font-weight: 850;
+      }
+      .lang-switch button[aria-pressed="true"] {
+        background: var(--ink);
+        color: #fff;
+      }
+      .mini-cta {
+        display: inline-flex;
+        align-items: center;
+        padding: 11px 16px;
+        color: #fff;
+        background: var(--violet);
+        border-radius: 999px;
+        font-size: 0.86rem;
+        font-weight: 850;
+      }
+      .hero {
+        min-height: 750px;
+        display: grid;
+        grid-template-columns: 1.08fr 0.92fr;
+        align-items: center;
+        gap: 58px;
+        padding: 88px 0 72px;
+      }
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin: 0 0 20px;
+        padding: 8px 12px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.52);
+        font-size: 0.76rem;
+        font-weight: 900;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+      }
+      .kicker::before {
+        content: "";
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--mint);
+        box-shadow: 0 0 0 4px rgba(39, 216, 193, 0.18);
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        text-wrap: pretty;
+      }
+      h1,
+      h2 {
+        font-family: Georgia, "Times New Roman", serif;
+      }
+      h1 {
+        margin: 0;
+        max-width: 760px;
+        font-size: clamp(3.6rem, 7.8vw, 7.2rem);
+        line-height: 0.88;
+        letter-spacing: -0.075em;
+      }
+      h1 em {
+        color: var(--violet);
+        font-weight: inherit;
+        text-decoration: underline;
+        text-decoration-color: var(--mint);
+        text-decoration-thickness: 0.12em;
+        text-underline-offset: 0.08em;
+      }
+      .hero-copy > p {
+        max-width: 640px;
+        margin: 30px 0 0;
+        color: var(--ink-soft);
+        font-size: clamp(1.08rem, 1.8vw, 1.35rem);
+      }
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        margin-top: 32px;
+      }
+      .button {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-      }
-
-      .icon-lg { font-size: 20px; }
-
-      .drag-overlay {
-        position: absolute;
-        top: 50%;
-        width: 88%;
-        height: 72%;
-        transform: translateY(-50%);
+        gap: 10px;
+        min-height: 54px;
+        padding: 0 22px;
+        border: 2px solid var(--ink);
         border-radius: 999px;
+        font-weight: 900;
+        transition:
+          transform 0.18s,
+          box-shadow 0.18s;
+      }
+      .button:hover {
+        transform: translateY(-3px);
+      }
+      .button-primary {
+        color: #fff;
+        background: var(--ink);
+        box-shadow: 6px 6px 0 var(--mint);
+      }
+      .button-secondary {
+        background: transparent;
+      }
+      .button .arrow {
+        font-size: 1.3em;
+      }
+      .availability {
         display: flex;
+        flex-wrap: wrap;
+        gap: 8px 18px;
+        margin: 24px 0 0;
+        padding: 0;
+        color: var(--ink-soft);
+        list-style: none;
+        font-size: 0.85rem;
+        font-weight: 750;
+      }
+      .availability li::before {
+        content: "✓";
+        margin-right: 6px;
+        color: var(--violet);
+        font-weight: 950;
+      }
+      .hero-stage {
+        position: relative;
+        min-height: 620px;
+        display: grid;
+        place-items: center;
+      }
+      .orbit-note {
+        position: absolute;
+        z-index: 3;
+        pointer-events: none;
+        padding: 10px 14px;
+        border: 1px solid var(--ink);
+        background: var(--yellow);
+        box-shadow: 4px 4px 0 var(--ink);
+        font-size: 0.75rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        transform: rotate(-5deg);
+      }
+      .orbit-note.one {
+        left: -14px;
+        top: 13%;
+      }
+      .orbit-note.two {
+        right: -5px;
+        bottom: 14%;
+        background: var(--mint);
+        transform: rotate(4deg);
+      }
+      .photo-strip {
+        position: absolute;
+        pointer-events: none;
+        width: 250px;
+        padding: 10px 10px 34px;
+        background: #fff;
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(23, 21, 30, 0.12);
+      }
+      .photo-strip img {
+        width: 100%;
+        aspect-ratio: 4/5;
+        object-fit: cover;
+        filter: saturate(0.9) contrast(1.03);
+      }
+      .photo-strip.back {
+        right: -40px;
+        top: 60px;
+        transform: rotate(10deg);
+      }
+      .photo-strip.front {
+        left: -25px;
+        bottom: 55px;
+        transform: rotate(-8deg);
+      }
+      .phone {
+        position: relative;
+        z-index: 2;
+        width: 304px;
+        height: 610px;
+        padding: 11px;
+        border: 4px solid var(--ink);
+        border-radius: 48px;
+        background: var(--ink);
+        box-shadow: 0 38px 90px rgba(56, 38, 98, 0.26);
+      }
+      .phone::before {
+        content: "";
+        position: absolute;
+        z-index: 6;
+        left: 50%;
+        top: 16px;
+        width: 94px;
+        height: 25px;
+        transform: translateX(-50%);
+        border-radius: 999px;
+        background: var(--ink);
+      }
+      .phone-screen {
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 34px;
+        background: #f2eee8;
+      }
+      .phone-head {
+        display: flex;
+        justify-content: space-between;
         align-items: center;
-        opacity: 0;
-        z-index: 4;
+        padding: 46px 18px 10px;
+        font-size: 0.74rem;
+        font-weight: 900;
+      }
+      .phone-head strong {
+        font-size: 1rem;
+      }
+      .deck {
+        position: relative;
+        height: 390px;
+        margin: 0 15px;
+      }
+      .demo-card {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        border: 1px solid rgba(23, 21, 30, 0.15);
+        border-radius: 25px;
+        background: #fff;
+        box-shadow: 0 14px 28px rgba(24, 20, 35, 0.13);
+        touch-action: none;
+        user-select: none;
+        cursor: grab;
+        transition:
+          transform 0.28s,
+          opacity 0.28s;
+      }
+      .demo-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
         pointer-events: none;
       }
-
-      .drag-overlay.left {
-        left: 0;
-        justify-content: flex-end;
-        padding-right: 22px;
-        background: rgba(239,83,80,0.55);
+      .card-stamp {
+        position: absolute;
+        top: 25px;
+        padding: 7px 12px;
+        border: 3px solid currentColor;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.85);
+        font-size: 1rem;
+        font-weight: 950;
+        letter-spacing: 0.08em;
+        opacity: 0;
       }
-
-      .drag-overlay.right {
-        right: 0;
-        justify-content: flex-start;
-        padding-left: 22px;
-        background: rgba(76,175,80,0.55);
+      .card-stamp.keep {
+        left: 20px;
+        color: #128d7e;
+        transform: rotate(-8deg);
       }
-
-      .drag-overlay span {
+      .card-stamp.review {
+        right: 20px;
+        color: #d9463a;
+        transform: rotate(8deg);
+      }
+      .gesture-tip {
+        position: absolute;
+        left: 50%;
+        bottom: 12px;
+        transform: translateX(-50%);
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: rgba(23, 21, 30, 0.78);
         color: #fff;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
+        white-space: nowrap;
+        font-size: 0.68rem;
+        font-weight: 800;
       }
-
-      /* Decision overlays (Like / Trash) */
-      .counters-row {
+      .demo-controls {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        padding: 16px 15px 0;
+      }
+      .demo-controls button {
+        min-height: 48px;
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        background: #fff;
+        color: var(--ink);
+        cursor: pointer;
+        font-size: 0.68rem;
+        font-weight: 900;
+      }
+      .demo-controls button span:first-child {
+        display: block;
+        font-size: 1.15rem;
+      }
+      .demo-controls .delete {
+        color: #c83f35;
+      }
+      .demo-controls .classify {
+        color: var(--violet-dark);
+      }
+      .demo-controls .keep {
+        color: #087e71;
+      }
+      .demo-progress {
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 12px 16px 10px;
-        margin-top: 2px;
+        padding: 13px 18px;
+        color: var(--ink-soft);
+        font-size: 0.68rem;
+        font-weight: 850;
       }
-
-      .counter-pill,
-      .counter-button {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 8px 12px;
-        background: rgba(20,20,28,0.78);
-        border-radius: 16px;
-        border: 1px solid rgba(255,255,255,0.08);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-        font-size: 0.85rem;
-        font-weight: 600;
-      }
-
-      .counter-pill {
+      .demo-progress i {
         flex: 1;
-        justify-content: center;
+        height: 5px;
+        overflow: hidden;
+        border-radius: 99px;
+        background: #ddd5cb;
       }
-
-      .counter-button {
-        padding: 8px 10px;
-        cursor: pointer;
+      .demo-progress i::after {
+        content: "";
+        display: block;
+        width: 43%;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--violet);
       }
-
-      .counter-primary { color: #b9a8f3; }
-      .counter-secondary { color: #9ee9e0; }
-      .counter-tertiary { color: #f2a3a3; }
-
-      .bottom-nav {
-        margin: 0 16px 16px;
-        padding: 10px 12px;
+      .tape {
+        overflow: hidden;
+        border-top: 2px solid var(--ink);
+        border-bottom: 2px solid var(--ink);
+        background: var(--violet);
+        color: #fff;
+        transform: rotate(-1deg) scale(1.02);
+      }
+      .tape-track {
         display: flex;
-        justify-content: space-between;
-        background: rgba(20,20,28,0.86);
-        border-radius: 22px;
-        border: 1px solid rgba(255,255,255,0.08);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+        width: max-content;
+        padding: 12px 0;
+        animation: ticker 28s linear infinite;
       }
-
-      .nav-item {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 4px;
-        color: rgba(255,255,255,0.6);
-        font-size: 0.72rem;
-        font-weight: 600;
+      .tape-track span {
+        padding: 0 22px;
+        font-size: 0.8rem;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
       }
-
-      .nav-item.active {
-        color: #ffffff;
+      .tape-track span::after {
+        content: "✦";
+        margin-left: 42px;
+        color: var(--mint);
       }
-
-
-      /* --- STATS GRID (BENTO BOX STYLE) --- */
-      .stats-grid {
-        margin-top: 80px;
+      @keyframes ticker {
+        to {
+          transform: translateX(-50%);
+        }
+      }
+      .section {
+        padding: 112px 0;
+      }
+      .section-heading {
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        gap: 70px;
+        align-items: end;
+        margin-bottom: 52px;
+      }
+      .section-number {
+        display: block;
+        margin-bottom: 12px;
+        color: var(--violet);
+        font-size: 0.76rem;
+        font-weight: 950;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      h2 {
+        margin: 0;
+        font-size: clamp(2.7rem, 5.5vw, 5.4rem);
+        line-height: 0.97;
+        letter-spacing: -0.055em;
+      }
+      .section-heading > p {
+        max-width: 620px;
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 1.12rem;
+      }
+      .steps {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 24px;
-        align-items: stretch;
+        border: 2px solid var(--ink);
+        border-radius: var(--radius-xl);
+        overflow: hidden;
+        background: var(--white);
+        box-shadow: 10px 12px 0 var(--paper-deep);
       }
-
-      .bento-box {
-        background: #fff;
-        border-radius: var(--radius-md);
+      .step {
+        position: relative;
+        min-height: 320px;
         padding: 34px;
-        box-shadow: var(--shadow-medium);
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        min-height: 250px;
-        transition: transform 0.3s ease;
+        border-right: 2px solid var(--ink);
       }
-      
-      .bento-box:hover { transform: translateY(-4px); }
-
-      .bento-icon {
-        width: 48px; height: 48px;
-        background: #f4f1fa;
-        border-radius: 12px;
+      .step:last-child {
+        border-right: 0;
+      }
+      .step-index {
         display: grid;
         place-items: center;
-        color: var(--primary);
+        width: 48px;
+        height: 48px;
+        border: 2px solid var(--ink);
+        border-radius: 50%;
+        background: var(--yellow);
+        font-family: Georgia, serif;
+        font-size: 1.35rem;
+        font-weight: 800;
+      }
+      .step:nth-child(2) .step-index {
+        background: var(--mint);
+      }
+      .step:nth-child(3) .step-index {
+        background: #bcaeff;
+      }
+      .step h3 {
+        margin: 45px 0 12px;
         font-size: 1.5rem;
-        margin-bottom: 20px;
+        line-height: 1.1;
       }
-
-      .bento-box h3 { margin: 0 0 8px; font-size: 1.4rem; color: #000; }
-      .bento-box p { margin: 0; color: var(--muted-text); font-size: 1rem; line-height: 1.55; }
-
-      /* --- INFO SECTIONS --- */
-      .section { margin-top: 100px; }
-      
-      .section-header {
-        margin-bottom: 40px;
-      }
-      
-      .section-header h2 {
-        font-size: 3rem;
-        color: #fff;
-        text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      .step p {
         margin: 0;
+        color: var(--ink-soft);
       }
-      
-      .section-header p {
-        color: rgba(255,255,255,0.9);
-        font-size: 1.2rem;
-        max-width: 600px;
+      .step .gesture {
+        position: absolute;
+        right: 27px;
+        top: 28px;
+        font-size: 2.6rem;
+        transform: rotate(-8deg);
       }
-
-      .features-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 32px;
-        align-items: stretch;
-      }
-
-      .feature-card {
-        background: #fff;
-        border-radius: var(--radius-md);
-        padding: 40px;
-        box-shadow: var(--shadow-medium);
-        min-height: 220px;
-      }
-      
-      .feature-card h3 { font-size: 1.5rem; margin: 0 0 12px; color: #000; }
-      .feature-card p { font-size: 1.1rem; color: var(--muted-text); margin: 0; }
-
-      /* --- CTA & FOOTER --- */
-      .cta-box {
-        margin-top: 120px;
-        background: #fff;
-        border-radius: var(--radius-lg);
-        padding: 60px;
-        text-align: center;
-        box-shadow: var(--shadow-float);
-      }
-      
-      .cta-box h2 { font-size: 2.5rem; margin-bottom: 16px; color: #000; }
-      .cta-box p { font-size: 1.2rem; color: var(--muted-text); margin-bottom: 32px; }
-
-      footer {
-        margin-top: 80px;
-        border-top: 1px solid rgba(255,255,255,0.3);
-        padding-top: 40px;
-        display: flex;
-        justify-content: space-between;
+      .feature-board {
+        background: var(--ink);
         color: #fff;
-        font-weight: 500;
       }
-      
-      .footer-links a { margin-left: 24px; opacity: 0.8; }
-      .footer-links a:hover { opacity: 1; text-decoration: underline; }
-
-      /* Responsive */
+      .feature-board .section-heading > p,
+      .feature-board .section-number {
+        color: #c7bfdd;
+      }
+      .feature-board .section-number {
+        color: var(--mint);
+      }
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 16px;
+      }
+      .feature {
+        position: relative;
+        min-height: 260px;
+        padding: 28px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: var(--radius-lg);
+        background: #26222f;
+      }
+      .feature:nth-child(1) {
+        grid-column: span 7;
+        background: var(--violet);
+      }
+      .feature:nth-child(2) {
+        grid-column: span 5;
+      }
+      .feature:nth-child(3),
+      .feature:nth-child(4),
+      .feature:nth-child(5) {
+        grid-column: span 4;
+      }
+      .feature:nth-child(6) {
+        grid-column: span 12;
+        min-height: 210px;
+        background: var(--mint);
+        color: var(--ink);
+      }
+      .feature-icon {
+        display: grid;
+        place-items: center;
+        width: 49px;
+        height: 49px;
+        border: 1px solid currentColor;
+        border-radius: 15px;
+        font-size: 1.4rem;
+      }
+      .feature h3 {
+        margin: 42px 0 10px;
+        font-size: 1.5rem;
+      }
+      .feature p {
+        max-width: 580px;
+        margin: 0;
+        color: #d5cfe2;
+      }
+      .feature:nth-child(6) p {
+        color: #25433f;
+      }
+      .feature-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 24px;
+      }
+      .feature-tags span {
+        padding: 7px 10px;
+        border: 1px solid currentColor;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 850;
+      }
+      .feature .big-glyph {
+        position: absolute;
+        right: 24px;
+        bottom: -35px;
+        font-family: Georgia, serif;
+        font-size: 9rem;
+        line-height: 1;
+        color: var(--ink);
+        opacity: 1;
+      }
+      .control-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 26px;
+      }
+      .control-card {
+        padding: 36px;
+        border: 2px solid var(--ink);
+        border-radius: var(--radius-lg);
+        background: var(--white);
+      }
+      .control-card:first-child {
+        transform: rotate(-1deg);
+        box-shadow: 8px 9px 0 var(--coral);
+      }
+      .control-card:last-child {
+        transform: rotate(1deg);
+        box-shadow: 8px 9px 0 var(--mint);
+      }
+      .control-card .label {
+        display: inline-block;
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: var(--paper-deep);
+        font-size: 0.72rem;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+      .control-card h3 {
+        margin: 30px 0 12px;
+        font-family: Georgia, serif;
+        font-size: 2.1rem;
+        line-height: 1.05;
+      }
+      .control-card p {
+        margin: 0;
+        color: var(--ink-soft);
+      }
+      .control-card ul {
+        margin: 24px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+      .control-card li {
+        padding: 11px 0;
+        border-top: 1px solid var(--line);
+        font-weight: 750;
+      }
+      .control-card li::before {
+        content: "→";
+        margin-right: 10px;
+        color: var(--violet);
+      }
+      .faq {
+        background: #ded3ff;
+      }
+      .faq .section-number {
+        color: #3b239d;
+      }
+      .faq-layout {
+        display: grid;
+        grid-template-columns: 0.8fr 1.2fr;
+        gap: 70px;
+        align-items: start;
+      }
+      .faq-intro {
+        position: sticky;
+        top: 110px;
+      }
+      .faq-intro p {
+        max-width: 420px;
+        color: var(--ink-soft);
+      }
+      .faq-list {
+        border-top: 2px solid var(--ink);
+      }
+      details {
+        border-bottom: 2px solid var(--ink);
+      }
+      summary {
+        position: relative;
+        padding: 25px 54px 25px 0;
+        cursor: pointer;
+        list-style: none;
+        font-size: 1.15rem;
+        font-weight: 900;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      summary::after {
+        content: "+";
+        position: absolute;
+        right: 8px;
+        top: 18px;
+        font-family: Georgia, serif;
+        font-size: 1.9rem;
+      }
+      details[open] summary::after {
+        content: "−";
+      }
+      details p {
+        max-width: 680px;
+        margin: 0;
+        padding: 0 54px 25px 0;
+        color: var(--ink-soft);
+      }
+      .final-cta {
+        padding: 100px 0;
+      }
+      .cta-panel {
+        position: relative;
+        overflow: hidden;
+        padding: 70px;
+        border: 2px solid var(--ink);
+        border-radius: var(--radius-xl);
+        background: var(--yellow);
+        box-shadow: 12px 14px 0 var(--violet);
+        text-align: center;
+      }
+      .cta-panel::before,
+      .cta-panel::after {
+        content: "";
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        border: 35px solid var(--coral);
+        border-radius: 50%;
+        opacity: 0.6;
+      }
+      .cta-panel::before {
+        left: -130px;
+        top: -130px;
+      }
+      .cta-panel::after {
+        right: -140px;
+        bottom: -140px;
+        border-color: var(--mint);
+      }
+      .cta-panel h2 {
+        position: relative;
+        z-index: 1;
+        max-width: 850px;
+        margin: 0 auto 18px;
+      }
+      .cta-panel p {
+        position: relative;
+        z-index: 1;
+        max-width: 620px;
+        margin: 0 auto 30px;
+        font-size: 1.12rem;
+      }
+      .cta-panel .button {
+        position: relative;
+        z-index: 1;
+      }
+      footer {
+        padding: 32px 0 44px;
+        border-top: 1px solid var(--line);
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 0.6fr 0.6fr;
+        gap: 34px;
+      }
+      .footer-brand p {
+        max-width: 440px;
+        color: var(--ink-soft);
+        font-size: 0.88rem;
+      }
+      .footer-column strong {
+        display: block;
+        margin-bottom: 13px;
+        font-size: 0.76rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .footer-column a {
+        display: block;
+        margin: 8px 0;
+        color: var(--ink-soft);
+        font-size: 0.88rem;
+      }
+      .footer-column a:hover {
+        color: var(--violet);
+      }
+      .copyright {
+        margin-top: 34px;
+        color: var(--ink-soft);
+        font-size: 0.75rem;
+      }
       @media (max-width: 960px) {
-        header { flex-direction: column; gap: 24px; align-items: center; }
-        .header-actions { flex-direction: column; gap: 16px; }
-        .hero { grid-template-columns: 1fr; text-align: center; justify-items: center; }
-        .hero-content { margin: 0 auto; }
-        .hero-meta { justify-content: center; }
-        .cta-row { justify-content: center; }
-        .stats-grid, .features-grid { grid-template-columns: 1fr; }
-        footer { flex-direction: column; gap: 20px; align-items: center; }
-        .footer-links a { margin: 0 12px; }
-      }
-
-      @media (max-width: 600px) {
-        .wrap { padding: 24px 14px 80px; }
-        .main-glass { padding: 24px; }
-        .logo { font-size: 2rem; }
-        .logo-mark { width: 72px; height: 72px; border-radius: 18px; }
-        .logo-mark img { width: 50px; }
-        .nav { gap: 16px; font-size: 0.94rem; }
-        .language-option { padding: 7px 10px; }
-        .phone-container {
-          width: min(340px, 100%);
-          height: auto;
-          aspect-ratio: 340 / 660;
+        .nav {
+          display: none;
         }
-        .counters-row { gap: 8px; padding: 10px 12px 8px; }
-        .bottom-nav { margin: 0 12px 12px; }
+        .hero {
+          grid-template-columns: 1fr;
+          padding-top: 72px;
+        }
+        .hero-copy {
+          text-align: center;
+        }
+        .hero-copy > p,
+        .hero-actions,
+        .availability {
+          justify-content: center;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .hero-stage {
+          min-height: 660px;
+        }
+        .section-heading,
+        .faq-layout {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+        .steps {
+          grid-template-columns: 1fr;
+        }
+        .step {
+          min-height: 230px;
+          border-right: 0;
+          border-bottom: 2px solid var(--ink);
+        }
+        .step:last-child {
+          border-bottom: 0;
+        }
+        .feature:nth-child(n) {
+          grid-column: span 6;
+        }
+        .feature:nth-child(6) {
+          grid-column: span 12;
+        }
+        .faq-intro {
+          position: static;
+        }
+      }
+      @media (max-width: 680px) {
+        .shell {
+          width: min(100% - 24px, 1180px);
+        }
+        .topbar {
+          top: 7px;
+        }
+        .brand > span {
+          display: none;
+        }
+        .mini-cta {
+          display: none;
+        }
+        .hero {
+          min-height: auto;
+          padding: 58px 0 35px;
+        }
+        h1 {
+          font-size: clamp(3.25rem, 17vw, 5rem);
+        }
+        .hero-stage {
+          min-height: 600px;
+          transform: scale(0.92);
+          margin: -20px -10px;
+        }
+        .phone {
+          width: 290px;
+          height: 580px;
+        }
+        .deck {
+          height: 360px;
+        }
+        .photo-strip {
+          display: none;
+        }
+        .orbit-note.one {
+          left: 0;
+        }
+        .orbit-note.two {
+          right: 0;
+        }
+        .section {
+          padding: 80px 0;
+        }
+        .feature:nth-child(n) {
+          grid-column: 1/-1;
+        }
+        .control-grid {
+          grid-template-columns: 1fr;
+        }
+        .control-card {
+          padding: 28px;
+        }
+        .cta-panel {
+          padding: 54px 22px;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .footer-brand {
+          grid-column: 1/-1;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
       }
     </style>
   </head>
-  <body data-page="tindrop" data-lang="en">
-    <div class="wrap">
-      
-      <!-- Glassmorphism main container -->
-      <div class="main-glass">
-        <header>
-          <div class="logo">
-            <div class="logo-mark">
-              <img src="tindrop.png" alt="Tindrop" />
-            </div>
-            <span>Tindrop</span>
-          </div>
-          <div class="header-actions">
-            <nav class="nav" aria-label="Primary navigation" data-label-en="Primary navigation" data-label-es="Navegación principal">
-              <a href="#demo">
-                <span data-locale="en">Demo</span>
-                <span data-locale="es">Demo</span>
-              </a>
-              <a href="#how-it-works">
-                <span data-locale="en">How it works</span>
-                <span data-locale="es">Cómo funciona</span>
-              </a>
-              <a href="#benefits">
-                <span data-locale="en">Benefits</span>
-                <span data-locale="es">Ventajas</span>
-              </a>
-            </nav>
-            <div class="language-switcher" role="group" aria-label="Language selector" data-label-en="Language selector" data-label-es="Selector de idioma">
-              <button class="language-option" type="button" data-set-lang="en" aria-pressed="true">
-                <span class="language-flag language-flag-uk" aria-hidden="true"></span>
-                <span>EN</span>
-              </button>
-              <button class="language-option" type="button" data-set-lang="es" aria-pressed="false">
-                <span class="language-flag language-flag-es" aria-hidden="true"></span>
-                <span>ES</span>
-              </button>
-            </div>
-          </div>
-        </header>
-
-        <section class="hero">
-          <div class="hero-content">
-            <h1>
-              <span data-locale="en">Reclaim space with a single swipe.</span>
-              <span data-locale="es">Recupera espacio con un solo gesto.</span>
-            </h1>
-            <p class="hero-desc">
-              <span data-locale="en">Tindrop turns the dull job of cleaning your gallery and Google Drive into a focused, fast flow. Swipe right to keep, left to delete, then review before anything disappears.</span>
-              <span data-locale="es">Tindrop convierte la limpieza de tu galería y Google Drive en un flujo rápido y enfocado. Desliza a la derecha para conservar, a la izquierda para eliminar, y revisa antes de que desaparezca nada.</span>
-            </p>
-            <div class="hero-meta" aria-label="Tindrop highlights" data-label-en="Tindrop highlights" data-label-es="Aspectos destacados de Tindrop">
-              <span class="meta-pill">
-                <span class="icon">photo_library</span>
-                <span data-locale="en">Gallery + Drive</span>
-                <span data-locale="es">Galería + Drive</span>
-              </span>
-              <span class="meta-pill">
-                <span class="icon">lock</span>
-                <span data-locale="en">On-device first</span>
-                <span data-locale="es">Primero en tu dispositivo</span>
-              </span>
-            </div>
-            <div class="cta-row">
-              <a class="btn btn-primary" href="go/">
-                <span data-locale="en">Download App</span>
-                <span data-locale="es">Descargar app</span>
-              </a>
-              <a href="#demo" class="btn btn-secondary">
-                <span data-locale="en">Try the demo</span>
-                <span data-locale="es">Probar la demo</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- Interactive mockup -->
-          <div class="phone-container" id="demo">
-            <div class="phone-notch"></div>
-            
-            <div class="phone-header">
-              <div class="rewind-btn">
-                <span class="icon">rotate_left</span>
-              </div>
-            </div>
-
-            <div class="phone-body">
-              <div class="drag-overlay left" id="dragLeft"><span data-i18n="trashIt">Trash it</span></div>
-              <div class="drag-overlay right" id="dragRight"><span data-i18n="saveIt">Save it</span></div>
-              <div class="card-stack" id="cardStack">
-                <!-- Cards are generated with JS -->
-              </div>
-            </div>
-
-            <div class="counters-row">
-              <div class="counter-pill counter-primary">
-                <span class="icon">photo_library</span>
-                <span>128</span>
-              </div>
-              <div class="counter-button counter-secondary" id="statsButton" title="Stats" data-i18n-title="stats">
-                <span class="icon">bar_chart</span>
-              </div>
-              <div class="counter-button counter-secondary" id="filterButton" title="Filters" data-i18n-title="filters">
-                <span class="icon">filter_list</span>
-              </div>
-              <div class="counter-pill counter-tertiary">
-                <span class="icon">favorite</span>
-                <span>42</span>
-              </div>
-            </div>
-
-            <div class="bottom-nav">
-              <div class="nav-item active">
-                <span class="icon icon-lg">photo_library</span>
-                <span data-i18n="gallery">Gallery</span>
-              </div>
-              <div class="nav-item">
-                <span class="icon icon-lg">delete</span>
-                <span data-i18n="trash">Trash</span>
-              </div>
-              <div class="nav-item">
-                <span class="icon icon-lg">settings</span>
-                <span data-i18n="settings">Settings</span>
-              </div>
-            </div>
-          </div>
-        </section>
+  <body data-lang="es">
+    <a class="skip-link" href="#main"
+      ><span data-locale="es">Saltar al contenido</span
+      ><span data-locale="en">Skip to content</span></a
+    >
+    <header class="shell topbar">
+      <a
+        class="brand"
+        href="#top"
+        aria-label="Tindrop, inicio"
+        data-label-es="Tindrop, inicio"
+        data-label-en="Tindrop, home"
+        ><img
+          src="assets/tindrop-icon-96.webp"
+          alt=""
+          width="38"
+          height="38"
+        /><span>Tindrop</span></a
+      >
+      <nav
+        class="nav"
+        aria-label="Navegación principal"
+        data-label-es="Navegación principal"
+        data-label-en="Primary navigation"
+      >
+        <a href="#como-funciona"
+          ><span data-locale="es">Cómo funciona</span
+          ><span data-locale="en">How it works</span></a
+        ><a href="#funciones"
+          ><span data-locale="es">Qué puedes hacer</span
+          ><span data-locale="en">What you can do</span></a
+        ><a href="#seguridad"
+          ><span data-locale="es">Control</span
+          ><span data-locale="en">Control</span></a
+        ><a href="#preguntas"
+          ><span data-locale="es">Preguntas</span
+          ><span data-locale="en">Questions</span></a
+        >
+      </nav>
+      <div class="top-actions">
+        <div
+          class="lang-switch"
+          role="group"
+          aria-label="Idioma"
+          data-label-es="Idioma"
+          data-label-en="Language"
+        >
+          <button type="button" data-set-lang="es" aria-pressed="true">
+            ES</button
+          ><button type="button" data-set-lang="en" aria-pressed="false">
+            EN
+          </button>
+        </div>
+        <a class="mini-cta" href="go/"
+          ><span data-locale="es">Descargar</span
+          ><span data-locale="en">Download</span></a
+        >
       </div>
-
-      <!-- Benefits grid (Bento style) -->
-      <section class="stats-grid" id="benefits">
-        <div class="bento-box">
-          <div class="bento-icon icon">swipe</div>
-          <h3>
-            <span data-locale="en">Built for fast decisions</span>
-            <span data-locale="es">Pensada para decidir rápido</span>
-          </h3>
-          <p>
-            <span data-locale="en">A single card at a time keeps the cleanup flow focused. You decide quickly, then Tindrop keeps the queue organized for a final review.</span>
-            <span data-locale="es">Una tarjeta cada vez mantiene la limpieza enfocada. Decides rápido y Tindrop mantiene la cola ordenada para una revisión final.</span>
+    </header>
+    <main id="main">
+      <section class="shell hero" id="top">
+        <div class="hero-copy">
+          <p class="kicker">
+            <span data-locale="es">Tu galería, sin agobios</span
+            ><span data-locale="en">Your camera roll, minus the overwhelm</span>
           </p>
+          <h1>
+            <span data-locale="es"
+              >Miles de fotos.<br /><em>Una decisión</em><br />cada vez.</span
+            ><span data-locale="en"
+              >Thousands of photos.<br /><em>One decision</em><br />at a
+              time.</span
+            >
+          </h1>
+          <p>
+            <span data-locale="es"
+              >Tindrop convierte el caos del carrete en un gesto sencillo:
+              conserva, clasifica o manda a revisión. Tú decides foto a foto;
+              nada desaparece sin pasar antes por ti.</span
+            ><span data-locale="en"
+              >Tindrop turns camera-roll chaos into one simple gesture: keep,
+              classify or send to review. You decide photo by photo; nothing
+              disappears without going through you first.</span
+            >
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="go/"
+              ><span data-locale="es">Descargar Tindrop</span
+              ><span data-locale="en">Download Tindrop</span
+              ><span class="arrow" aria-hidden="true">↗</span></a
+            ><a class="button button-secondary" href="#demo"
+              ><span data-locale="es">Prueba el gesto</span
+              ><span data-locale="en">Try the gesture</span></a
+            >
+          </div>
+          <ul
+            class="availability"
+            aria-label="Disponibilidad"
+            data-label-es="Disponibilidad"
+            data-label-en="Availability"
+          >
+            <li>iPhone</li>
+            <li>Android</li>
+            <li>
+              <span data-locale="es">Descarga gratuita</span
+              ><span data-locale="en">Free download</span>
+            </li>
+          </ul>
         </div>
-        <div class="bento-box">
-          <div class="bento-icon icon">cloud</div>
-          <h3>
-            <span data-locale="en">Cloud-ready</span>
-            <span data-locale="es">Listo para la nube</span>
-          </h3>
-          <p>
-            <span data-locale="en">Clean Google Drive with the same gesture language as your local gallery.</span>
-            <span data-locale="es">Limpia Google Drive con los mismos gestos que tu galería local.</span>
-          </p>
-        </div>
-        <div class="bento-box">
-          <div class="bento-icon icon">shield_lock</div>
-          <h3>
-            <span data-locale="en">Privacy-first</span>
-            <span data-locale="es">Privacidad primero</span>
-          </h3>
-          <p>
-            <span data-locale="en">The experience is designed around control: review before deleting and keep destructive actions explicit.</span>
-            <span data-locale="es">La experiencia está pensada para darte control: revisa antes de eliminar y confirma las acciones destructivas.</span>
-          </p>
+        <div
+          class="hero-stage"
+          id="demo"
+          aria-label="Demostración interactiva de Tindrop"
+          data-label-es="Demostración interactiva de Tindrop"
+          data-label-en="Interactive Tindrop demo"
+        >
+          <span class="orbit-note one"
+            ><span data-locale="es">Desliza la foto</span
+            ><span data-locale="en">Swipe the photo</span></span
+          ><span class="orbit-note two"
+            ><span data-locale="es">Revisa antes de borrar</span
+            ><span data-locale="en">Review before deleting</span></span
+          >
+          <figure class="photo-strip back" aria-hidden="true">
+            <img
+              src="assets/demo-city-480.webp"
+              alt=""
+              width="480"
+              height="600"
+            />
+          </figure>
+          <figure class="photo-strip front" aria-hidden="true">
+            <img
+              src="assets/demo-cafe-480.webp"
+              alt=""
+              width="480"
+              height="600"
+            />
+          </figure>
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="phone-head">
+                <strong>Tindrop</strong
+                ><span
+                  ><span data-locale="es">128 pendientes</span
+                  ><span data-locale="en">128 to review</span></span
+                >
+              </div>
+              <div class="deck" id="cardDeck" aria-live="polite">
+                <article class="demo-card">
+                  <img
+                    src="assets/demo-mountain-480.webp"
+                    alt="Foto de una montaña en la demostración"
+                    data-alt-es="Foto de una montaña en la demostración"
+                    data-alt-en="Mountain photo in the interactive demo"
+                    width="480"
+                    height="600"
+                    draggable="false"
+                  /><span class="card-stamp keep">KEEP</span
+                  ><span class="card-stamp review">REVIEW</span
+                  ><span class="gesture-tip"
+                    ><span data-locale="es">Arrastra ← o →</span
+                    ><span data-locale="en">Drag ← or →</span></span
+                  >
+                </article>
+                <article class="demo-card">
+                  <img
+                    src="assets/demo-desk-480.webp"
+                    alt="Foto de un escritorio en la demostración"
+                    data-alt-es="Foto de un escritorio en la demostración"
+                    data-alt-en="Desk photo in the interactive demo"
+                    width="480"
+                    height="600"
+                    draggable="false"
+                  />
+                </article>
+                <article class="demo-card">
+                  <img
+                    src="assets/demo-city-480.webp"
+                    alt="Foto de una ciudad en la demostración"
+                    data-alt-es="Foto de una ciudad en la demostración"
+                    data-alt-en="City photo in the interactive demo"
+                    width="480"
+                    height="600"
+                    draggable="false"
+                  />
+                </article>
+              </div>
+              <div class="demo-controls">
+                <button class="delete" type="button" data-demo-action="left">
+                  <span aria-hidden="true">←</span
+                  ><span data-locale="es">Revisar</span
+                  ><span data-locale="en">Review</span></button
+                ><button class="classify" type="button" data-demo-action="down">
+                  <span aria-hidden="true">↓</span
+                  ><span data-locale="es">Clasificar</span
+                  ><span data-locale="en">Classify</span></button
+                ><button class="keep" type="button" data-demo-action="right">
+                  <span aria-hidden="true">→</span
+                  ><span data-locale="es">Conservar</span
+                  ><span data-locale="en">Keep</span>
+                </button>
+              </div>
+              <div class="demo-progress">
+                <span
+                  ><span data-locale="es">Tu sesión</span
+                  ><span data-locale="en">Your session</span></span
+                ><i aria-hidden="true"></i><b id="demoCount">0/3</b>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
-
-      <section class="section" id="how-it-works">
-        <div class="section-header">
+      <div class="tape" aria-hidden="true">
+        <div class="tape-track">
+          <span>Swipe</span><span>Keep</span><span>Classify</span
+          ><span>Review</span><span>Cloud</span><span>Duplicate cleaner</span
+          ><span>Swipe</span><span>Keep</span><span>Classify</span
+          ><span>Review</span><span>Cloud</span><span>Duplicate cleaner</span>
+        </div>
+      </div>
+      <section class="shell section" id="como-funciona">
+        <div class="section-heading">
+          <div>
+            <span class="section-number"
+              >01 — <span data-locale="es">El gesto</span
+              ><span data-locale="en">The gesture</span></span
+            >
+            <h2>
+              <span data-locale="es">Limpiar sin entrar en modo limpieza.</span
+              ><span data-locale="en"
+                >Clean without going into cleanup mode.</span
+              >
+            </h2>
+          </div>
+          <p>
+            <span data-locale="es"
+              >Las parrillas infinitas hacen que pospongas la tarea. Tindrop
+              reduce cada momento a una decisión clara y mantiene el resto fuera
+              de tu cabeza.</span
+            ><span data-locale="en"
+              >Infinite grids make you put the task off. Tindrop reduces each
+              moment to one clear decision and keeps the rest out of your
+              head.</span
+            >
+          </p>
+        </div>
+        <div class="steps">
+          <article class="step">
+            <span class="step-index">1</span><span class="gesture">→</span>
+            <h3>
+              <span data-locale="es">Conserva lo que importa</span
+              ><span data-locale="en">Keep what matters</span>
+            </h3>
+            <p>
+              <span data-locale="es"
+                >Desliza a la derecha. La foto queda guardada y tú sigues con la
+                siguiente.</span
+              ><span data-locale="en"
+                >Swipe right. The photo stays saved and you move on to the next
+                one.</span
+              >
+            </p>
+          </article>
+          <article class="step">
+            <span class="step-index">2</span><span class="gesture">↓</span>
+            <h3>
+              <span data-locale="es">Clasifica sobre la marcha</span
+              ><span data-locale="en">File as you go</span>
+            </h3>
+            <p>
+              <span data-locale="es"
+                >Desliza hacia abajo para añadir la foto a una o varias
+                colecciones sin romper el ritmo.</span
+              ><span data-locale="en"
+                >Swipe down to add a photo to one or more collections without
+                breaking your flow.</span
+              >
+            </p>
+          </article>
+          <article class="step">
+            <span class="step-index">3</span><span class="gesture">←</span>
+            <h3>
+              <span data-locale="es">Decide, luego confirma</span
+              ><span data-locale="en">Decide, then confirm</span>
+            </h3>
+            <p>
+              <span data-locale="es"
+                >Desliza a la izquierda para enviarla a revisión. Comprueba tu
+                selección antes de mover nada a la papelera.</span
+              ><span data-locale="en"
+                >Swipe left to send it to review. Check your selection before
+                anything moves to trash.</span
+              >
+            </p>
+          </article>
+        </div>
+      </section>
+      <section class="feature-board section" id="funciones">
+        <div class="shell">
+          <div class="section-heading">
+            <div>
+              <span class="section-number"
+                >02 — <span data-locale="es">Más que borrar</span
+                ><span data-locale="en">More than deleting</span></span
+              >
+              <h2>
+                <span data-locale="es">Una casa mejor para tus recuerdos.</span
+                ><span data-locale="en">A better home for your memories.</span>
+              </h2>
+            </div>
+            <p>
+              <span data-locale="es"
+                >Tindrop reúne limpieza, organización y creación en el mismo
+                recorrido. Empieza por el desorden y termina encontrando lo que
+                sí merece quedarse.</span
+              ><span data-locale="en"
+                >Tindrop brings cleanup, organization and creation into the same
+                journey. Start with clutter and end up finding what truly
+                deserves to stay.</span
+              >
+            </p>
+          </div>
+          <div class="feature-grid">
+            <article class="feature">
+              <span class="feature-icon">≡</span>
+              <h3>
+                <span data-locale="es">Duplicados exactos, juntos</span
+                ><span data-locale="en">Exact duplicates, together</span>
+              </h3>
+              <p>
+                <span data-locale="es"
+                  >Escanea copias idénticas, revisa cada grupo y elige cuáles
+                  mover a la papelera. La última palabra sigue siendo
+                  tuya.</span
+                ><span data-locale="en"
+                  >Scan identical copies, review each group and choose which
+                  ones move to trash. You still have the final say.</span
+                >
+              </p>
+              <span class="big-glyph">2×</span>
+            </article>
+            <article class="feature">
+              <span class="feature-icon">☁</span>
+              <h3>
+                <span data-locale="es">Tu carrete y tus nubes</span
+                ><span data-locale="en">Your roll and your clouds</span>
+              </h3>
+              <p>
+                <span data-locale="es"
+                  >Cambia entre el dispositivo, Google Drive, OneDrive y Dropbox
+                  desde un mismo flujo visual.</span
+                ><span data-locale="en"
+                  >Switch between your device, Google Drive, OneDrive and
+                  Dropbox in one visual flow.</span
+                >
+              </p>
+              <div class="feature-tags">
+                <span>Google Drive</span><span>OneDrive</span
+                ><span>Dropbox</span>
+              </div>
+            </article>
+            <article class="feature">
+              <span class="feature-icon">◷</span>
+              <h3>
+                <span data-locale="es">Limpiezas que sí caben en el día</span
+                ><span data-locale="en">Cleanups that fit your day</span>
+              </h3>
+              <p>
+                <span data-locale="es"
+                  >Limpieza Flash prepara sesiones cortas y se adapta a tu ritmo
+                  para que el carrete no vuelva a desbordarse.</span
+                ><span data-locale="en"
+                  >Daily Clean prepares short sessions and adapts to your pace
+                  so the camera roll does not pile up again.</span
+                >
+              </p>
+            </article>
+            <article class="feature">
+              <span class="feature-icon">▣</span>
+              <h3>
+                <span data-locale="es">Colecciones con intención</span
+                ><span data-locale="en">Collections with purpose</span>
+              </h3>
+              <p>
+                <span data-locale="es"
+                  >Crea, colorea, fija, comparte y gestiona colecciones mientras
+                  revisas tus fotos.</span
+                ><span data-locale="en"
+                  >Create, color, pin, share and manage collections while
+                  reviewing your photos.</span
+                >
+              </p>
+            </article>
+            <article class="feature">
+              <span class="feature-icon">♪</span>
+              <h3>
+                <span data-locale="es">Recuerdos con ritmo</span
+                ><span data-locale="en">Memories with rhythm</span>
+              </h3>
+              <p>
+                <span data-locale="es"
+                  >Convierte tus fotos guardadas o una colección en un collage
+                  musical listo para compartir.</span
+                ><span data-locale="en"
+                  >Turn saved photos or a collection into a music collage ready
+                  to share.</span
+                >
+              </p>
+            </article>
+            <article class="feature">
+              <span class="feature-icon">↺</span>
+              <h3>
+                <span data-locale="es">Tu progreso viaja contigo</span
+                ><span data-locale="en">Your progress travels with you</span>
+              </h3>
+              <p>
+                <span data-locale="es"
+                  >Guarda y restaura tus decisiones, estadísticas y colecciones
+                  cuando reinstalas Tindrop o estrenas teléfono.</span
+                ><span data-locale="en"
+                  >Back up and restore your decisions, stats and collections
+                  when you reinstall Tindrop or move to a new phone.</span
+                >
+              </p>
+              <span class="big-glyph">∞</span>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="shell section" id="seguridad">
+        <div class="section-heading">
+          <div>
+            <span class="section-number"
+              >03 — <span data-locale="es">Control real</span
+              ><span data-locale="en">Real control</span></span
+            >
+            <h2>
+              <span data-locale="es">Tus fotos no son “archivos basura”.</span
+              ><span data-locale="en">Your photos are not “junk files.”</span>
+            </h2>
+          </div>
+          <p>
+            <span data-locale="es"
+              >Limpiar una galería es decidir sobre recuerdos. Por eso Tindrop
+              hace visible cada paso importante y evita prometer magia a costa
+              de tu control.</span
+            ><span data-locale="en"
+              >Cleaning a gallery means deciding about memories. That is why
+              Tindrop makes every important step visible and never promises
+              magic at the expense of your control.</span
+            >
+          </p>
+        </div>
+        <div class="control-grid">
+          <article class="control-card">
+            <span class="label"
+              ><span data-locale="es">Antes de borrar</span
+              ><span data-locale="en">Before deletion</span></span
+            >
+            <h3>
+              <span data-locale="es">Primero eliges. Después revisas.</span
+              ><span data-locale="en">First you choose. Then you review.</span>
+            </h3>
+            <p>
+              <span data-locale="es"
+                >El gesto no elimina de inmediato. Crea una selección revisable
+                para que puedas corregir decisiones antes de confirmar.</span
+              ><span data-locale="en"
+                >The gesture does not delete immediately. It creates a
+                reviewable selection so you can correct decisions before
+                confirming.</span
+              >
+            </p>
+            <ul>
+              <li>
+                <span data-locale="es">Deshacer durante la sesión</span
+                ><span data-locale="en">Undo during the session</span>
+              </li>
+              <li>
+                <span data-locale="es">Revisión final de la selección</span
+                ><span data-locale="en">Final selection review</span>
+              </li>
+              <li>
+                <span data-locale="es"
+                  >Confirmaciones del sistema o la nube</span
+                ><span data-locale="en">System or cloud confirmations</span>
+              </li>
+            </ul>
+          </article>
+          <article class="control-card">
+            <span class="label"
+              ><span data-locale="es">Privacidad por contexto</span
+              ><span data-locale="en">Context-aware privacy</span></span
+            >
+            <h3>
+              <span data-locale="es"
+                >Tu galería local se procesa en tu dispositivo.</span
+              ><span data-locale="en"
+                >Your local gallery is processed on your device.</span
+              >
+            </h3>
+            <p>
+              <span data-locale="es"
+                >Tindrop trabaja con la fototeca del teléfono sin subirla a un
+                servidor de Tindrop. Cuando conectas una nube, solo accede a esa
+                fuente mediante el proveedor elegido.</span
+              ><span data-locale="en"
+                >Tindrop works with the photo library on your phone without
+                uploading it to a Tindrop server. When you connect a cloud, it
+                accesses that source through the provider you selected.</span
+              >
+            </p>
+            <ul>
+              <li>
+                <span data-locale="es">Permisos explícitos</span
+                ><span data-locale="en">Explicit permissions</span>
+              </li>
+              <li>
+                <span data-locale="es">Fuentes separadas y visibles</span
+                ><span data-locale="en">Separate, visible sources</span>
+              </li>
+              <li>
+                <a href="privacy.html"
+                  ><span data-locale="es">Leer la política de privacidad</span
+                  ><span data-locale="en">Read the privacy policy</span></a
+                >
+              </li>
+            </ul>
+          </article>
+        </div>
+      </section>
+      <section class="faq section" id="preguntas">
+        <div class="shell faq-layout">
+          <div class="faq-intro">
+            <span class="section-number">04 — FAQ</span>
+            <h2>
+              <span data-locale="es">Lo que conviene saber.</span
+              ><span data-locale="en">Good things to know.</span>
+            </h2>
+            <p>
+              <span data-locale="es"
+                >Respuestas directas sobre cómo limpia Tindrop, qué fuentes
+                admite y qué ocurre con tus fotos.</span
+              ><span data-locale="en"
+                >Straight answers about how Tindrop cleans, which sources it
+                supports and what happens to your photos.</span
+              >
+            </p>
+          </div>
+          <div class="faq-list">
+            <details>
+              <summary>
+                <span data-locale="es">¿Qué es Tindrop?</span
+                ><span data-locale="en">What is Tindrop?</span>
+              </summary>
+              <p>
+                <span data-locale="es"
+                  >Tindrop es una app para iOS y Android que te ayuda a revisar,
+                  limpiar y organizar fotos y vídeos con gestos. En lugar de
+                  enfrentarte a toda la biblioteca, decides qué hacer con una
+                  foto cada vez.</span
+                ><span data-locale="en"
+                  >Tindrop is an iOS and Android app that helps you review,
+                  clean and organize photos and videos with gestures. Instead of
+                  facing the whole library, you decide what to do with one photo
+                  at a time.</span
+                >
+              </p>
+            </details>
+            <details>
+              <summary>
+                <span data-locale="es"
+                  >¿Se borra una foto al deslizar a la izquierda?</span
+                ><span data-locale="en"
+                  >Is a photo deleted when I swipe left?</span
+                >
+              </summary>
+              <p>
+                <span data-locale="es"
+                  >No. Se añade a una selección que puedes revisar antes de
+                  confirmar. En la galería local, iOS o Android aplican además
+                  sus propias protecciones de papelera o eliminados
+                  recientemente.</span
+                ><span data-locale="en"
+                  >No. It is added to a selection you can review before
+                  confirming. In the local gallery, iOS or Android also apply
+                  their own Trash or Recently Deleted protections.</span
+                >
+              </p>
+            </details>
+            <details>
+              <summary>
+                <span data-locale="es"
+                  >¿Encuentra fotos parecidas o duplicadas?</span
+                ><span data-locale="en"
+                  >Does it find similar or duplicate photos?</span
+                >
+              </summary>
+              <p>
+                <span data-locale="es"
+                  >El limpiador de duplicados de Tindrop detecta copias exactas.
+                  Las agrupa para que puedas compararlas y elegir qué copias
+                  mover a la papelera. No afirmamos borrar automáticamente fotos
+                  solo porque se parezcan.</span
+                ><span data-locale="en"
+                  >Tindrop's duplicate cleaner detects exact copies. It groups
+                  them so you can compare and choose which copies move to trash.
+                  We do not claim to automatically delete photos just because
+                  they look alike.</span
+                >
+              </p>
+            </details>
+            <details>
+              <summary>
+                <span data-locale="es"
+                  >¿Funciona con Google Drive, OneDrive y Dropbox?</span
+                ><span data-locale="en"
+                  >Does it work with Google Drive, OneDrive and Dropbox?</span
+                >
+              </summary>
+              <p>
+                <span data-locale="es"
+                  >Sí. Puedes conectar esas nubes, elegir carpetas y cambiar
+                  entre ellas y la galería local desde el selector de fuentes de
+                  Tindrop.</span
+                ><span data-locale="en"
+                  >Yes. You can connect those clouds, choose folders and switch
+                  between them and your local gallery from Tindrop's source
+                  selector.</span
+                >
+              </p>
+            </details>
+            <details>
+              <summary>
+                <span data-locale="es"
+                  >¿Puedo organizar fotos sin borrarlas?</span
+                ><span data-locale="en"
+                  >Can I organize photos without deleting them?</span
+                >
+              </summary>
+              <p>
+                <span data-locale="es"
+                  >Sí. Desliza hacia abajo para clasificar una foto en una o
+                  varias colecciones. También puedes gestionar, compartir y dar
+                  color a las colecciones creadas con Tindrop.</span
+                ><span data-locale="en"
+                  >Yes. Swipe down to classify a photo into one or more
+                  collections. You can also manage, share and color collections
+                  created with Tindrop.</span
+                >
+              </p>
+            </details>
+            <details>
+              <summary>
+                <span data-locale="es">¿Dónde puedo descargar Tindrop?</span
+                ><span data-locale="en">Where can I download Tindrop?</span>
+              </summary>
+              <p>
+                <span data-locale="es"
+                  >Tindrop está disponible para iPhone en App Store y para
+                  Android en Google Play. El botón de descarga te lleva
+                  automáticamente a la tienda adecuada.</span
+                ><span data-locale="en"
+                  >Tindrop is available for iPhone on the App Store and for
+                  Android on Google Play. The download button automatically
+                  takes you to the right store.</span
+                >
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+      <section class="shell final-cta">
+        <div class="cta-panel">
           <h2>
-            <span data-locale="en">A calmer cleanup flow</span>
-            <span data-locale="es">Una limpieza más tranquila</span>
+            <span data-locale="es"
+              >Empieza por una foto. El resto viene solo.</span
+            ><span data-locale="en"
+              >Start with one photo. The rest follows.</span
+            >
           </h2>
           <p>
-            <span data-locale="en">The app keeps the interaction narrow, predictable, and easy to resume whenever your camera roll gets heavy.</span>
-            <span data-locale="es">La app mantiene una interacción clara, predecible y fácil de retomar cuando el carrete se acumula.</span>
+            <span data-locale="es"
+              >Descarga Tindrop y convierte unos minutos sueltos en una galería
+              que vuelve a tener sentido.</span
+            ><span data-locale="en"
+              >Download Tindrop and turn spare minutes into a camera roll that
+              makes sense again.</span
+            >
           </p>
-        </div>
-        <div class="features-grid">
-          <div class="feature-card">
-            <h3>
-              <span data-locale="en">1. Focus mode</span>
-              <span data-locale="es">1. Modo foco</span>
-            </h3>
-            <p>
-              <span data-locale="en">One item, one decision. No overwhelming grids when you are trying to clear space.</span>
-              <span data-locale="es">Un elemento, una decisión. Sin parrillas abrumadoras cuando quieres liberar espacio.</span>
-            </p>
-          </div>
-          <div class="feature-card">
-            <h3>
-              <span data-locale="en">2. Similar sets</span>
-              <span data-locale="es">2. Grupos similares</span>
-            </h3>
-            <p>
-              <span data-locale="en">Move through near-duplicates and repeated moments without losing the best shot.</span>
-              <span data-locale="es">Avanza entre duplicados y momentos repetidos sin perder la mejor foto.</span>
-            </p>
-          </div>
-          <div class="feature-card">
-            <h3>
-              <span data-locale="en">3. Undo anytime</span>
-              <span data-locale="es">3. Deshacer cuando quieras</span>
-            </h3>
-            <p>
-              <span data-locale="en">A mistake should not break the flow. Rewind and keep going.</span>
-              <span data-locale="es">Un error no debería romper el flujo. Retrocede y sigue limpiando.</span>
-            </p>
-          </div>
-          <div class="feature-card">
-            <h3>
-              <span data-locale="en">4. Final review</span>
-              <span data-locale="es">4. Revisión final</span>
-            </h3>
-            <p>
-              <span data-locale="en">Nothing is removed permanently until you review the queue and confirm.</span>
-              <span data-locale="es">Nada se elimina de forma permanente hasta que revisas la cola y confirmas.</span>
-            </p>
-          </div>
+          <a class="button button-primary" href="go/"
+            ><span data-locale="es">Abrir en mi tienda</span
+            ><span data-locale="en">Open in my store</span
+            ><span class="arrow">↗</span></a
+          >
         </div>
       </section>
-
-      <section class="cta-box">
-        <h2>
-          <span data-locale="en">Stop paying for clutter.</span>
-          <span data-locale="es">Deja de pagar por desorden.</span>
-        </h2>
-        <p>
-          <span data-locale="en">Free space with a tool that respects your attention and your files.</span>
-          <span data-locale="es">Libera espacio con una herramienta que respeta tu atención y tus archivos.</span>
-        </p>
-        <a class="btn btn-primary" href="go/">
-          <span data-locale="en">Download on Google Play</span>
-          <span data-locale="es">Descargar en Google Play</span>
-        </a>
-      </section>
-
-      <footer>
-        <span>&copy; <span id="year"></span> Tindrop by <a href="../">Lagartija Labs</a>.</span>
-        <div class="footer-links" id="privacy">
-          <a href="terms.html">
-            <span data-locale="en">Terms</span>
-            <span data-locale="es">Términos</span>
-          </a>
-          <a href="privacy.html">
-            <span data-locale="en">Privacy</span>
-            <span data-locale="es">Privacidad</span>
-          </a>
-          <a href="mailto:lagartijalabs@gmail.com">
-            <span data-locale="en">Support</span>
-            <span data-locale="es">Soporte</span>
-          </a>
+    </main>
+    <footer>
+      <div class="shell">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a class="brand" href="#top" aria-label="Tindrop"
+              ><img
+                src="assets/tindrop-icon-96.webp"
+                alt=""
+                width="38"
+                height="38"
+              /><span>Tindrop</span></a
+            >
+            <p>
+              <span data-locale="es"
+                >Limpia, organiza y redescubre tu galería con una decisión cada
+                vez.</span
+              ><span data-locale="en"
+                >Clean, organize and rediscover your camera roll one decision at
+                a time.</span
+              >
+            </p>
+          </div>
+          <div class="footer-column">
+            <strong
+              ><span data-locale="es">Producto</span
+              ><span data-locale="en">Product</span></strong
+            ><a href="#como-funciona"
+              ><span data-locale="es">Cómo funciona</span
+              ><span data-locale="en">How it works</span></a
+            ><a href="#funciones"
+              ><span data-locale="es">Funciones</span
+              ><span data-locale="en">Features</span></a
+            ><a href="go/"
+              ><span data-locale="es">Descargar</span
+              ><span data-locale="en">Download</span></a
+            >
+          </div>
+          <div class="footer-column">
+            <strong
+              ><span data-locale="es">Ayuda</span
+              ><span data-locale="en">Help</span></strong
+            ><a href="privacy.html"
+              ><span data-locale="es">Privacidad</span
+              ><span data-locale="en">Privacy</span></a
+            ><a href="terms.html"
+              ><span data-locale="es">Términos</span
+              ><span data-locale="en">Terms</span></a
+            ><a href="mailto:lagartijalabs@gmail.com"
+              ><span data-locale="es">Soporte</span
+              ><span data-locale="en">Support</span></a
+            >
+          </div>
         </div>
-      </footer>
-
-    </div>
-
-    <!-- Swipe interaction logic -->
+        <div class="copyright">
+          © <span id="year"></span> Tindrop by
+          <a href="../">Lagartija Labs</a>.
+        </div>
+      </div>
+    </footer>
     <script>
-      const cardStack = document.getElementById('cardStack');
-      const dragLeft = document.getElementById('dragLeft');
-      const dragRight = document.getElementById('dragRight');
-      const filterButton = document.getElementById('filterButton');
-      const pageMeta = {
-        en: {
-          title: "Tindrop — Intelligent cleanup",
-          description: "Clean your gallery and Google Drive with swipes. Fast, secure, and fun.",
-        },
-        es: {
-          title: "Tindrop — Limpieza inteligente",
-          description: "Limpia tu galería y Google Drive con gestos. Rápido, seguro y entretenido.",
-        },
-      };
-      const uiText = {
-        en: {
-          trashIt: "Trash it",
-          saveIt: "Save it",
-          gallery: "Gallery",
-          trash: "Trash",
-          settings: "Settings",
-          stats: "Stats",
-          filters: "Filters",
-        },
-        es: {
-          trashIt: "Eliminar",
-          saveIt: "Guardar",
-          gallery: "Galería",
-          trash: "Papelera",
-          settings: "Ajustes",
-          stats: "Estadísticas",
-          filters: "Filtros",
-        },
-      };
-      let currentMode = 'local'; // 'local' or 'drive'
-      let currentLanguage = 'en';
-      let overlayWidth = 0;
-      let overlayHeight = 0;
-      
-      // Mock data
-      const data = {
-        local: [
-          { image: 'assets/demo-cafe.jpg', text: 'Cafe_02.jpg', size: '2.8 MB', label: 'Sep 22', alt: { en: 'Cafe table photo', es: 'Foto de mesa de café' } },
-          { image: 'assets/demo-mountain.jpg', text: 'Trail_18.jpg', size: '3.2 MB', label: 'Sep 18', alt: { en: 'Mountain trail photo', es: 'Foto de sendero de montaña' } },
-          { image: 'assets/demo-desk.jpg', text: 'Desk_23.jpg', size: '4.5 MB', label: 'Sep 23', alt: { en: 'Desk and plants photo', es: 'Foto de escritorio con plantas' } },
-          { image: 'assets/demo-city.jpg', text: 'City_24.jpg', size: '3.9 MB', label: 'Sep 24', alt: { en: 'Rainy city street photo', es: 'Foto de calle lluviosa' } }
-        ],
-        drive: [
-           { image: 'assets/demo-desk.jpg', text: 'Workspace.jpg', size: '4.5 MB', tag: 'Drive', label: 'Oct 02', alt: { en: 'Workspace photo', es: 'Foto de escritorio' } },
-           { image: 'assets/demo-city.jpg', text: 'Evening_city.jpg', size: '3.9 MB', tag: 'Drive', label: 'Oct 03', alt: { en: 'Evening city photo', es: 'Foto de ciudad al atardecer' } },
-           { image: 'assets/demo-mountain.jpg', text: 'Trip_backup.jpg', size: '3.2 MB', tag: 'Drive', label: 'Oct 05', alt: { en: 'Mountain trip photo', es: 'Foto de viaje a la montaña' } }
-        ]
-      };
-
-      let activeCards = [];
-
-      function saveLanguage(language) {
-        try {
-          localStorage.setItem("siteLanguage", language);
-        } catch (error) {
-          return;
-        }
-      }
-
-      function getSavedLanguage() {
-        try {
-          return localStorage.getItem("siteLanguage");
-        } catch (error) {
-          return null;
-        }
-      }
-
-      function getInitialLanguage() {
-        const savedLanguage = getSavedLanguage();
-        if (savedLanguage) {
-          return savedLanguage;
-        }
-
-        const browserLanguages = navigator.languages || [navigator.language || ""];
-        return browserLanguages.some((language) => /^es(?:-|$)/i.test(language)) ? "es" : "en";
-      }
-
-      function setLanguage(language) {
-        const lang = language === "es" ? "es" : "en";
-        const metadata = pageMeta[lang];
-        currentLanguage = lang;
-        document.documentElement.lang = lang;
-        document.body.dataset.lang = lang;
-        saveLanguage(lang);
-
-        document.querySelectorAll("[data-set-lang]").forEach((button) => {
-          button.setAttribute("aria-pressed", String(button.dataset.setLang === lang));
-        });
-
-        document.querySelectorAll("[data-label-en][data-label-es]").forEach((element) => {
-          element.setAttribute("aria-label", element.dataset[lang === "es" ? "labelEs" : "labelEn"]);
-        });
-
-        document.querySelectorAll("[data-i18n]").forEach((element) => {
-          element.textContent = uiText[lang][element.dataset.i18n];
-        });
-
-        document.querySelectorAll("[data-i18n-title]").forEach((element) => {
-          element.setAttribute("title", uiText[lang][element.dataset.i18nTitle]);
-        });
-
-        document.title = metadata.title;
-        const description = document.querySelector('meta[name="description"]');
-        if (description) {
-          description.setAttribute("content", metadata.description);
-        }
-
-        initCards();
-        updateOverlayLayout();
-        resetDragOverlay();
-      }
-
-      function updateOverlayLayout() {
-        const phoneBody = document.querySelector('.phone-body');
-        if (!phoneBody || !dragLeft || !dragRight) return;
-        const bodyRect = phoneBody.getBoundingClientRect();
-        const height = bodyRect.height * 0.8;
-        const radius = height / 2;
-        const leftSpan = dragLeft.querySelector('span');
-        const rightSpan = dragRight.querySelector('span');
-        if (!leftSpan || !rightSpan) return;
-
-        const leftLabelWidth = leftSpan.getBoundingClientRect().width;
-        const rightLabelWidth = rightSpan.getBoundingClientRect().width;
-        const labelWidth = Math.max(leftLabelWidth, rightLabelWidth);
-        const textPadding = 22 * 2;
-        const visibleNeeded = labelWidth + textPadding + 8;
-        const width = Math.max(radius * 0.6, visibleNeeded * 2);
-
-        overlayWidth = width;
-        overlayHeight = height;
-        dragLeft.style.width = `${width}px`;
-        dragRight.style.width = `${width}px`;
-        dragLeft.style.height = `${height}px`;
-        dragRight.style.height = `${height}px`;
-
-      }
-
-      function updateDragOverlay(deltaX) {
-        if (!overlayWidth || !overlayHeight) {
-          updateOverlayLayout();
-        }
-        const progress = Math.min(Math.abs(deltaX) / 120, 1);
-        const scale = 0.8 + 0.2 * progress;
-        const alpha = 0.5 * progress;
-        const leftTx = -overlayWidth + (overlayWidth / 2) * progress;
-        const rightTx = overlayWidth - (overlayWidth / 2) * progress;
-
-        if (deltaX < 0) {
-          dragLeft.style.opacity = alpha.toFixed(2);
-          dragLeft.style.transform = `translateY(-50%) translateX(${leftTx}px) scale(${scale})`;
-          dragRight.style.opacity = 0;
-        } else if (deltaX > 0) {
-          dragRight.style.opacity = alpha.toFixed(2);
-          dragRight.style.transform = `translateY(-50%) translateX(${rightTx}px) scale(${scale})`;
-          dragLeft.style.opacity = 0;
-        } else {
-          dragLeft.style.opacity = 0;
-          dragRight.style.opacity = 0;
-        }
-      }
-
-      function resetDragOverlay() {
-        if (!overlayWidth || !overlayHeight) {
-          updateOverlayLayout();
-        }
-        const leftTx = -overlayWidth;
-        const rightTx = overlayWidth;
-        dragLeft.style.opacity = 0;
-        dragRight.style.opacity = 0;
-        dragLeft.style.transform = `translateY(-50%) translateX(${leftTx}px) scale(0.8)`;
-        dragRight.style.transform = `translateY(-50%) translateX(${rightTx}px) scale(0.8)`;
-      }
-
-      function initCards() {
-        cardStack.innerHTML = '';
-        const items = data[currentMode];
-        
-        items.forEach((item, index) => {
-          const card = document.createElement('div');
-          card.classList.add('swipe-card');
-          card.style.zIndex = index;
-          const labelText = item.label || item.text;
-          // Layer the back cards visually
-          if (index < items.length - 1) {
-             const scale = 1 - (items.length - 1 - index) * 0.05;
-             const translateY = (items.length - 1 - index) * 10;
-             card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
-          }
-
-          const altText = item.alt ? item.alt[currentLanguage] : item.text;
-          card.innerHTML = `
-            <div class="card-image">
-              <img src="${item.image}" alt="${altText}" width="720" height="900" draggable="false" />
-              ${item.tag ? `<span class="card-tag">${item.tag}</span>` : ''}
-              <div class="card-label">
-                <span>${labelText}</span>
-                ${item.size ? `<span class="card-label-size">• ${item.size}</span>` : ''}
-              </div>
-              <div class="card-share" aria-hidden="true">
-                <span class="icon">share</span>
-              </div>
-            </div>
-          `;
-          
-          cardStack.appendChild(card);
-        });
-
-        activeCards = Array.from(document.querySelectorAll('.swipe-card'));
-        resetDragOverlay();
-        // Enable drag on the top card
-        enableDrag(activeCards[activeCards.length - 1]);
-      }
-
-      function toggleMode() {
-        currentMode = currentMode === 'local' ? 'drive' : 'local';
-        initCards();
-      }
-
-      // --- Swipe & drag logic (mouse & touch) ---
-      function enableDrag(card) {
-        if (!card) return;
-
-        let isDragging = false;
-        let startX = 0;
-        let currentX = 0;
-
-        const onStart = (e) => {
-          isDragging = true;
-          startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-          card.style.transition = 'none';
+      (() => {
+        const meta = {
+          es: {
+            title: "Tindrop — Limpia y organiza tu galería deslizando",
+            description:
+              "Limpia y organiza fotos y vídeos con gestos. Revisa antes de borrar, encuentra duplicados exactos y ordena tu galería, Google Drive, OneDrive y Dropbox con Tindrop.",
+            og: "Tindrop — Tu galería, foto a foto",
+            ogd: "Desliza para conservar, clasificar o mandar a revisión. Limpia tu galería y tus nubes sin perder el control.",
+          },
+          en: {
+            title: "Tindrop — Clean and organize your camera roll by swiping",
+            description:
+              "Clean and organize photos and videos with gestures. Review before deleting, find exact duplicates and sort your camera roll, Google Drive, OneDrive and Dropbox with Tindrop.",
+            og: "Tindrop — Your camera roll, one photo at a time",
+            ogd: "Swipe to keep, classify or send to review. Clean your camera roll and clouds without losing control.",
+          },
         };
-
-        const onMove = (e) => {
-          if (!isDragging) return;
-          e.preventDefault(); // Prevent mobile scroll
-          const x = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-          currentX = x - startX;
-          const rotate = currentX * 0.1; // Smooth rotation
-          
-          card.style.transform = `translateX(${currentX}px) rotate(${rotate}deg)`;
-          updateDragOverlay(currentX);
-        };
-
-        const onEnd = () => {
-          if (!isDragging) return;
-          isDragging = false;
-          
-          // Threshold para decidir swipe
-          if (Math.abs(currentX) > 100) {
-            const dir = currentX > 0 ? 'right' : 'left';
-            dismissCard(card, dir);
-          } else {
-            // Reset
-            card.classList.add('resetting');
-            card.style.transform = '';
-            resetDragOverlay();
-            
-            setTimeout(() => {
-              card.classList.remove('resetting');
-            }, 500);
-          }
-          currentX = 0;
-        };
-
-        card.addEventListener('mousedown', onStart);
-        document.addEventListener('mousemove', onMove);
-        document.addEventListener('mouseup', onEnd);
-        
-        card.addEventListener('touchstart', onStart);
-        document.addEventListener('touchmove', onMove, { passive: false });
-        document.addEventListener('touchend', onEnd);
-      }
-
-      function dismissCard(card, direction) {
-        card.classList.add('flying');
-        const x = direction === 'right' ? 500 : -500;
-        const r = direction === 'right' ? 30 : -30;
-        card.style.transform = `translateX(${x}px) rotate(${r}deg)`;
-        resetDragOverlay();
-        
-        // Remove from DOM after animation
-        setTimeout(() => {
-          card.remove();
-          activeCards.pop();
-          // Activar la siguiente
-          if (activeCards.length > 0) {
-            const nextCard = activeCards[activeCards.length - 1];
-            nextCard.style.transform = 'scale(1) translateY(0)'; // Traer al frente
-            enableDrag(nextCard);
-          } else {
-            // Reiniciar demo si se acaban
-            setTimeout(initCards, 500);
-          }
-        }, 300);
-      }
-
-      // Funciones para botones externos
-      function swipe(dir) {
-        if (activeCards.length === 0) return;
-        const card = activeCards[activeCards.length - 1];
-        dismissCard(card, dir);
-      }
-      
-      function undo() {
-        initCards(); // Simple reset para demo
-      }
-
-      // Inicializar
-      document.getElementById('year').textContent = new Date().getFullYear();
-      document.querySelectorAll("[data-set-lang]").forEach((button) => {
-        button.addEventListener("click", () => setLanguage(button.dataset.setLang));
-      });
-
-      if (filterButton) {
-        filterButton.addEventListener('click', toggleMode);
-      }
-      window.addEventListener('resize', () => {
-        updateOverlayLayout();
-        resetDragOverlay();
-      });
-      setLanguage(getInitialLanguage());
+        function content(selector, value) {
+          const n = document.querySelector(selector);
+          if (n) n.content = value;
+        }
+        function language(lang, persist) {
+          const l = lang === "en" ? "en" : "es";
+          document.documentElement.lang = l;
+          document.body.dataset.lang = l;
+          document.title = meta[l].title;
+          content('meta[name="description"]', meta[l].description);
+          content('meta[property="og:title"]', meta[l].og);
+          content('meta[property="og:description"]', meta[l].ogd);
+          content('meta[name="twitter:title"]', meta[l].og);
+          content('meta[name="twitter:description"]', meta[l].ogd);
+          document
+            .querySelectorAll("[data-set-lang]")
+            .forEach((b) =>
+              b.setAttribute("aria-pressed", String(b.dataset.setLang === l)),
+            );
+          document
+            .querySelectorAll("[data-label-es]")
+            .forEach((n) =>
+              n.setAttribute(
+                "aria-label",
+                n.dataset[l === "es" ? "labelEs" : "labelEn"],
+              ),
+            );
+          document
+            .querySelectorAll("[data-alt-es]")
+            .forEach((n) =>
+              n.setAttribute("alt", n.dataset[l === "es" ? "altEs" : "altEn"]),
+            );
+          const u = new URL(location.href);
+          u.searchParams.set("lang", l);
+          history.replaceState({}, "", u);
+          if (persist) localStorage.setItem("tindrop-language", l);
+        }
+        document
+          .querySelectorAll("[data-set-lang]")
+          .forEach((b) =>
+            b.addEventListener("click", () =>
+              language(b.dataset.setLang, true),
+            ),
+          );
+        const q = new URLSearchParams(location.search).get("lang"),
+          stored = localStorage.getItem("tindrop-language"),
+          browser = navigator.language?.toLowerCase().startsWith("es")
+            ? "es"
+            : "en";
+        language(q || stored || browser, false);
+        document.getElementById("year").textContent = new Date().getFullYear();
+        const deck = document.getElementById("cardDeck"),
+          counter = document.getElementById("demoCount");
+        let done = 0,
+          drag = null;
+        function top() {
+          return deck.querySelector(".demo-card");
+        }
+        function update() {
+          [...deck.children].forEach((c, i) => {
+            c.style.zIndex = 10 - i;
+            if (i === 0) c.style.transform = "";
+            else if (i === 1)
+              c.style.transform = "translateY(8px) scale(.965) rotate(2deg)";
+            else
+              c.style.transform = "translateY(14px) scale(.93) rotate(-2deg)";
+          });
+          counter.textContent = done + "/3";
+        }
+        function cycle(dir) {
+          const c = top();
+          if (!c) return;
+          const x = dir === "left" ? -430 : dir === "right" ? 430 : 0,
+            y = dir === "down" ? 520 : 25,
+            r = dir === "left" ? -18 : dir === "right" ? 18 : 0;
+          c.style.transform = `translate(${x}px,${y}px) rotate(${r}deg)`;
+          c.style.opacity = "0";
+          setTimeout(() => {
+            c.style.transition = "none";
+            c.style.transform = "";
+            c.style.opacity = "1";
+            deck.appendChild(c);
+            c.offsetHeight;
+            c.style.transition = "";
+            done = (done + 1) % 4;
+            update();
+          }, 280);
+        }
+        document
+          .querySelectorAll("[data-demo-action]")
+          .forEach((b) =>
+            b.addEventListener("click", () => cycle(b.dataset.demoAction)),
+          );
+        deck.addEventListener("pointerdown", (e) => {
+          const c = top();
+          drag = { c, x: e.clientX, y: e.clientY };
+          c.setPointerCapture(e.pointerId);
+          c.style.transition = "none";
+        });
+        deck.addEventListener("pointermove", (e) => {
+          if (!drag) return;
+          const x = e.clientX - drag.x,
+            y = e.clientY - drag.y;
+          drag.c.style.transform = `translate(${x}px,${y}px) rotate(${x / 18}deg)`;
+          const keep = drag.c.querySelector(".keep"),
+            review = drag.c.querySelector(".review");
+          if (keep) keep.style.opacity = Math.min(1, Math.max(0, x / 90));
+          if (review) review.style.opacity = Math.min(1, Math.max(0, -x / 90));
+        });
+        function end(e) {
+          if (!drag) return;
+          const x = e.clientX - drag.x,
+            y = e.clientY - drag.y;
+          drag.c.style.transition = "";
+          drag.c
+            .querySelectorAll(".card-stamp")
+            .forEach((s) => (s.style.opacity = 0));
+          drag = null;
+          if (Math.abs(x) > 70) cycle(x > 0 ? "right" : "left");
+          else if (y > 85) cycle("down");
+          else top().style.transform = "";
+        }
+        deck.addEventListener("pointerup", end);
+        deck.addEventListener("pointercancel", end);
+        update();
+      })();
     </script>
   </body>
 </html>
