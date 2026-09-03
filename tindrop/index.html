@@ -917,21 +917,29 @@
         border-radius: 20px;
         background: #211f26;
       }
-      .trash-action-bar span {
+      .trash-action-bar button {
         display: grid;
         min-width: 0;
         min-height: 42px;
         place-items: center;
         padding: 0 4px;
+        border: 0;
         border-right: 1px solid rgba(230, 224, 233, 0.08);
         color: #cac4d0;
+        background: transparent;
+        font: inherit;
         text-align: center;
         font-size: 0.48rem;
         font-weight: 600;
+        cursor: pointer;
       }
-      .trash-action-bar span:last-child {
+      .trash-action-bar button:last-child {
         border-right: 0;
         color: #ef5350;
+      }
+      .trash-action-bar button:disabled {
+        opacity: 0.38;
+        cursor: default;
       }
       .trash-content {
         position: relative;
@@ -968,14 +976,144 @@
       .trash-grid.has-items {
         display: grid;
       }
-      .trash-grid img {
+      .trash-item {
+        position: relative;
+        overflow: hidden;
+        padding: 0;
+        border: 2px solid transparent;
+        border-radius: 13px;
+        background: #211f26;
+        cursor: pointer;
+      }
+      .trash-item img {
+        display: block;
         width: 100%;
         height: auto;
         aspect-ratio: 1;
         object-fit: cover;
-        border-radius: 12px;
-        background: #211f26;
+        border-radius: 10px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.24);
+      }
+      .trash-item::after {
+        content: "✓";
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        display: grid;
+        width: 21px;
+        height: 21px;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.82);
+        border-radius: 50%;
+        color: transparent;
+        background: rgba(20, 18, 24, 0.42);
+        font-size: 0.66rem;
+        font-weight: 900;
+      }
+      .trash-item.is-selected {
+        border-color: #91ffe8;
+      }
+      .trash-item.is-selected::after {
+        color: #141218;
+        background: #91ffe8;
+      }
+      .trash-dialog,
+      .trash-celebration {
+        position: absolute;
+        z-index: 36;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        color: #e6e0e9;
+        background: rgba(20, 18, 24, 0.88);
+        backdrop-filter: blur(13px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.18s;
+      }
+      .trash-dialog.is-open,
+      .trash-celebration.is-open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .trash-dialog-card,
+      .trash-success-card {
+        width: 100%;
+        padding: 20px;
+        border: 1px solid #49454f;
+        border-radius: 24px;
+        background: rgba(33, 31, 38, 0.97);
+        box-shadow: 0 18px 42px rgba(0, 0, 0, 0.42);
+      }
+      .trash-dialog-icon,
+      .trash-success-icon {
+        display: grid;
+        width: 48px;
+        height: 48px;
+        place-items: center;
+        margin-bottom: 14px;
+        border-radius: 50%;
+      }
+      .trash-dialog-icon {
+        color: #ffb4ab;
+        background: rgba(239, 83, 80, 0.17);
+      }
+      .trash-success-icon {
+        margin: 0 auto 16px;
+        border: 1px solid rgba(145, 255, 232, 0.5);
+        color: #91ffe8;
+        background: rgba(38, 198, 154, 0.2);
+        font-size: 1.65rem;
+        font-weight: 900;
+      }
+      .trash-dialog-card strong,
+      .trash-success-card strong {
+        display: block;
+        font-size: 0.9rem;
+      }
+      .trash-dialog-card p,
+      .trash-success-card p {
+        margin: 8px 0 0;
+        color: #cac4d0;
+        font-size: 0.65rem;
+        line-height: 1.45;
+      }
+      .trash-success-card {
+        text-align: center;
+      }
+      .trash-success-card b {
+        display: block;
+        margin-top: 8px;
+        color: #91ffe8;
+        font-size: 1.45rem;
+      }
+      .trash-dialog-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 18px;
+      }
+      .trash-dialog-actions button,
+      .trash-success-card button {
+        min-height: 40px;
+        border: 0;
+        border-radius: 14px;
+        color: #e6e0e9;
+        background: #3f3a47;
+        font: inherit;
+        font-size: 0.65rem;
+        font-weight: 800;
+      }
+      .trash-dialog-actions .danger {
+        color: #fff;
+        background: #b3261e;
+      }
+      .trash-success-card button {
+        width: 100%;
+        margin-top: 18px;
+        color: #17151e;
+        background: #91ffe8;
       }
       .classify-sheet {
         position: absolute;
@@ -1104,11 +1242,7 @@
       .section-number {
         display: block;
         margin-bottom: 12px;
-        color: transparent;
-        background: var(--gradient-splash);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: var(--ink);
         font-size: 0.76rem;
         font-weight: 950;
         letter-spacing: 0.12em;
@@ -1188,11 +1322,7 @@
         color: var(--ink-soft);
       }
       .feature-board .section-number {
-        color: transparent;
-        background: var(--gradient-splash);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: var(--ink);
       }
       .feature-grid {
         display: grid;
@@ -1384,7 +1514,7 @@
         gap: 12px;
         margin-top: auto;
         padding-top: 20px;
-        color: var(--brand-primary);
+        color: var(--ink);
         font-size: 0.82rem;
         font-weight: 900;
       }
@@ -1407,7 +1537,7 @@
         background: transparent;
       }
       .faq .section-number {
-        color: #57418e;
+        color: var(--ink);
       }
       .faq-layout {
         display: grid;
@@ -1941,7 +2071,7 @@
           >
           <figure class="photo-strip back" aria-hidden="true">
             <img
-              src="assets/demo-city-480.webp"
+              src="assets/demo-festival-480.webp"
               alt=""
               width="480"
               height="600"
@@ -1949,7 +2079,7 @@
           </figure>
           <figure class="photo-strip front" aria-hidden="true">
             <img
-              src="assets/demo-cafe-480.webp"
+              src="assets/demo-brunch-480.webp"
               alt=""
               width="480"
               height="600"
@@ -2030,10 +2160,11 @@
               >
                 <article class="demo-card">
                   <img
-                    src="assets/demo-mountain-480.webp"
-                    alt="Foto de una montaña en la demostración"
-                    data-alt-es="Foto de una montaña en la demostración"
-                    data-alt-en="Mountain photo in the interactive demo"
+                    src="assets/demo-dog-480.webp"
+                    alt="Foto de un perro corriendo por la playa en la demostración"
+                    data-alt-es="Foto de un perro corriendo por la playa en la demostración"
+                    data-alt-en="Dog running on the beach in the interactive demo"
+                    data-demo-bytes="6800000"
                     width="480"
                     height="600"
                     draggable="false"
@@ -2048,10 +2179,11 @@
                 </article>
                 <article class="demo-card">
                   <img
-                    src="assets/demo-desk-480.webp"
-                    alt="Foto de un escritorio en la demostración"
-                    data-alt-es="Foto de un escritorio en la demostración"
-                    data-alt-en="Desk photo in the interactive demo"
+                    src="assets/demo-brunch-480.webp"
+                    alt="Foto de un brunch casero en la demostración"
+                    data-alt-es="Foto de un brunch casero en la demostración"
+                    data-alt-en="Homemade brunch photo in the interactive demo"
+                    data-demo-bytes="5200000"
                     width="480"
                     height="600"
                     draggable="false"
@@ -2066,16 +2198,112 @@
                 </article>
                 <article class="demo-card">
                   <img
-                    src="assets/demo-city-480.webp"
-                    alt="Foto de una ciudad en la demostración"
-                    data-alt-es="Foto de una ciudad en la demostración"
-                    data-alt-en="City photo in the interactive demo"
+                    src="assets/demo-festival-480.webp"
+                    alt="Foto de un festival de noche en la demostración"
+                    data-alt-es="Foto de un festival de noche en la demostración"
+                    data-alt-en="Night festival photo in the interactive demo"
+                    data-demo-bytes="7400000"
                     width="480"
                     height="600"
                     draggable="false"
                   /><span class="media-label"
                     ><span data-locale="es">1 sept 2026</span
                     ><span data-locale="en">Sep 1, 2026</span></span
+                  ><span class="media-share" aria-hidden="true"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M12 3v12M7 8l5-5 5 5" />
+                      <path d="M5 13v6h14v-6" /></svg
+                  ></span>
+                </article>
+                <article class="demo-card">
+                  <img
+                    src="assets/demo-greenhouse-480.webp"
+                    alt="Foto de una bicicleta en un invernadero en la demostración"
+                    data-alt-es="Foto de una bicicleta en un invernadero en la demostración"
+                    data-alt-en="Bicycle in a greenhouse photo in the interactive demo"
+                    data-demo-bytes="6100000"
+                    width="480"
+                    height="600"
+                    draggable="false"
+                  /><span class="media-label"
+                    ><span data-locale="es">31 ago 2026</span
+                    ><span data-locale="en">Aug 31, 2026</span></span
+                  ><span class="media-share" aria-hidden="true"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M12 3v12M7 8l5-5 5 5" />
+                      <path d="M5 13v6h14v-6" /></svg
+                  ></span>
+                </article>
+                <article class="demo-card">
+                  <img
+                    src="assets/demo-raincoat-480.webp"
+                    alt="Foto de un chubasquero amarillo tras la lluvia en la demostración"
+                    data-alt-es="Foto de un chubasquero amarillo tras la lluvia en la demostración"
+                    data-alt-en="Yellow raincoat after a rainy walk in the interactive demo"
+                    data-demo-bytes="4800000"
+                    width="480"
+                    height="600"
+                    draggable="false"
+                  /><span class="media-label"
+                    ><span data-locale="es">29 ago 2026</span
+                    ><span data-locale="en">Aug 29, 2026</span></span
+                  ><span class="media-share" aria-hidden="true"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M12 3v12M7 8l5-5 5 5" />
+                      <path d="M5 13v6h14v-6" /></svg
+                  ></span>
+                </article>
+                <article class="demo-card">
+                  <img
+                    src="assets/demo-cat-480.webp"
+                    alt="Foto de un gato dormido al sol en la demostración"
+                    data-alt-es="Foto de un gato dormido al sol en la demostración"
+                    data-alt-en="Cat sleeping in sunlight in the interactive demo"
+                    data-demo-bytes="3900000"
+                    width="480"
+                    height="600"
+                    draggable="false"
+                  /><span class="media-label"
+                    ><span data-locale="es">26 ago 2026</span
+                    ><span data-locale="en">Aug 26, 2026</span></span
+                  ><span class="media-share" aria-hidden="true"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M12 3v12M7 8l5-5 5 5" />
+                      <path d="M5 13v6h14v-6" /></svg
+                  ></span>
+                </article>
+                <article class="demo-card">
+                  <img
+                    src="assets/demo-train-480.webp"
+                    alt="Foto de montañas nevadas desde un tren en la demostración"
+                    data-alt-es="Foto de montañas nevadas desde un tren en la demostración"
+                    data-alt-en="Snowy mountains from a train in the interactive demo"
+                    data-demo-bytes="8200000"
+                    width="480"
+                    height="600"
+                    draggable="false"
+                  /><span class="media-label"
+                    ><span data-locale="es">22 ago 2026</span
+                    ><span data-locale="en">Aug 22, 2026</span></span
+                  ><span class="media-share" aria-hidden="true"
+                    ><svg viewBox="0 0 24 24">
+                      <path d="M12 3v12M7 8l5-5 5 5" />
+                      <path d="M5 13v6h14v-6" /></svg
+                  ></span>
+                </article>
+                <article class="demo-card">
+                  <img
+                    src="assets/demo-pottery-480.webp"
+                    alt="Foto de un taller de cerámica en la demostración"
+                    data-alt-es="Foto de un taller de cerámica en la demostración"
+                    data-alt-en="Pottery workshop photo in the interactive demo"
+                    data-demo-bytes="5700000"
+                    width="480"
+                    height="600"
+                    draggable="false"
+                  /><span class="media-label"
+                    ><span data-locale="es">18 ago 2026</span
+                    ><span data-locale="en">Aug 18, 2026</span></span
                   ><span class="media-share" aria-hidden="true"
                     ><svg viewBox="0 0 24 24">
                       <path d="M12 3v12M7 8l5-5 5 5" />
@@ -2115,13 +2343,19 @@
                   <span data-locale="es">Papelera</span
                   ><span data-locale="en">Trash</span>
                 </header>
-                <div class="trash-action-bar" aria-hidden="true">
-                  <span data-locale="es">Seleccionar todo</span
-                  ><span data-locale="en">Select all</span>
-                  <span data-locale="es">Restaurar selección</span
-                  ><span data-locale="en">Restore selected</span>
-                  <span data-locale="es">Eliminar selección</span
-                  ><span data-locale="en">Delete selected</span>
+                <div class="trash-action-bar">
+                  <button type="button" data-trash-select-all disabled>
+                    <span data-locale="es">Seleccionar todo</span
+                    ><span data-locale="en">Select all</span>
+                  </button>
+                  <button type="button" data-trash-restore disabled>
+                    <span data-locale="es">Restaurar selección</span
+                    ><span data-locale="en">Restore selected</span>
+                  </button>
+                  <button type="button" data-trash-delete disabled>
+                    <span data-locale="es">Eliminar selección</span
+                    ><span data-locale="en">Delete selected</span>
+                  </button>
                 </div>
                 <div class="trash-content">
                   <div class="trash-empty" data-trash-empty>
@@ -2136,6 +2370,47 @@
                     >
                   </div>
                   <div class="trash-grid" data-trash-grid></div>
+                </div>
+              </section>
+              <section
+                class="trash-dialog"
+                data-trash-dialog
+                aria-hidden="true"
+                inert
+              >
+                <div class="trash-dialog-card" role="dialog" aria-modal="true">
+                  <span class="trash-dialog-icon" aria-hidden="true">⌫</span>
+                  <strong data-locale="es">Eliminar definitivamente</strong
+                  ><strong data-locale="en">Delete permanently</strong>
+                  <p data-trash-confirm-copy></p>
+                  <div class="trash-dialog-actions">
+                    <button type="button" data-trash-cancel>
+                      <span data-locale="es">Cancelar</span
+                      ><span data-locale="en">Cancel</span>
+                    </button>
+                    <button class="danger" type="button" data-trash-confirm>
+                      <span data-locale="es">Eliminar</span
+                      ><span data-locale="en">Delete</span>
+                    </button>
+                  </div>
+                </div>
+              </section>
+              <section
+                class="trash-celebration"
+                data-trash-celebration
+                aria-hidden="true"
+                inert
+              >
+                <div class="trash-success-card" role="status">
+                  <span class="trash-success-icon" aria-hidden="true">✓</span>
+                  <strong data-locale="es">Limpieza completada</strong
+                  ><strong data-locale="en">Cleanup complete</strong>
+                  <p data-trash-success-copy></p>
+                  <b data-trash-success-bytes></b>
+                  <button type="button" data-trash-success-close>
+                    <span data-locale="es">Seguir revisando</span
+                    ><span data-locale="en">Keep reviewing</span>
+                  </button>
                 </div>
               </section>
               <div
@@ -2265,7 +2540,7 @@
                 </div>
               </section>
               <div class="demo-progress" aria-live="polite">
-                <b id="demoCount">0/3</b>
+                <b id="demoCount">0/8</b>
               </div>
             </div>
           </div>
@@ -2936,7 +3211,8 @@
           </div>
         </div>
         <div class="copyright">
-          © <span id="year"></span> Tindrop by <a href="../">Lagartija Labs</a>.
+          © <span id="year"></span> Tindrop by
+          <a href="../">Lagartija Labs</a>.
         </div>
       </div>
     </footer>
@@ -2990,9 +3266,34 @@
             .forEach((n) =>
               n.setAttribute("alt", n.dataset[l === "es" ? "altEs" : "altEn"]),
             );
+          const canonical = document.querySelector('link[rel="canonical"]'),
+            canonicalBase =
+              canonical.dataset.base || canonical.href.split("?")[0];
+          canonical.dataset.base = canonicalBase;
+          canonical.href =
+            l === "en" ? `${canonicalBase}?lang=en` : canonicalBase;
+          content('meta[property="og:url"]', canonical.href);
           const u = new URL(location.href);
-          u.searchParams.set("lang", l);
-          history.replaceState({}, "", u);
+          if (l === "en") u.searchParams.set("lang", "en");
+          else u.searchParams.delete("lang");
+          history.replaceState({}, "", `${u.pathname}${u.search}${u.hash}`);
+          document.querySelectorAll("a[href]").forEach((link) => {
+            const href = link.getAttribute("href");
+            if (!href || href.startsWith("#") || href.startsWith("mailto:"))
+              return;
+            const target = new URL(href, location.href);
+            if (
+              target.origin !== location.origin ||
+              !target.pathname.includes("/tindrop/")
+            )
+              return;
+            if (l === "en") target.searchParams.set("lang", "en");
+            else target.searchParams.delete("lang");
+            link.setAttribute(
+              "href",
+              `${target.pathname}${target.search}${target.hash}`,
+            );
+          });
           if (persist) localStorage.setItem("tindrop-language", l);
         }
         document
@@ -3020,6 +3321,25 @@
           trashView = document.querySelector("[data-trash-view]"),
           trashEmpty = document.querySelector("[data-trash-empty]"),
           trashGrid = document.querySelector("[data-trash-grid]"),
+          trashSelectAll = document.querySelector("[data-trash-select-all]"),
+          trashRestore = document.querySelector("[data-trash-restore]"),
+          trashDelete = document.querySelector("[data-trash-delete]"),
+          trashDialog = document.querySelector("[data-trash-dialog]"),
+          trashConfirmCopy = document.querySelector(
+            "[data-trash-confirm-copy]",
+          ),
+          trashCancel = document.querySelector("[data-trash-cancel]"),
+          trashConfirm = document.querySelector("[data-trash-confirm]"),
+          trashCelebration = document.querySelector("[data-trash-celebration]"),
+          trashSuccessCopy = document.querySelector(
+            "[data-trash-success-copy]",
+          ),
+          trashSuccessBytes = document.querySelector(
+            "[data-trash-success-bytes]",
+          ),
+          trashSuccessClose = document.querySelector(
+            "[data-trash-success-close]",
+          ),
           appTabs = [...document.querySelectorAll("[data-app-tab]")],
           classifyOptions = [
             ...document.querySelectorAll("[data-classify-option]"),
@@ -3033,8 +3353,10 @@
           drag = null,
           actions = [],
           trashImages = [],
+          selectedTrashIds = new Set(),
           animating = false,
-          classificationBadgeSerial = 0;
+          classificationBadgeSerial = 0,
+          trashSerial = 0;
         const classifications = new WeakMap();
         function top() {
           return deck.querySelector(".demo-card");
@@ -3151,18 +3473,40 @@
           trashGrid.classList.toggle("has-items", hasItems);
           trashEmpty.hidden = hasItems;
           trashGrid.replaceChildren(
-            ...trashImages.map((src, index) => {
-              const image = document.createElement("img");
-              image.src = src;
+            ...trashImages.map((item, index) => {
+              const button = document.createElement("button"),
+                image = document.createElement("img");
+              button.type = "button";
+              button.className = "trash-item";
+              button.classList.toggle(
+                "is-selected",
+                selectedTrashIds.has(item.id),
+              );
+              button.setAttribute(
+                "aria-pressed",
+                String(selectedTrashIds.has(item.id)),
+              );
+              image.src = item.src;
               image.width = 480;
               image.height = 480;
               image.alt =
                 document.documentElement.lang === "es"
                   ? `Foto ${index + 1} pendiente en la papelera`
                   : `Photo ${index + 1} pending in trash`;
-              return image;
+              button.appendChild(image);
+              button.addEventListener("click", () => {
+                if (selectedTrashIds.has(item.id))
+                  selectedTrashIds.delete(item.id);
+                else selectedTrashIds.add(item.id);
+                syncTrashView();
+              });
+              return button;
             }),
           );
+          const selectedCount = selectedTrashIds.size;
+          trashSelectAll.disabled = !hasItems;
+          trashRestore.disabled = selectedCount === 0;
+          trashDelete.disabled = selectedCount === 0;
         }
         function update() {
           [...deck.children].forEach((c, i) => {
@@ -3173,22 +3517,34 @@
             else
               c.style.transform = "translateY(14px) scale(.93) rotate(-2deg)";
           });
-          counter.textContent = done + "/3";
+          counter.textContent = done + "/8";
           pendingCounter.textContent = Math.max(0, 128 - actions.length);
           savedCounter.textContent = actions.filter(
-            (a) => a === "right",
+            (a) => a.dir === "right",
           ).length;
-          const trashTotal = actions.filter((a) => a === "left").length;
+          const trashTotal = trashImages.length;
           trashCounter.textContent = trashTotal;
           trashCounter.style.display = trashTotal > 0 ? "grid" : "none";
-          rewindControl.classList.toggle("is-visible", actions.length > 0);
+          rewindControl.classList.toggle(
+            "is-visible",
+            actions.length > 0 && !actions.at(-1).committed,
+          );
           syncTrashView();
         }
         function cycle(dir) {
           const c = top();
           if (!c || animating) return;
           animating = true;
-          const image = c.querySelector("img")?.src;
+          const imageNode = c.querySelector("img"),
+            image = imageNode?.src,
+            trashItem =
+              dir === "left" && image
+                ? {
+                    id: `trash-${++trashSerial}`,
+                    src: image,
+                    bytes: Number(imageNode.dataset.demoBytes) || 5200000,
+                  }
+                : null;
           const x = dir === "left" ? -430 : dir === "right" ? 430 : 0,
             y = dir === "down" ? 520 : dir === "up" ? -520 : 25,
             r = dir === "left" ? -18 : dir === "right" ? 18 : 0;
@@ -3201,9 +3557,9 @@
             deck.appendChild(c);
             c.offsetHeight;
             c.style.transition = "";
-            done = (done + 1) % 4;
-            actions.push(dir);
-            if (dir === "left" && image) trashImages.push(image);
+            done = (done + 1) % 9;
+            actions.push({ dir, trashItem, committed: false });
+            if (trashItem) trashImages.push(trashItem);
             animating = false;
             update();
           }, 280);
@@ -3227,10 +3583,17 @@
         }
         function rewind() {
           if (animating) return;
-          const dir = actions.pop();
+          const action = actions.at(-1),
+            dir = action?.dir;
           const c = deck.lastElementChild;
-          if (!dir || !c) return;
-          if (dir === "left") trashImages.pop();
+          if (!dir || !c || action.committed) return;
+          actions.pop();
+          if (action.trashItem) {
+            trashImages = trashImages.filter(
+              (item) => item.id !== action.trashItem.id,
+            );
+            selectedTrashIds.delete(action.trashItem.id);
+          }
           const x = dir === "left" ? -430 : dir === "right" ? 430 : 0,
             y = dir === "down" ? 520 : dir === "up" ? -520 : 25,
             r = dir === "left" ? -18 : dir === "right" ? 18 : 0;
@@ -3246,7 +3609,69 @@
             c.style.opacity = "1";
           });
           done = Math.max(0, done - 1);
-          counter.textContent = done + "/3";
+          counter.textContent = done + "/8";
+        }
+        function formatDemoBytes(bytes) {
+          const locale =
+            document.documentElement.lang === "es" ? "es-ES" : "en-US";
+          return `${new Intl.NumberFormat(locale, { maximumFractionDigits: 1 }).format(bytes / 1000000)} MB`;
+        }
+        function setTrashLayer(layer, open) {
+          layer.classList.toggle("is-open", open);
+          layer.setAttribute("aria-hidden", String(!open));
+          layer.inert = !open;
+        }
+        function openTrashConfirmation() {
+          const selected = trashImages.filter((item) =>
+              selectedTrashIds.has(item.id),
+            ),
+            bytes = selected.reduce((sum, item) => sum + item.bytes, 0),
+            count = selected.length,
+            es = document.documentElement.lang === "es";
+          if (!count) return;
+          trashConfirmCopy.textContent = es
+            ? `Vas a eliminar ${count} ${count === 1 ? "foto" : "fotos"} y liberar aproximadamente ${formatDemoBytes(bytes)}. Esta acción no se puede deshacer.`
+            : `You’re deleting ${count} ${count === 1 ? "photo" : "photos"} and freeing approximately ${formatDemoBytes(bytes)}. This can’t be undone.`;
+          setTrashLayer(trashDialog, true);
+        }
+        function restoreTrashSelection() {
+          if (!selectedTrashIds.size) return;
+          actions.forEach((action) => {
+            if (action.trashItem && selectedTrashIds.has(action.trashItem.id)) {
+              action.dir = "right";
+              action.trashItem = null;
+            }
+          });
+          trashImages = trashImages.filter(
+            (item) => !selectedTrashIds.has(item.id),
+          );
+          selectedTrashIds.clear();
+          update();
+        }
+        function confirmTrashDeletion() {
+          const selected = trashImages.filter((item) =>
+              selectedTrashIds.has(item.id),
+            ),
+            selectedIds = new Set(selected.map((item) => item.id)),
+            bytes = selected.reduce((sum, item) => sum + item.bytes, 0),
+            count = selected.length,
+            es = document.documentElement.lang === "es";
+          if (!count) return;
+          actions.forEach((action) => {
+            if (action.trashItem && selectedIds.has(action.trashItem.id))
+              action.committed = true;
+          });
+          trashImages = trashImages.filter((item) => !selectedIds.has(item.id));
+          selectedTrashIds.clear();
+          setTrashLayer(trashDialog, false);
+          trashSuccessCopy.textContent = es
+            ? `${count} ${count === 1 ? "foto eliminada" : "fotos eliminadas"}`
+            : `${count} ${count === 1 ? "photo deleted" : "photos deleted"}`;
+          trashSuccessBytes.textContent = es
+            ? `${formatDemoBytes(bytes)} liberados`
+            : `${formatDemoBytes(bytes)} freed`;
+          update();
+          setTrashLayer(trashCelebration, true);
         }
         function setTab(tab) {
           if (tab === "more") return;
@@ -3261,6 +3686,21 @@
         }
         appTabs.forEach((button) =>
           button.addEventListener("click", () => setTab(button.dataset.appTab)),
+        );
+        trashSelectAll.addEventListener("click", () => {
+          if (selectedTrashIds.size === trashImages.length)
+            selectedTrashIds.clear();
+          else selectedTrashIds = new Set(trashImages.map((item) => item.id));
+          syncTrashView();
+        });
+        trashRestore.addEventListener("click", restoreTrashSelection);
+        trashDelete.addEventListener("click", openTrashConfirmation);
+        trashCancel.addEventListener("click", () =>
+          setTrashLayer(trashDialog, false),
+        );
+        trashConfirm.addEventListener("click", confirmTrashDeletion);
+        trashSuccessClose.addEventListener("click", () =>
+          setTrashLayer(trashCelebration, false),
         );
         classifyClose.addEventListener("click", () => closeClassify());
         classifyOptions.forEach((button) =>

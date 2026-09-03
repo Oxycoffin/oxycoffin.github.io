@@ -353,7 +353,7 @@
         font-weight: 850;
       }
       .read span:last-child {
-        color: var(--purple);
+        color: var(--ink);
       }
       .principle {
         display: grid;
@@ -700,17 +700,32 @@
           document
             .querySelector('meta[property="og:url"]')
             ?.setAttribute("content", canonical.href);
-          if (persist) {
-            const url = new URL(location.href);
-            if (active === "en") url.searchParams.set("lang", "en");
-            else url.searchParams.delete("lang");
-            history.replaceState(
-              null,
-              "",
-              `${url.pathname}${url.search}${url.hash}`,
+          const url = new URL(location.href);
+          if (active === "en") url.searchParams.set("lang", "en");
+          else url.searchParams.delete("lang");
+          history.replaceState(
+            null,
+            "",
+            `${url.pathname}${url.search}${url.hash}`,
+          );
+          document.querySelectorAll("a[href]").forEach((link) => {
+            const href = link.getAttribute("href");
+            if (!href || href.startsWith("#") || href.startsWith("mailto:"))
+              return;
+            const target = new URL(href, location.href);
+            if (
+              target.origin !== location.origin ||
+              !target.pathname.includes("/tindrop/")
+            )
+              return;
+            if (active === "en") target.searchParams.set("lang", "en");
+            else target.searchParams.delete("lang");
+            link.setAttribute(
+              "href",
+              `${target.pathname}${target.search}${target.hash}`,
             );
-            localStorage.setItem("tindrop-language", active);
-          }
+          });
+          if (persist) localStorage.setItem("tindrop-language", active);
         }
         document
           .querySelectorAll("[data-set-lang]")
