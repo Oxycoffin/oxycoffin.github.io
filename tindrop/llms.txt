@@ -9,6 +9,7 @@ Google Play: https://play.google.com/store/apps/details?id=com.tindrop.tindrop
 Privacy: https://lagartijalabs.com/tindrop/privacy.html
 Terms: https://lagartijalabs.com/tindrop/terms.html
 Support: lagartijalabs@gmail.com
+Cleanup guides: https://lagartijalabs.com/tindrop/guias/
 
 ## What Tindrop does
 
@@ -29,3 +30,11 @@ Tindrop processes the local photo library on the user's device and does not uplo
 ## Spanish summary
 
 Tindrop es una app para iPhone y Android que permite limpiar y organizar fotos y vídeos con gestos. El usuario conserva, clasifica o envía cada elemento a revisión, confirma antes de borrar y puede trabajar con la galería local, Google Drive, OneDrive y Dropbox.
+
+## Camera roll cleanup guides
+
+- How to clean up a camera roll without losing important photos: https://lagartijalabs.com/tindrop/guias/como-limpiar-galeria-movil/
+- How to delete duplicate photos on iPhone safely: https://lagartijalabs.com/tindrop/guias/eliminar-fotos-duplicadas-iphone/
+- How to free device storage without losing photos: https://lagartijalabs.com/tindrop/guias/liberar-espacio-sin-perder-fotos/
+
+The guides distinguish device storage from cloud storage, synchronization from independent backup, exact duplicates from visually similar shots, and pending review from permanent deletion. Operational claims about Apple Photos, iCloud Photos and Google Photos are linked to the relevant official support documentation in each article. Product-specific recommendations are limited to features that Tindrop currently exposes: photo-by-photo review, exact duplicate grouping, collections, cloud-source switching and confirmation before deletion.

@@ -8,6 +8,42 @@
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://lagartijalabs.com/tindrop/guias/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://lagartijalabs.com/tindrop/guias/?lang=es" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://lagartijalabs.com/tindrop/guias/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://lagartijalabs.com/tindrop/guias/" />
+    <lastmod>2026-09-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://lagartijalabs.com/tindrop/guias/como-limpiar-galeria-movil/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://lagartijalabs.com/tindrop/guias/como-limpiar-galeria-movil/?lang=es" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://lagartijalabs.com/tindrop/guias/como-limpiar-galeria-movil/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://lagartijalabs.com/tindrop/guias/como-limpiar-galeria-movil/" />
+    <lastmod>2026-09-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://lagartijalabs.com/tindrop/guias/eliminar-fotos-duplicadas-iphone/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://lagartijalabs.com/tindrop/guias/eliminar-fotos-duplicadas-iphone/?lang=es" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://lagartijalabs.com/tindrop/guias/eliminar-fotos-duplicadas-iphone/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://lagartijalabs.com/tindrop/guias/eliminar-fotos-duplicadas-iphone/" />
+    <lastmod>2026-09-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://lagartijalabs.com/tindrop/guias/liberar-espacio-sin-perder-fotos/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://lagartijalabs.com/tindrop/guias/liberar-espacio-sin-perder-fotos/?lang=es" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://lagartijalabs.com/tindrop/guias/liberar-espacio-sin-perder-fotos/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://lagartijalabs.com/tindrop/guias/liberar-espacio-sin-perder-fotos/" />
+    <lastmod>2026-09-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <url><loc>https://lagartijalabs.com/tindrop/privacy.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
   <url><loc>https://lagartijalabs.com/tindrop/terms.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
 </urlset>

@@ -10,7 +10,7 @@
     />
     <meta
       name="description"
-      content="Limpia y organiza fotos y vídeos con gestos. Revisa antes de borrar, encuentra duplicados exactos y ordena tu galería, Google Drive, OneDrive y Dropbox con Tindrop."
+      content="Limpia y organiza fotos y vídeos con gestos. Revisa antes de borrar, encuentra duplicados exactos y ordena tu galería y nubes con Tindrop."
     />
     <meta
       name="keywords"
@@ -1318,6 +1318,91 @@
         margin-right: 10px;
         color: var(--brand-primary);
       }
+      .guide-preview-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .guide-preview-card {
+        position: relative;
+        min-height: 270px;
+        display: flex;
+        flex-direction: column;
+        padding: 24px;
+        overflow: hidden;
+        border: 2px solid var(--ink);
+        border-radius: var(--radius-lg);
+        background: rgba(255, 253, 248, 0.9);
+        box-shadow: 7px 8px 0 var(--paper-deep);
+        transition:
+          transform 0.18s,
+          box-shadow 0.18s;
+      }
+      .guide-preview-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto;
+        height: 6px;
+        background: var(--guide-accent, var(--gradient-settings-blue));
+      }
+      .guide-preview-card:nth-child(2) {
+        --guide-accent: var(--gradient-green);
+      }
+      .guide-preview-card:nth-child(3) {
+        --guide-accent: var(--gradient-orange);
+      }
+      .guide-preview-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 9px 12px 0 var(--paper-deep);
+      }
+      .guide-query {
+        width: max-content;
+        max-width: 100%;
+        padding: 5px 8px;
+        border-radius: 999px;
+        color: #fff;
+        background: var(--guide-accent, var(--gradient-settings-blue));
+        font-size: 0.66rem;
+        font-weight: 900;
+        letter-spacing: 0.035em;
+        text-transform: uppercase;
+      }
+      .guide-preview-card h3 {
+        margin: 24px 0 10px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.65rem;
+        line-height: 1.04;
+      }
+      .guide-preview-card p {
+        margin: 0;
+        color: var(--ink-soft);
+        font-size: 0.92rem;
+      }
+      .guide-preview-link {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: auto;
+        padding-top: 20px;
+        color: var(--brand-primary);
+        font-size: 0.82rem;
+        font-weight: 900;
+      }
+      .guide-preview-footer {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 22px;
+      }
+      .guide-preview-footer a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        padding: 0 18px;
+        border: 2px solid var(--ink);
+        border-radius: 999px;
+        background: var(--white);
+        font-weight: 900;
+      }
       .faq {
         background: transparent;
       }
@@ -1570,6 +1655,17 @@
           padding: 5px 0;
           font-size: 0.88rem;
         }
+        .guide-preview-card {
+          min-height: 225px;
+          padding: 19px;
+        }
+        .guide-preview-card h3 {
+          margin-top: 18px;
+          font-size: 1.42rem;
+        }
+        .guide-preview-card p {
+          font-size: 0.86rem;
+        }
         summary {
           padding-block: 18px;
         }
@@ -1684,6 +1780,12 @@
         .feature-grid {
           grid-template-columns: 1fr;
         }
+        .guide-preview-grid {
+          grid-template-columns: 1fr;
+        }
+        .guide-preview-card {
+          min-height: 0;
+        }
         .control-grid {
           grid-template-columns: 1fr;
         }
@@ -1748,6 +1850,9 @@
         ><a href="#seguridad"
           ><span data-locale="es">Control</span
           ><span data-locale="en">Control</span></a
+        ><a href="#guias"
+          ><span data-locale="es">Guías</span
+          ><span data-locale="en">Guides</span></a
         ><a href="#preguntas"
           ><span data-locale="es">Preguntas</span
           ><span data-locale="en">Questions</span></a
@@ -2471,10 +2576,149 @@
           </article>
         </div>
       </section>
+      <section class="shell section" id="guias">
+        <div class="section-heading">
+          <div>
+            <span class="section-number"
+              ><span data-locale="es">04 — GUÍAS</span
+              ><span data-locale="en">04 — GUIDES</span></span
+            >
+            <h2>
+              <span data-locale="es">Limpia con criterio, no a ciegas.</span
+              ><span data-locale="en">Clean with judgment, not blindly.</span>
+            </h2>
+          </div>
+          <p>
+            <span data-locale="es"
+              >Respuestas prácticas para entender qué ocupa espacio, qué está
+              respaldado y cómo revisar antes de borrar. Después, Tindrop
+              convierte el método en un gesto.</span
+            ><span data-locale="en"
+              >Practical answers for understanding what uses storage, what is
+              backed up and how to review before deleting. Then Tindrop turns
+              the method into a gesture.</span
+            >
+          </p>
+        </div>
+        <div class="guide-preview-grid">
+          <a
+            class="guide-preview-card"
+            href="guias/como-limpiar-galeria-movil/"
+          >
+            <span class="guide-query"
+              ><span data-locale="es">limpiar galería del móvil</span
+              ><span data-locale="en">clean up camera roll</span></span
+            >
+            <h3>
+              <span data-locale="es"
+                >Cómo limpiar miles de fotos sin borrar recuerdos por
+                error</span
+              ><span data-locale="en"
+                >How to clean thousands of photos without deleting memories by
+                mistake</span
+              >
+            </h3>
+            <p>
+              <span data-locale="es"
+                >Un método completo para iPhone y Android que separa copia,
+                selección y borrado.</span
+              ><span data-locale="en"
+                >A complete iPhone and Android method that separates backup,
+                selection and deletion.</span
+              >
+            </p>
+            <span class="guide-preview-link"
+              ><span
+                ><span data-locale="es">8 min</span
+                ><span data-locale="en">8 min</span></span
+              ><span
+                ><span data-locale="es">Leer →</span
+                ><span data-locale="en">Read →</span></span
+              ></span
+            >
+          </a>
+          <a
+            class="guide-preview-card"
+            href="guias/eliminar-fotos-duplicadas-iphone/"
+          >
+            <span class="guide-query"
+              ><span data-locale="es">duplicados en iPhone</span
+              ><span data-locale="en">duplicates on iPhone</span></span
+            >
+            <h3>
+              <span data-locale="es"
+                >Cómo eliminar fotos duplicadas en iPhone con seguridad</span
+              ><span data-locale="en"
+                >How to safely delete duplicate photos on iPhone</span
+              >
+            </h3>
+            <p>
+              <span data-locale="es"
+                >Qué fusiona Fotos, por qué puede no aparecer Duplicados y qué
+                hacer con las tomas parecidas.</span
+              ><span data-locale="en"
+                >What Photos merges, why Duplicates may be missing and what to
+                do with similar shots.</span
+              >
+            </p>
+            <span class="guide-preview-link"
+              ><span
+                ><span data-locale="es">6 min</span
+                ><span data-locale="en">6 min</span></span
+              ><span
+                ><span data-locale="es">Leer →</span
+                ><span data-locale="en">Read →</span></span
+              ></span
+            >
+          </a>
+          <a
+            class="guide-preview-card"
+            href="guias/liberar-espacio-sin-perder-fotos/"
+          >
+            <span class="guide-query"
+              ><span data-locale="es">liberar espacio sin perder fotos</span
+              ><span data-locale="en"
+                >free storage without losing photos</span
+              ></span
+            >
+            <h3>
+              <span data-locale="es"
+                >Cómo recuperar espacio sin perder tus fotos</span
+              ><span data-locale="en"
+                >How to reclaim storage without losing your photos</span
+              >
+            </h3>
+            <p>
+              <span data-locale="es"
+                >Distingue el espacio del móvil y de la nube antes de tocar
+                iCloud, Google Fotos o la papelera.</span
+              ><span data-locale="en"
+                >Separate phone and cloud storage before touching iCloud, Google
+                Photos or trash.</span
+              >
+            </p>
+            <span class="guide-preview-link"
+              ><span
+                ><span data-locale="es">7 min</span
+                ><span data-locale="en">7 min</span></span
+              ><span
+                ><span data-locale="es">Leer →</span
+                ><span data-locale="en">Read →</span></span
+              ></span
+            >
+          </a>
+        </div>
+        <div class="guide-preview-footer">
+          <a href="guias/"
+            ><span data-locale="es">Ver todas las guías →</span
+            ><span data-locale="en">See all guides →</span></a
+          >
+        </div>
+      </section>
       <section class="faq section" id="preguntas">
         <div class="shell faq-layout">
           <div class="faq-intro">
-            <span class="section-number">04 — FAQ</span>
+            <span class="section-number">05 — FAQ</span>
             <h2>
               <span data-locale="es">Lo que conviene saber.</span
               ><span data-locale="en">Good things to know.</span>
