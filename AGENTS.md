@@ -38,7 +38,13 @@
 - Do not run `git push` from this environment unless the user directly asks to
   publish or deploy the completed change. For Tindrop Remote Config, wording
   such as "publica" or "déjala publicada", or an explicitly authorized app
-  release, includes permission to push the signed config commit. Before
+  release, includes permission to push the signed config commit. A requested
+  Tindrop version bump also requires updating, signing and pushing the new
+  exact build profile without another confirmation, even without compilation
+  or store upload. Preserve all previously published profiles and their
+  effective configuration online, plus compatible root behavior. This
+  authorization does not enable new soft/hard update enforcement or key
+  rotation. Follow the `tindrop-remote-config` skill. Before
   pushing, verify a clean worktree, no remote divergence, a valid signature,
   and a monotonically increasing config version; afterward, verify the public
-  payload.
+  payload, its signature, the new profile and preservation of old profiles.
