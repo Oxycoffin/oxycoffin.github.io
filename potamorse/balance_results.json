@@ -1,0 +1,130 @@
+{
+  "active_position_upper_bound_two_legs": 3840966432,
+  "occupancy_upper_bound": 120030201,
+  "random_paired_seasons": {
+    "branching_p10_p90": [
+      8.0,
+      19.0
+    ],
+    "draws": 2534,
+    "identity_x_share_of_decisive": 0.5018932498361611,
+    "identity_x_wilson_95": [
+      0.49598016197991274,
+      0.5078058081583354
+    ],
+    "identity_x_wins": 13785,
+    "identity_y_wins": 13681,
+    "leg_margin_correlation": -0.0002241939802060043,
+    "mean_absolute_margin": 3.870033333333333,
+    "mean_branching": 12.903279566754494,
+    "mean_passes": 0.018133333333333335,
+    "mean_pin_observations": 16.908133333333332,
+    "mean_total_x": 13.324666666666667,
+    "mean_total_y": 13.3123,
+    "median_branching": 13.0,
+    "n": 30000,
+    "outcome_entropy_bits": 1.3332493245064976,
+    "seconds": 29.871810385999197
+  },  "random_single_legs": {
+    "amber_share_of_decisive": 0.4993985414630479,
+    "amber_wilson_95": [
+      0.49339052680747575,
+      0.5054067298070267
+    ],
+    "amber_wins": 13285,
+    "draws": 3398,
+    "indigo_wins": 13317,
+    "mean_absolute_margin": 2.7406,
+    "mean_branching": 12.913469054254323,
+    "mean_passes": 0.008033333333333333,
+    "mean_pin_observations": 8.359166666666667,
+    "mean_scores": [
+      6.650733333333333,
+      6.6466
+    ],
+    "median_branching": 13,
+    "n": 30000,
+    "seconds": 14.4806351670004
+  },
+  "seed": "6ba910032e277de76e2a491e5f450166",
+  "sequence_audit": {
+    "equal_through_degree": 3,
+    "moments_degree_0_to_4": {
+      "A": [
+        8,
+        60,
+        620,
+        7200,
+        89924
+      ],
+      "B": [
+        8,
+        60,
+        620,
+        7200,
+        88388
+      ]
+    },
+    "positions": {
+      "A": [
+        0,
+        3,
+        5,
+        6,
+        9,
+        10,
+        12,
+        15
+      ],
+      "B": [
+        1,
+        2,
+        4,
+        7,
+        8,
+        11,
+        13,
+        14
+      ]
+    },
+    "sequence": "ABBABAABBAABABBA",
+    "surface_silt_counts": {
+      "A": [
+        4,
+        4
+      ],
+      "B": [
+        4,
+        4
+      ]
+    }
+  },
+  "skill_sensitivity": {
+    "greedy_vs_random": {
+      "draws": 0,
+      "mean_scores": [
+        34.816,
+        13.928
+      ],
+      "mean_signed_margin": 20.888,
+      "n": 500,
+      "seconds": 0.42598238500067964,
+      "x_share_of_decisive": 1.0,
+      "x_wins": 500,
+      "y_wins": 0
+    },
+    "tactical_vs_greedy": {
+      "draws": 153,
+      "mean_scores": [
+        37.984,
+        37.176
+      ],
+      "mean_signed_margin": 0.808,
+      "n": 500,
+      "seconds": 3.1912313490001907,
+      "x_share_of_decisive": 0.7752161383285303,
+      "x_wins": 269,
+      "y_wins": 78
+    }
+  }
+}
