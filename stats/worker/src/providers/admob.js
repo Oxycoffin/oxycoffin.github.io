@@ -61,25 +61,68 @@ function reportRows(parts, currency) {
   })).filter(row => row.date).sort((left, right) => left.date.localeCompare(right.date));
 }
 
-export async function refreshAdmob(env) {
-  const token = await admobToken(env);
-  const account = await accountName(env, token);
-  const currency = env.DEFAULT_CURRENCY || "EUR";
+async function generateReport(account, token, reportSpec) {
   const response = await fetch(`https://admob.googleapis.com/v1/${account}/networkReport:generate`, {
     method: "POST",
     headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ reportSpec: {
-      dateRange: { startDate: dayParts(daysAgo(60)), endDate: dayParts(isoDay()) },
-      dimensions: ["DATE"],
-      metrics: ["ESTIMATED_EARNINGS", "IMPRESSIONS", "CLICKS", "MATCHED_REQUESTS", "AD_REQUESTS", "IMPRESSION_RPM"],
-      localizationSettings: { currencyCode: currency, languageCode: "en-US" }
-    } })
+    body: JSON.stringify({ reportSpec })
   });
   if (!response.ok) {
     const detail = (await response.text()).replace(/\s+/gu, " ").slice(0, 220);
     throw new Error(`AdMob report returned ${response.status}: ${detail}`);
   }
-  return { account, daily: reportRows(await parseStreamingJson(response), currency) };
+  return parseStreamingJson(response);
 }
 
-export const admobInternals = { reportRows, dimensionDate };
+function breakdownRows(parts, dimension, currency) {
+  return parts.filter(part => part.row).map(({ row }) => {
+    const item = row.dimensionValues?.[dimension] || {};
+    const earnings = decimalValue(row.metricValues?.ESTIMATED_EARNINGS) || 0;
+    const impressions = decimalValue(row.metricValues?.IMPRESSIONS) || 0;
+    return {
+      id: item.value || item.displayLabel || "unknown",
+      label: item.displayLabel || item.value || "Unknown",
+      earnings,
+      impressions,
+      clicks: decimalValue(row.metricValues?.CLICKS) || 0,
+      rpm: impressions ? (earnings / impressions) * 1000 : null,
+      currency
+    };
+  }).sort((left, right) => right.earnings - left.earnings).slice(0, 8);
+}
+
+async function optionalBreakdown(account, token, dateRange, dimension, currency) {
+  try {
+    const parts = await generateReport(account, token, {
+      dateRange,
+      dimensions: [dimension],
+      metrics: ["ESTIMATED_EARNINGS", "IMPRESSIONS", "CLICKS"],
+      localizationSettings: { currencyCode: currency, languageCode: "en-US" }
+    });
+    return breakdownRows(parts, dimension, currency);
+  } catch (error) {
+    console.warn(JSON.stringify({ event: "admob_breakdown_unavailable", dimension, message: String(error?.message || error) }));
+    return [];
+  }
+}
+
+export async function refreshAdmob(env) {
+  const token = await admobToken(env);
+  const account = await accountName(env, token);
+  const currency = env.DEFAULT_CURRENCY || "EUR";
+  const dateRange = { startDate: dayParts(daysAgo(60)), endDate: dayParts(isoDay()) };
+  const breakdownRange = { startDate: dayParts(daysAgo(29)), endDate: dayParts(isoDay()) };
+  const [dailyParts, adUnits, countries] = await Promise.all([
+    generateReport(account, token, {
+      dateRange,
+      dimensions: ["DATE"],
+      metrics: ["ESTIMATED_EARNINGS", "IMPRESSIONS", "CLICKS", "MATCHED_REQUESTS", "AD_REQUESTS", "IMPRESSION_RPM"],
+      localizationSettings: { currencyCode: currency, languageCode: "en-US" }
+    }),
+    optionalBreakdown(account, token, breakdownRange, "AD_UNIT", currency),
+    optionalBreakdown(account, token, breakdownRange, "COUNTRY", currency)
+  ]);
+  return { account, daily: reportRows(dailyParts, currency), adUnits, countries };
+}
+
+export const admobInternals = { reportRows, dimensionDate, breakdownRows };

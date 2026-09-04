@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "check": "node --check src/index.js && node --check src/auth.js && node --check src/providers/apple.js && node --check src/providers/google.js && node --check src/providers/admob.js && node --test test/*.test.js",
+    "check": "node --check ../public/app.js && node --check src/index.js && node --check src/auth.js && node --check src/providers/apple.js && node --check src/providers/google.js && node --check src/providers/admob.js && node --test test/*.test.js",
     "dev": "wrangler dev --local --var ENVIRONMENT:local",
     "deploy": "wrangler deploy"
   },

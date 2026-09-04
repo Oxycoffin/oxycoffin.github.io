@@ -3,21 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#102a43">
+  <meta name="theme-color" content="#07111f">
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-  <meta name="description" id="pageDescription" content="Panel privado y ligero de rendimiento de Tindrop.">
+  <meta name="description" id="pageDescription" content="Panel privado de rendimiento de Tindrop.">
   <title>Tindrop Pulse</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>◒</text></svg>">
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="/" aria-label="Lagartija Labs">
+    <a class="brand" href="/" aria-label="Tindrop Pulse">
       <span class="brand__mark" aria-hidden="true">◒</span>
-      <span>Tindrop Pulse</span>
+      <span class="brand__text">Tindrop <b>Pulse</b></span>
     </a>
+    <div class="range-switch" role="group" aria-label="Periodo" data-i18n-aria="periodLabel">
+      <button type="button" data-range="7">7D</button>
+      <button type="button" data-range="30" class="is-active">30D</button>
+    </div>
     <div class="topbar__actions">
-      <button class="quiet-button" id="languageButton" type="button" aria-label="Change language">EN</button>
+      <button class="icon-button" id="languageButton" type="button" aria-label="Cambiar idioma">EN</button>
       <button class="refresh-button" id="refreshButton" type="button">
         <span class="refresh-button__icon" aria-hidden="true">↻</span>
         <span data-i18n="refresh">Actualizar</span>
@@ -25,86 +29,170 @@
     </div>
   </header>
 
-  <main class="app">
-    <section class="hero" aria-labelledby="pageTitle">
+  <main class="dashboard">
+    <section class="page-heading" aria-labelledby="pageTitle">
       <div>
-        <p class="eyebrow" data-i18n="eyebrow">Vista privada · Tindrop</p>
-        <h1 id="pageTitle"><span data-i18n="titleLead">Lo importante,</span><br><em data-i18n="titleAccent">sin esperar.</em></h1>
-        <p class="hero__copy" data-i18n="heroCopy">App Store, Google Play y AdMob reunidos en una lectura rápida.</p>
+        <p class="overline" data-i18n="privateView">Panel privado · Tindrop</p>
+        <h1 id="pageTitle" data-i18n="pageTitle">Rendimiento</h1>
       </div>
-      <div class="freshness" id="freshness" aria-live="polite">
-        <span data-i18n="lastUpdate">Última actualización</span>
-        <strong id="lastUpdated">—</strong>
+      <div class="page-heading__meta">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span><span data-i18n="updated">Actualizado</span> <strong id="lastUpdated">—</strong></span>
         <small id="sessionLabel" data-i18n="protected">Acceso protegido</small>
       </div>
     </section>
 
     <div class="notice notice--loading" id="notice" role="status" aria-live="polite">
       <span class="notice__dot" aria-hidden="true"></span>
-      <span id="noticeText" data-i18n="loading">Cargando resumen…</span>
+      <span id="noticeText" data-i18n="loading">Cargando datos…</span>
     </div>
 
-    <section class="metric-grid" id="metricGrid" aria-label="Resumen" data-i18n-aria="summaryLabel"></section>
+    <section class="kpi-grid" id="kpiGrid" aria-label="Indicadores principales" data-i18n-aria="kpiLabel"></section>
 
-    <section class="panel chart-panel" aria-labelledby="trendTitle">
-      <div class="section-heading">
-        <div>
-          <p class="step" data-i18n="performance">Rendimiento</p>
-          <h2 id="trendTitle" data-i18n="trendTitle">Últimos 30 días</h2>
-        </div>
-        <div class="legend" aria-label="Leyenda" data-i18n-aria="legendLabel">
-          <span><i class="legend__apple"></i>App Store</span>
-          <span><i class="legend__admob"></i>AdMob</span>
-        </div>
-      </div>
-      <div class="chart" id="revenueChart" role="img" aria-label="Ingresos diarios de los últimos 30 días"></div>
-      <div class="chart-axis" aria-hidden="true"><span id="chartStart">—</span><span data-i18n="today">Hoy</span></div>
-    </section>
-
-    <section class="content-grid">
-      <section class="panel" aria-labelledby="insightsTitle">
-        <div class="section-heading">
+    <section class="overview-grid">
+      <article class="panel revenue-panel" aria-labelledby="revenueTitle">
+        <div class="panel-heading">
           <div>
-            <p class="step" data-i18n="analysis">Análisis</p>
-            <h2 id="insightsTitle" data-i18n="insightsTitle">Lectura rápida</h2>
+            <p class="overline" data-i18n="monetization">Monetización</p>
+            <h2 id="revenueTitle" data-i18n="revenueTrend">Ingresos diarios</h2>
+          </div>
+          <div class="panel-heading__numbers" id="revenueHeadline"></div>
+        </div>
+        <div class="chart-shell chart-shell--large">
+          <div class="chart-y-axis" id="revenueAxis" aria-hidden="true"></div>
+          <div class="chart" id="revenueChart" role="img" aria-label="Ingresos diarios"></div>
+          <div class="chart-tooltip" id="revenueTooltip" hidden></div>
+        </div>
+        <div class="chart-legend" aria-label="Leyenda" data-i18n-aria="legendLabel">
+          <span><i class="swatch swatch--apple"></i><span data-i18n="appleProceeds">Ingresos Apple</span></span>
+          <span><i class="swatch swatch--admob"></i><span data-i18n="adRevenue">Ingresos AdMob</span></span>
+        </div>
+      </article>
+
+      <aside class="panel signal-panel" aria-labelledby="signalsTitle">
+        <div class="panel-heading">
+          <div>
+            <p class="overline" data-i18n="signals">Señales</p>
+            <h2 id="signalsTitle" data-i18n="whatChanged">Qué merece atención</h2>
           </div>
         </div>
         <div class="insight-list" id="insightList"></div>
-      </section>
-
-      <section class="panel" aria-labelledby="sourcesTitle">
-        <div class="section-heading">
-          <div>
-            <p class="step" data-i18n="connections">Conexiones</p>
-            <h2 id="sourcesTitle" data-i18n="sourcesTitle">Estado de las fuentes</h2>
-          </div>
-        </div>
-        <div class="source-list" id="sourceList"></div>
-      </section>
+      </aside>
     </section>
 
+    <section class="three-grid">
+      <article class="panel detail-panel" aria-labelledby="adsTitle">
+        <div class="panel-heading panel-heading--compact">
+          <div>
+            <p class="overline">AdMob</p>
+            <h2 id="adsTitle" data-i18n="adPerformance">Rendimiento publicitario</h2>
+          </div>
+        </div>
+        <div class="stat-grid" id="adStats"></div>
+        <div class="mini-chart" id="adChart" role="img" aria-label="Ingresos e impresiones de AdMob"></div>
+      </article>
+
+      <article class="panel detail-panel" aria-labelledby="acquisitionTitle">
+        <div class="panel-heading panel-heading--compact">
+          <div>
+            <p class="overline">App Store</p>
+            <h2 id="acquisitionTitle" data-i18n="acquisition">Adquisición</h2>
+          </div>
+        </div>
+        <div class="stat-grid" id="acquisitionStats"></div>
+        <div class="mini-chart mini-chart--downloads" id="downloadChart" role="img" aria-label="Descargas diarias"></div>
+      </article>
+
+      <article class="panel detail-panel" aria-labelledby="qualityTitle">
+        <div class="panel-heading panel-heading--compact">
+          <div>
+            <p class="overline">Google Play</p>
+            <h2 id="qualityTitle" data-i18n="quality">Calidad y reseñas</h2>
+          </div>
+        </div>
+        <div class="stat-grid" id="qualityStats"></div>
+        <div class="quality-empty" id="qualityMessage"></div>
+      </article>
+    </section>
+
+    <section class="two-grid">
+      <article class="panel" aria-labelledby="breakdownTitle">
+        <div class="panel-heading panel-heading--compact">
+          <div>
+            <p class="overline" data-i18n="breakdown">Desglose</p>
+            <h2 id="breakdownTitle" data-i18n="whereRevenue">Dónde se genera</h2>
+          </div>
+          <div class="mini-switch" id="breakdownSwitch" role="group" aria-label="Tipo de desglose">
+            <button type="button" class="is-active" data-breakdown="adUnits" data-i18n="adUnits">Unidades</button>
+            <button type="button" data-breakdown="countries" data-i18n="countries">Países</button>
+          </div>
+        </div>
+        <div class="ranking-list" id="breakdownList"></div>
+      </article>
+
+      <article class="panel" aria-labelledby="reviewsTitle">
+        <div class="panel-heading panel-heading--compact">
+          <div>
+            <p class="overline" data-i18n="voice">Usuarios</p>
+            <h2 id="reviewsTitle" data-i18n="recentReviews">Reseñas recientes</h2>
+          </div>
+        </div>
+        <div class="review-list" id="reviewList"></div>
+      </article>
+    </section>
+
+    <section class="panel table-panel" aria-labelledby="dailyTitle">
+      <div class="panel-heading panel-heading--compact">
+        <div>
+          <p class="overline" data-i18n="detail">Detalle</p>
+          <h2 id="dailyTitle" data-i18n="dailyData">Datos por día</h2>
+        </div>
+        <small id="coverageLabel"></small>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th data-i18n="date">Fecha</th>
+              <th data-i18n="totalRevenue">Ingresos</th>
+              <th data-i18n="apple">Apple</th>
+              <th data-i18n="admob">AdMob</th>
+              <th data-i18n="downloads">Descargas</th>
+              <th data-i18n="impressions">Impresiones</th>
+              <th data-i18n="clicks">Clics</th>
+              <th>RPM</th>
+              <th data-i18n="matchRate">Match</th>
+            </tr>
+          </thead>
+          <tbody id="dailyTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="source-strip" id="sourceList" aria-label="Estado de las fuentes" data-i18n-aria="sourceLabel"></section>
+
     <footer>
-      <span data-i18n="privacy">Los secretos nunca llegan a este navegador.</span>
-      <a href="/" data-i18n="back">Lagartija Labs</a>
+      <span data-i18n="privacy">Datos agregados; los secretos no llegan al navegador.</span>
+      <span>Cloudflare Access · <span id="viewerEmail">—</span></span>
     </footer>
   </main>
 
-  <template id="metricTemplate">
-    <article class="metric-card">
-      <div class="metric-card__heading"><span class="metric-card__source"></span><span class="metric-card__period"></span></div>
-      <strong class="metric-card__value">—</strong>
-      <div class="metric-card__footer"><span class="metric-card__change"></span><span class="metric-card__detail"></span></div>
+  <template id="kpiTemplate">
+    <article class="kpi-card">
+      <div class="kpi-card__top"><span class="kpi-card__label"></span><span class="kpi-card__badge"></span></div>
+      <strong class="kpi-card__value">—</strong>
+      <div class="kpi-card__footer"><span class="kpi-card__change"></span><span class="kpi-card__context"></span></div>
     </article>
   </template>
 
   <template id="sourceTemplate">
-    <article class="source-row">
-      <span class="source-row__icon" aria-hidden="true"></span>
-      <div><strong class="source-row__name"></strong><small class="source-row__time"></small></div>
-      <span class="source-row__status"></span>
+    <article class="source-pill">
+      <span class="source-pill__dot" aria-hidden="true"></span>
+      <div><strong class="source-pill__name"></strong><small class="source-pill__detail"></small></div>
+      <span class="source-pill__status"></span>
     </article>
   </template>
 
-  <script src="app.js?v=2" defer></script>
+  <script src="app.js?v=3" defer></script>
 </body>
 </html>

@@ -110,11 +110,24 @@ async function fetchReviews(env) {
   if (response.status === 403 || response.status === 404) return null;
   if (!response.ok) throw new Error(`Play reviews returned ${response.status}`);
   const body = await response.json();
-  const ratings = (body.reviews || []).map(review => review.comments?.find(comment => comment.userComment)?.userComment?.starRating).filter(Boolean);
+  const recent = (body.reviews || []).map(review => {
+    const comment = review.comments?.find(item => item.userComment)?.userComment;
+    if (!comment) return null;
+    return {
+      id: review.reviewId,
+      author: review.authorName || "",
+      rating: Number(comment.starRating || 0),
+      body: comment.text || "",
+      language: comment.reviewerLanguage || null,
+      createdAt: comment.lastModified?.seconds ? new Date(Number(comment.lastModified.seconds) * 1000).toISOString() : null
+    };
+  }).filter(Boolean).sort((left, right) => String(right.createdAt).localeCompare(String(left.createdAt)));
+  const ratings = recent.map(review => review.rating).filter(Boolean);
   return {
     recentCount: ratings.length,
     averageRating: ratings.length ? ratings.reduce((sum, rating) => sum + rating, 0) / ratings.length : null,
-    lastReviewAt: (body.reviews || []).map(review => review.comments?.[0]?.userComment?.lastModified?.seconds).filter(Boolean).sort().at(-1) || null
+    lastReviewAt: recent[0]?.createdAt || null,
+    recent: recent.slice(0, 5)
   };
 }
 

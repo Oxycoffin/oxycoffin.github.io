@@ -12,6 +12,7 @@ const SOURCE_INTERVALS = {
   apple: 24 * 60 * 60 * 1000
 };
 const MANUAL_REFRESH_COOLDOWN = 5 * 60 * 1000;
+const APPLE_BACKFILL_INTERVAL = 30 * 60 * 1000;
 
 function json(value, status = 200) {
   return new Response(JSON.stringify(value), {
@@ -44,7 +45,11 @@ async function mostOverdueSource(env, manual = false) {
   const state = await readState(env);
   const candidates = Object.keys(SOURCE_INTERVALS).map(name => {
     const source = state.sources[name] || {};
-    const dueBy = manual ? MANUAL_REFRESH_COOLDOWN : SOURCE_INTERVALS[name];
+    const dueBy = manual
+      ? MANUAL_REFRESH_COOLDOWN
+      : name === "apple" && source.data?.backfillComplete === false
+        ? APPLE_BACKFILL_INTERVAL
+        : SOURCE_INTERVALS[name];
     return { name, overdue: ageMs(source.lastSuccessAt) - dueBy, attemptAge: ageMs(source.lastAttemptAt) };
   }).filter(candidate => candidate.overdue >= 0 && candidate.attemptAge >= (manual ? MANUAL_REFRESH_COOLDOWN : 60_000));
   candidates.sort((left, right) => right.overdue - left.overdue);
@@ -97,4 +102,4 @@ export default {
   }
 };
 
-export const workerInternals = { mostOverdueSource, updateSource, SOURCE_INTERVALS };
+export const workerInternals = { mostOverdueSource, updateSource, SOURCE_INTERVALS, APPLE_BACKFILL_INTERVAL };

@@ -14,20 +14,33 @@ Workers y nunca se entregan al navegador.
   evitar rutas alternativas sin Access.
 - KV conserva una instantánea agregada. El navegador solo lee `/api/dashboard`.
 - Un cron cada 30 minutos actualiza como máximo una fuente: AdMob cada 30
-  minutos, Play cada dos horas y Apple diariamente. El backfill de Apple avanza
-  un día por ejecución para respetar el límite gratuito de CPU.
+  minutos, Play cada dos horas y Apple diariamente. Mientras falta histórico,
+  Apple completa hasta 20 días por actualización y se considera elegible en
+  cada ciclo del cron hasta reunir 60 días.
 - La actualización manual tiene un enfriamiento de cinco minutos y ejecuta la
   fuente más atrasada.
 
-## Configuración remota pendiente
+## Datos mostrados
 
-No se debe desplegar hasta sustituir `REPLACE_WITH_KV_NAMESPACE_ID` y crear:
+El panel ofrece periodos de 7 y 30 días, cifras exactas en el gráfico de
+ingresos, comparativa con el periodo anterior y tabla diaria. Resume por
+separado:
 
-1. Un namespace KV enlazado como `PULSE_CACHE`.
-2. El Worker `tindrop-pulse` con dominio `stats.lagartijalabs.com`.
-3. Una aplicación Cloudflare Access self-hosted para ese hostname, con política
-   Allow limitada a un único correo y sesión de un mes.
-4. Los secretos requeridos declarados en `wrangler.jsonc`.
+- App Store: proceeds, descargas, transacciones, reembolsos, países y reseñas.
+- AdMob: ingresos, impresiones, clics, solicitudes, match rate, show rate, CTR,
+  RPM y desgloses por unidad publicitaria y país.
+- Google Play: crash rate, ANR, picos del periodo, nota y reseñas recientes.
+
+Las APIs no exponen exactamente todos los informes disponibles en las consolas;
+cuando una métrica no está disponible se muestra `—` en lugar de inventar un
+cero. Los desgloses y las reseñas son opcionales: un permiso insuficiente no
+impide actualizar el resto de la fuente.
+
+## Producción
+
+El Worker `tindrop-pulse`, el namespace `PULSE_CACHE`, el dominio
+`stats.lagartijalabs.com` y la aplicación de Cloudflare Access ya están creados.
+Access limita el hostname al correo del propietario con una sesión prolongada.
 
 En producción, `DEV_AUTH_BYPASS` debe guardarse con el valor exacto `false`.
 
