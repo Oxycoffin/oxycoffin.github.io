@@ -1,449 +1,1117 @@
 (() => {
   "use strict";
-
-  const messages = {
+  const copy = {
     es: {
-      refresh: "Actualizar", privateView: "Panel privado · Tindrop", pageTitle: "Rendimiento", updated: "Actualizado",
-      protected: "Acceso protegido", loading: "Cargando datos…", monetization: "Monetización", revenueTrend: "Ingresos diarios",
-      signals: "Señales", whatChanged: "Qué merece atención", adPerformance: "Rendimiento publicitario", acquisition: "Adquisición",
-      quality: "Calidad y reseñas", breakdown: "Desglose", whereRevenue: "Dónde se genera", adUnits: "Unidades", countries: "Países",
-      voice: "Usuarios", recentReviews: "Reseñas recientes", detail: "Detalle", dailyData: "Datos por día", date: "Fecha",
-      totalRevenue: "Ingresos", apple: "Apple", admob: "AdMob", downloads: "Descargas", impressions: "Impresiones", clicks: "Clics",
-      matchRate: "Match", privacy: "Datos agregados; los secretos no llegan al navegador.", periodLabel: "Periodo",
-      kpiLabel: "Indicadores principales", legendLabel: "Leyenda", sourceLabel: "Estado de las fuentes",
-      appleProceeds: "Ingresos Apple", adRevenue: "Ingresos AdMob", pageDescription: "Panel privado y ligero de rendimiento de Tindrop.",
-      signedIn: "Sesión de {email}", ready: "Datos listos · {coverage}", loadError: "No se pudo cargar el panel.",
-      refreshing: "Solicitando actualización…", refreshQueued: "Actualizando {source}; los datos aparecerán en unos segundos.",
-      cooldown: "Todo está al día. La actualización manual vuelve a estar disponible en unos minutos.", days: "{value} días",
-      compared: "vs. periodo anterior", noComparison: "Sin comparación", totalIncome: "Ingresos totales", appleIncome: "Ingresos Apple",
-      admobIncome: "Ingresos AdMob", iosDownloads: "Descargas iOS", adRpm: "RPM AdMob", adImpressions: "Impresiones",
-      earnings: "Ingresos", ctr: "CTR", showRate: "Show rate", requests: "Solicitudes", transactions: "Transacciones",
-      refunds: "Reembolsos", history: "Histórico", crashRate: "Crashes", anrRate: "ANR", peakCrash: "Pico crashes",
-      playRating: "Nota Play", noQualityData: "Google Play todavía no ha devuelto métricas de estabilidad para este periodo.",
-      revenueUpTitle: "Los ingresos avanzan", revenueUpBody: "Suben {value} respecto al periodo anterior.",
-      revenueDownTitle: "Los ingresos retroceden", revenueDownBody: "Bajan {value} respecto al periodo anterior.",
-      revenueFlatTitle: "Ingresos estables", revenueFlatBody: "La variación frente al periodo anterior es pequeña ({value}).",
-      dataTitle: "Histórico en construcción", dataBody: "Aún no hay un periodo anterior completo para comparar.",
-      matchRateWarnTitle: "Match rate mejorable", matchRateWarnBody: "Solo se cubre el {value} de las solicitudes publicitarias.",
-      matchRateGoodTitle: "Demanda publicitaria saludable", matchRateGoodBody: "AdMob cubre el {value} de las solicitudes.",
-      qualityWarnTitle: "Conviene revisar Android", qualityWarnBody: "La tasa de crashes más reciente es {value}.",
-      qualityGoodTitle: "Android estable", qualityGoodBody: "La tasa de crashes más reciente es {value}.",
-      appleCoverageTitle: "Apple sigue completando histórico", appleCoverageBody: "Hay {value} días disponibles; se amplía automáticamente.",
-      noBreakdown: "El desglose aparecerá tras la próxima actualización de AdMob.", noReviews: "No hay reseñas recientes disponibles.",
-      coverage: "Cobertura: Apple {apple}/{days} · AdMob {admob}/{days} · Play {play}/{days}",
-      current: "Al día", pending: "Pendiente", error: "Error", never: "Sin datos", sourceDetail: "{days} días · {date}",
-      total: "Total", averageDay: "media/día", chartLabel: "Ingresos diarios desglosados por Apple y AdMob",
-      unknown: "Sin nombre", appStore: "App Store", googlePlay: "Google Play"
+      skip: "Ir a los datos",
+      workspace: "Tu espacio",
+      sections: "Secciones",
+      overview: "Resumen",
+      advertising: "Publicidad",
+      stores: "Tiendas y calidad",
+      daily: "Detalle diario",
+      private: "Solo tú tienes acceso",
+      analytics: "Analítica",
+      refresh: "Actualizar",
+      yourApp: "TU APP, EN CIFRAS",
+      periodLabel: "Periodo",
+      seven: "7 días",
+      thirty: "30 días",
+      loading: "Cargando tus datos…",
+      metrics: "Indicadores principales",
+      trend: "Evolución",
+      chartHelp: "Selecciona un día para ver sus cifras.",
+      chartMetric: "Métrica del gráfico",
+      revenue: "Ingresos registrados",
+      impressions: "Impresiones",
+      iosDownloads: "Descargas iOS",
+      crash: "Crashes Android",
+      selectedDay: "Día seleccionado",
+      revenueMix: "De dónde viene el ingreso",
+      adJourney: "De la solicitud al clic",
+      funnelNote:
+        "Cobertura = solicitudes con anuncio · Visualización = anuncios mostrados de los disponibles · CTR = clics por impresión.",
+      topRevenue: "Qué genera más",
+      breakdownPeriod: "Últimos 30 días · incluye hoy",
+      breakdown: "Desglose",
+      units: "Unidades",
+      countries: "Países",
+      downloadCountries: "Descargas por país",
+      playLimits:
+        "Esta conexión aporta estabilidad y reseñas. Instalaciones e ingresos de Google Play aún no están conectados.",
+      reviews: "Lo que dicen los usuarios",
+      reviewSample: "Reseñas recientes · todas las fechas",
+      date: "Fecha",
+      clicks: "Clics",
+      tableNote:
+        "— = sin datos publicados. Los ingresos suman los importes disponibles en EUR; pueden estar incompletos. Hoy se muestra por separado por ser provisional.",
+      sources: "Estado de las conexiones",
+      description: "Tu app, en cifras. Panel privado de Tindrop.",
+      updated: "Sincronizado {date}",
+      noSync: "Esperando la primera sincronización",
+      completeDays: "Días completos",
+      noData: "Sin datos disponibles",
+      coverage: "{count} de {days} días con datos",
+      compare: "vs. {days} días anteriores",
+      noCompare: "Sin histórico completo para comparar",
+      reported: "Apple + AdMob · importes disponibles",
+      downloadsNote: "Descargas iniciales · App Store",
+      rpm: "eCPM publicitario",
+      rpmNote: "Ingreso por 1.000 impresiones",
+      impressionsNote: "Anuncios mostrados · AdMob",
+      partial: "Cobertura parcial",
+      partialBody:
+        "Faltan días en alguna fuente. Las cifras reflejan solo los datos recibidos; las comparaciones necesitan dos periodos completos.",
+      errorBody:
+        "Una conexión no ha podido actualizarse. Se conservan sus últimos datos; consulta el estado al pie.",
+      loadError:
+        "No se pudo cargar el panel. Pulsa Actualizar para reintentar; si tu sesión ha caducado, vuelve a abrir la página.",
+      refreshing: "Solicitando datos nuevos…",
+      queued: "Actualizando {source}. La consulta continúa en segundo plano.",
+      cooldown:
+        "La actualización manual está en pausa unos minutos. Se muestran los últimos datos disponibles.",
+      ads: "Publicidad",
+      appleIncome: "Ventas Apple",
+      estimated: "AdMob estimado + proceeds Apple en EUR",
+      today: "Hoy · AdMob",
+      provisional: "Provisional · fuera del periodo",
+      currencies: "Otros importes de Apple",
+      currenciesBody: "Sin convertir ni sumar al total: {values}.",
+      absentPlay: "Ingresos de Play sin conectar",
+      absentPlayBody:
+        "El total no incluye las compras ni las suscripciones de Android.",
+      requests: "Solicitudes",
+      matched: "Con anuncio",
+      shown: "Mostrados",
+      coverageLabel: "Cobertura",
+      showRate: "Visualización",
+      earnings: "Ingresos",
+      refunds: "Unidades devueltas",
+      crashLatest: "Crashes · último dato",
+      anrLatest: "ANR · último dato",
+      peakCrash: "Pico de crashes",
+      peakAnr: "Pico de ANR",
+      qualityNone:
+        "Play no ha publicado métricas de estabilidad para este periodo. Esto no significa que la tasa sea cero.",
+      qualityDates:
+        "Crashes: {crash} · ANR: {anr}. Tasas de usuarios afectados; se priorizan los errores percibidos por el usuario.",
+      noCountries:
+        "No hay un desglose de descargas por país para este periodo.",
+      noBreakdown:
+        "No hay desglose disponible. Se consulta al actualizar AdMob.",
+      noReviews:
+        "No hay reseñas recientes disponibles en las conexiones actuales.",
+      readMore: "Leer reseña completa",
+      reviewUnknown: "Usuario",
+      recentRating: "Media de {count} reseñas recibidas",
+      sourceReady: "Conectado",
+      sourcePending: "Pendiente",
+      sourceError: "Error al actualizar",
+      lastData: "Última consulta: {date}",
+      noPrevious: "Sin consulta completada",
+      chartMissing: "— sin dato · desplaza el gráfico si lo necesitas",
+      chartRevenue: "Suma disponible · Apple + AdMob",
+      total: "Periodo",
+      noChart: "Todavía no hay datos para representar esta métrica.",
+      dailyAverage: "{value} / día con datos",
+      average: "Media",
+      peak: "Máximo",
+      reportGap:
+        "Apple {apple}/{days} días · AdMob {admob}/{days} · Play {play}/{days}",
+      chartDay:
+        "{date}: {value}. Pulsa para seleccionar; usa las flechas para moverte.",
+      selectedPartial: "Ingreso parcial",
+      missingDay: "Sin dato publicado",
+      download: "Descargas",
+      csv: "Exportar datos diarios como CSV",
+      stale: "Datos antiguos",
+      staleBody:
+        "La última consulta de una fuente está atrasada. Las fechas de sincronización aparecen al pie.",
     },
     en: {
-      refresh: "Refresh", privateView: "Private dashboard · Tindrop", pageTitle: "Performance", updated: "Updated",
-      protected: "Protected access", loading: "Loading data…", monetization: "Monetization", revenueTrend: "Daily revenue",
-      signals: "Signals", whatChanged: "What needs attention", adPerformance: "Ad performance", acquisition: "Acquisition",
-      quality: "Quality and reviews", breakdown: "Breakdown", whereRevenue: "Where it comes from", adUnits: "Ad units", countries: "Countries",
-      voice: "Users", recentReviews: "Recent reviews", detail: "Detail", dailyData: "Daily data", date: "Date",
-      totalRevenue: "Revenue", apple: "Apple", admob: "AdMob", downloads: "Downloads", impressions: "Impressions", clicks: "Clicks",
-      matchRate: "Match", privacy: "Aggregated data; secrets never reach the browser.", periodLabel: "Period",
-      kpiLabel: "Key metrics", legendLabel: "Legend", sourceLabel: "Source status",
-      appleProceeds: "Apple proceeds", adRevenue: "AdMob revenue", pageDescription: "Private, lightweight Tindrop performance dashboard.",
-      signedIn: "Signed in as {email}", ready: "Data ready · {coverage}", loadError: "The dashboard could not be loaded.",
-      refreshing: "Requesting refresh…", refreshQueued: "Refreshing {source}; new data will appear in a few seconds.",
-      cooldown: "Everything is current. Manual refresh will be available again in a few minutes.", days: "{value} days",
-      compared: "vs. previous period", noComparison: "No comparison", totalIncome: "Total revenue", appleIncome: "Apple revenue",
-      admobIncome: "AdMob revenue", iosDownloads: "iOS downloads", adRpm: "AdMob RPM", adImpressions: "Impressions",
-      earnings: "Revenue", ctr: "CTR", showRate: "Show rate", requests: "Requests", transactions: "Transactions",
-      refunds: "Refunds", history: "History", crashRate: "Crashes", anrRate: "ANR", peakCrash: "Crash peak",
-      playRating: "Play rating", noQualityData: "Google Play has not returned stability metrics for this period yet.",
-      revenueUpTitle: "Revenue is growing", revenueUpBody: "Up {value} against the previous period.",
-      revenueDownTitle: "Revenue is down", revenueDownBody: "Down {value} against the previous period.",
-      revenueFlatTitle: "Revenue is stable", revenueFlatBody: "The change against the previous period is small ({value}).",
-      dataTitle: "Building history", dataBody: "There is not yet a complete previous period to compare.",
-      matchRateWarnTitle: "Match rate can improve", matchRateWarnBody: "Only {value} of ad requests are being matched.",
-      matchRateGoodTitle: "Healthy ad demand", matchRateGoodBody: "AdMob matches {value} of ad requests.",
-      qualityWarnTitle: "Android needs attention", qualityWarnBody: "The latest crash rate is {value}.",
-      qualityGoodTitle: "Android is stable", qualityGoodBody: "The latest crash rate is {value}.",
-      appleCoverageTitle: "Apple history is still filling", appleCoverageBody: "{value} days are available; more are added automatically.",
-      noBreakdown: "The breakdown will appear after the next AdMob refresh.", noReviews: "No recent reviews are available.",
-      coverage: "Coverage: Apple {apple}/{days} · AdMob {admob}/{days} · Play {play}/{days}",
-      current: "Current", pending: "Pending", error: "Error", never: "No data", sourceDetail: "{days} days · {date}",
-      total: "Total", averageDay: "daily avg.", chartLabel: "Daily revenue split between Apple and AdMob",
-      unknown: "Unnamed", appStore: "App Store", googlePlay: "Google Play"
+      skip: "Skip to data",
+      workspace: "Your workspace",
+      sections: "Sections",
+      overview: "Overview",
+      advertising: "Advertising",
+      stores: "Stores & quality",
+      daily: "Daily detail",
+      private: "Only you have access",
+      analytics: "Analytics",
+      refresh: "Refresh",
+      yourApp: "YOUR APP, IN NUMBERS",
+      periodLabel: "Period",
+      seven: "7 days",
+      thirty: "30 days",
+      loading: "Loading your data…",
+      metrics: "Key metrics",
+      trend: "Performance over time",
+      chartHelp: "Select a day to see its numbers.",
+      chartMetric: "Chart metric",
+      revenue: "Reported revenue",
+      impressions: "Impressions",
+      iosDownloads: "iOS downloads",
+      crash: "Android crashes",
+      selectedDay: "Selected day",
+      revenueMix: "Where revenue comes from",
+      adJourney: "From request to click",
+      funnelNote:
+        "Match = requests with an ad · Show rate = displayed ads out of matched requests · CTR = clicks per impression.",
+      topRevenue: "What earns the most",
+      breakdownPeriod: "Last 30 days · includes today",
+      breakdown: "Breakdown",
+      units: "Ad units",
+      countries: "Countries",
+      downloadCountries: "Downloads by country",
+      playLimits:
+        "This connection provides stability and reviews. Google Play installs and revenue are not connected yet.",
+      reviews: "What users are saying",
+      reviewSample: "Recent reviews · all dates",
+      date: "Date",
+      clicks: "Clicks",
+      tableNote:
+        "— = no published data. Revenue adds available EUR amounts and may be incomplete. Today is shown separately because it is provisional.",
+      sources: "Connection status",
+      description: "Your app, in numbers. Private Tindrop dashboard.",
+      updated: "Synced {date}",
+      noSync: "Waiting for the first sync",
+      completeDays: "Complete days",
+      noData: "No data available",
+      coverage: "{count} of {days} days with data",
+      compare: "vs. previous {days} days",
+      noCompare: "Not enough complete history to compare",
+      reported: "Apple + AdMob · available amounts",
+      downloadsNote: "First downloads · App Store",
+      rpm: "Ad eCPM",
+      rpmNote: "Revenue per 1,000 impressions",
+      impressionsNote: "Ads displayed · AdMob",
+      partial: "Partial coverage",
+      partialBody:
+        "Some sources have missing days. Figures reflect received data only; comparisons require two complete periods.",
+      errorBody:
+        "A connection could not refresh. Its last data is retained; check connection status below.",
+      loadError:
+        "The dashboard could not load. Press Refresh to retry; if your session has expired, reopen the page.",
+      refreshing: "Requesting new data…",
+      queued: "Refreshing {source}. The request continues in the background.",
+      cooldown:
+        "Manual refresh is paused for a few minutes. Showing the latest available data.",
+      ads: "Advertising",
+      appleIncome: "Apple sales",
+      estimated: "Estimated AdMob + Apple proceeds in EUR",
+      today: "Today · AdMob",
+      provisional: "Provisional · outside the period",
+      currencies: "Other Apple amounts",
+      currenciesBody: "Not converted or added to the total: {values}.",
+      absentPlay: "Play revenue not connected",
+      absentPlayBody: "The total excludes Android purchases and subscriptions.",
+      requests: "Requests",
+      matched: "Matched",
+      shown: "Displayed",
+      coverageLabel: "Match rate",
+      showRate: "Show rate",
+      earnings: "Revenue",
+      refunds: "Returned units",
+      crashLatest: "Crashes · latest",
+      anrLatest: "ANR · latest",
+      peakCrash: "Peak crashes",
+      peakAnr: "Peak ANR",
+      qualityNone:
+        "Play has not published stability metrics for this period. This does not mean the rate is zero.",
+      qualityDates:
+        "Crashes: {crash} · ANR: {anr}. Rates of affected users; user-perceived errors take priority.",
+      noCountries:
+        "No download breakdown by country is available for this period.",
+      noBreakdown:
+        "No breakdown available. It is requested when AdMob refreshes.",
+      noReviews:
+        "No recent reviews are available from the current connections.",
+      readMore: "Read full review",
+      reviewUnknown: "User",
+      recentRating: "Average of {count} received reviews",
+      sourceReady: "Connected",
+      sourcePending: "Pending",
+      sourceError: "Refresh failed",
+      lastData: "Last check: {date}",
+      noPrevious: "No completed check",
+      chartMissing: "— no data · scroll the chart if needed",
+      chartRevenue: "Available sum · Apple + AdMob",
+      total: "Period",
+      noChart: "There is no data to chart for this metric yet.",
+      dailyAverage: "{value} / day with data",
+      average: "Average",
+      peak: "Peak",
+      reportGap:
+        "Apple {apple}/{days} days · AdMob {admob}/{days} · Play {play}/{days}",
+      chartDay: "{date}: {value}. Press to select; use arrow keys to move.",
+      selectedPartial: "Partial revenue",
+      missingDay: "No published data",
+      download: "Downloads",
+      csv: "Export daily data as CSV",
+      stale: "Older data",
+      staleBody:
+        "A source is overdue for a refresh. Its last sync time appears below.",
+    },
+  };
+  const $ = (id) => document.getElementById(id);
+  const stored = (key) => {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
     }
   };
-
-  const $ = selector => document.querySelector(selector);
-  const elements = {
-    language: $("#languageButton"), refresh: $("#refreshButton"), notice: $("#notice"), noticeText: $("#noticeText"),
-    lastUpdated: $("#lastUpdated"), sessionLabel: $("#sessionLabel"), viewerEmail: $("#viewerEmail"), kpis: $("#kpiGrid"),
-    kpiTemplate: $("#kpiTemplate"), revenueChart: $("#revenueChart"), revenueAxis: $("#revenueAxis"),
-    revenueHeadline: $("#revenueHeadline"), revenueTooltip: $("#revenueTooltip"), insights: $("#insightList"),
-    adStats: $("#adStats"), adChart: $("#adChart"), acquisitionStats: $("#acquisitionStats"), downloadChart: $("#downloadChart"),
-    qualityStats: $("#qualityStats"), qualityMessage: $("#qualityMessage"), breakdownList: $("#breakdownList"),
-    reviewList: $("#reviewList"), dailyTable: $("#dailyTable"), coverageLabel: $("#coverageLabel"), sourceList: $("#sourceList"),
-    sourceTemplate: $("#sourceTemplate")
+  const save = (key, value) => {
+    try {
+      localStorage.setItem(key, value);
+    } catch {}
   };
-  let language = localStorage.getItem("pulse.language") || "es";
-  let range = [7, 30].includes(Number(localStorage.getItem("pulse.range"))) ? Number(localStorage.getItem("pulse.range")) : 30;
-  let breakdown = "adUnits";
-  let dashboard = null;
-  const locale = () => language === "es" ? "es-ES" : "en-US";
-  const t = (key, values = {}) => Object.entries(values).reduce((text, [name, value]) => text.replaceAll(`{${name}}`, value), messages[language][key] || key);
-  const present = value => value !== null && value !== undefined && Number.isFinite(Number(value));
-  const number = (value, digits = 1) => present(value) ? new Intl.NumberFormat(locale(), { maximumFractionDigits: digits }).format(Number(value)) : "—";
-  const integer = value => present(value) ? new Intl.NumberFormat(locale(), { maximumFractionDigits: 0 }).format(Number(value)) : "—";
-  const compact = value => present(value) ? new Intl.NumberFormat(locale(), { notation: "compact", maximumFractionDigits: 1 }).format(Number(value)) : "—";
-  const currency = (value, code = "EUR", compactValue = false) => present(value)
-    ? new Intl.NumberFormat(locale(), { style: "currency", currency: code, notation: compactValue ? "compact" : "standard", maximumFractionDigits: 2 }).format(Number(value)) : "—";
-  const percent = (value, digits = 1) => present(value) ? new Intl.NumberFormat(locale(), { style: "percent", maximumFractionDigits: digits }).format(Number(value)) : "—";
-  const dateTime = value => value ? new Intl.DateTimeFormat(locale(), { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(value)) : t("never");
-  const shortDate = value => value ? new Intl.DateTimeFormat(locale(), { day: "numeric", month: "short" }).format(new Date(`${value}T12:00:00Z`)) : "—";
-  const period = () => dashboard?.periods?.[range];
-
-  function setNotice(kind, text) {
-    elements.notice.className = `notice notice--${kind}`;
-    elements.noticeText.textContent = text;
+  let lang = stored("pulse.language") === "en" ? "en" : "es";
+  let range = Number(stored("pulse.range")) === 7 ? 7 : 30;
+  let metric = "revenue",
+    breakdown = "adUnits",
+    data = null,
+    selected = null,
+    refreshTimer = null;
+  const locale = () => (lang === "es" ? "es-ES" : "en-US");
+  const t = (key, args = {}) =>
+    Object.entries(args).reduce(
+      (s, [k, v]) => s.replaceAll(`{${k}}`, String(v)),
+      copy[lang][key] || key,
+    );
+  const present = (v) =>
+    v !== null && v !== undefined && Number.isFinite(Number(v));
+  const fmt = (v, options = {}) =>
+    present(v) ? new Intl.NumberFormat(locale(), options).format(v) : "—";
+  const int = (v) => fmt(v, { maximumFractionDigits: 0 });
+  const money = (v, currency = data?.currency || "EUR") =>
+    fmt(v, {
+      style: "currency",
+      currency,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  const pct = (v) => fmt(v, { style: "percent", maximumFractionDigits: 2 });
+  const day = (v) =>
+    v
+      ? new Intl.DateTimeFormat(locale(), {
+          day: "numeric",
+          month: "short",
+          timeZone: "UTC",
+        }).format(new Date(`${v.slice(0, 10)}T12:00:00Z`))
+      : "—";
+  const dateTime = (v) =>
+    v
+      ? new Intl.DateTimeFormat(locale(), {
+          day: "numeric",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        }).format(new Date(v))
+      : "—";
+  const node = (tag, cls, text) => {
+    const el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (text !== undefined) el.textContent = text;
+    return el;
+  };
+  const set = (id, ...children) => $(id).replaceChildren(...children);
+  const p = () => data.periods[range];
+  const points = () =>
+    data.daily.filter((d) => d.date >= p().start && d.date <= p().end);
+  const total = (d) =>
+    present(d.appleRevenue) || present(d.admobRevenue)
+      ? (d.appleRevenue || 0) + (d.admobRevenue || 0)
+      : null;
+  const valueOf = (d) => (metric === "revenue" ? total(d) : d[metric]);
+  const valueFormat = (v) =>
+    metric === "revenue" ? money(v) : metric === "crashRate" ? pct(v) : int(v);
+  const coverage = (count, days = range) => t("coverage", { count, days });
+  const sourceNames = {
+    apple: "App Store",
+    admob: "AdMob",
+    play: "Google Play",
+  };
+  function notice(text = "", type = "") {
+    $("notice").textContent = text;
+    $("notice").className = `notice ${type}`;
   }
-
-  function changeText(value) {
-    if (!present(value)) return { text: t("noComparison"), className: "" };
-    const numeric = Number(value);
-    return { text: `${numeric > 0 ? "+" : ""}${number(numeric, 1)} %`, className: numeric > 0 ? "is-up" : numeric < 0 ? "is-down" : "" };
+  function empty(id, key) {
+    set(id, node("p", "empty", t(key)));
   }
-
-  function coverageText(p) {
-    return t("coverage", { apple: p.coverage.appleDays, admob: p.coverage.admobDays, play: p.coverage.playDays, days: p.days });
+  function stat(label, value) {
+    const el = node("div", "stat");
+    el.append(node("small", "", label), node("strong", "", value));
+    return el;
   }
-
-  function applyLanguage() {
-    document.documentElement.lang = language;
-    document.querySelectorAll("[data-i18n]").forEach(node => { node.textContent = t(node.dataset.i18n); });
-    document.querySelectorAll("[data-i18n-aria]").forEach(node => node.setAttribute("aria-label", t(node.dataset.i18nAria)));
-    $("#pageDescription").content = t("pageDescription");
-    elements.language.textContent = language === "es" ? "EN" : "ES";
-    elements.language.setAttribute("aria-label", language === "es" ? "Cambiar a inglés" : "Switch to Spanish");
-    elements.revenueChart.setAttribute("aria-label", t("chartLabel"));
-    if (dashboard) render(dashboard);
+  function translate() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+      el.textContent = t(el.getAttribute("data-i18n"));
+    });
+    document
+      .querySelectorAll("[data-i18n-aria]")
+      .forEach((el) =>
+        el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria"))),
+      );
+    $("pageDescription").content = t("description");
+    $("languageButton").textContent = lang === "es" ? "EN" : "ES";
+    $("languageButton").setAttribute(
+      "aria-label",
+      lang === "es" ? "Switch to English" : "Cambiar a español",
+    );
+    $("exportButton").setAttribute("aria-label", t("csv"));
+    if (data) render();
   }
-
-  function renderKpis(p) {
-    const appleReady = p.coverage.appleDays > 0;
-    const admobReady = p.coverage.admobDays > 0;
+  function renderKpis() {
+    const s = p(),
+      c = s.coverage;
     const metrics = [
-      { label: t("totalIncome"), value: appleReady || admobReady ? currency(p.revenue.total, p.currency) : "—", change: p.revenue.change },
-      { label: t("appleIncome"), value: appleReady ? currency(p.revenue.apple, p.currency) : "—" },
-      { label: t("admobIncome"), value: admobReady ? currency(p.revenue.admob, p.currency) : "—" },
-      { label: t("iosDownloads"), value: appleReady ? integer(p.acquisition.downloads) : "—", change: p.acquisition.downloadsChange },
-      { label: t("adRpm"), value: admobReady ? currency(p.ads.rpm, p.currency) : "—" },
-      { label: t("adImpressions"), value: admobReady ? compact(p.ads.impressions) : "—", change: p.ads.impressionsChange }
+      [
+        "revenue",
+        money(c.appleDays || c.admobDays ? s.revenue.total : null),
+        s.revenue.change,
+        "reported",
+        "€",
+      ],
+      [
+        "iosDownloads",
+        int(c.appleDays ? s.acquisition.downloads : null),
+        s.acquisition.downloadsChange,
+        "downloadsNote",
+        "↓",
+      ],
+      [
+        "impressions",
+        int(c.admobDays ? s.ads.impressions : null),
+        s.ads.impressionsChange,
+        "impressionsNote",
+        "◫",
+      ],
+      ["rpm", money(s.ads.rpm), undefined, "rpmNote", "↗"],
     ];
-    elements.kpis.replaceChildren(...metrics.map(metric => {
-      const card = elements.kpiTemplate.content.firstElementChild.cloneNode(true);
-      const change = changeText(metric.change);
-      card.querySelector(".kpi-card__label").textContent = metric.label;
-      card.querySelector(".kpi-card__badge").textContent = `${range}D`;
-      card.querySelector(".kpi-card__value").textContent = metric.value;
-      card.querySelector(".kpi-card__change").textContent = metric.change === undefined ? "" : change.text;
-      if (change.className) card.querySelector(".kpi-card__change").classList.add(change.className);
-      card.querySelector(".kpi-card__context").textContent = metric.change === undefined ? "" : t("compared");
-      card.setAttribute("aria-label", `${metric.label}: ${metric.value}`);
-      return card;
-    }));
+    set(
+      "kpis",
+      ...metrics.map(([label, value, delta, hint, symbol]) => {
+        const el = node("article", "kpi"),
+          top = node("div", "kpi-label", t(label));
+        top.append(node("span", "kpi-symbol", symbol));
+        el.append(top, node("strong", "kpi-value", value));
+        const bottom = node("div", "kpi-bottom");
+        if (present(delta))
+          bottom.append(
+            node(
+              "span",
+              `delta ${delta > 0 ? "up" : delta < 0 ? "down" : ""}`,
+              `${delta > 0 ? "+" : ""}${fmt(delta, { maximumFractionDigits: 1 })}%`,
+            ),
+            node("span", "", t("compare", { days: range })),
+          );
+        else
+          bottom.textContent = delta === undefined ? t(hint) : t("noCompare");
+        el.append(bottom);
+        if (delta !== undefined) el.append(node("p", "kpi-note", t(hint)));
+        return el;
+      }),
+    );
   }
-
-  function revenueTooltip(day) {
-    const total = (day.appleRevenue || 0) + (day.admobRevenue || 0);
-    const title = document.createElement("strong");
-    const totalLine = document.createElement("b");
-    const appleLine = document.createElement("span");
-    const admobLine = document.createElement("span");
-    title.textContent = shortDate(day.date);
-    totalLine.textContent = `${t("total")}: ${currency(total, dashboard.currency)}`;
-    appleLine.textContent = `${t("apple")}: ${currency(day.appleRevenue, dashboard.currency)}`;
-    admobLine.textContent = `${t("admob")}: ${currency(day.admobRevenue, dashboard.currency)}`;
-    elements.revenueTooltip.replaceChildren(title, totalLine, appleLine, admobLine);
+  function svg(tag, attrs = {}, text) {
+    const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+    for (const [key, value] of Object.entries(attrs))
+      el.setAttribute(key, String(value));
+    if (text !== undefined) el.textContent = text;
+    return el;
   }
-
-  function renderRevenue(p) {
-    const points = dashboard.daily.slice(-range);
-    const totals = points.map(day => (day.appleRevenue || 0) + (day.admobRevenue || 0));
-    const max = Math.max(...totals, 0.01);
-    elements.revenueAxis.replaceChildren(...[1, .75, .5, .25, 0].map(multiplier => {
-      const label = document.createElement("span");
-      label.textContent = currency(max * multiplier, dashboard.currency, true);
-      return label;
-    }));
-    elements.revenueChart.replaceChildren(...points.map((day, index) => {
-      const column = document.createElement("div");
-      column.className = "chart__day";
-      column.tabIndex = 0;
-      column.setAttribute("aria-label", `${shortDate(day.date)}: ${currency(totals[index], dashboard.currency)}`);
-      for (const [source, field] of [["apple", "appleRevenue"], ["admob", "admobRevenue"]]) {
-        const bar = document.createElement("span");
-        bar.className = `chart__bar chart__bar--${source}`;
-        bar.style.height = `${day[field] === null ? 0 : Math.max(day[field] ? 2 : .5, (Number(day[field] || 0) / max) * 100)}%`;
-        column.append(bar);
-      }
-      if (index === 0 || index === points.length - 1 || index % Math.max(1, Math.floor(points.length / 5)) === 0) {
-        const dateLabel = document.createElement("span");
-        dateLabel.className = "chart__date";
-        dateLabel.textContent = shortDate(day.date);
-        column.append(dateLabel);
-      }
-      const show = () => {
-        revenueTooltip(day);
-        elements.revenueTooltip.hidden = false;
-        elements.revenueTooltip.style.left = `${column.offsetLeft + column.offsetWidth / 2 + 46}px`;
-        elements.revenueTooltip.style.top = `${Math.max(60, column.offsetTop + 24)}px`;
+  function renderChart() {
+    const rows = points(),
+      values = rows.map(valueOf),
+      available = values.filter(present);
+    if (!rows.some((d) => d.date === selected))
+      selected =
+        [...rows].reverse().find((d) => present(valueOf(d)))?.date ||
+        rows.at(-1)?.date;
+    const sum = available.reduce((a, b) => a + b, 0);
+    set(
+      "chartSummary",
+      node(
+        "strong",
+        "",
+        valueFormat(
+          available.length
+            ? metric === "crashRate"
+              ? Math.max(...available)
+              : sum
+            : null,
+        ),
+      ),
+      node(
+        "span",
+        "",
+        metric === "crashRate" ? t("peak") : coverage(available.length),
+      ),
+    );
+    $("chartCaption").textContent =
+      `${metric === "revenue" ? t("chartRevenue") + " · " : ""}${t("chartMissing")}`;
+    if (!available.length) {
+      set("chart", node("div", "chart-empty", t("noChart")));
+      renderDay();
+      return;
+    }
+    const width = 680,
+      height = 260,
+      left = 58,
+      right = 12,
+      top = 24,
+      bottom = 35;
+    const min = Math.min(0, ...available),
+      max = Math.max(0, ...available);
+    const spread =
+      max - min ||
+      (metric === "revenue" ? 0.01 : metric === "crashRate" ? 0.01 : 1);
+    const upper = max + spread * 0.16,
+      lower = min < 0 ? min - spread * 0.14 : 0;
+    const y = (v) =>
+      top + ((upper - v) / (upper - lower)) * (height - top - bottom);
+    const base = y(0),
+      step = (width - left - right) / rows.length,
+      barWidth = Math.min(step * 0.66, 42);
+    const chart = svg("svg", {
+      viewBox: `0 0 ${width} ${height}`,
+      role: "group",
+      "aria-label": t(
+        metric === "downloads"
+          ? "iosDownloads"
+          : metric === "crashRate"
+            ? "crash"
+            : metric,
+      ),
+    });
+    for (let i = 0; i < 4; i++) {
+      const v = lower + ((upper - lower) * i) / 3,
+        py = y(v);
+      chart.append(
+        svg("line", {
+          x1: left,
+          x2: width - right,
+          y1: py,
+          y2: py,
+          class: "chart-grid",
+        }),
+        svg(
+          "text",
+          { x: left - 9, y: py + 4, "text-anchor": "end", class: "chart-axis" },
+          valueFormat(v),
+        ),
+      );
+    }
+    chart.append(
+      svg("line", {
+        x1: left,
+        x2: width - right,
+        y1: base,
+        y2: base,
+        class: "chart-zero",
+      }),
+    );
+    rows.forEach((d, i) => {
+      const v = values[i],
+        x = left + step * (i + 0.5),
+        py = present(v) ? y(v) : base;
+      const group = svg("g", {
+        class: `chart-hit${d.date === selected ? " selected" : ""}`,
+        role: "button",
+        tabindex: d.date === selected ? 0 : -1,
+        "aria-pressed": d.date === selected,
+        "aria-label": t("chartDay", {
+          date: day(d.date),
+          value: valueFormat(v),
+        }),
+      });
+      group.append(svg("title", {}, `${day(d.date)} · ${valueFormat(v)}`));
+      group.append(
+        svg("rect", {
+          x: x - step / 2,
+          y: 0,
+          width: step,
+          height: height,
+          fill: "transparent",
+        }),
+      );
+      if (present(v)) {
+        group.append(
+          svg("rect", {
+            x: x - barWidth / 2,
+            y: Math.min(py, base),
+            width: barWidth,
+            height: Math.max(v === 0 ? 1.5 : 2, Math.abs(base - py)),
+            rx: 3,
+            class: "chart-bar",
+          }),
+        );
+        if (range === 7 || i % 5 === 0 || d.date === selected)
+          group.append(
+            svg(
+              "text",
+              {
+                x,
+                y: v < 0 ? py + 16 : py - 8,
+                "text-anchor": "middle",
+                class: "chart-value",
+              },
+              metric === "revenue"
+                ? fmt(v, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                : valueFormat(v),
+            ),
+          );
+      } else
+        group.append(
+          svg(
+            "text",
+            { x, y: base - 5, "text-anchor": "middle", class: "chart-missing" },
+            "—",
+          ),
+        );
+      if (range === 7 || i % 6 === 0 || i === rows.length - 1)
+        group.append(
+          svg(
+            "text",
+            { x, y: height - 10, "text-anchor": "middle", class: "chart-axis" },
+            day(d.date),
+          ),
+        );
+      const select = () => {
+        selected = d.date;
+        renderChart();
+        renderTable();
       };
-      column.addEventListener("pointerenter", show);
-      column.addEventListener("pointerleave", () => { elements.revenueTooltip.hidden = true; });
-      column.addEventListener("focus", show);
-      column.addEventListener("blur", () => { elements.revenueTooltip.hidden = true; });
-      return column;
-    }));
-    const total = document.createElement("strong");
-    const average = document.createElement("span");
-    total.textContent = currency(p.revenue.total, p.currency);
-    average.textContent = `${currency(p.revenue.total / p.days, p.currency)} ${t("averageDay")}`;
-    elements.revenueHeadline.replaceChildren(total, average);
+      group.addEventListener("click", select);
+      group.addEventListener("keydown", (event) => {
+        if (
+          !["Enter", " ", "ArrowLeft", "ArrowRight", "Home", "End"].includes(
+            event.key,
+          )
+        )
+          return;
+        event.preventDefault();
+        const next =
+          event.key === "Home"
+            ? 0
+            : event.key === "End"
+              ? rows.length - 1
+              : Math.max(
+                  0,
+                  Math.min(
+                    rows.length - 1,
+                    i +
+                      (event.key === "ArrowLeft"
+                        ? -1
+                        : event.key === "ArrowRight"
+                          ? 1
+                          : 0),
+                  ),
+                );
+        selected = rows[next].date;
+        renderChart();
+        renderTable();
+        $("chart").querySelector('[aria-pressed="true"]')?.focus();
+      });
+      chart.append(group);
+    });
+    set("chart", chart);
+    renderDay();
   }
-
-  function makeStats(target, definitions) {
-    target.replaceChildren(...definitions.map(([label, value]) => {
-      const item = document.createElement("div");
-      item.className = "stat";
-      const small = document.createElement("small");
-      const strong = document.createElement("strong");
-      small.textContent = label;
-      strong.textContent = value;
-      item.append(small, strong);
-      return item;
-    }));
+  function renderDay() {
+    const d = points().find((row) => row.date === selected);
+    if (!d) return set("dayDetail");
+    set(
+      "dayDetail",
+      node("strong", "", day(d.date)),
+      stat("Apple", money(d.appleRevenue)),
+      stat("AdMob", money(d.admobRevenue)),
+      stat(t("download"), int(d.downloads)),
+      stat(t("impressions"), int(d.impressions)),
+      stat(t("crash"), pct(d.crashRate)),
+    );
   }
-
-  function renderMiniChart(target, field) {
-    const points = dashboard.daily.slice(-range);
-    const max = Math.max(...points.map(day => Number(day[field] || 0)), 1);
-    target.replaceChildren(...points.map(day => {
-      const bar = document.createElement("span");
-      bar.className = "mini-chart__bar";
-      bar.style.height = `${day[field] === null ? 0 : Math.max(day[field] ? 3 : 1, (Number(day[field] || 0) / max) * 100)}%`;
-      bar.title = `${shortDate(day.date)} · ${field === "downloads" ? integer(day[field]) : currency(day[field], dashboard.currency)}`;
-      return bar;
-    }));
-  }
-
-  function renderDetailPanels(p) {
-    makeStats(elements.adStats, [[t("earnings"), currency(p.ads.earnings, p.currency)], [t("impressions"), integer(p.ads.impressions)],
-      [t("clicks"), integer(p.ads.clicks)], [t("ctr"), percent(p.ads.ctr)], [t("matchRate"), percent(p.ads.matchRate)],
-      [t("showRate"), percent(p.ads.showRate)], [t("requests"), integer(p.ads.requests)], ["RPM", currency(p.ads.rpm, p.currency)]]);
-    makeStats(elements.acquisitionStats, [[t("downloads"), integer(p.acquisition.downloads)], [t("transactions"), integer(p.acquisition.transactions)],
-      [t("refunds"), integer(p.acquisition.refunds)], [t("history"), t("days", { value: p.coverage.appleDays })]]);
-    makeStats(elements.qualityStats, [[t("crashRate"), percent(p.quality.crashRate, 2)], [t("anrRate"), percent(p.quality.anrRate, 2)],
-      [t("peakCrash"), percent(p.quality.peakCrashRate, 2)], [t("playRating"), p.reviews?.averageRating ? `${number(p.reviews.averageRating, 1)} ★` : "—"]]);
-    elements.qualityMessage.textContent = p.coverage.playDays ? `${t("history")}: ${t("days", { value: p.coverage.playDays })}` : t("noQualityData");
-    renderMiniChart(elements.adChart, "admobRevenue");
-    renderMiniChart(elements.downloadChart, "downloads");
-  }
-
-  function derivedInsights(p) {
-    const result = [];
-    if (!present(p.revenue.change)) result.push({ code: "data", tone: "neutral" });
-    else if (p.revenue.change >= 5) result.push({ code: "revenueUp", tone: "good", value: p.revenue.change });
-    else if (p.revenue.change <= -5) result.push({ code: "revenueDown", tone: "warn", value: p.revenue.change });
-    else result.push({ code: "revenueFlat", tone: "neutral", value: p.revenue.change });
-    if (present(p.ads.matchRate)) result.push({ code: p.ads.matchRate < .8 ? "matchRateWarn" : "matchRateGood", tone: p.ads.matchRate < .8 ? "warn" : "good", value: p.ads.matchRate, percent: true });
-    if (present(p.quality.crashRate)) result.push({ code: p.quality.crashRate > .01 ? "qualityWarn" : "qualityGood", tone: p.quality.crashRate > .01 ? "warn" : "good", value: p.quality.crashRate, percent: true });
-    if (p.coverage.appleDays < Math.min(p.days, 7)) result.push({ code: "appleCoverage", tone: "neutral", value: p.coverage.appleDays });
-    return result.slice(0, 4);
-  }
-
-  function renderInsights(p) {
-    elements.insights.replaceChildren(...derivedInsights(p).map(insight => {
-      const article = document.createElement("article");
-      article.className = `insight${insight.tone === "warn" ? " insight--warn" : ""}`;
-      const mark = document.createElement("span");
-      mark.className = "insight__mark";
-      mark.textContent = insight.tone === "good" ? "↗" : insight.tone === "warn" ? "!" : "·";
-      const body = document.createElement("div");
-      const title = document.createElement("strong");
-      const copy = document.createElement("p");
-      const value = insight.percent ? percent(insight.value) : insight.code === "appleCoverage" ? integer(insight.value) : `${number(Math.abs(insight.value || 0), 1)} %`;
-      title.textContent = t(`${insight.code}Title`);
-      copy.textContent = t(`${insight.code}Body`, { value });
-      body.append(title, copy);
-      article.append(mark, body);
-      return article;
-    }));
-  }
-
-  function renderBreakdown() {
-    const rows = dashboard.breakdowns?.[breakdown] || [];
-    if (!rows.length) {
-      const empty = document.createElement("div");
-      empty.className = "empty-state";
-      empty.textContent = t("noBreakdown");
-      elements.breakdownList.replaceChildren(empty);
-      return;
+  function renderMix() {
+    const s = p(),
+      c = s.coverage;
+    const track = node("div", "mix-track");
+    const positiveTotal =
+      Math.max(s.revenue.admob, 0) + Math.max(s.revenue.apple, 0);
+    for (const name of ["admob", "apple"]) {
+      const bar = node("span", name);
+      bar.style.width = `${positiveTotal ? (Math.max(s.revenue[name], 0) / positiveTotal) * 100 : 0}%`;
+      track.append(bar);
     }
-    const max = Math.max(...rows.map(row => Number(row.earnings || 0)), 0.01);
-    elements.breakdownList.replaceChildren(...rows.map(row => {
-      const item = document.createElement("div");
-      item.className = "ranking-row";
-      const label = document.createElement("span");
-      label.className = "ranking-row__label";
-      label.textContent = row.label || row.id || t("unknown");
-      label.title = label.textContent;
-      const value = document.createElement("span");
-      value.className = "ranking-row__value";
-      value.textContent = `${currency(row.earnings, dashboard.currency)} · ${compact(row.impressions)} imp.`;
-      const track = document.createElement("div");
-      track.className = "ranking-row__track";
-      const fill = document.createElement("div");
-      fill.className = "ranking-row__fill";
-      fill.style.width = `${Math.max(2, (Number(row.earnings || 0) / max) * 100)}%`;
-      track.append(fill);
-      item.append(label, value, track);
-      return item;
-    }));
-  }
-
-  function renderReviews() {
-    const reviews = [...(dashboard.reviews?.apple?.recent || []).map(item => ({ ...item, store: t("appStore") })),
-      ...(dashboard.reviews?.play?.recent || []).map(item => ({ ...item, store: t("googlePlay") }))]
-      .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt))).slice(0, 5);
-    if (!reviews.length) {
-      const empty = document.createElement("div");
-      empty.className = "empty-state";
-      empty.textContent = t("noReviews");
-      elements.reviewList.replaceChildren(empty);
-      return;
-    }
-    elements.reviewList.replaceChildren(...reviews.map(review => {
-      const article = document.createElement("article");
-      article.className = "review";
-      const top = document.createElement("div");
-      top.className = "review__top";
-      const stars = document.createElement("span");
-      stars.className = "review__stars";
-      const rating = Math.max(0, Math.min(5, Number(review.rating || 0)));
-      stars.textContent = `${"★".repeat(rating)}${"☆".repeat(5 - rating)}`;
-      const time = document.createElement("time");
-      time.textContent = `${review.store} · ${shortDate(String(review.createdAt || "").slice(0, 10))}`;
-      top.append(stars, time);
-      const author = document.createElement("strong");
-      author.textContent = review.title || review.author || review.store;
-      const body = document.createElement("p");
-      body.textContent = review.body || "—";
-      article.append(top, author, body);
-      return article;
-    }));
-  }
-
-  function renderTable(p) {
-    const cell = (value, formatter) => {
-      const td = document.createElement("td");
-      td.textContent = present(value) ? formatter(value) : "—";
-      if (!present(value)) td.className = "is-empty";
-      return td;
-    };
-    elements.dailyTable.replaceChildren(...dashboard.daily.slice(-range).reverse().map(day => {
-      const row = document.createElement("tr");
-      const dateCell = document.createElement("td");
-      dateCell.textContent = shortDate(day.date);
-      const total = day.appleRevenue !== null || day.admobRevenue !== null ? Number(day.appleRevenue || 0) + Number(day.admobRevenue || 0) : null;
-      const match = day.requests ? Number(day.matchedRequests || 0) / Number(day.requests) : null;
-      row.append(dateCell, cell(total, value => currency(value, p.currency)), cell(day.appleRevenue, value => currency(value, p.currency)),
-        cell(day.admobRevenue, value => currency(value, p.currency)), cell(day.downloads, integer), cell(day.impressions, integer),
-        cell(day.clicks, integer), cell(day.rpm, value => currency(value, p.currency)), cell(match, percent));
+    const rows = ["admob", "apple"].map((name) => {
+      const row = node("div", `mix-row ${name}`),
+        count = c[`${name}Days`];
+      row.append(
+        node("i"),
+        node("span", "", name === "admob" ? "AdMob" : "App Store"),
+        node("strong", "", money(count ? s.revenue[name] : null)),
+        node("small", "", coverage(count)),
+      );
       return row;
-    }));
-    elements.coverageLabel.textContent = coverageText(p);
+    });
+    set(
+      "revenueMix",
+      node(
+        "div",
+        "mix-total",
+        money(c.appleDays || c.admobDays ? s.revenue.total : null),
+      ),
+      node("p", "mix-caption", t("estimated")),
+      track,
+      ...rows,
+    );
+    const label = node("div", "", t("today"));
+    label.append(node("small", "", t("provisional")));
+    set("today", label, node("strong", "", money(data.today?.admobRevenue)));
+    const insights = [];
+    const other = Object.entries(s.revenue.otherCurrencies || {}).filter(
+      ([, amount]) => amount !== 0,
+    );
+    if (other.length)
+      insights.push([
+        "currencies",
+        t("currenciesBody", {
+          values: other.map(([code, value]) => money(value, code)).join(" · "),
+        }),
+        true,
+      ]);
+    insights.push(["absentPlay", t("absentPlayBody"), false]);
+    set(
+      "insights",
+      ...insights.map(([title, text, warn]) => {
+        const el = node("div", `insight${warn ? " warn" : ""}`);
+        el.append(node("strong", "", t(title)), node("p", "", text));
+        return el;
+      }),
+    );
   }
-
+  function renderAds() {
+    const s = p(),
+      a = s.ads,
+      ready = s.coverage.admobDays > 0;
+    $("adCoverage").textContent = coverage(s.coverage.admobDays);
+    set(
+      "funnel",
+      ...[
+        ["requests", a.requests],
+        ["matched", a.matchedRequests],
+        ["shown", a.impressions],
+        ["clicks", a.clicks],
+      ].map(([label, value]) => {
+        const el = node("div", "funnel-stage"),
+          track = node("div", "funnel-track"),
+          fill = node("div", "funnel-fill");
+        fill.style.width = `${ready && a.requests ? Math.max(0, Math.min(100, (value / a.requests) * 100)) : 0}%`;
+        track.append(fill);
+        el.append(
+          node("span", "", t(label)),
+          track,
+          node("strong", "", int(ready ? value : null)),
+        );
+        return el;
+      }),
+    );
+    set(
+      "adStats",
+      stat(t("coverageLabel"), pct(a.matchRate)),
+      stat(t("showRate"), pct(a.showRate)),
+      stat("CTR", pct(a.ctr)),
+      stat("eCPM", money(a.rpm)),
+    );
+    renderRanking();
+  }
+  function countryName(code) {
+    try {
+      return (
+        new Intl.DisplayNames([locale()], { type: "region" }).of(code) || code
+      );
+    } catch {
+      return code;
+    }
+  }
+  function renderRanking() {
+    const rows = data.breakdowns?.[breakdown] || [];
+    $("breakdownDates").textContent =
+      data.breakdowns?.start && data.breakdowns?.end
+        ? `${day(data.breakdowns.start)} – ${day(data.breakdowns.end)} · 30D`
+        : t("breakdownPeriod");
+    document.querySelectorAll("[data-breakdown]").forEach((b) => {
+      b.classList.toggle("active", b.dataset.breakdown === breakdown);
+      b.setAttribute("aria-pressed", b.dataset.breakdown === breakdown);
+    });
+    if (!rows.length) return empty("ranking", "noBreakdown");
+    const max = Math.max(...rows.map((row) => row.earnings), 0.01);
+    set(
+      "ranking",
+      ...rows.map((row) => {
+        const el = node("div", "rank"),
+          head = node("div", "rank-head"),
+          name = node(
+            "span",
+            "rank-name",
+            breakdown === "countries" ? countryName(row.id) : row.label,
+          );
+        name.title = name.textContent;
+        head.append(name, node("strong", "", money(row.earnings)));
+        const meta = node("div", "rank-meta");
+        meta.append(
+          node(
+            "span",
+            "",
+            `${int(row.impressions)} ${t("impressions").toLowerCase()}`,
+          ),
+          node("span", "", `${money(row.rpm)} eCPM`),
+        );
+        const track = node("div", "rank-track"),
+          fill = node("span");
+        fill.style.width = `${Math.max(0, (row.earnings / max) * 100)}%`;
+        track.append(fill);
+        el.append(head, meta, track);
+        return el;
+      }),
+    );
+  }
+  function renderStores() {
+    const s = p(),
+      a = s.acquisition,
+      c = s.coverage,
+      q = s.quality;
+    $("appleCoverage").textContent = coverage(c.appleDays);
+    $("playCoverage").textContent = coverage(c.playDays);
+    set(
+      "appleStats",
+      stat(t("iosDownloads"), int(c.appleDays ? a.downloads : null)),
+      stat(t("earnings"), money(c.appleDays ? s.revenue.apple : null)),
+      stat(t("refunds"), int(c.appleDays ? a.refunds : null)),
+    );
+    const countries = (a.countries || [])
+      .filter((row) => row.downloads > 0)
+      .slice(0, 5);
+    if (!countries.length) empty("appleCountries", "noCountries");
+    else
+      set(
+        "appleCountries",
+        ...countries.map((row) => {
+          const el = node("div", "country-row");
+          el.append(
+            node("span", "", countryName(row.code)),
+            node(
+              "strong",
+              "",
+              `${int(row.downloads)} · ${pct(a.downloads ? row.downloads / a.downloads : null)}`,
+            ),
+          );
+          return el;
+        }),
+      );
+    set(
+      "qualityStats",
+      stat(t("crashLatest"), pct(q.crashRate)),
+      stat(t("anrLatest"), pct(q.anrRate)),
+      stat(t("peakCrash"), pct(q.peakCrashRate)),
+      stat(t("peakAnr"), pct(q.peakAnrRate)),
+    );
+    $("qualityNote").textContent =
+      present(q.crashRate) || present(q.anrRate)
+        ? t("qualityDates", { crash: day(q.crashDate), anr: day(q.anrDate) })
+        : t("qualityNone");
+    const reviews = [
+      ...(data.reviews?.apple?.recent || []).map((r) => ({
+        ...r,
+        store: "App Store",
+      })),
+      ...(data.reviews?.play?.recent || []).map((r) => ({
+        ...r,
+        store: "Google Play",
+      })),
+    ].sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+    if (!reviews.length) return empty("reviews", "noReviews");
+    set(
+      "reviews",
+      ...reviews.map((r) => {
+        const el = node("article", "review"),
+          top = node("div", "review-top"),
+          rating = Math.max(0, Math.min(5, Math.round(r.rating || 0)));
+        top.append(
+          node("span", "stars", "★".repeat(rating) + "☆".repeat(5 - rating)),
+          node("span", "", r.store),
+        );
+        const time = node("time", "", day(r.createdAt));
+        if (r.createdAt) time.dateTime = r.createdAt;
+        el.append(
+          top,
+          node("strong", "", r.title || r.author || t("reviewUnknown")),
+          time,
+        );
+        if ((r.body || "").length > 180) {
+          el.append(node("p", "", r.body.slice(0, 180) + "…"));
+          const details = node("details");
+          details.append(
+            node("summary", "", t("readMore")),
+            node("p", "", r.body),
+          );
+          el.append(details);
+        } else el.append(node("p", "", r.body || "—"));
+        return el;
+      }),
+    );
+  }
+  function tableValues(d) {
+    return [
+      d.date,
+      total(d),
+      d.appleRevenue,
+      d.admobRevenue,
+      d.downloads,
+      d.impressions,
+      d.clicks,
+      d.rpm,
+      d.impressions ? d.clicks / d.impressions : null,
+      d.crashRate,
+      d.anrRate,
+    ];
+  }
+  const tableFormats = [
+    day,
+    money,
+    money,
+    money,
+    int,
+    int,
+    int,
+    money,
+    pct,
+    pct,
+    pct,
+  ];
+  function renderTable() {
+    set(
+      "dailyTable",
+      ...points()
+        .slice()
+        .reverse()
+        .map((d) => {
+          const row = node("tr", d.date === selected ? "selected" : "");
+          row.append(
+            ...tableValues(d).map((v, i) =>
+              node("td", v === null ? "missing" : "", tableFormats[i](v)),
+            ),
+          );
+          return row;
+        }),
+    );
+    const s = p(),
+      c = s.coverage;
+    const values = [
+      t("total"),
+      money(c.appleDays || c.admobDays ? s.revenue.total : null),
+      money(c.appleDays ? s.revenue.apple : null),
+      money(c.admobDays ? s.revenue.admob : null),
+      int(c.appleDays ? s.acquisition.downloads : null),
+      int(c.admobDays ? s.ads.impressions : null),
+      int(c.admobDays ? s.ads.clicks : null),
+      money(s.ads.rpm),
+      pct(s.ads.ctr),
+      "—",
+      "—",
+    ];
+    const row = node("tr");
+    row.append(...values.map((v) => node("td", "", v)));
+    set("tableTotals", row);
+  }
   function renderSources() {
-    const labels = { apple: t("appStore"), play: t("googlePlay"), admob: t("admob") };
-    elements.sourceList.replaceChildren(...Object.entries(labels).map(([key, label]) => {
-      const source = dashboard.sources[key];
-      const card = elements.sourceTemplate.content.firstElementChild.cloneNode(true);
-      if (source.status === "ready") card.classList.add("is-ready");
-      if (source.status === "error") card.classList.add("is-error");
-      card.querySelector(".source-pill__name").textContent = label;
-      card.querySelector(".source-pill__detail").textContent = t("sourceDetail", { days: source.availableDays || 0, date: dateTime(source.lastSuccessAt) });
-      card.querySelector(".source-pill__status").textContent = t(source.status === "ready" ? "current" : source.status === "error" ? "error" : "pending");
-      if (source.error) card.title = source.error;
-      return card;
-    }));
+    set(
+      "sources",
+      ...Object.entries(sourceNames).map(([key, name]) => {
+        const s = data.sources[key],
+          el = node("article", `source ${s.status}`),
+          body = node("div");
+        body.append(
+          node(
+            "strong",
+            "",
+            `${name} · ${t(s.status === "ready" ? "sourceReady" : s.status === "error" ? "sourceError" : "sourcePending")}`,
+          ),
+          node(
+            "small",
+            "",
+            s.lastSuccessAt
+              ? t("lastData", { date: dateTime(s.lastSuccessAt) })
+              : t("noPrevious"),
+          ),
+        );
+        el.append(node("span", "source-dot"), body);
+        return el;
+      }),
+    );
   }
-
-  function render(data) {
-    dashboard = data;
-    const p = period();
-    elements.lastUpdated.textContent = dateTime(data.generatedAt);
-    elements.sessionLabel.textContent = data.viewer?.email ? t("signedIn", { email: data.viewer.email }) : t("protected");
-    elements.viewerEmail.textContent = data.viewer?.email || "—";
-    document.querySelectorAll("[data-range]").forEach(button => button.classList.toggle("is-active", Number(button.dataset.range) === range));
-    renderKpis(p);
-    renderRevenue(p);
-    renderInsights(p);
-    renderDetailPanels(p);
-    renderBreakdown();
-    renderReviews();
-    renderTable(p);
+  function render() {
+    const s = p(),
+      c = s.coverage;
+    $("lastUpdated").textContent = data.generatedAt
+      ? t("updated", { date: dateTime(data.generatedAt) })
+      : t("noSync");
+    $("periodDates").textContent =
+      `${day(s.start)} – ${day(s.end)} · ${t("completeDays")}`;
+    $("viewer").textContent = data.viewer?.email || "";
+    document.querySelectorAll("[data-range]").forEach((b) => {
+      b.classList.toggle("active", Number(b.dataset.range) === range);
+      b.setAttribute("aria-pressed", Number(b.dataset.range) === range);
+    });
+    renderKpis();
+    renderChart();
+    renderMix();
+    renderAds();
+    renderStores();
+    renderTable();
     renderSources();
-    setNotice(p.coverage.appleDays < Math.min(range, 7) ? "warning" : "ready", t("ready", { coverage: coverageText(p) }));
+    const errors = Object.values(data.sources).some(
+      (s) => s.status === "error",
+    );
+    const stale = Object.entries(data.sources).some(
+      ([key, s]) =>
+        s.lastSuccessAt &&
+        Date.now() - Date.parse(s.lastSuccessAt) >
+          (key === "apple" ? 48 : key === "play" ? 6 : 3) * 3600000,
+    );
+    notice(
+      errors
+        ? t("errorBody")
+        : stale
+          ? t("staleBody")
+          : c.appleDays < range || c.admobDays < range
+            ? `${t("partial")} · ${t("reportGap", { apple: c.appleDays, admob: c.admobDays, play: c.playDays, days: range })}. ${t("partialBody")}`
+            : "",
+      "warning",
+    );
+    $("exportButton").disabled = false;
   }
-
   async function load() {
     try {
-      const response = await fetch("/api/dashboard", { headers: { Accept: "application/json" }, cache: "no-store" });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      render(await response.json());
-    } catch (error) {
-      console.error(error);
-      const detail = ["127.0.0.1", "localhost"].includes(location.hostname) ? ` ${error.message}` : "";
-      setNotice("error", `${t("loadError")}${detail}`);
-    }
-  }
-
-  async function refresh() {
-    elements.refresh.disabled = true;
-    elements.refresh.classList.add("is-loading");
-    setNotice("loading", t("refreshing"));
-    try {
-      const response = await fetch("/api/refresh", { method: "POST", headers: { Accept: "application/json", "X-Pulse-Intent": "refresh" } });
-      if (!response.ok && response.status !== 202) throw new Error(`HTTP ${response.status}`);
+      const response = await fetch("/api/dashboard", {
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+      });
+      if (!response.ok) throw new Error("dashboard_unavailable");
       const result = await response.json();
-      if (!result.accepted) setNotice("ready", t("cooldown"));
-      else {
-        const labels = { apple: t("appStore"), play: t("googlePlay"), admob: t("admob") };
-        setNotice("loading", t("refreshQueued", { source: labels[result.source] || result.source }));
-        window.setTimeout(load, 4500);
-      }
-    } catch (error) {
-      console.error(error);
-      setNotice("error", t("loadError"));
-    } finally {
-      elements.refresh.disabled = false;
-      elements.refresh.classList.remove("is-loading");
+      if (!result.periods?.[range] || !Array.isArray(result.daily))
+        throw new Error("dashboard_invalid");
+      data = result;
+      render();
+      return true;
+    } catch {
+      notice(t("loadError"), "error");
+      return false;
     }
   }
-
-  document.querySelectorAll("[data-range]").forEach(button => button.addEventListener("click", () => {
-    range = Number(button.dataset.range);
-    localStorage.setItem("pulse.range", String(range));
-    if (dashboard) render(dashboard);
-  }));
-  document.querySelectorAll("[data-breakdown]").forEach(button => button.addEventListener("click", () => {
-    breakdown = button.dataset.breakdown;
-    document.querySelectorAll("[data-breakdown]").forEach(item => item.classList.toggle("is-active", item === button));
-    if (dashboard) renderBreakdown();
-  }));
-  elements.language.addEventListener("click", () => {
-    language = language === "es" ? "en" : "es";
-    localStorage.setItem("pulse.language", language);
-    applyLanguage();
+  async function refresh() {
+    $("refreshButton").disabled = true;
+    $("refreshButton").classList.add("loading");
+    clearTimeout(refreshTimer);
+    try {
+      if (!data) {
+        await load();
+        return;
+      }
+      notice(t("refreshing"));
+      const response = await fetch("/api/refresh", {
+        method: "POST",
+        headers: { Accept: "application/json", "X-Pulse-Intent": "refresh" },
+      });
+      if (!response.ok) throw new Error("refresh_unavailable");
+      const result = await response.json();
+      if (!result.accepted) {
+        await load();
+        notice(t("cooldown"));
+        return;
+      }
+      notice(
+        t("queued", { source: sourceNames[result.source] || result.source }),
+      );
+      const previous = data.sources[result.source]?.lastSuccessAt;
+      let attempts = 0;
+      const poll = async () => {
+        attempts++;
+        await load();
+        if (
+          attempts < 6 &&
+          data.sources[result.source]?.lastSuccessAt === previous &&
+          data.sources[result.source]?.status !== "error"
+        )
+          refreshTimer = setTimeout(poll, 5000);
+      };
+      refreshTimer = setTimeout(poll, 5000);
+    } catch {
+      notice(t("loadError"), "error");
+    } finally {
+      $("refreshButton").disabled = false;
+      $("refreshButton").classList.remove("loading");
+    }
+  }
+  function exportCsv() {
+    if (!data) return;
+    const headers = [
+      "date",
+      "reported_revenue_eur",
+      "apple_eur",
+      "admob_eur",
+      "ios_downloads",
+      "impressions",
+      "clicks",
+      "ecpm_eur",
+      "ctr",
+      "crash_rate",
+      "anr_rate",
+    ];
+    const csv = [headers, ...points().map(tableValues)]
+      .map((row) =>
+        row
+          .map((v) => (v === null || v === undefined ? "" : String(v)))
+          .join(","),
+      )
+      .join("\r\n");
+    const url = URL.createObjectURL(
+      new Blob([csv], { type: "text/csv;charset=utf-8" }),
+    );
+    const a = node("a");
+    a.href = url;
+    a.download = `tindrop-${p().start}-${p().end}.csv`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+  document.querySelectorAll("[data-range]").forEach((b) =>
+    b.addEventListener("click", () => {
+      range = Number(b.dataset.range);
+      save("pulse.range", String(range));
+      if (data) render();
+    }),
+  );
+  document.querySelectorAll("[data-breakdown]").forEach((b) =>
+    b.addEventListener("click", () => {
+      breakdown = b.dataset.breakdown;
+      if (data) renderRanking();
+    }),
+  );
+  $("chartMetric").addEventListener("change", (event) => {
+    metric = event.target.value;
+    selected = null;
+    if (data) {
+      renderChart();
+      renderTable();
+    }
   });
-  elements.refresh.addEventListener("click", refresh);
-  applyLanguage();
+  $("languageButton").addEventListener("click", () => {
+    lang = lang === "es" ? "en" : "es";
+    save("pulse.language", lang);
+    translate();
+  });
+  $("refreshButton").addEventListener("click", refresh);
+  $("exportButton").addEventListener("click", exportCsv);
+  translate();
   load();
 })();

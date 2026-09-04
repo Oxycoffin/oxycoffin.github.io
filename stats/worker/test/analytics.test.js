@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildDashboard } from "../src/analytics.js";
+import { buildDashboard, analyticsInternals } from "../src/analytics.js";
 import { addDays, isoDay } from "../src/dates.js";
 import { parseDelimited } from "../src/parsers.js";
 import { appleInternals } from "../src/providers/apple.js";
@@ -13,25 +13,70 @@ function stateWithData() {
     currency: "EUR",
     generatedAt: "2026-09-02T10:00:00Z",
     sources: {
-      apple: { status: "ready", data: { daily: [
-        { date: addDays(today, -35), proceeds: 10, downloads: 4, transactions: 4, refunds: 0 },
-        { date: addDays(today, -2), proceeds: 20, downloads: 8, transactions: 9, refunds: 1 }
-      ] } },
-      admob: { status: "ready", data: { daily: [
-        { date: addDays(today, -35), estimatedEarnings: 2, impressions: 100, clicks: 2, matchedRequests: 120, adRequests: 140 },
-        { date: addDays(today, -2), estimatedEarnings: 4, impressions: 200, clicks: 10, matchedRequests: 250, adRequests: 300 }
-      ] } },
-      play: { status: "ready", data: { daily: [{ date: addDays(today, -1), crashRate: 0.002, anrRate: 0.001 }] } }
-    }
+      apple: {
+        status: "ready",
+        data: {
+          daily: [
+            {
+              date: addDays(today, -35),
+              proceeds: 10,
+              downloads: 4,
+              transactions: 4,
+              refunds: 0,
+            },
+            {
+              date: addDays(today, -2),
+              proceeds: 20,
+              downloads: 8,
+              transactions: 9,
+              refunds: 1,
+            },
+          ],
+        },
+      },
+      admob: {
+        status: "ready",
+        data: {
+          daily: [
+            {
+              date: addDays(today, -35),
+              estimatedEarnings: 2,
+              impressions: 100,
+              clicks: 2,
+              matchedRequests: 120,
+              adRequests: 140,
+            },
+            {
+              date: addDays(today, -2),
+              estimatedEarnings: 4,
+              impressions: 200,
+              clicks: 10,
+              matchedRequests: 250,
+              adRequests: 300,
+            },
+          ],
+        },
+      },
+      play: {
+        status: "ready",
+        data: {
+          daily: [
+            { date: addDays(today, -1), crashRate: 0.002, anrRate: 0.001 },
+          ],
+        },
+      },
+    },
   };
 }
 
-test("dashboard combines revenue and compares equal periods", () => {
-  const dashboard = buildDashboard(stateWithData(), { email: "owner@example.com" });
+test("dashboard combines available revenue without comparing incomplete periods", () => {
+  const dashboard = buildDashboard(stateWithData(), {
+    email: "owner@example.com",
+  });
   assert.equal(dashboard.summary.revenue30, 24);
   assert.equal(dashboard.summary.downloads30, 8);
   assert.equal(dashboard.summary.adImpressions30, 200);
-  assert.equal(dashboard.summary.revenueChange, 100);
+  assert.equal(dashboard.summary.revenueChange, null);
   assert.equal(dashboard.summary.androidCrashRate, 0.002);
   assert.equal(dashboard.trends.revenue.length, 30);
   assert.equal(dashboard.version, 2);
@@ -43,6 +88,112 @@ test("dashboard combines revenue and compares equal periods", () => {
   assert.equal(dashboard.viewer.email, "owner@example.com");
 });
 
+test("complete periods compare independently of provisional today and preserve missing reports", () => {
+  const today = isoDay();
+  const daily = Array.from({ length: 60 }, (_, i) => ({
+    date: addDays(today, -i - 1),
+    proceeds: i < 30 ? 2 : 1,
+    downloads: 1,
+  }));
+  const state = {
+    sources: {
+      apple: {
+        data: {
+          daily: [...daily, { date: today, proceeds: 1000, downloads: 999 }],
+        },
+      },
+      admob: {
+        data: {
+          daily: daily.map((d) => ({
+            date: d.date,
+            estimatedEarnings: 1,
+            impressions: 100,
+          })),
+        },
+      },
+    },
+  };
+  const result = buildDashboard(state);
+  assert.equal(result.periods[30].revenue.total, 90);
+  assert.equal(result.periods[30].revenue.change, 50);
+  assert.equal(result.periods[30].acquisition.downloads, 30);
+  assert.equal(result.today.appleRevenue, 1000);
+  assert.equal(result.daily.at(-1).date, addDays(today, -1));
+  daily[0].reportAvailable = false;
+  const partial = buildDashboard(state);
+  assert.equal(partial.periods[30].revenue.change, null);
+  assert.equal(partial.periods[30].coverage.appleDays, 29);
+  assert.equal(partial.daily.at(-1).appleRevenue, null);
+  assert.equal(partial.periods[30].ads.impressionsChange, 0);
+});
+
+test("period country totals and other currencies respect the selected dates", () => {
+  const s = analyticsInternals.summarizePeriod(
+    7,
+    "2026-09-04",
+    [
+      {
+        date: "2026-08-01",
+        proceedsByCurrency: { USD: 99 },
+        countries: [{ code: "US", downloads: 100 }],
+      },
+      {
+        date: "2026-09-03",
+        proceeds: -2,
+        downloads: 3,
+        proceedsByCurrency: { EUR: -2, USD: 4 },
+        countries: [{ code: "ES", downloads: 3, proceeds: -2 }],
+      },
+    ],
+    [],
+    [],
+    null,
+    "EUR",
+  );
+  assert.deepEqual(s.revenue.otherCurrencies, { USD: 4 });
+  assert.deepEqual(s.acquisition.countries, [
+    { code: "ES", downloads: 3, proceeds: -2 },
+  ]);
+  assert.equal(s.revenue.total, -2);
+});
+
+test("Play metric arrays retain nonzero rates and absent metrics remain null", () => {
+  const date = { year: 2026, month: 9, day: 1 };
+  const rows = googleInternals.mergeVitals(
+    {
+      rows: [
+        {
+          startTime: date,
+          metrics: [
+            { metric: "crashRate", decimalValue: { value: "0.012" } },
+            {
+              metric: "userPerceivedCrashRate",
+              decimalValue: { value: "0.007" },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      rows: [
+        {
+          startTime: date,
+          metrics: [{ metric: "anrRate", decimalValue: { value: "0.003" } }],
+        },
+      ],
+    },
+  );
+  assert.deepEqual(rows, [
+    {
+      date: "2026-09-01",
+      crashRate: 0.012,
+      userPerceivedCrashRate: 0.007,
+      anrRate: 0.003,
+      userPerceivedAnrRate: null,
+    },
+  ]);
+});
+
 test("delimited parser handles quotes and embedded separators", () => {
   const rows = parseDelimited('Title\tUnits\n"One\tTwo"\t3\n', "\t");
   assert.deepEqual(rows, [{ Title: "One\tTwo", Units: "3" }]);
@@ -50,33 +201,79 @@ test("delimited parser handles quotes and embedded separators", () => {
 
 test("Apple rows filter by app and calculate proceeds", () => {
   const rows = [
-    { "Apple Identifier": "6756980913", "Product Type Identifier": "1", Units: "2", "Developer Proceeds": "0.5", "Currency of Proceeds": "EUR" },
-    { "Apple Identifier": "999", "Parent Identifier": "com.tindrop.tindrop", "Product Type Identifier": "IAY", Units: "1", "Developer Proceeds": "2", "Currency of Proceeds": "USD" },
-    { "Apple Identifier": "other", "Product Type Identifier": "1", Units: "20", "Developer Proceeds": "5", "Currency of Proceeds": "EUR" }
+    {
+      "Apple Identifier": "6756980913",
+      "Product Type Identifier": "1",
+      Units: "2",
+      "Developer Proceeds": "0.5",
+      "Currency of Proceeds": "EUR",
+    },
+    {
+      "Apple Identifier": "999",
+      "Parent Identifier": "com.tindrop.tindrop",
+      "Product Type Identifier": "IAY",
+      Units: "1",
+      "Developer Proceeds": "2",
+      "Currency of Proceeds": "USD",
+    },
+    {
+      "Apple Identifier": "other",
+      "Product Type Identifier": "1",
+      Units: "20",
+      "Developer Proceeds": "5",
+      "Currency of Proceeds": "EUR",
+    },
   ];
-  assert.deepEqual(appleInternals.summarizeRows(rows, "6756980913", "com.tindrop.tindrop", "2026-09-01", "EUR"), {
-    date: "2026-09-01", downloads: 2, refunds: 0, transactions: 3, proceeds: 1,
-    proceedsByCurrency: { EUR: 1, USD: 2 }, countries: [{ code: "—", downloads: 2, proceeds: 1 }], currency: "EUR"
-  });
+  assert.deepEqual(
+    appleInternals.summarizeRows(
+      rows,
+      "6756980913",
+      "com.tindrop.tindrop",
+      "2026-09-01",
+      "EUR",
+    ),
+    {
+      date: "2026-09-01",
+      downloads: 2,
+      refunds: 0,
+      transactions: 3,
+      proceeds: 1,
+      proceedsByCurrency: { EUR: 1, USD: 2 },
+      countries: [{ code: "—", downloads: 2, proceeds: 1 }],
+      currency: "EUR",
+    },
+  );
 });
 
 test("empty dashboard reports missing coverage instead of fake zero data", () => {
   const dashboard = buildDashboard({ currency: "EUR", sources: {} });
-  assert.deepEqual(dashboard.summary.coverage, { apple: false, admob: false, play: false, revenue: false });
+  assert.deepEqual(dashboard.summary.coverage, {
+    apple: false,
+    admob: false,
+    play: false,
+    revenue: false,
+  });
   assert.equal(dashboard.summary.revenueChange, null);
   assert.equal(dashboard.generatedAt, null);
   assert.equal(dashboard.insights[0].code, "data");
 });
 
 test("AdMob streamed rows normalize micros and dates", () => {
-  const result = admobInternals.reportRows([{ row: {
-    dimensionValues: { DATE: { value: "20260901" } },
-    metricValues: {
-      ESTIMATED_EARNINGS: { microsValue: "1230000" },
-      IMPRESSIONS: { integerValue: "42" },
-      IMPRESSION_RPM: { microsValue: "2450000" }
-    }
-  } }], "EUR");
+  const result = admobInternals.reportRows(
+    [
+      {
+        row: {
+          dimensionValues: { DATE: { value: "20260901" } },
+          metricValues: {
+            ESTIMATED_EARNINGS: { microsValue: "1230000" },
+            IMPRESSIONS: { integerValue: "42" },
+            IMPRESSION_RPM: { microsValue: "2450000" },
+          },
+        },
+      },
+    ],
+    "EUR",
+  );
   assert.equal(result[0].date, "2026-09-01");
   assert.equal(result[0].estimatedEarnings, 1.23);
   assert.equal(result[0].impressions, 42);
@@ -84,23 +281,73 @@ test("AdMob streamed rows normalize micros and dates", () => {
 });
 
 test("AdMob breakdowns expose ranked exact values", () => {
-  const result = admobInternals.breakdownRows([{ row: {
-    dimensionValues: { AD_UNIT: { value: "unit-1", displayLabel: "Rewarded" } },
-    metricValues: { ESTIMATED_EARNINGS: { microsValue: "2500000" }, IMPRESSIONS: { integerValue: "500" }, CLICKS: { integerValue: "20" } }
-  } }], "AD_UNIT", "EUR");
-  assert.deepEqual(result[0], { id: "unit-1", label: "Rewarded", earnings: 2.5, impressions: 500, clicks: 20, rpm: 5, currency: "EUR" });
+  const result = admobInternals.breakdownRows(
+    [
+      {
+        row: {
+          dimensionValues: {
+            AD_UNIT: { value: "unit-1", displayLabel: "Rewarded" },
+          },
+          metricValues: {
+            ESTIMATED_EARNINGS: { microsValue: "2500000" },
+            IMPRESSIONS: { integerValue: "500" },
+            CLICKS: { integerValue: "20" },
+          },
+        },
+      },
+    ],
+    "AD_UNIT",
+    "EUR",
+  );
+  assert.deepEqual(result[0], {
+    id: "unit-1",
+    label: "Rewarded",
+    earnings: 2.5,
+    impressions: 500,
+    clicks: 20,
+    rpm: 5,
+    currency: "EUR",
+  });
 });
 
 test("Play daily timelines use the metric set default timezone", () => {
-  assert.deepEqual(googleInternals.dateTime("2026-09-01"), { year: 2026, month: 9, day: 1 });
+  assert.deepEqual(googleInternals.dateTime("2026-09-01"), {
+    year: 2026,
+    month: 9,
+    day: 1,
+  });
 });
 
 test("Play daily timelines stop at each metric set freshness", () => {
-  assert.deepEqual(googleInternals.dailyWindow({ freshnessInfo: { freshnesses: [{
-    aggregationPeriod: "DAILY",
-    latestEndTime: { year: 2026, month: 8, day: 31, timeZone: "America/Los_Angeles" }
-  }] } }), {
-    startTime: { year: 2026, month: 7, day: 30, timeZone: "America/Los_Angeles" },
-    endTime: { year: 2026, month: 8, day: 31, timeZone: "America/Los_Angeles" }
-  });
+  assert.deepEqual(
+    googleInternals.dailyWindow({
+      freshnessInfo: {
+        freshnesses: [
+          {
+            aggregationPeriod: "DAILY",
+            latestEndTime: {
+              year: 2026,
+              month: 8,
+              day: 31,
+              timeZone: "America/Los_Angeles",
+            },
+          },
+        ],
+      },
+    }),
+    {
+      startTime: {
+        year: 2026,
+        month: 7,
+        day: 30,
+        timeZone: "America/Los_Angeles",
+      },
+      endTime: {
+        year: 2026,
+        month: 8,
+        day: 31,
+        timeZone: "America/Los_Angeles",
+      },
+    },
+  );
 });

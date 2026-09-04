@@ -1,198 +1,350 @@
 <!doctype html>
 <html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#07111f">
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-  <meta name="description" id="pageDescription" content="Panel privado de rendimiento de Tindrop.">
-  <title>Tindrop Pulse</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>◒</text></svg>">
-  <link rel="stylesheet" href="styles.css?v=3">
-</head>
-<body>
-  <header class="topbar">
-    <a class="brand" href="/" aria-label="Tindrop Pulse">
-      <span class="brand__mark" aria-hidden="true">◒</span>
-      <span class="brand__text">Tindrop <b>Pulse</b></span>
-    </a>
-    <div class="range-switch" role="group" aria-label="Periodo" data-i18n-aria="periodLabel">
-      <button type="button" data-range="7">7D</button>
-      <button type="button" data-range="30" class="is-active">30D</button>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#111827" />
+    <meta
+      name="robots"
+      content="noindex,nofollow,noarchive,nosnippet,noimageindex"
+    />
+    <meta
+      name="description"
+      id="pageDescription"
+      content="Tu app, en cifras. Panel privado de Tindrop."
+    />
+    <title>Tindrop Pulse</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>◒</text></svg>"
+    />
+    <link rel="stylesheet" href="styles.css?v=4" />
+  </head>
+  <body>
+    <a class="skip" href="#main" data-i18n="skip">Ir a los datos</a>
+    <aside class="sidebar">
+      <a class="brand" href="#main"
+        ><span class="brand-mark" aria-hidden="true">◒</span
+        ><span>Tindrop <b>Pulse</b></span></a
+      >
+      <div class="workspace">
+        <span class="app-icon" aria-hidden="true">T</span>
+        <div><strong>Tindrop</strong><small>iOS & Android</small></div>
+        <span class="lock" aria-hidden="true">●</span>
+      </div>
+      <p class="nav-label" data-i18n="workspace">Tu espacio</p>
+      <nav aria-label="Secciones" data-i18n-aria="sections">
+        <a href="#overview"
+          ><span aria-hidden="true">◫</span
+          ><span data-i18n="overview">Resumen</span></a
+        >
+        <a href="#advertising"
+          ><span aria-hidden="true">↗</span
+          ><span data-i18n="advertising">Publicidad</span></a
+        >
+        <a href="#stores"
+          ><span aria-hidden="true">▤</span
+          ><span data-i18n="stores">Tiendas y calidad</span></a
+        >
+        <a href="#daily"
+          ><span aria-hidden="true">▦</span
+          ><span data-i18n="daily">Detalle diario</span></a
+        >
+      </nav>
+      <div class="sidebar-bottom">
+        <span class="private-dot"></span
+        ><span data-i18n="private">Solo tú tienes acceso</span>
+      </div>
+    </aside>
+
+    <div class="page">
+      <header class="toolbar">
+        <span class="breadcrumb"
+          >Tindrop <span>/</span>
+          <strong data-i18n="analytics">Analítica</strong></span
+        >
+        <div class="toolbar-actions">
+          <button
+            id="languageButton"
+            class="button button-quiet"
+            type="button"
+            aria-label="Switch to English"
+          >
+            EN</button
+          ><button id="refreshButton" class="button" type="button">
+            <span class="refresh-icon" aria-hidden="true">↻</span
+            ><span data-i18n="refresh">Actualizar</span>
+          </button>
+        </div>
+      </header>
+      <main id="main" class="dashboard">
+        <section class="heading" id="overview">
+          <div>
+            <p class="eyebrow" data-i18n="yourApp">TU APP, EN CIFRAS</p>
+            <h1 data-i18n="overview">Resumen</h1>
+            <p class="updated" id="lastUpdated">—</p>
+          </div>
+          <div class="period-control">
+            <div
+              class="segmented"
+              role="group"
+              data-i18n-aria="periodLabel"
+              aria-label="Periodo"
+            >
+              <button type="button" data-range="7" data-i18n="seven">
+                7 días</button
+              ><button
+                type="button"
+                data-range="30"
+                data-i18n="thirty"
+                aria-pressed="true"
+                class="active"
+              >
+                30 días
+              </button>
+            </div>
+            <span id="periodDates">—</span>
+          </div>
+        </section>
+        <div
+          class="notice"
+          id="notice"
+          role="status"
+          aria-live="polite"
+          data-i18n="loading"
+        >
+          Cargando tus datos…
+        </div>
+        <section
+          class="kpis"
+          id="kpis"
+          aria-label="Indicadores principales"
+          data-i18n-aria="metrics"
+        ></section>
+
+        <section class="overview-grid">
+          <article class="panel trend-panel">
+            <div class="panel-head">
+              <div>
+                <h2 data-i18n="trend">Evolución</h2>
+                <p class="subtle" data-i18n="chartHelp">
+                  Selecciona un día para ver sus cifras.
+                </p>
+              </div>
+              <select
+                id="chartMetric"
+                aria-label="Métrica del gráfico"
+                data-i18n-aria="chartMetric"
+              >
+                <option value="revenue" data-i18n="revenue">
+                  Ingresos registrados
+                </option>
+                <option value="impressions" data-i18n="impressions">
+                  Impresiones
+                </option>
+                <option value="downloads" data-i18n="iosDownloads">
+                  Descargas iOS
+                </option>
+                <option value="crashRate" data-i18n="crash">
+                  Crashes Android
+                </option>
+              </select>
+            </div>
+            <div class="chart-summary" id="chartSummary"></div>
+            <div class="chart-scroll">
+              <div class="chart-canvas" id="chart"></div>
+            </div>
+            <div class="chart-caption">
+              <span id="chartCaption"></span
+              ><span class="legend"
+                ><i></i
+                ><span data-i18n="selectedDay">Día seleccionado</span></span
+              >
+            </div>
+            <div class="day-detail" id="dayDetail" aria-live="polite"></div>
+          </article>
+          <aside class="panel revenue-panel">
+            <div class="panel-head">
+              <h2 data-i18n="revenueMix">De dónde viene el ingreso</h2>
+              <span class="unit">EUR</span>
+            </div>
+            <div id="revenueMix"></div>
+            <div class="today" id="today"></div>
+            <div class="insights" id="insights"></div>
+          </aside>
+        </section>
+
+        <section class="section-heading" id="advertising">
+          <div>
+            <span class="section-number">01</span>
+            <h2 data-i18n="advertising">Publicidad</h2>
+            <span class="provider-badge">AdMob</span>
+          </div>
+          <span class="subtle" id="adCoverage"></span>
+        </section>
+        <section class="ad-grid">
+          <article class="panel">
+            <div class="panel-head">
+              <h3 data-i18n="adJourney">De la solicitud al clic</h3>
+            </div>
+            <div id="funnel" class="funnel"></div>
+            <div class="stat-row" id="adStats"></div>
+            <p class="footnote" data-i18n="funnelNote">
+              Cobertura = solicitudes con anuncio · Visualización = anuncios
+              mostrados de los disponibles · CTR = clics por impresión.
+            </p>
+          </article>
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h3 data-i18n="topRevenue">Qué genera más</h3>
+                <p
+                  class="subtle"
+                  id="breakdownDates"
+                  data-i18n="breakdownPeriod"
+                >
+                  Últimos 30 días · incluye hoy
+                </p>
+              </div>
+              <div
+                class="segmented small"
+                role="group"
+                aria-label="Desglose"
+                data-i18n-aria="breakdown"
+              >
+                <button
+                  type="button"
+                  class="active"
+                  data-breakdown="adUnits"
+                  aria-pressed="true"
+                  data-i18n="units"
+                >
+                  Unidades</button
+                ><button
+                  type="button"
+                  data-breakdown="countries"
+                  data-i18n="countries"
+                >
+                  Países
+                </button>
+              </div>
+            </div>
+            <div class="ranking" id="ranking"></div>
+          </article>
+        </section>
+
+        <section class="section-heading" id="stores">
+          <div>
+            <span class="section-number">02</span>
+            <h2 data-i18n="stores">Tiendas y calidad</h2>
+          </div>
+        </section>
+        <section class="store-grid">
+          <article class="panel">
+            <div class="panel-head">
+              <div class="provider-heading">
+                <span class="provider-icon apple-icon" aria-hidden="true"
+                  >A</span
+                >
+                <div>
+                  <h3>App Store</h3>
+                  <p class="subtle" id="appleCoverage">—</p>
+                </div>
+              </div>
+            </div>
+            <div class="store-stats" id="appleStats"></div>
+            <h4 data-i18n="downloadCountries">Descargas por país</h4>
+            <div id="appleCountries" class="country-list"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-head">
+              <div class="provider-heading">
+                <span class="provider-icon play-icon" aria-hidden="true"
+                  >▷</span
+                >
+                <div>
+                  <h3>Google Play</h3>
+                  <p class="subtle" id="playCoverage">—</p>
+                </div>
+              </div>
+            </div>
+            <div class="store-stats" id="qualityStats"></div>
+            <p class="quality-note" id="qualityNote"></p>
+            <p class="footnote" data-i18n="playLimits">
+              Esta conexión aporta estabilidad y reseñas. Instalaciones e
+              ingresos de Google Play aún no están conectados.
+            </p>
+          </article>
+          <article class="panel reviews-panel">
+            <div class="panel-head">
+              <div>
+                <h3 data-i18n="reviews">Lo que dicen los usuarios</h3>
+                <p class="subtle" data-i18n="reviewSample">
+                  Reseñas recientes · todas las fechas
+                </p>
+              </div>
+            </div>
+            <div id="reviews" class="reviews"></div>
+          </article>
+        </section>
+
+        <section class="section-heading" id="daily">
+          <div>
+            <span class="section-number">03</span>
+            <h2 data-i18n="daily">Detalle diario</h2>
+          </div>
+          <button type="button" class="button" id="exportButton" disabled>
+            <span aria-hidden="true">↓</span> CSV
+          </button>
+        </section>
+        <section class="panel table-panel">
+          <div class="table-scroll">
+            <table>
+              <caption class="sr-only" data-i18n="daily">
+                Detalle diario
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="date">Fecha</th>
+                  <th scope="col" data-i18n="revenue">Ingresos registrados</th>
+                  <th scope="col">Apple</th>
+                  <th scope="col">AdMob</th>
+                  <th scope="col" data-i18n="iosDownloads">Descargas iOS</th>
+                  <th scope="col" data-i18n="impressions">Impresiones</th>
+                  <th scope="col" data-i18n="clicks">Clics</th>
+                  <th scope="col">eCPM</th>
+                  <th scope="col">CTR</th>
+                  <th scope="col" data-i18n="crash">Crashes Android</th>
+                  <th scope="col">ANR</th>
+                </tr>
+              </thead>
+              <tbody id="dailyTable"></tbody>
+              <tfoot id="tableTotals"></tfoot>
+            </table>
+          </div>
+          <div class="table-note" data-i18n="tableNote">
+            — = sin datos publicados. Los ingresos suman los importes
+            disponibles en EUR; pueden estar incompletos. Hoy se muestra por
+            separado por ser provisional.
+          </div>
+        </section>
+        <section
+          class="sources"
+          id="sources"
+          aria-label="Estado de las conexiones"
+          data-i18n-aria="sources"
+        ></section>
+        <footer>
+          <span
+            >Tindrop Pulse <span class="footer-dot">·</span>
+            <span data-i18n="private">Solo tú tienes acceso</span></span
+          ><span id="viewer">—</span>
+        </footer>
+      </main>
     </div>
-    <div class="topbar__actions">
-      <button class="icon-button" id="languageButton" type="button" aria-label="Cambiar idioma">EN</button>
-      <button class="refresh-button" id="refreshButton" type="button">
-        <span class="refresh-button__icon" aria-hidden="true">↻</span>
-        <span data-i18n="refresh">Actualizar</span>
-      </button>
-    </div>
-  </header>
-
-  <main class="dashboard">
-    <section class="page-heading" aria-labelledby="pageTitle">
-      <div>
-        <p class="overline" data-i18n="privateView">Panel privado · Tindrop</p>
-        <h1 id="pageTitle" data-i18n="pageTitle">Rendimiento</h1>
-      </div>
-      <div class="page-heading__meta">
-        <span class="live-dot" aria-hidden="true"></span>
-        <span><span data-i18n="updated">Actualizado</span> <strong id="lastUpdated">—</strong></span>
-        <small id="sessionLabel" data-i18n="protected">Acceso protegido</small>
-      </div>
-    </section>
-
-    <div class="notice notice--loading" id="notice" role="status" aria-live="polite">
-      <span class="notice__dot" aria-hidden="true"></span>
-      <span id="noticeText" data-i18n="loading">Cargando datos…</span>
-    </div>
-
-    <section class="kpi-grid" id="kpiGrid" aria-label="Indicadores principales" data-i18n-aria="kpiLabel"></section>
-
-    <section class="overview-grid">
-      <article class="panel revenue-panel" aria-labelledby="revenueTitle">
-        <div class="panel-heading">
-          <div>
-            <p class="overline" data-i18n="monetization">Monetización</p>
-            <h2 id="revenueTitle" data-i18n="revenueTrend">Ingresos diarios</h2>
-          </div>
-          <div class="panel-heading__numbers" id="revenueHeadline"></div>
-        </div>
-        <div class="chart-shell chart-shell--large">
-          <div class="chart-y-axis" id="revenueAxis" aria-hidden="true"></div>
-          <div class="chart" id="revenueChart" role="img" aria-label="Ingresos diarios"></div>
-          <div class="chart-tooltip" id="revenueTooltip" hidden></div>
-        </div>
-        <div class="chart-legend" aria-label="Leyenda" data-i18n-aria="legendLabel">
-          <span><i class="swatch swatch--apple"></i><span data-i18n="appleProceeds">Ingresos Apple</span></span>
-          <span><i class="swatch swatch--admob"></i><span data-i18n="adRevenue">Ingresos AdMob</span></span>
-        </div>
-      </article>
-
-      <aside class="panel signal-panel" aria-labelledby="signalsTitle">
-        <div class="panel-heading">
-          <div>
-            <p class="overline" data-i18n="signals">Señales</p>
-            <h2 id="signalsTitle" data-i18n="whatChanged">Qué merece atención</h2>
-          </div>
-        </div>
-        <div class="insight-list" id="insightList"></div>
-      </aside>
-    </section>
-
-    <section class="three-grid">
-      <article class="panel detail-panel" aria-labelledby="adsTitle">
-        <div class="panel-heading panel-heading--compact">
-          <div>
-            <p class="overline">AdMob</p>
-            <h2 id="adsTitle" data-i18n="adPerformance">Rendimiento publicitario</h2>
-          </div>
-        </div>
-        <div class="stat-grid" id="adStats"></div>
-        <div class="mini-chart" id="adChart" role="img" aria-label="Ingresos e impresiones de AdMob"></div>
-      </article>
-
-      <article class="panel detail-panel" aria-labelledby="acquisitionTitle">
-        <div class="panel-heading panel-heading--compact">
-          <div>
-            <p class="overline">App Store</p>
-            <h2 id="acquisitionTitle" data-i18n="acquisition">Adquisición</h2>
-          </div>
-        </div>
-        <div class="stat-grid" id="acquisitionStats"></div>
-        <div class="mini-chart mini-chart--downloads" id="downloadChart" role="img" aria-label="Descargas diarias"></div>
-      </article>
-
-      <article class="panel detail-panel" aria-labelledby="qualityTitle">
-        <div class="panel-heading panel-heading--compact">
-          <div>
-            <p class="overline">Google Play</p>
-            <h2 id="qualityTitle" data-i18n="quality">Calidad y reseñas</h2>
-          </div>
-        </div>
-        <div class="stat-grid" id="qualityStats"></div>
-        <div class="quality-empty" id="qualityMessage"></div>
-      </article>
-    </section>
-
-    <section class="two-grid">
-      <article class="panel" aria-labelledby="breakdownTitle">
-        <div class="panel-heading panel-heading--compact">
-          <div>
-            <p class="overline" data-i18n="breakdown">Desglose</p>
-            <h2 id="breakdownTitle" data-i18n="whereRevenue">Dónde se genera</h2>
-          </div>
-          <div class="mini-switch" id="breakdownSwitch" role="group" aria-label="Tipo de desglose">
-            <button type="button" class="is-active" data-breakdown="adUnits" data-i18n="adUnits">Unidades</button>
-            <button type="button" data-breakdown="countries" data-i18n="countries">Países</button>
-          </div>
-        </div>
-        <div class="ranking-list" id="breakdownList"></div>
-      </article>
-
-      <article class="panel" aria-labelledby="reviewsTitle">
-        <div class="panel-heading panel-heading--compact">
-          <div>
-            <p class="overline" data-i18n="voice">Usuarios</p>
-            <h2 id="reviewsTitle" data-i18n="recentReviews">Reseñas recientes</h2>
-          </div>
-        </div>
-        <div class="review-list" id="reviewList"></div>
-      </article>
-    </section>
-
-    <section class="panel table-panel" aria-labelledby="dailyTitle">
-      <div class="panel-heading panel-heading--compact">
-        <div>
-          <p class="overline" data-i18n="detail">Detalle</p>
-          <h2 id="dailyTitle" data-i18n="dailyData">Datos por día</h2>
-        </div>
-        <small id="coverageLabel"></small>
-      </div>
-      <div class="table-scroll">
-        <table>
-          <thead>
-            <tr>
-              <th data-i18n="date">Fecha</th>
-              <th data-i18n="totalRevenue">Ingresos</th>
-              <th data-i18n="apple">Apple</th>
-              <th data-i18n="admob">AdMob</th>
-              <th data-i18n="downloads">Descargas</th>
-              <th data-i18n="impressions">Impresiones</th>
-              <th data-i18n="clicks">Clics</th>
-              <th>RPM</th>
-              <th data-i18n="matchRate">Match</th>
-            </tr>
-          </thead>
-          <tbody id="dailyTable"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="source-strip" id="sourceList" aria-label="Estado de las fuentes" data-i18n-aria="sourceLabel"></section>
-
-    <footer>
-      <span data-i18n="privacy">Datos agregados; los secretos no llegan al navegador.</span>
-      <span>Cloudflare Access · <span id="viewerEmail">—</span></span>
-    </footer>
-  </main>
-
-  <template id="kpiTemplate">
-    <article class="kpi-card">
-      <div class="kpi-card__top"><span class="kpi-card__label"></span><span class="kpi-card__badge"></span></div>
-      <strong class="kpi-card__value">—</strong>
-      <div class="kpi-card__footer"><span class="kpi-card__change"></span><span class="kpi-card__context"></span></div>
-    </article>
-  </template>
-
-  <template id="sourceTemplate">
-    <article class="source-pill">
-      <span class="source-pill__dot" aria-hidden="true"></span>
-      <div><strong class="source-pill__name"></strong><small class="source-pill__detail"></small></div>
-      <span class="source-pill__status"></span>
-    </article>
-  </template>
-
-  <script src="app.js?v=3" defer></script>
-</body>
+    <script src="app.js?v=4" defer></script>
+  </body>
 </html>

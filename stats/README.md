@@ -15,25 +15,35 @@ Workers y nunca se entregan al navegador.
 - KV conserva una instantánea agregada. El navegador solo lee `/api/dashboard`.
 - Un cron cada 30 minutos actualiza como máximo una fuente: AdMob cada 30
   minutos, Play cada dos horas y Apple diariamente. Mientras falta histórico,
-  Apple completa hasta 20 días por actualización y se considera elegible en
+  Apple consulta hasta 3 días por actualización y se considera elegible en
   cada ciclo del cron hasta reunir 60 días.
 - La actualización manual tiene un enfriamiento de cinco minutos y ejecuta la
   fuente más atrasada.
 
 ## Datos mostrados
 
-El panel ofrece periodos de 7 y 30 días, cifras exactas en el gráfico de
-ingresos, comparativa con el periodo anterior y tabla diaria. Resume por
+El panel ofrece periodos de 7 y 30 días completos (hasta ayer), gráficos
+seleccionables de ingresos, impresiones, descargas iOS y crashes, cifras
+visibles y detalle del día por teclado o toque. Incluye tabla diaria y CSV.
+Hoy se muestra aparte, como dato provisional de AdMob. Resume por
 separado:
 
-- App Store: proceeds, descargas, transacciones, reembolsos, países y reseñas.
+- App Store: proceeds, descargas iniciales, unidades devueltas, países y reseñas.
 - AdMob: ingresos, impresiones, clics, solicitudes, match rate, show rate, CTR,
   RPM y desgloses por unidad publicitaria y país.
-- Google Play: crash rate, ANR, picos del periodo, nota y reseñas recientes.
+- Google Play: crash rate, ANR, picos del periodo y reseñas recientes.
+
+La comparativa solo se calcula con dos periodos completos de la misma fuente.
+Los ingresos registrados suman los importes disponibles, no incluyen compras
+ni suscripciones de Google Play y se identifican como parciales si faltan días.
+Los desgloses AdMob tienen su propia ventana de 30 días, visible en el panel;
+los países de Apple sí siguen el periodo elegido. Las reseñas son muestras
+recientes, no la puntuación global de la tienda.
 
 Las APIs no exponen exactamente todos los informes disponibles en las consolas;
 cuando una métrica no está disponible se muestra `—` en lugar de inventar un
-cero. Los desgloses y las reseñas son opcionales: un permiso insuficiente no
+cero. Un informe Apple con 404 queda como no disponible, no como ventas cero.
+Los desgloses y las reseñas son opcionales: un permiso insuficiente no
 impide actualizar el resto de la fuente.
 
 ## Producción
