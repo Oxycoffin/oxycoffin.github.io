@@ -1,56 +1,88 @@
-name: Bruma repair verification
+name: Publish verified Bruma repair
 on:
   push:
     branches: [main]
     paths: ['.github/workflows/bruma-repair.yml']
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
+  actions: read
 concurrency:
   group: bruma-repair-verification
-  cancel-in-progress: true
+  cancel-in-progress: false
 jobs:
-  verify:
+  publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/download-artifact@v4
         with:
-          python-version: '3.12'
-      - name: Stage candidate without publishing
+          name: bruma-repair-review
+          run-id: 34415695214
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: approved
+      - name: Validate reviewed build and preserve concurrent changes
         shell: python
         run: |
-          import urllib.request,hashlib,zipfile,io,pathlib
-          url='https://at.adobe.com/41pwBAaaoMBJrAt3'
-          with urllib.request.urlopen(url,timeout=90) as r: payload=r.read()
-          assert hashlib.sha256(payload).hexdigest()=='16f3b8152ec0adb540bffe1dec5355b447effa6c7d657d4f685a28e10e04141e', 'Candidate integrity mismatch'
-          allowed={'index.html','renderer.js','style-v2.css','main-v2.js','puzzles-v2.js','REVISION.md','qa/browser_check.py'}
-          z=zipfile.ZipFile(io.BytesIO(payload))
-          assert set(z.namelist())==allowed
-          for n in z.namelist():
-              p=pathlib.Path('bruma')/n
-              p.parent.mkdir(parents=True,exist_ok=True)
-              p.write_bytes(z.read(n))
-          print('Candidate staged; public files remain unchanged.')
-      - name: Install test browsers
+          import pathlib,hashlib,json,subprocess,shutil
+          report=json.loads(pathlib.Path('approved/bruma-qa-results/report.json').read_text())
+          assert report.get('passed') and len(report['checks'])>=20
+          assert not report.get('errors') and not report.get('webkit_warning')
+          assert subprocess.check_output(['git','hash-object','bruma/index.html'],text=True).strip()=='57447585d416a555955c445f2370d7179df85f5e','Game changed since review; do not overwrite'
+          assert subprocess.check_output(['git','rev-parse','HEAD:bruma/assets'],text=True).strip()=='bca8818d8e7782b307e07e03a59c802156e155d4','Artwork changed since review'
+          hashes={'index.html':'c06fc576670c303bd586f0d7aa5164b2152e0229c72c18869598ed471b0f3e08','renderer.js':'1f4b0776edb5b5f9c8fa6dd312719bd39f1fe9ddaa0f1897ddf8fc1c6a97350f','style-v2.css':'39c72696b72569a8e546a03ce6cbbef98caa3484c8c9b273139d8b7182571046','main-v2.js':'a3ec494b1aa8ca24f591435dfc79acdff5a5c58e3083b040728a2fc9c2ed2e31','puzzles-v2.js':'3c87114b1947ed226292fbadeddc64e91d155ac1d115e2536b88d0bac41d5c58','REVISION.md':'479e7efddcadba6e4b03687173b79b79fbab533d1c3b400788e956095555e77e','qa/browser_check.py':'ffc17160c98af2e60b0b1f27378971380f0ce09bb506837e3be46f6a1f917ed9'}
+          for name,digest in hashes.items():
+              src=pathlib.Path('approved/bruma')/name
+              assert hashlib.sha256(src.read_bytes()).hexdigest()==digest,name
+              dst=pathlib.Path('bruma')/name
+              assert name=='index.html' or not dst.exists(),'New target already exists: '+name
+          for name in hashes:
+              dst=pathlib.Path('bruma')/name;dst.parent.mkdir(parents=True,exist_ok=True)
+              shutil.copyfile(pathlib.Path('approved/bruma')/name,dst)
+          pathlib.Path('/tmp/bruma-reviewed-hashes.json').write_text(json.dumps(hashes))
+          pathlib.Path('/tmp/bruma-approved-tests.json').write_text(json.dumps(report))
+          shutil.rmtree('approved')
+          print('Verified exact candidate: 20 browser checks; only seven game files staged.')
+      - name: Commit the reviewed game only
         run: |
-          python -m pip install playwright==1.55.0
-          python -m playwright install --with-deps chromium webkit
-      - name: JavaScript syntax checks
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add bruma/index.html bruma/renderer.js bruma/style-v2.css bruma/main-v2.js bruma/puzzles-v2.js bruma/REVISION.md bruma/qa/browser_check.py
+          git diff --cached --stat
+          git commit -m 'fix: reconstruir page' -m 'BRUMA 2.1: coordenadas y proporciones coherentes, orientación de sprite y normales, inventario real, escenas conectadas y puzles de observación y rayos. Pruebas de navegador completas y capturas revisadas. Se conserva el resto de la web.' -m 'Tests: 20 checks passed; Chromium playthrough and WebKit startup/movement.' -m 'Next: verify the published static payload.'
+          git pull --rebase origin main
+          git push origin HEAD:main
+          echo "BRUMA_DEPLOY_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - name: Verify the actual public website
+        shell: python
         run: |
-          node --check bruma/main-v2.js
-          node --check bruma/puzzles-v2.js
-          node --check bruma/renderer.js
-      - name: Playthrough and visual regression
-        env:
-          BRUMA_QA_OUT: bruma-qa-results
-        run: python bruma/qa/browser_check.py
+          import urllib.request,pathlib,hashlib,json,time,os
+          hashes=json.loads(pathlib.Path('/tmp/bruma-reviewed-hashes.json').read_text())
+          base='https://lagartijalabs.com/bruma/'
+          names=['index.html','renderer.js','main-v2.js','puzzles-v2.js','style-v2.css']
+          result={'url':base,'commit':os.environ['BRUMA_DEPLOY_SHA'],'verified':False,'files':{}}
+          for attempt in range(30):
+              try:
+                  for name in names:
+                      url=base+('' if name=='index.html' else name)+'?revision='+result['commit']
+                      req=urllib.request.Request(url,headers={'Cache-Control':'no-cache','Accept-Encoding':'identity'})
+                      with urllib.request.urlopen(req,timeout=20) as r:
+                          data=r.read();mime=r.headers.get('Content-Type','');status=r.status
+                      assert status==200
+                      assert hashlib.sha256(data).hexdigest()==hashes[name],name+' is not deployed yet'
+                      if name.endswith('.js'): assert 'javascript' in mime,mime
+                      if name.endswith('.css'): assert 'text/css' in mime,mime
+                      result['files'][name]={'status':status,'sha256':hashes[name],'content_type':mime}
+                  result['verified']=True;break
+              except Exception as e:
+                  print('Waiting for Pages:',str(e),flush=True);time.sleep(10)
+          pathlib.Path('bruma-live-verification.json').write_text(json.dumps(result,indent=2))
+          assert result['verified'],'Public website did not match the approved build in time'
+          print(json.dumps(result,indent=2))
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: bruma-repair-review
-          path: |
-            bruma-qa-results/
-            bruma/
+          name: bruma-live-verification
+          path: bruma-live-verification.json
           retention-days: 5
