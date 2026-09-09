@@ -1,0 +1,57 @@
+{
+  "harbor": {
+    "width": 1280,
+    "height": 720,
+    "sprite": false
+  },
+  "tavern": {
+    "width": 1280,
+    "height": 720,
+    "sprite": false
+  },
+  "archive": {
+    "width": 1280,
+    "height": 720,
+    "sprite": false
+  },
+  "lighthouse": {
+    "width": 1280,
+    "height": 720,
+    "sprite": false
+  },
+  "cat-idle": {
+    "width": 320,
+    "height": 280,
+    "sprite": true
+  },
+  "cat-walk": {
+    "width": 320,
+    "height": 280,
+    "sprite": true
+  },
+  "cat-look": {
+    "width": 320,
+    "height": 280,
+    "sprite": true
+  },
+  "cat-sit": {
+    "width": 320,
+    "height": 280,
+    "sprite": true
+  },
+  "celso": {
+    "width": 360,
+    "height": 480,
+    "sprite": true
+  },
+  "lua": {
+    "width": 360,
+    "height": 480,
+    "sprite": true
+  },
+  "ofelia": {
+    "width": 360,
+    "height": 480,
+    "sprite": true
+  }
+}
