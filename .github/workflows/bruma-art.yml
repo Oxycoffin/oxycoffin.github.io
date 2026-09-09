@@ -1,0 +1,96 @@
+name: Bruma original artwork
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/bruma-art.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: bruma-art
+  cancel-in-progress: false
+jobs:
+  artwork:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pillow numpy scipy
+      - name: Import original art and bake normal maps
+        shell: python
+        run: |
+          import urllib.request, pathlib, time, json
+          import numpy as np
+          from PIL import Image
+          from scipy.ndimage import gaussian_filter, distance_transform_edt
+          root = pathlib.Path('bruma'); src = root/'source'; out = root/'assets'
+          src.mkdir(parents=True, exist_ok=True); out.mkdir(parents=True, exist_ok=True)
+          ids = {'harbor':'a81991d5-a7a4-4bc8-8219-984ec4b10452', 'tavern':'a0433100-69f5-4048-aef1-9c9cb9a08f1d', 'archive':'b4ebdc0c-e98c-4d6d-8a7c-34c5937ec53d', 'lighthouse':'bd279d30-d00e-469e-aa64-b618d923d4c3', 'cat-sheet':'242c1adc-e0fa-4386-a022-8656ff861c30', 'cast-sheet':'0c78f4d4-3a9b-4a53-9620-6d906561cb12'}
+          for name, ident in ids.items():
+              path = src/(name+'.png')
+              if not path.exists():
+                  url='https://photoshop-api.adobe.io/v2/short-url/urn:aaid:ps:US:'+ident
+                  for attempt in range(3):
+                      try:
+                          with urllib.request.urlopen(url,timeout=90) as r: path.write_bytes(r.read())
+                          Image.open(path).verify(); break
+                      except Exception:
+                          path.unlink(missing_ok=True)
+                          if attempt==2: raise
+                          time.sleep(3)
+              print(name, Image.open(path).size)
+          def normal(im, sprite=False):
+              a=np.asarray(im.convert('RGBA'),dtype=np.float32)/255
+              lum=a[:,:,:3]@np.array([.2126,.7152,.0722],dtype=np.float32)
+              if sprite:
+                  mask=a[:,:,3]>.2
+                  distance=gaussian_filter(distance_transform_edt(mask).astype(np.float32),1.8)
+                  height=np.minimum(distance,28)**.7*1.4+gaussian_filter(lum,.8)*2.5
+              else:
+                  height=gaussian_filter(lum,.7)*4+gaussian_filter(lum,3)*8+gaussian_filter(lum,12)*5
+              dy,dx=np.gradient(height)
+              n=np.stack([-dx,-dy,np.ones_like(dx)],-1); n/=np.linalg.norm(n,axis=-1,keepdims=True)
+              rgba=np.empty(a.shape,dtype=np.uint8); rgba[:,:,:3]=np.clip((n*.5+.5)*255,0,255).astype('uint8'); rgba[:,:,3]=255
+              return Image.fromarray(rgba)
+          manifest={}
+          def save(name,im,sprite=False):
+              im.save(out/(name+'.webp'),lossless=True)
+              normal(im,sprite).save(out/(name+'.normal.png'),optimize=True)
+              manifest[name]={'width':im.width,'height':im.height,'sprite':sprite}
+          for name in ['harbor','tavern','archive','lighthouse']:
+              im=Image.open(src/(name+'.png')).convert('RGBA').resize((1280,720),Image.Resampling.LANCZOS)
+              save(name,im)
+          def frame(im,name,w=320,h=280,flip=False):
+              box=im.getchannel('A').point(lambda a:255 if a>30 else 0).getbbox()
+              if not box: raise ValueError('Empty sprite '+name)
+              im=im.crop(box)
+              if flip: im=im.transpose(Image.Transpose.FLIP_LEFT_RIGHT)
+              im.thumbnail((w-20,h-20),Image.Resampling.LANCZOS)
+              canvas=Image.new('RGBA',(w,h));canvas.alpha_composite(im,((w-im.width)//2,h-im.height-6))
+              save(name,canvas,True)
+          cat=Image.open(src/'cat-sheet.png').convert('RGBA'); w,h=cat.size
+          for name,box,flip in [('cat-idle',(0,0,w//2,h//2),False),('cat-walk',(w//2,0,w,h//2),True),('cat-look',(0,h//2,w//2,h),False),('cat-sit',(w//2,h//2,w,h),True)]:
+              frame(cat.crop(box),name,320,280,flip)
+          cast=Image.open(src/'cast-sheet.png').convert('RGBA');w,h=cast.size
+          for name,x0,x1 in [('celso',0,.385),('lua',.385,.67),('ofelia',.67,1)]:
+              frame(cast.crop((int(x0*w),0,int(x1*w),h)),name,360,480)
+          (out/'manifest.json').write_text(json.dumps(manifest,indent=2))
+          (src/'README.md').write_text('# Bruma original artwork\n\nSix newly generated Adobe Firefly plates, created specifically for this adventure, not reused from previous cat artwork. Cat and cast sheets were isolated with Adobe background removal.\n\nNormal maps are approximate multiscale height derivatives, with silhouette-distance volume for characters; they are not geometrically reconstructed 3D surfaces. The runtime renderer actually decodes and lights these normals.\n\nSeis imágenes originales nuevas para esta aventura. Mapas de normales aproximados a partir de relieves y volumen de silueta, iluminados de verdad por el motor.\n')
+      - name: Save only Bruma artwork
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add bruma/assets bruma/source
+          if ! git diff --cached --quiet; then
+            git commit -m 'assets: incorporar images' -m 'Arte original de Bruma, atlas de personajes y mapas de normales derivados. No se modifican otras páginas.'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bruma-art
+          path: bruma/
+          retention-days: 7
