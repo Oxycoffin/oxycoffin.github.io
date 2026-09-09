@@ -22,9 +22,9 @@ jobs:
         shell: python
         run: |
           import urllib.request,hashlib,zipfile,io,pathlib
-          url='https://at.adobe.com/MdBH4mevPP8D4Hpo'
+          url='https://at.adobe.com/41pwBAaaoMBJrAt3'
           with urllib.request.urlopen(url,timeout=90) as r: payload=r.read()
-          assert hashlib.sha256(payload).hexdigest()=='22447c6892f8776e7235b6dad59f47452f53d83e452d41fd41226537b5e8da61', 'Candidate integrity mismatch'
+          assert hashlib.sha256(payload).hexdigest()=='16f3b8152ec0adb540bffe1dec5355b447effa6c7d657d4f685a28e10e04141e', 'Candidate integrity mismatch'
           allowed={'index.html','renderer.js','style-v2.css','main-v2.js','puzzles-v2.js','REVISION.md','qa/browser_check.py'}
           z=zipfile.ZipFile(io.BytesIO(payload))
           assert set(z.namelist())==allowed
