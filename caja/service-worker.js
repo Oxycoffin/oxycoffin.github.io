@@ -1,10 +1,9 @@
-const CACHE_NAME = 'caja-clara-v3';
-const APP_FILES = ['./', 'index.html', 'styles.css?v=3', 'core.js?v=3', 'app.js?v=3', 'manifest.webmanifest'];
+const CACHE_NAME = 'caja-clara-v6';
+const APP_FILES = ['./', 'index.html', 'styles.css?v=6', 'core.js?v=3', 'illustrations.js?v=6', 'app.js?v=6', 'manifest.webmanifest'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_FILES)).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', event => {
-  // This origin also hosts other tools. Never delete their caches.
   event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('caja-clara-') && key !== CACHE_NAME).map(key => caches.delete(key)))).then(() => self.clients.claim()));
 });
 self.addEventListener('fetch', event => {
@@ -23,6 +22,6 @@ self.addEventListener('fetch', event => {
     if (cached) return cached;
     const response = await fetch(event.request);
     if (response.ok) await cache.put(event.request, response.clone());
-    return response; // Never return HTML for a missing script or stylesheet.
+    return response;
   }));
 });

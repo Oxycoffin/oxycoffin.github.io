@@ -1,118 +1,103 @@
-# Caja Clara · Daily wizard
+# Caja Clara · Saldo en directo
 
 ## Español
 
-Aplicación estática y privada de arqueo diario. Sin dependencias, servidor de datos,
-analítica ni cuenta. Conserva la ruta `/caja/`.
+Utilidad estática sin dependencias ni cuentas. Todos los importes se calculan en
+céntimos enteros; el historial permanece en el navegador.
 
-### Flujo
+### Uso diario
 
-Fecha y fondo esperado (350 € inicial, configurable) → sobre **1-Pablo** → sobre
-**2-Victor** → siete denominaciones de billetes → ocho denominaciones de monedas
-→ revisión → guardar resultado. Un único campo, teclado propio y controles
-Atrás/Siguiente durante el recuento; no hay que buscar campos en una lista. Los
-campos vacíos equivalen a cero. Enter avanza; Alt+flechas navega en ordenador.
-La revisión permite volver a cualquier denominación y a los sobres.
+La aplicación abre directamente en **1-Pablo**, sigue con **2-Victor**, siete
+billetes, ocho monedas y revisión. No hay pantalla inicial de fecha o nombre.
+Al guardar por primera vez se asigna automáticamente la fecha local de ese momento,
+incluso si el borrador comenzó el día anterior. Editar el mismo registro conserva
+su fecha original. Un nuevo recuento recibe un ID nuevo.
 
-**Efectivo que queda = efectivo contado − 1-Pablo − 2-Victor.**
-**Descuadre = efectivo que queda − fondo esperado.**
+El marcador permanece fuera del área desplazable, tanto durante el recuento como
+en ajustes e historial. Muestra saldo, contado, cada sobre como retirada negativa
+y comparación con el fondo esperado. La fórmula es siempre:
 
-Los sobres son retiradas pendientes: su dinero debe seguir incluido en el efectivo
-contado. Si ya se retiró un sobre, introducir 0 para no descontarlo dos veces. Un
-importe total de sobres superior al efectivo contado impide guardar.
+**saldo = contado − 1-Pablo − 2-Victor**
 
-### Cubetas
+Ejemplo: sobres de 100 € y 50 €, sin contar aún nada, muestran **−150 €**.
+Al contar 500 €, muestran **350 €**. No se vuelve a descontar al guardar.
+Si el dinero de un sobre ya se retiró físicamente y no se cuenta, introducir 0.
+Un saldo provisional negativo es normal; un resultado final con sobres superiores
+al efectivo total requiere revisar los importes antes de guardar.
 
-Ajustes guarda una tara individual en gramos (hasta tres decimales) para cada
-moneda. Inicialmente todas son 0 g. En modo peso se introduce el peso bruto de la
-cubeta llena. Se resta su tara, se divide entre el peso unitario de la moneda y se
-redondea al entero más cercano. Un campo vacío o a 0 representa ninguna moneda;
-un peso positivo menor que la tara da error. La conversión cantidad/peso incorpora
-la tara, por lo que no cambia el valor monetario del recuento.
+Atrás/Siguiente mantienen las cantidades. Enter avanza y Alt+flechas navega;
+el primer paso no permite retroceder a un paso inexistente. Los sobres se pueden
+corregir tocándolos en el marcador. Las monedas permiten cambiar peso/unidades
+sin abandonar el paso. Vacío equivale a cero.
 
-Cada borrador y resultado conserva su propia copia de las taras. Cambiar los
-ajustes no recalcula el historial. Se puede aplicar expresamente la configuración
-al borrador actual, con confirmación cuando ya se han introducido pesos.
+### Taras y ajustes
 
-### Historial e importación
+Cada moneda tiene su tara, inicialmente 0 g. En peso se introduce el peso de la
+cubeta llena. El fondo habitual (350 € inicialmente), modo y taras están en Ajustes.
+Se pueden guardar para nuevos recuentos o aplicar expresamente al actual.
+Los registros anteriores mantienen sus valores y taras originales.
 
-Los resultados se identifican por fecha, sin nombre ni turno. Se permiten varios
-resultados en una misma fecha. Guardar de nuevo el mismo borrador actualiza su
-registro en lugar de duplicarlo. «Nuevo recuento» genera un ID distinto y pone a
-cero sobres y denominaciones, conservando los ajustes.
+### Historial y CSV
 
-Se migran automáticamente `caja-clara.history.v1` y `caja-clara.draft.v1` a claves
-v2; las claves v1 permanecen intactas como respaldo. No se trunca el historial a
-100 registros. Si hay corrupción o falta de espacio, se avisa y no se afirma que
-el resultado se haya guardado. Un historial ilegible no se sobrescribe y puede
-descargarse en bruto para recuperación.
+Se mantienen las claves v2 y la migración v1, conservando los originales. Importar
+CSV añade filas tras una vista previa y evita duplicados; nunca reemplaza todo el
+historial. Los nombres de antiguos CSV se ignoran. CSV antiguos sin denominaciones
+conservan los totales sin inventar detalles. Los nuevos exportan sobres, cantidades
+y taras para poder reimportarlos. No hay truncado a 100 registros.
 
-Historial → Importar CSV reconoce el formato anterior:
+### Ilustraciones y movimiento
 
-`Fecha;Nombre;Billetes EUR;Monedas EUR;Total EUR;Esperado EUR;Diferencia EUR`
+SVG originales integrados: dos sobres con pliegues y billete interior; billetes con
+paletas por denominación; monedas redondas de cobre, doradas y bimetálicas. Se
+reutilizan en ajustes y revisión. Entrada de billetes, giro breve de monedas y
+movimiento del papel del sobre, sin bucles infinitos. Los números cambian de forma
+exacta e inmediata; solo su entrada visual tiene una transición de 160 ms.
+`prefers-reduced-motion` desactiva todas las animaciones y transiciones.
 
-Admite UTF-8/BOM, separador punto y coma, coma o tabulador, comillas escapadas,
-campos multilínea, decimales españoles y fechas ISO o día/mes/año. Presenta una
-vista previa con nuevos registros, duplicados y errores por fila. Solo añade
-registros tras confirmar; no reemplaza ni borra el historial existente. La columna
-Nombre se ignora. El CSV antiguo no contenía cantidades por denominación: se
-conservan sus importes, sin fabricar cantidades.
+### Validación de esta revisión
 
-La exportación v2 incluye contado, sobres, resultado neto, referencia, diferencia,
-fecha/hora de registro, ID, modo, cantidades y taras. Puede reimportarse sin perder
-esos detalles. Los datos solo permanecen en ese navegador/origen; exportar antes
-de borrar datos o cambiar de dispositivo. Un archivo CSV no sincroniza datos.
+Ejecutado: **12 pruebas nuevas de saldo/cálculo/CSV y 4 del service worker**, todas
+superadas, más **14 pruebas Chromium de interfaz**. Las de interfaz cubren nueve
+tamaños (320×568, 360×640, 375×667, 390×664, 390×844, 430×932, 844×390, 667×375 y
+1280×800), comprobando saldo, teclado y botones visibles y sin solapamientos.
+También cubren fecha automática, borradores, taras, cambio de modo, CSV, errores de
+almacenamiento e idioma. Se conserva la suite original core.test.cjs sin cambios.
 
-### Comprobación
-
-Desde la raíz del repositorio:
+El navegador del entorno bloqueó la navegación HTTP con ERR_BLOCKED_BY_ADMINISTRATOR.
+Por ello, estas 14 pruebas se ejecutaron inyectando el DOM y simulando Storage.
+No verifican persistencia nativa, Safari/iPhone físico ni actualización offline
+real. La prueba HTTP/offline se omite explícitamente en ese modo; los manejadores
+del service worker sí se comprueban con cuatro pruebas unitarias.
 
 ```sh
 node --test caja/tests/*.test.cjs
 python -m http.server 8765
 # En otra terminal, con Playwright y Chromium instalados:
 python caja/tests/browser_test.py
-```
-
-El navegador y su ejecutable se configuran mediante `CHROMIUM_PATH`; la URL con
-`CAJA_TEST_URL`. Para un entorno sin navegación HTTP permitida:
-
-```sh
+# Alternativa sin navegación HTTP (Storage simulado):
 CAJA_TEST_IN_MEMORY=1 python caja/tests/browser_test.py
 ```
 
-Esta variante inyecta los archivos locales en Chromium y simula Storage: prueba
-el DOM, los flujos y la disposición real, pero no la persistencia nativa ni el
-service worker en un origen HTTP. El test offline completo se omite explícitamente;
-los manejadores de caché del service worker tienen cuatro tests unitarios aparte.
-
-Verificado en esta revisión: **34 tests Node y 10 tests de interfaz en Chromium**,
-con viewports 320×568, 375×667, 390×844, 844×390 y 1280×800. Un test de navegador
-offline/HTTP quedó pendiente por la restricción de navegación del entorno. No se
-ha probado en un iPhone físico ni Safari. Sin cambios fuera de `caja/`.
+`CHROMIUM_PATH`, `CAJA_TEST_URL` y `CAJA_SCREENSHOT_DIR` permiten configurar las
+pruebas. Los archivos de aplicación están versionados para la caché v6; solo se
+eliminan cachés con prefijo caja-clara-, nunca las de otras herramientas del origen.
 
 ## English
 
-Dependency-free static daily cash-count wizard, with one denomination per step,
-a fixed in-app keypad, back/next navigation and resumable drafts. Setup selects a
-local calendar date, reference float and coin mode. Pending envelopes **1-Pablo**
-and **2-Victor** are entered before counting, then subtracted exactly once from
-gross counted cash. The difference is calculated against the **remaining** float,
-not against gross cash. Enter zero for an envelope already physically removed.
+The wizard opens directly at the first envelope: no date or name screen. On first
+save, the local save date is assigned automatically. Editing a saved record retains
+its original date. The permanent board shows counted cash, each negative envelope,
+net balance and the reference float. Envelopes are deducted immediately and exactly
+once. A negative running balance is expected before enough cash has been counted.
 
-Each coin denomination has a configurable tray tare, defaulting to zero. Weight
-inputs are gross grams; conversion subtracts the tare before rounding to a coin
-count. Saved results keep a tare snapshot and never change when settings change.
-Dates replace names. Records are not capped at 100; re-saving a draft updates its
-own record, while starting a new count creates a new one.
+Tray tares, the usual float and coin mode live in Settings. Existing local history,
+legacy migration and additive CSV import are preserved. No user data is uploaded.
+Original inline SVG illustrations and short, action-triggered motion replace the
+old denomination labels. Reduced-motion preferences disable all animation.
 
-The old local history and draft are migrated without deleting the originals.
-Legacy and new CSVs can be previewed and imported additively, with duplicate and
-row-error reporting. Old CSVs preserve their totals without invented denomination
-counts. New exports retain envelopes, details and tares for round-tripping. Data
-stays in the current browser; export before clearing it or changing devices.
-
-Run the commands above. Validation: 34 Node tests and 10 in-memory Chromium UI
-tests passed. Real HTTP/offline browser testing was unavailable in the execution
-environment and is explicitly skipped in in-memory mode; four separate service
-worker unit tests pass. Physical iPhone/Safari validation remains outstanding.
+Validation: 12 new calculation/CSV tests and 4 service-worker tests passed, along
+with 14 injected-DOM Chromium tests across nine viewports. The original core test
+suite is retained unchanged. Browser Storage was simulated because HTTP navigation
+was blocked; native persistence, real offline updates and physical Safari/iPhone
+remain unverified. Run the commands above for HTTP-based testing on an unrestricted
+local development machine.

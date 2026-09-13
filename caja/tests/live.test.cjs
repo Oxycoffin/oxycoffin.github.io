@@ -1,0 +1,16 @@
+const test=require('node:test');
+const assert=require('node:assert/strict');
+const C=require('../core.js');
+const draft=()=>({...C.newDraft({expectedRaw:'350',coinMode:'quantity'}),step:1});
+test('negative balance starts at minus both envelopes',()=>{const d=draft();d.pabloRaw='100';d.victorRaw='50';assert.equal(C.totals(d).total,-15000);assert.equal(C.totals(d).gross,0);});
+test('cash raises negative balance continuously, no double subtraction',()=>{const d=draft();d.pabloRaw='100';d.victorRaw='50';for(const [n,total] of [[0,-15000],[1,-10000],[3,0],[10,35000]]){d.counts['bills-5000']=String(n);assert.equal(C.totals(d).total,total);}assert.equal(C.record(d).total,35000);assert.equal(C.record(d).difference,0);});
+test('changing an envelope updates the same formula',()=>{const d=draft();d.counts['bills-5000']='10';d.pabloRaw='100';d.victorRaw='50';d.pabloRaw='120';assert.equal(C.totals(d).total,33000);assert.equal(C.totals(d).difference,-2000);});
+test('invalid money never partially parsed',()=>{for(const value of ['12oops','-1','Infinity','1e5','1.2345'])assert.throws(()=>C.money(value));});
+test('empty envelope means zero and zero balance is valid',()=>{const d=draft();assert.equal(C.totals(d).total,0);assert.equal(C.record(d).total,0);});
+test('running negative is allowed, impossible final result is not',()=>{const d=draft();d.pabloRaw='1';assert.equal(C.totals(d).total,-100);assert.throws(()=>C.record(d),/envelopes/);});
+test('tare and both withdrawals operate independently',()=>{const d=draft();d.coinMode='weight';d.taras['coins-200']=20;d.counts['coins-200']='105';d.pabloRaw='10';d.victorRaw='5';assert.equal(C.totals(d).total,500);assert.equal(C.totals(d).entries.find(x=>x.key==='coins-200').quantity,10);});
+test('blank reference differs from explicit zero',()=>{const d=draft();d.expectedRaw='';assert.equal(C.totals(d).difference,null);d.expectedRaw='0';assert.equal(C.totals(d).difference,0);});
+test('legacy import is additive, retains dates, strips names',()=>{const csv='Fecha;Nombre;Billetes EUR;Monedas EUR;Total EUR;Esperado EUR;Diferencia EUR\n2026-09-12T20:00:00Z;NOMBRE;300;33;333;350;-17';const a=C.importCsv(csv);assert.equal(a.added.length,1);assert.equal(a.added[0].total,33300);assert.ok(!('name' in a.added[0]));assert.equal(C.importCsv(csv,a.added).duplicates,1);});
+test('export and reimport preserve envelopes and tare snapshots',()=>{const d=draft();d.counts['bills-5000']='10';d.pabloRaw='100';d.victorRaw='50';const r=C.record(d);const imported=C.importCsv(C.exportCsv([r]));assert.deepEqual(imported.errors,[]);assert.deepEqual(imported.added[0],r);});
+test('full history is never truncated to 100 records by CSV',()=>{const csv='Fecha;Total EUR\n'+Array.from({length:150},(_,i)=>`2026-09-12;${i}`).join('\n');assert.equal(C.importCsv(csv).added.length,150);});
+test('tare-aware mode conversions preserve cash',()=>{const d=draft();d.taras['coins-200']=20;d.counts['coins-200']='10';const next=C.convertMode(d,'weight');assert.equal(next.counts['coins-200'],'105');assert.equal(C.totals(next).total,C.totals(d).total);});
