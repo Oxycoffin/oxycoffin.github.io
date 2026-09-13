@@ -4,16 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#173f35">
-  <meta id="description" name="description" content="Arqueo diario guiado con taras, sobres e historial privado.">
+  <meta id="description" name="description" content="Arqueo diario, saldo en directo y sobres. Sin nombres ni cuentas.">
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
   <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
   <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
   <title>Caja Clara · Arqueo diario</title>
   <link rel="icon" href="data:,">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="styles.css?v=3">
+  <link rel="stylesheet" href="styles.css?v=6">
   <script src="core.js?v=3" defer></script>
-  <script src="app.js?v=3" defer></script>
+  <script src="illustrations.js?v=6" defer></script>
+  <script src="app.js?v=6" defer></script>
 </head>
 <body>
   <header class="topbar">
@@ -21,10 +22,11 @@
     <nav aria-label="Caja Clara">
       <button id="historyButton" data-action="history" type="button">Historial</button>
       <button id="settingsButton" data-action="settings" type="button">Ajustes</button>
-      <button id="languageButton" data-action="language" type="button" lang="en" aria-label="Switch to English">EN</button>
+      <button id="languageButton" data-action="language" type="button" aria-label="Switch to English">EN</button>
     </nav>
   </header>
   <aside id="storageWarning" class="storage-warning" role="alert" hidden></aside>
+  <section id="liveBoard" class="balance" aria-label="Saldo del recuento actual"></section>
   <main id="app"><noscript><p>Activa JavaScript para usar Caja Clara. / Enable JavaScript to use Caja Clara.</p></noscript></main>
   <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
   <dialog id="confirmDialog" aria-labelledby="dialogTitle" aria-describedby="dialogText">
