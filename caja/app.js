@@ -22,7 +22,7 @@
     try{settings=read(K.settings,{expectedRaw:'350',coinMode:'weight',taras:{}});settings.taras=C.tareMap(settings.taras);}catch{settings={expectedRaw:'350',coinMode:'weight',taras:C.tareMap()};storageWarning();}
     try{const saved=read(K.history,null),rows=saved===null?read('caja-clara.history.v1',[]):saved;if(!Array.isArray(rows))throw Error();history=rows.map(C.migrateRecord);if(saved===null&&rows.length)write(K.history,history);}catch{locked=true;storageWarning();}
     try{
-      const saved=read(K.draft,null),old=read('caja-clara.draft.v1',null);
+      const saved=read(K.draft,null),old=saved?null:read('caja-clara.draft.v1',null);
       draft=saved||(old?C.migrateDraft(old):fresh());
       if(!draft||draft.version!==2||!draft.counts||typeof draft.counts!=='object'||Array.isArray(draft.counts))throw Error();
       draft.step=Math.max(1,Math.min(LAST,Math.trunc(Number(draft.step)||1)));
@@ -34,7 +34,7 @@
   }
   function toast(text){clearTimeout(timer);$('#toast').textContent=text;$('#toast').classList.add('show');timer=setTimeout(()=>$('#toast').classList.remove('show'),3500);}
   function ask(title,text,action){pending=action;const d=$('#confirmDialog');d.returnValue='cancel';$('#dialogTitle').textContent=title;$('#dialogText').textContent=text;$('#dialogCancel').textContent=t('Cancelar','Cancel');$('#dialogConfirm').textContent=t('Confirmar','Confirm');d.showModal();}
-  function err(code){return ({number:t('Revisa el número y sus decimales. No se admiten valores negativos.','Check the number and decimal places. Negative inputs are not allowed.'),'below-tare':t('El peso es menor que la tara de esta cubeta.','Weight is below this tray’s tare.'),envelopes:t('Los sobres superan todo el efectivo contado. Revisa antes de guardar.','Envelopes exceed all counted cash. Check before saving.'),headers:t('El CSV necesita Fecha y Total EUR.','The CSV needs Fecha and Total EUR.'),csv:t('CSV vacío o con comillas incorrectas.','Empty CSV or invalid quotes.'),columns:t('No coincide el número de columnas.','Column count does not match.'),date:t('Fecha no válida en el archivo.','Invalid date in the file.'),inconsistent:t('Los importes y el desglose no coinciden.','Amounts and details do not reconcile.'),'id-conflict':t('ID repetido con otros importes. No se sobrescribe.','ID already has different amounts. Not overwritten.'),record:t('Registro no válido.','Invalid record.')})[code]||t('No se pudo procesar este dato.','This data could not be processed.');}
+  function err(code){return ({'sum-incomplete':t('Completa la cantidad después del +.','Complete the amount after +.'),number:t('Revisa el número y sus decimales. No se admiten valores negativos.','Check the number and decimal places. Negative inputs are not allowed.'),'below-tare':t('El peso es menor que la tara de esta cubeta.','Weight is below this tray’s tare.'),envelopes:t('Los sobres superan todo el efectivo contado. Revisa antes de guardar.','Envelopes exceed all counted cash. Check before saving.'),headers:t('El CSV necesita Fecha y Total EUR.','The CSV needs Fecha and Total EUR.'),csv:t('CSV vacío o con comillas incorrectas.','Empty CSV or invalid quotes.'),columns:t('No coincide el número de columnas.','Column count does not match.'),date:t('Fecha no válida en el archivo.','Invalid date in the file.'),inconsistent:t('Los importes y el desglose no coinciden.','Amounts and details do not reconcile.'),'id-conflict':t('ID repetido con otros importes. No se sobrescribe.','ID already has different amounts. Not overwritten.'),record:t('Registro no válido.','Invalid record.')})[code]||t('No se pudo procesar este dato.','This data could not be processed.');}
   function safeTotals(){try{return C.totals(draft);}catch{return null;}}
   function finalDiff(r){return r.difference===null?t('Sin referencia','No reference'):r.difference===0?t('Caja cuadrada','Till balanced'):r.difference>0?t('Sobran ','Surplus ')+money(r.difference):t('Faltan ','Short ')+money(-r.difference);}
   function header(){
@@ -75,23 +75,61 @@
   function renderEntry(){
     const d=current(),weight=d.type==='coins'&&draft.coinMode==='weight';
     $('#app').innerHTML=`<section class="wizard"><div class="step-heading"><div class="illustration">${A.render(d)}</div><div class="step-copy"><p class="eyebrow">${t('Paso','Step')} ${draft.step} / ${LAST-1}</p><h1 id="pageHeading" tabindex="-1">${E(d.label)}</h1><p>${d.envelope?t('Retirada pendiente','Pending withdrawal'):weight?t('Pesa la cubeta llena','Weigh the full tray'):t('Cuenta las unidades','Count the units')}</p>${d.type==='coins'?button('toggle-mode',weight?t('Cambiar a unidades','Switch to units'):t('Cambiar a peso','Switch to weight'),'mode-link'):''}</div><progress value="${draft.step}" max="${LAST-1}" aria-label="${t('Progreso del recuento','Count progress')}"></progress></div>
-      <div class="entry-area"><label for="entry">${d.envelope?t('Importe del sobre','Envelope amount'):weight?t('Peso total · cubeta incluida','Total weight · including tray'):t('Número de unidades','Number of units')}</label><div class="entry-field"><input id="entry" type="text" inputmode="none" enterkeyhint="next" autocomplete="off" spellcheck="false" maxlength="18" placeholder="0" value="${E(value())}" aria-describedby="entryHelp entryError"><span>${d.envelope?'€':weight?'g':t('uds.','units')}</span>${button('clear-entry','×','clear',`aria-label="${t('Vaciar campo','Clear input')}"`)}</div><p id="entryHelp"></p><p id="entryError" class="error" role="alert"></p></div>
-      <div class="keypad" role="group" aria-label="${t('Teclado numérico','Numeric keypad')}">${['1','2','3','4','5','6','7','8','9',d.envelope||weight?',':'','0','⌫'].map(k=>`<button type="button" data-key="${k}" ${k===''?'disabled aria-hidden="true"':''} ${k==='⌫'?`aria-label="${t('Borrar último dígito','Delete last digit')}"`:''}>${k}</button>`).join('')}</div>
-      <footer class="wizard-footer">${button('back',t('← Atrás','← Back'),'',draft.step===1?'disabled':'')}${button('next',draft.returnToReview||draft.step===LAST-1?t('Ver resultado →','View result →'):t('Siguiente →','Next →'),'primary','id="nextButton"')}<small>${t('Vacío = 0 · Enter para avanzar','Empty = 0 · Enter to continue')}</small></footer></section>`;
+      <div class="entry-area"><label for="entry">${d.envelope?t('Importe del sobre','Envelope amount'):weight?t('Peso total · cubeta incluida','Total weight · including tray'):t('Número de unidades','Number of units')}</label><div class="entry-field"><input id="entry" type="text" inputmode="none" enterkeyhint="next" autocomplete="off" spellcheck="false" maxlength="${C.INPUT_MAX_LENGTH}" placeholder="0" value="${E(/^\+?0+(?:[.,]0*)?$/.test(String(value()))?'':value())}" aria-describedby="entryHelp entryError"><span>${d.envelope?'€':weight?'g':t('uds.','units')}</span>${button('clear-entry','×','clear',`aria-label="${t('Vaciar campo','Clear input')}"`)}</div><p id="entryHelp"></p><p id="entryError" class="error" role="alert"></p></div>
+      <div class="keypad" role="group" aria-label="${t('Teclado numérico','Numeric keypad')}">${['1','2','3','⌫','4','5','6','+','7','8','9',d.envelope||weight?',':'','0'].map(k=>`<button type="button" data-key="${k}" ${k===''?'disabled aria-hidden="true"':''} ${k==='⌫'?`aria-label="${t('Borrar último dígito','Delete last digit')}"`:k==='+'?`aria-label="${t('Sumar otra cantidad','Add another amount')}"`:''}>${k}</button>`).join('')}</div>
+      <footer class="wizard-footer">${button('back',t('← Atrás','← Back'),'',draft.step===1?'disabled':'')}${button('next',draft.returnToReview||draft.step===LAST-1?t('Ver resultado →','View result →'):t('Siguiente →','Next →'),'primary','id="nextButton"')}<small>${t('Vacío = 0 · + para sumar · Enter para avanzar','Empty = 0 · + to add · Enter to continue')}</small></footer></section>`;
     updateEntry();
   }
   function updateEntry(){
     const d=current();let invalid=false;
     try{
-      if(d.envelope){C.money(value());$('#entryHelp').textContent=t('Resta desde ahora. Cuenta ese efectivo; si ya lo retiraste, pon 0.','Deducted now. Count that cash; if already removed, enter 0.');}
+      if(d.envelope){C.inputMoney(value());$('#entryHelp').textContent=t('Resta desde ahora. Cuenta ese efectivo; si ya lo retiraste, pon 0.','Deducted now. Count that cash; if already removed, enter 0.');}
       else{const a=C.entry(d,value(),draft.coinMode,draft.taras);$('#entryHelp').textContent=d.type==='coins'&&draft.coinMode==='weight'?`${t('Tara','Tare')} ${grams(a.tare)} g · ${t('Neto','Net')} ${grams(a.net)} g → ${a.quantity} ${t('monedas','coins')} · ${money(a.amount)}`:`${a.quantity} × ${d.label} = ${money(a.amount)}`;if(d.type==='coins'&&draft.coinMode==='weight'&&Math.abs(a.residual)>d.mg/5000)$('#entryHelp').textContent+=' · '+t('Comprueba el peso.','Check the weight.');}
+      if(String(value()).includes('+')){
+        const weight=d.type==='coins'&&draft.coinMode==='weight';
+        const total=d.envelope?money(C.inputMoney(value())):grams(C.sum(value(),weight?3:0))+(weight?' g':' '+t('uds.','units'));
+        $('#entryHelp').textContent='Σ '+total+' · '+$('#entryHelp').textContent;
+        // This is a sum of the original total-weight field: the tray is included once.
+        if(weight&&draft.taras[d.key]>0)$('#entryHelp').textContent+=' · '+t('Incluye el peso de la cubeta una sola vez en la suma.','Include the tray weight only once in the sum.');
+      }
       $('#entryError').textContent='';
-    }catch(e){invalid=true;$('#entryError').textContent=err(e.message);$('#entryHelp').textContent='';}
+    }catch(e){invalid=true;$('#entryError').textContent=e.message==='sum-incomplete'?'':err(e.message);$('#entryHelp').textContent=e.message==='sum-incomplete'?err(e.message):'';}
     $('#entry').setAttribute('aria-invalid',String(invalid));$('#nextButton').disabled=invalid;board();
   }
-  function key(k){const el=$('#entry');if(!el)return;const s=el.selectionStart??el.value.length,e=el.selectionEnd??s;let v=el.value;if(k==='⌫')v=v.slice(0,s===e?Math.max(0,s-1):s)+v.slice(e);else v=v.slice(0,s)+k+v.slice(e);if(v.length>18)return;el.value=v;setValue(v);updateEntry();el.focus({preventScroll:true});const pos=k==='⌫'?Math.max(0,s-(s===e?1:0)):s+k.length;el.setSelectionRange(pos,pos);}
+  function key(k){
+    const el=$('#entry');if(!el)return;
+    let s=el.selectionStart??el.value.length,e=el.selectionEnd??s,v=el.value,insert=k;
+    // + extends a restored/selected value; a digit replaces it. No extra taps needed.
+    if(k==='+'){
+      try{const d=current();if(d.envelope)C.inputMoney(v);else C.sum(v,d.type==='coins'&&draft.coinMode==='weight'?3:0);}catch{return;}
+      if(!v.trim())return;
+      s=e=v.length;
+    }else if(k===','||k==='.'){
+      const d=current();if(!d.envelope&&!(d.type==='coins'&&draft.coinMode==='weight'))return;
+      const before=v.slice(0,s),after=v.slice(e);
+      if(/[.,]/.test(before.split('+').pop()+after.split('+')[0]))return;
+      insert=before.split('+').pop().trim()===''?'0'+k:k;
+    }else if(/^\d$/.test(k)&&/^0+$/.test(v)){
+      s=0;e=v.length;
+    }
+    let pos;
+    if(k==='⌫'){const from=s===e?Math.max(0,s-1):s;v=v.slice(0,from)+v.slice(e);pos=from;}
+    else{v=v.slice(0,s)+insert+v.slice(e);pos=s+insert.length;}
+    if(v.length>C.INPUT_MAX_LENGTH)return;
+    el.value=v;setValue(v);updateEntry();el.focus({preventScroll:true});el.setSelectionRange(pos,pos);
+  }
   function go(step,review=false){draft.step=Math.max(1,Math.min(LAST,step));draft.returnToReview=review;view='wizard';persist();render(true);}
-  function next(){try{const d=current();if(d.envelope)C.money(value());else C.entry(d,value(),draft.coinMode,draft.taras);go(draft.returnToReview?LAST:draft.step+1);}catch(e){toast(err(e.message));}}
+  function next(){
+    try{
+      const d=current(),raw=String(value());
+      if(d.envelope)C.inputMoney(raw);else C.entry(d,raw,draft.coinMode,draft.taras);
+      if(raw.includes('+')){
+        const result=String(d.envelope?C.inputMoney(raw)/100:C.sum(raw,d.type==='coins'&&draft.coinMode==='weight'?3:0));
+        if(d.envelope)draft[d.key]=result;else draft.counts[d.key]=result;
+      }
+      go(draft.returnToReview?LAST:draft.step+1);
+    }catch(e){toast(err(e.message));}
+  }
   function summary(r){return [[t('Contado','Counted'),money(r.gross)],['1-Pablo',money(-r.pablo)],['2-Victor',money(-r.victor)],[t('Fondo','Float'),r.expected===null?'—':money(r.expected)]].map(([label,amount])=>`<div class="summary-row"><span>${label}</span><strong>${amount}</strong></div>`).join('');}
   function renderReview(){
     const r=safeTotals(),bad=[];
@@ -111,7 +149,7 @@
   }
   function newCount(){const perform=()=>{draft=fresh();view='wizard';persist();render(true);};if(draft.started&&!draft.saved)ask(t('¿Empezar otro recuento?','Start another count?'),t('Se sustituirá solo el borrador. El historial y las taras se conservan.','Only the draft is replaced. History and tares are kept.'),perform);else perform();}
   function renderSettings(){
-    $('#app').innerHTML=`<section class="page"><p class="eyebrow">${t('Configura una vez','Set up once')}</p><h1 id="pageHeading" tabindex="-1">${t('A tu manera.','Your way.')}</h1><form id="settingsForm" class="panel" novalidate><label class="field">${t('Fondo habitual','Usual float')}<div class="input-unit"><input name="expected" inputmode="decimal" autocomplete="off" value="${E(settings.expectedRaw??'350')}" placeholder="350"><span>€</span></div><small>${t('Vacío para no comparar con un fondo.','Leave blank for no reference float.')}</small></label><label class="field">${t('Contar monedas por','Count coins by')}<select name="mode"><option value="weight" ${settings.coinMode==='weight'?'selected':''}>${t('Peso · gramos','Weight · grams')}</option><option value="quantity" ${settings.coinMode==='quantity'?'selected':''}>${t('Unidades','Units')}</option></select></label><h2>${t('Taras de tus cubetas','Your tray tares')}</h2><p class="hint">${t('Peso de cada cubeta vacía. Deja 0 g si aún no la utilizas.','Weight of each empty tray. Leave 0 g if not in use yet.')}</p><div class="tare-list">${C.COINS.map(d=>`<label class="tare-row"><span class="mini-art">${A.render(d)}</span><span>${d.label}</span><div class="input-unit"><input name="${d.key}" aria-label="${t('Tara de','Tare for')} ${d.label}" inputmode="decimal" autocomplete="off" value="${E(settings.taras[d.key])}"><span>g</span></div></label>`).join('')}</div><p id="settingsError" class="error" role="alert"></p><div class="stack">${button('settings-save',t('Guardar para nuevos recuentos','Save for new counts'),'primary')}${button('settings-apply',t('Guardar y aplicar al actual','Save and apply to current count'))}</div></form><p class="hint">${t('Los cambios no recalculan el historial.','Changes never recalculate history.')}</p>${button('wizard',t('← Volver al recuento','← Back to count'))}</section>`;
+    $('#app').innerHTML=`<section class="page"><p class="eyebrow">${t('Configura una vez','Set up once')}</p><h1 id="pageHeading" tabindex="-1">${t('A tu manera.','Your way.')}</h1><form id="settingsForm" class="panel" novalidate><label class="field">${t('Fondo habitual','Usual float')}<div class="input-unit"><input name="expected" inputmode="decimal" enterkeyhint="next" autocomplete="off" value="${E(settings.expectedRaw??'350')}" placeholder="350"><span>€</span></div><small>${t('Vacío para no comparar con un fondo.','Leave blank for no reference float.')}</small></label><label class="field">${t('Contar monedas por','Count coins by')}<select name="mode"><option value="weight" ${settings.coinMode==='weight'?'selected':''}>${t('Peso · gramos','Weight · grams')}</option><option value="quantity" ${settings.coinMode==='quantity'?'selected':''}>${t('Unidades','Units')}</option></select></label><h2>${t('Taras de tus cubetas','Your tray tares')}</h2><p class="hint">${t('Peso de cada cubeta vacía. Vacío = 0 g.','Weight of each empty tray. Empty = 0 g.')}</p><div class="tare-list">${C.COINS.map(d=>`<label class="tare-row"><span class="mini-art">${A.render(d)}</span><span>${d.label}</span><div class="input-unit"><input name="${d.key}" aria-label="${t('Tara de','Tare for')} ${d.label}" inputmode="decimal" enterkeyhint="next" autocomplete="off" placeholder="0" value="${E(settings.taras[d.key]===0?'':settings.taras[d.key])}"><span>g</span></div></label>`).join('')}</div><p id="settingsError" class="error" role="alert"></p><div class="stack">${button('settings-save',t('Guardar para nuevos recuentos','Save for new counts'),'primary')}${button('settings-apply',t('Guardar y aplicar al actual','Save and apply to current count'))}</div></form><p class="hint">${t('Los cambios no recalculan el historial.','Changes never recalculate history.')}</p>${button('wizard',t('← Volver al recuento','← Back to count'))}</section>`;
   }
   function updateSettings(apply){
     try{
@@ -152,6 +190,17 @@
     if(a==='export'){download(C.exportCsv(history),`historial-caja-${C.localDate()}.csv`);return;}
     if(a==='recover'){try{download(JSON.stringify({v1:localStorage.getItem('caja-clara.history.v1'),v2:localStorage.getItem(K.history)},null,2),'caja-recuperacion.json','application/json');}catch{storageWarning();}return;}
     if(a==='delete')ask(t('¿Eliminar este registro?','Delete this record?'),t('Solo se eliminará este resultado.','Only this result will be deleted.'),()=>{if(storeHistory(history.filter(r=>r.id!==el.dataset.id))){if(draft.id===el.dataset.id){draft.saved=false;persist();}render();}});
+  });
+  // Select once on focus, not on every input, so replacing a setting is one tap.
+  document.addEventListener('focusin',e=>{
+    const el=e.target;
+    if(el.matches('#settingsForm input[inputmode="decimal"]')||(el.id==='entry'&&/^\+?0+(?:[.,]0*)?$/.test(el.value)))el.select();
+  });
+  document.addEventListener('keydown',e=>{
+    if(e.key!=='Enter'||e.ctrlKey||e.metaKey||e.altKey||!e.target.matches('#settingsForm input'))return;
+    e.preventDefault();
+    const fields=[...document.querySelectorAll('#settingsForm input')],index=fields.indexOf(e.target);
+    (fields[index+1]||$('[data-action="settings-save"]')).focus();
   });
   document.addEventListener('input',e=>{if(e.target.id==='entry'){setValue(e.target.value);updateEntry();}});
   document.addEventListener('change',e=>{if(e.target.id==='csvFile')importFile(e.target.files[0]);});

@@ -1,0 +1,13 @@
+/* Four rows, as before: adding + must not push Next off a small phone. */
+.keypad{grid-template-columns:repeat(4,minmax(0,1fr))}
+.keypad [data-key="+"]{grid-column:4;grid-row:2/5;background:var(--accent);font-size:32px}
+.keypad [data-key="0"]{grid-column:2/4}
+.entry-field input{scrollbar-width:none}
+/* Keep the tare explanation and the primary action visible on short phones. */
+@media(max-height:600px) and (orientation:portrait){
+  .step-copy>p:not(.eyebrow){display:none}
+  .step-copy .eyebrow{font-size:9px;margin-bottom:3px}
+  .step-copy h1{font-size:24px}
+  .illustration{height:56px}
+  .wizard{gap:6px}
+}
