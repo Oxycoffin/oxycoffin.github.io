@@ -47,12 +47,45 @@
     if (!Number.isSafeInteger(cents) || Math.abs(cents) > LIMIT) throw new Error('number');
     return cents;
   }
+  // Only interactive count inputs accept addition. CSV amounts and settings stay strict.
+  // Sum in integer cents/milligrams/units, never through eval or floating-point accumulation.
+  const INPUT_MAX_LENGTH = 240;
+  function sum(raw, decimals = 2) {
+    const text = String(raw ?? '').trim();
+    if (text.length > INPUT_MAX_LENGTH || ![0,2,3].includes(decimals)) throw new Error('number');
+    if (!text) return 0;
+    const parts = text.replace(/^\+(?=\s*\d)/,'').split('+');
+    if (parts.some(part => !part.trim())) throw new Error('sum-incomplete');
+    const scale = 10 ** decimals;
+    let total = 0;
+    for (const part of parts) {
+      const term = part.trim().replace(/^([.,])(?=\d)/,'0$1');
+      total += Math.round(number(term,decimals) * scale);
+      if (!Number.isSafeInteger(total) || total > LIMIT * scale) throw new Error('number');
+    }
+    return total / scale;
+  }
+  function inputMoney(raw) {
+    const cents = Math.round(sum(String(raw ?? '').replace(/\s*€\s*$/,''),2) * 100);
+    if (!Number.isSafeInteger(cents) || cents > LIMIT) throw new Error('number');
+    return cents;
+  }
+  function normalizedCounts(draft) {
+    const counts = {...draft.counts};
+    for (const d of DENOMS) {
+      const raw = counts[d.key];
+      if (String(raw ?? '').includes('+')) {
+        counts[d.key] = String(sum(raw,d.type === 'coins' && draft.coinMode === 'weight' ? 3 : 0));
+      }
+    }
+    return counts;
+  }
   function tareMap(input = {}) {
     return Object.fromEntries(COINS.map(d => [d.key, number(input[d.key] ?? 0,3)]));
   }
   function entry(d, raw, mode, taras) {
     if (d.type === 'coins' && mode === 'weight') {
-      const grossMg = Math.round(number(raw,3)*1000);
+      const grossMg = Math.round(sum(raw,3)*1000);
       const tareMg = Math.round(number(taras?.[d.key] ?? 0,3)*1000);
       // Empty / explicit zero means no coins, not an unweighed empty tray.
       if (grossMg === 0) return {quantity:0,amount:0,net:0,tare:tareMg/1000,residual:0};
@@ -62,7 +95,7 @@
       if (quantity > 999999) throw new Error('number');
       return {quantity,amount:quantity*d.cents,net:netMg/1000,tare:tareMg/1000,residual:(netMg-quantity*d.mg)/1000};
     }
-    const quantity = number(raw,0);
+    const quantity = sum(raw,0);
     if (quantity > 999999) throw new Error('number');
     return {quantity,amount:quantity*d.cents,net:0,tare:0,residual:0};
   }
@@ -70,7 +103,7 @@
     const entries = DENOMS.map(d => ({...d,...entry(d,draft.counts?.[d.key],draft.coinMode,draft.taras)}));
     const bills = entries.filter(d=>d.type==='bills').reduce((s,d)=>s+d.amount,0);
     const coins = entries.filter(d=>d.type==='coins').reduce((s,d)=>s+d.amount,0);
-    const pablo = money(draft.pabloRaw), victor = money(draft.victorRaw);
+    const pablo = inputMoney(draft.pabloRaw), victor = inputMoney(draft.victorRaw);
     const total = bills+coins-pablo-victor;
     const expected = String(draft.expectedRaw ?? '').trim() === '' ? null : money(draft.expectedRaw);
     return {entries,bills,coins,gross:bills+coins,pablo,victor,total,expected,difference:expected===null?null:total-expected};
@@ -93,7 +126,7 @@
     if (!validDate(draft.date)) throw new Error('date');
     const t = totals(draft);
     if (t.total < 0) throw new Error('envelopes');
-    return {version:2,id:draft.id,date:draft.date,createdAt,bills:t.bills,coins:t.coins,gross:t.gross,pablo:t.pablo,victor:t.victor,total:t.total,expected:t.expected,difference:t.difference,coinMode:draft.coinMode,counts:{...draft.counts},taras:tareMap(draft.taras)};
+    return {version:2,id:draft.id,date:draft.date,createdAt,bills:t.bills,coins:t.coins,gross:t.gross,pablo:t.pablo,victor:t.victor,total:t.total,expected:t.expected,difference:t.difference,coinMode:draft.coinMode,counts:normalizedCounts(draft),taras:tareMap(draft.taras)};
   }
   function migrateRecord(old) {
     if (!old || typeof old !== 'object') throw new Error('record');
@@ -211,5 +244,5 @@
     const rows=records.map(r=>[r.date,r.createdAt,amount(r.bills),amount(r.coins),amount(r.gross),amount(r.pablo),amount(r.victor),amount(r.total),amount(r.expected),amount(r.difference),r.coinMode,r.counts?JSON.stringify(r.counts):'',JSON.stringify(r.taras||{}),r.id]);
     return '\ufeff'+[headers,...rows].map(row=>row.map(cell).join(';')).join('\r\n');
   }
-  return {DENOMS,COINS,localDate,validDate,number,money,tareMap,entry,totals,convertMode,newDraft,record,migrateRecord,migrateDraft,parseCsv,importCsv,exportCsv,fingerprint,uuid};
+  return {DENOMS,COINS,INPUT_MAX_LENGTH,sum,inputMoney,localDate,validDate,number,money,tareMap,entry,totals,convertMode,newDraft,record,migrateRecord,migrateDraft,parseCsv,importCsv,exportCsv,fingerprint,uuid};
 });

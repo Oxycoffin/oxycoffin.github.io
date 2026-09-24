@@ -1,5 +1,5 @@
-const CACHE_NAME = 'caja-clara-v6';
-const APP_FILES = ['./', 'index.html', 'styles.css?v=6', 'core.js?v=3', 'illustrations.js?v=6', 'app.js?v=6', 'manifest.webmanifest'];
+const CACHE_NAME = 'caja-clara-v7';
+const APP_FILES = ['./', 'index.html', 'styles.css?v=6', 'input.css?v=7', 'core.js?v=4', 'illustrations.js?v=6', 'app.js?v=7', 'manifest.webmanifest'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_FILES)).then(() => self.skipWaiting()));
 });
