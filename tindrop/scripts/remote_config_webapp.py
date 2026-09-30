@@ -82,6 +82,13 @@ SECTIONS: tuple[SectionDef, ...] = (
         title="Ads Core",
         description="Claves activas en RemoteConfigAds.",
         fields=(
+            FieldDef(
+                "ads.enabled",
+                "enabled",
+                "bool",
+                False,
+                "Interruptor remoto: false no carga ni muestra anuncios (1.39+).",
+            ),
             FieldDef("ads.frequency", "frequency", "int", 10),
             FieldDef("ads.premium_first_ad", "premium_first_ad", "int", 3),
             FieldDef("ads.premium_ad_frequency", "premium_ad_frequency", "int", 7),
@@ -123,7 +130,7 @@ SECTIONS: tuple[SectionDef, ...] = (
         fields=(
             FieldDef("premium.free_swipes_intro_limit", "free_swipes_intro_limit", "int", 300),
             FieldDef("premium.filter_trial_limit", "filter_trial_limit", "int", 50),
-            FieldDef("premium.free_swipes_daily_limit", "free_swipes_daily_limit", "int", 20),
+            FieldDef("premium.free_swipes_daily_limit", "free_swipes_daily_limit", "int", 150),
             FieldDef("premium.rewarded_swipe_grant", "rewarded_swipe_grant", "int", 100),
         ),
     ),

@@ -13,6 +13,7 @@
     "mode": "none"
   },
   "ads": {
+    "enabled": false,
     "frequency": 10,
     "premium_first_ad": 3,
     "premium_ad_frequency": 7,
@@ -33,7 +34,7 @@
   "premium": {
     "free_swipes_intro_limit": 300,
     "filter_trial_limit": 50,
-    "free_swipes_daily_limit": 20,
+    "free_swipes_daily_limit": 150,
     "rewarded_swipe_grant": 100,
     "filter_rewarded_daily_limit": 2
   },
@@ -128,8 +129,8 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 35,
-  "issued_at": 1790759387,
+  "version": 36,
+  "issued_at": 1790776698,
   "app_versions": {
     "1.29.0+285": {
       "flags": {
