@@ -16,7 +16,7 @@
     "frequency": 10,
     "premium_first_ad": 3,
     "premium_ad_frequency": 7,
-    "action_interstitial_cooldown_minutes": 5,
+    "action_interstitial_cooldown_minutes": 60,
     "rewarded_interstitial_cooldown_minutes": 5,
     "units": {
       "android_native": "ca-app-pub-6279728494613017/8616979665",
@@ -31,10 +31,10 @@
     "cooldown_minutes": 3
   },
   "premium": {
-    "free_swipes_intro_limit": 80,
+    "free_swipes_intro_limit": 300,
     "filter_trial_limit": 50,
     "free_swipes_daily_limit": 20,
-    "rewarded_swipe_grant": 40,
+    "rewarded_swipe_grant": 100,
     "filter_rewarded_daily_limit": 2
   },
   "rating": {
@@ -128,8 +128,8 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 34,
-  "issued_at": 1790121589,
+  "version": 35,
+  "issued_at": 1790759387,
   "app_versions": {
     "1.29.0+285": {
       "flags": {
