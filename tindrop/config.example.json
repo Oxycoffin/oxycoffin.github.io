@@ -34,9 +34,7 @@
   },
   "premium": {
     "filter_trial_limit": 50,
-    "filter_rewarded_daily_limit": 2,
-    "free_swipes_intro_limit": 150,
-    "free_swipes_daily_limit": 75
+    "filter_rewarded_daily_limit": 2
   },
   "rating": {
     "swipe_threshold": 200,
