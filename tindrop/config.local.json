@@ -129,8 +129,8 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 39,
-  "issued_at": 1791253703,
+  "version": 40,
+  "issued_at": 1791283981,
   "app_versions": {
     "1.29.0+285": {
       "flags": {
