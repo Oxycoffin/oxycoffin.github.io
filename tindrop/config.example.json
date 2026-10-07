@@ -592,6 +592,13 @@
         "current_version": "1.39.1+301",
         "mode": "none"
       }
+    },
+    "1.39.4+304": {
+      "app_update": {
+        "current_build_number": 303,
+        "current_version": "1.39.3+303",
+        "mode": "none"
+      }
     }
   }
 }
