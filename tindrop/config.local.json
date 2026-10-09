@@ -129,8 +129,8 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 45,
-  "issued_at": 1791463678,
+  "version": 46,
+  "issued_at": 1791540606,
   "app_versions": {
     "1.29.0+285": {
       "flags": {
@@ -1261,6 +1261,13 @@
       "app_update": {
         "current_build_number": 304,
         "current_version": "1.39.4+304",
+        "mode": "none"
+      }
+    },
+    "1.39.7+307": {
+      "app_update": {
+        "current_build_number": 305,
+        "current_version": "1.39.5+305",
         "mode": "none"
       }
     }
