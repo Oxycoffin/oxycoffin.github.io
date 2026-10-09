@@ -50,6 +50,16 @@ class SectionDef:
 
 SECTIONS: tuple[SectionDef, ...] = (
     SectionDef(
+        key="tiktok_measurement",
+        title="TikTok Install Measurement",
+        description="Disabled by default. Requires verified vendor consent and iOS ATT; never put credentials here.",
+        fields=(
+            FieldDef("tiktok_measurement.enabled", "enabled", "bool", False),
+            FieldDef("tiktok_measurement.consent_vendor_id", "consent_vendor_id", "int", 0,
+                     "Confirmed CMP vendor ID. Zero blocks collection. Remote settings cannot grant consent."),
+        ),
+    ),
+    SectionDef(
         key="flags",
         title="Feature Flags",
         description="Claves activas en RemoteConfigFlags.",

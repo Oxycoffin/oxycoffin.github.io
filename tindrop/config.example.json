@@ -614,5 +614,9 @@
         "mode": "none"
       }
     }
+  },
+  "tiktok_measurement": {
+    "enabled": false,
+    "consent_vendor_id": 0
   }
 }
