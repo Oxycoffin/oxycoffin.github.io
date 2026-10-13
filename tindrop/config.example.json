@@ -613,6 +613,17 @@
         "current_version": "1.39.4+304",
         "mode": "none"
       }
+    },
+    "1.40.3+313": {
+      "app_update": {
+        "current_version": "1.40.2+312",
+        "current_build_number": 312,
+        "mode": "none"
+      },
+      "tiktok_measurement": {
+        "consent_vendor_id": 986,
+        "enabled": true
+      }
     }
   },
   "tiktok_measurement": {
