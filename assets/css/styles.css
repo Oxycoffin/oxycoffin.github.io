@@ -451,6 +451,32 @@ body[data-lang="es"] [data-locale="en"] {
   box-shadow: var(--shadow);
 }
 
+.scene-art {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  background:
+    radial-gradient(circle at 50% 38%, #fff3ee 0%, rgba(255, 243, 238, 0) 55%),
+    linear-gradient(165deg, #ffe0e0 0%, #e9e2ff 100%);
+}
+
+.scene-art img {
+  position: absolute;
+  height: auto;
+  max-width: none;
+}
+
+.scene-guru { left: 14%; top: 6%; width: 72%; }
+.scene-cloud-a { left: -8%; top: 4%; width: 46%; opacity: 0.9; }
+.scene-cloud-b { right: -6%; top: 14%; width: 34%; opacity: 0.85; }
+.scene-dubai { right: -10%; bottom: 14%; width: 46%; }
+.scene-chest { left: 2%; bottom: 14%; width: 34%; }
+.scene-cash { left: 30%; bottom: 13%; width: 26%; }
+.scene-gold { right: 30%; bottom: 20%; width: 14%; }
+.scene-coin { left: 6%; top: 44%; width: 11%; }
+
 .feature-media figcaption {
   position: absolute;
   left: 1rem;
