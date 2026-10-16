@@ -136,6 +136,7 @@ a {
 }
 
 .nav a {
+  white-space: nowrap;
   padding: 0.45rem 0.55rem;
   color: rgba(248, 243, 234, 0.76);
   font-size: 0.94rem;
