@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#111214" />
     <link rel="canonical" href="https://oxycoffin.github.io/" />
     <link rel="icon" href="assets/favicon.svg?v=20260430" type="image/svg+xml" />
-    <link rel="stylesheet" href="assets/css/styles.css?v=20261016b" />
+    <link rel="stylesheet" href="assets/css/styles.css?v=20261016c" />
     <style>
       body[data-lang="en"] [data-locale="es"],
       body[data-lang="es"] [data-locale="en"] {
@@ -326,7 +326,7 @@
         </div>
       </section>
 
-      <section class="section alt scamempire-feature" id="scamempire" aria-labelledby="scamempire-title">
+      <section class="section scamempire-feature" id="scamempire" aria-labelledby="scamempire-title">
         <div class="container feature-layout feature-layout-reverse">
           <div class="feature-copy">
             <p class="eyebrow dark">
@@ -334,17 +334,57 @@
               <span data-locale="es">Juego móvil</span>
             </p>
             <h2 id="scamempire-title">Scam Empire</h2>
+            <p class="se-slogan">
+              <span data-locale="en">Sell smoke. Become a <em>guru</em>.</span>
+              <span data-locale="es">Vende humo. Hazte <em>gurú</em>.</span>
+            </p>
             <p class="section-lead">
               <span data-locale="en">
-                A satirical idle game: sell smoke, hire partners and build an empire
-                of gurus from the neighborhood all the way to Mars. Everything in it
-                is fictional.
+                A satirical idle game: start selling jars of smoke in the neighbourhood
+                and end up with franchises in Dubai, the Metaverse and Mars. Hire
+                partners, rebrand, and let your empire cash in while you sleep.
               </span>
               <span data-locale="es">
-                Un idle satírico: vende humo, contrata socios y levanta un imperio de
-                gurús desde El Barrio hasta Marte. Todo en él es ficticio.
+                Un idle satírico: empieza vendiendo tarros de humo en El Barrio y
+                termina con franquicias en Dubái, el Metaverso y Marte. Contrata
+                socios, haz rebranding y deja que tu imperio facture mientras duermes.
               </span>
             </p>
+            <ol
+              class="se-worlds"
+              aria-label="Scam Empire worlds"
+              data-label-en="Scam Empire worlds"
+              data-label-es="Mundos de Scam Empire"
+            >
+              <li class="se-world w-barrio">
+                <img src="scamempire/assets/art/barrio-hero.svg" alt="" loading="lazy" />
+                <span>
+                  <span data-locale="en">The Neighbourhood</span>
+                  <span data-locale="es">El Barrio</span>
+                </span>
+              </li>
+              <li class="se-world w-dubai">
+                <img src="scamempire/assets/art/dubai-hero.svg" alt="" loading="lazy" />
+                <span>
+                  <span data-locale="en">Dubai</span>
+                  <span data-locale="es">Dubái</span>
+                </span>
+              </li>
+              <li class="se-world w-meta">
+                <img src="scamempire/assets/art/meta-hero.svg" alt="" loading="lazy" />
+                <span>
+                  <span data-locale="en">Metaverse</span>
+                  <span data-locale="es">Metaverso</span>
+                </span>
+              </li>
+              <li class="se-world w-marte">
+                <img src="scamempire/assets/art/marte-hero.svg" alt="" loading="lazy" />
+                <span>
+                  <span data-locale="en">Mars</span>
+                  <span data-locale="es">Marte</span>
+                </span>
+              </li>
+            </ol>
             <div
               class="feature-list"
               aria-label="Scam Empire highlights"
@@ -377,28 +417,30 @@
                   <span data-locale="es">Privacidad primero</span>
                 </strong>
                 <span>
-                  <span data-locale="en">Works offline; anonymous data only if you agree.</span>
-                  <span data-locale="es">Funciona sin conexión; datos anónimos solo si aceptas.</span>
+                  <span data-locale="en">Works offline, no account; anonymous data only if you agree.</span>
+                  <span data-locale="es">Funciona sin conexión y sin cuenta; datos anónimos solo si aceptas.</span>
                 </span>
               </div>
             </div>
           </div>
           <figure class="feature-media">
             <div
-              class="scene-art"
+              class="se-scene"
               role="img"
-              aria-label="Scam Empire game artwork"
-              data-label-en="Scam Empire game artwork"
-              data-label-es="Ilustración del juego Scam Empire"
+              aria-label="Scam Empire guru surrounded by smoke, cash and gold bars"
+              data-label-en="Scam Empire guru surrounded by smoke, cash and gold bars"
+              data-label-es="El gurú de Scam Empire rodeado de humo, billetes y lingotes"
             >
-              <img class="scene-prop scene-cloud-a" src="scamempire/assets/art/cloud.svg" alt="" loading="lazy" />
-              <img class="scene-prop scene-cloud-b" src="scamempire/assets/art/humo.svg" alt="" loading="lazy" />
-              <img class="scene-prop scene-dubai" src="scamempire/assets/art/dubai.svg" alt="" loading="lazy" />
-              <img class="scene-prop scene-chest" src="scamempire/assets/art/chest.svg" alt="" loading="lazy" />
-              <img class="scene-prop scene-cash" src="scamempire/assets/art/cash.svg" alt="" loading="lazy" />
-              <img class="scene-prop scene-gold" src="scamempire/assets/art/gold.svg" alt="" loading="lazy" />
-              <img class="scene-prop scene-coin" src="scamempire/assets/art/coin.svg" alt="" loading="lazy" />
-              <img class="scene-guru" src="scamempire/assets/art/guru-full.svg" alt="" width="850" height="928" loading="lazy" />
+              <span class="se-blob"></span>
+              <span class="se-sun"></span>
+              <img class="se-float se-f1" src="scamempire/assets/art/humo.svg" alt="" loading="lazy" />
+              <img class="se-float se-f2" src="scamempire/assets/art/gold.svg" alt="" loading="lazy" />
+              <img class="se-float se-f3" src="scamempire/assets/art/cash.svg" alt="" loading="lazy" />
+              <img class="se-guru" src="scamempire/assets/art/guru-full.svg" alt="" width="850" height="928" loading="lazy" />
+              <span class="se-tag">
+                <span data-locale="en">Satirical idle · iOS &amp; Android</span>
+                <span data-locale="es">Idle satírico · iOS y Android</span>
+              </span>
             </div>
             <figcaption>
               <img src="scamempire/assets/img/icon-512.png" alt="" width="512" height="512" aria-hidden="true" />
@@ -416,6 +458,10 @@
               <span data-locale="en">Visit Scam Empire page</span>
               <span data-locale="es">Ver página de Scam Empire</span>
             </a>
+            <p class="se-note">
+              <span data-locale="en">Coming soon to the App Store and Google Play · closed beta</span>
+              <span data-locale="es">Próximamente en App Store y Google Play · beta cerrada</span>
+            </p>
           </div>
         </div>
       </section>

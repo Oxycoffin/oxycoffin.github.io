@@ -451,31 +451,189 @@ body[data-lang="es"] [data-locale="en"] {
   box-shadow: var(--shadow);
 }
 
-.scene-art {
+/* Scam Empire: paleta y textura Memphis del juego */
+@font-face {
+  font-family: "Poppins";
+  font-weight: 800;
+  font-display: swap;
+  src: url("../../scamempire/assets/fonts/Poppins-ExtraBold.ttf") format("truetype");
+}
+
+.scamempire-feature {
+  --se-bg: #ffe0e0;
+  --se-ink: #1b2236;
+  --se-lilac: #e9e2ff;
+  --se-gold: #ffd070;
+  --se-gold-deep: #d9a93e;
+  --se-accent: #2f4ccc;
+  --se-texture-img: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22760%22 height=%22760%22 viewBox=%220 0 760 760%22%3E%3Cpath d=%22M70 150 C40 80 120 20 210 40 C300 60 330 150 280 220 C230 290 110 260 70 150 Z%22 fill=%22%23f6c9c9%22/%3E%3Cpath d=%22M470 90 C520 20 640 40 680 120 C720 200 650 280 560 270 C470 260 430 160 470 90 Z%22 fill=%22%23e8dcff%22/%3E%3Cpath d=%22M90 520 C60 440 140 380 230 410 C320 440 340 540 280 610 C220 680 120 620 90 520 Z%22 fill=%22%23ffe0bd%22/%3E%3Cpath d=%22M500 470 C470 400 540 350 620 370 C710 392 740 480 690 560 C640 640 530 560 500 470 Z%22 fill=%22%23cfeee3%22/%3E%3Cg fill=%22%232fb89a%22%3E%3Cpath d=%22M366 330 C350 300 354 270 366 246 C378 270 382 300 366 330 Z%22/%3E%3Cpath d=%22M366 330 C336 322 318 300 314 272 C342 280 360 300 366 330 Z%22/%3E%3Cpath d=%22M366 330 C396 322 414 300 418 272 C390 280 372 300 366 330 Z%22/%3E%3C/g%3E%3Cg fill=%22%23ff7a7a%22%3E%3Ccircle cx=%22400%22 cy=%22450%22 r=%2214%22/%3E%3Ccircle cx=%22230%22 cy=%22330%22 r=%228%22/%3E%3Ccircle cx=%22620%22 cy=%22640%22 r=%2210%22/%3E%3C/g%3E%3Cg fill=%22%23ffb43a%22%3E%3Ccircle cx=%22330%22 cy=%22120%22 r=%229%22/%3E%3Ccircle cx=%22130%22 cy=%22680%22 r=%2212%22/%3E%3Ccircle cx=%22700%22 cy=%22330%22 r=%227%22/%3E%3C/g%3E%3C/svg%3E");
+  position: relative;
+  isolation: isolate;
+  background: var(--se-bg);
+  color: var(--se-ink);
+}
+
+.scamempire-feature::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--se-texture-img) 0 0 / 520px 520px;
+  opacity: 0.32;
+}
+
+.se-slogan {
+  margin: 0.4rem 0 1.1rem;
+  font-family: "Poppins", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.35rem, 2.6vw, 1.8rem);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.se-slogan em {
+  font-style: normal;
+  color: var(--se-accent);
+}
+
+.se-worlds {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 1.6rem 0 1.4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.se-world {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+  padding: 0.6rem 0.4rem 0.55rem;
+  border-radius: var(--radius);
+  box-shadow: 0 6px 18px rgba(27, 34, 54, 0.1);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.se-world img {
+  width: 100%;
+  height: 54px;
+  object-fit: contain;
+}
+
+.se-world + .se-world::before {
+  content: "";
+  position: absolute;
+  left: -0.48rem;
+  top: 50%;
+  width: 0.36rem;
+  height: 0.36rem;
+  border-radius: 50%;
+  background: var(--se-gold-deep);
+  transform: translate(-50%, -50%);
+}
+
+.w-barrio { background: #fff; }
+.w-dubai { background: #fff1d6; }
+.w-meta { background: #ece6ff; }
+.w-marte { background: #ffe1d6; }
+
+.scamempire-feature .feature-list {
+  margin-top: 0;
+}
+
+.scamempire-feature .feature-list,
+.scamempire-feature .feature-list div {
+  border-color: rgba(27, 34, 54, 0.14);
+}
+
+.se-note {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 0.86rem;
+  color: rgba(27, 34, 54, 0.72);
+}
+
+.se-scene {
   position: relative;
   overflow: hidden;
   aspect-ratio: 4 / 5;
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  background:
-    radial-gradient(circle at 50% 38%, #fff3ee 0%, rgba(255, 243, 238, 0) 55%),
-    linear-gradient(165deg, #ffe0e0 0%, #e9e2ff 100%);
+  box-shadow: 0 24px 60px rgba(27, 34, 54, 0.22);
+  background: var(--se-texture-img) -30px -10px / 300px 300px, #fff3ee;
 }
 
-.scene-art img {
+.se-scene > img,
+.se-scene > span {
   position: absolute;
-  height: auto;
-  max-width: none;
 }
 
-.scene-guru { left: 14%; top: 6%; width: 72%; }
-.scene-cloud-a { left: -8%; top: 4%; width: 46%; opacity: 0.9; }
-.scene-cloud-b { right: -6%; top: 14%; width: 34%; opacity: 0.85; }
-.scene-dubai { right: -10%; bottom: 14%; width: 46%; }
-.scene-chest { left: 2%; bottom: 14%; width: 34%; }
-.scene-cash { left: 30%; bottom: 13%; width: 26%; }
-.scene-gold { right: 30%; bottom: 20%; width: 14%; }
-.scene-coin { left: 6%; top: 44%; width: 11%; }
+.se-blob {
+  inset: 14% 4% 20% 12%;
+  background: var(--se-lilac);
+  border-radius: 46% 54% 42% 58% / 55% 45% 55% 45%;
+}
+
+.se-sun {
+  right: 4%;
+  top: 7%;
+  width: 34%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--se-gold);
+  opacity: 0.9;
+}
+
+.se-guru {
+  left: 18%;
+  bottom: 21%;
+  width: 72%;
+  height: auto;
+  filter: drop-shadow(0 18px 24px rgba(27, 34, 54, 0.18));
+}
+
+.se-float {
+  width: 17%;
+  height: auto;
+  filter: drop-shadow(0 6px 10px rgba(27, 34, 54, 0.15));
+  animation: se-float 4.8s ease-in-out infinite;
+}
+
+.se-f1 { left: 3%; top: 20%; }
+.se-f2 { right: 5%; top: 46%; animation-delay: -1.6s; }
+.se-f3 { left: 5%; bottom: 33%; width: 15%; animation-delay: -3.2s; }
+
+.se-tag {
+  left: 6%;
+  top: 6%;
+  padding: 0.25rem 0.85rem;
+  border-radius: 99px;
+  background: var(--se-gold);
+  box-shadow: 0 3px 0 var(--se-gold-deep);
+  color: var(--se-ink);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 0.78rem;
+  transform: rotate(-3deg);
+}
+
+@keyframes se-float {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-8px) rotate(3deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .se-float { animation: none; }
+}
+
+@media (max-width: 520px) {
+  .se-worlds { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .se-world:nth-child(3)::before { display: none; }
+}
 
 .feature-media figcaption {
   position: absolute;
