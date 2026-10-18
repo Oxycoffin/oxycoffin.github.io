@@ -129,8 +129,8 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 61,
-  "issued_at": 1792338731,
+  "version": 62,
+  "issued_at": 1792338882,
   "app_versions": {
     "1.29.0+285": {
       "flags": {
@@ -165,9 +165,9 @@
         "cooldown_minutes": 3
       },
       "premium": {
-        "free_swipes_intro_limit": 80,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 20,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 40,
         "filter_rewarded_daily_limit": 2
       },
@@ -296,9 +296,9 @@
         "cooldown_minutes": 3
       },
       "premium": {
-        "free_swipes_intro_limit": 80,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 20,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 40,
         "filter_rewarded_daily_limit": 2
       },
@@ -427,9 +427,9 @@
         "cooldown_minutes": 3
       },
       "premium": {
-        "free_swipes_intro_limit": 80,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 20,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 40,
         "filter_rewarded_daily_limit": 2
       },
@@ -558,9 +558,9 @@
         "cooldown_minutes": 3
       },
       "premium": {
-        "free_swipes_intro_limit": 80,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 20,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 40,
         "filter_rewarded_daily_limit": 2
       },
@@ -689,9 +689,9 @@
         "cooldown_minutes": 3
       },
       "premium": {
-        "free_swipes_intro_limit": 80,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 20,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 40,
         "filter_rewarded_daily_limit": 2
       },
@@ -820,9 +820,9 @@
         "cooldown_minutes": 3
       },
       "premium": {
-        "free_swipes_intro_limit": 80,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 20,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 40,
         "filter_rewarded_daily_limit": 2
       },
@@ -951,9 +951,9 @@
         "cooldown_minutes": 3
       },
       "premium": {
-        "free_swipes_intro_limit": 80,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 20,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 40,
         "filter_rewarded_daily_limit": 2
       },
@@ -1082,9 +1082,9 @@
         "cooldown_minutes": 3
       },
       "premium": {
-        "free_swipes_intro_limit": 80,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 20,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 40,
         "filter_rewarded_daily_limit": 2
       },
@@ -1187,9 +1187,9 @@
         "mode": "none"
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1201,9 +1201,9 @@
         "mode": "none"
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1215,9 +1215,9 @@
         "mode": "none"
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1229,9 +1229,9 @@
         "mode": "none"
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1243,9 +1243,9 @@
         "mode": "none"
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1257,9 +1257,9 @@
         "mode": "none"
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1271,9 +1271,9 @@
         "mode": "none"
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1285,9 +1285,9 @@
         "mode": "none"
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1299,9 +1299,9 @@
         "mode": "none"
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1313,9 +1313,9 @@
         "mode": "none"
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1327,9 +1327,9 @@
         "mode": "none"
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1341,9 +1341,9 @@
         "mode": "none"
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1355,9 +1355,9 @@
         "mode": "none"
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1373,9 +1373,9 @@
         "consent_vendor_id": 986
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1391,9 +1391,9 @@
         "consent_vendor_id": 986
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1409,9 +1409,9 @@
         "consent_vendor_id": 986
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1427,9 +1427,9 @@
         "enabled": true
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1445,9 +1445,9 @@
         "enabled": true
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1463,9 +1463,9 @@
         "enabled": true
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1481,9 +1481,9 @@
         "enabled": true
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1499,9 +1499,9 @@
         "enabled": true
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1517,9 +1517,9 @@
         "enabled": true
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1535,9 +1535,9 @@
         "enabled": true
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
@@ -1553,9 +1553,9 @@
         "enabled": true
       },
       "premium": {
-        "free_swipes_intro_limit": 300,
+        "free_swipes_intro_limit": 150,
         "filter_trial_limit": 50,
-        "free_swipes_daily_limit": 150,
+        "free_swipes_daily_limit": 75,
         "rewarded_swipe_grant": 100,
         "filter_rewarded_daily_limit": 2
       }
