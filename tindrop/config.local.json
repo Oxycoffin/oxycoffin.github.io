@@ -32,9 +32,9 @@
     "cooldown_minutes": 3
   },
   "premium": {
-    "free_swipes_intro_limit": 300,
+    "free_swipes_intro_limit": 150,
     "filter_trial_limit": 50,
-    "free_swipes_daily_limit": 150,
+    "free_swipes_daily_limit": 75,
     "rewarded_swipe_grant": 100,
     "filter_rewarded_daily_limit": 2
   },
@@ -129,8 +129,8 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 60,
-  "issued_at": 1792178712,
+  "version": 61,
+  "issued_at": 1792338731,
   "app_versions": {
     "1.29.0+285": {
       "flags": {
@@ -1185,6 +1185,13 @@
         "current_version": "1.33.0+290",
         "current_build_number": 290,
         "mode": "none"
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.37.0+296": {
@@ -1192,6 +1199,13 @@
         "current_version": "1.35.0+294",
         "current_build_number": 294,
         "mode": "none"
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.37.0+297": {
@@ -1199,6 +1213,13 @@
         "current_version": "1.35.0+294",
         "current_build_number": 294,
         "mode": "none"
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.38.0+298": {
@@ -1206,6 +1227,13 @@
         "current_version": "1.35.0+294",
         "current_build_number": 294,
         "mode": "none"
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.38.1+299": {
@@ -1213,6 +1241,13 @@
         "current_version": "1.38.0+298",
         "current_build_number": 298,
         "mode": "none"
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.39.0+300": {
@@ -1220,6 +1255,13 @@
         "current_version": "1.38.0+298",
         "current_build_number": 298,
         "mode": "none"
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.39.1+301": {
@@ -1227,6 +1269,13 @@
         "current_version": "1.38.1+299",
         "current_build_number": 299,
         "mode": "none"
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.39.2+302": {
@@ -1234,6 +1283,13 @@
         "current_build_number": 301,
         "current_version": "1.39.1+301",
         "mode": "none"
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.39.3+303": {
@@ -1241,6 +1297,13 @@
         "current_build_number": 301,
         "current_version": "1.39.1+301",
         "mode": "none"
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.39.4+304": {
@@ -1248,6 +1311,13 @@
         "current_build_number": 303,
         "current_version": "1.39.3+303",
         "mode": "none"
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.39.5+305": {
@@ -1255,6 +1325,13 @@
         "current_build_number": 304,
         "current_version": "1.39.4+304",
         "mode": "none"
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.39.6+306": {
@@ -1262,6 +1339,13 @@
         "current_build_number": 304,
         "current_version": "1.39.4+304",
         "mode": "none"
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.39.7+307": {
@@ -1269,6 +1353,13 @@
         "current_build_number": 305,
         "current_version": "1.39.5+305",
         "mode": "none"
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.39.8+308": {
@@ -1280,6 +1371,13 @@
       "tiktok_measurement": {
         "enabled": true,
         "consent_vendor_id": 986
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.40.0+309": {
@@ -1291,6 +1389,13 @@
       "tiktok_measurement": {
         "enabled": true,
         "consent_vendor_id": 986
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.40.1+310": {
@@ -1302,6 +1407,13 @@
       "tiktok_measurement": {
         "enabled": true,
         "consent_vendor_id": 986
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.40.2+311": {
@@ -1313,6 +1425,13 @@
       "tiktok_measurement": {
         "consent_vendor_id": 986,
         "enabled": true
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.40.2+312": {
@@ -1324,6 +1443,13 @@
       "tiktok_measurement": {
         "consent_vendor_id": 986,
         "enabled": true
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.40.3+313": {
@@ -1335,6 +1461,13 @@
       "tiktok_measurement": {
         "consent_vendor_id": 986,
         "enabled": true
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.40.4+314": {
@@ -1346,6 +1479,13 @@
       "tiktok_measurement": {
         "consent_vendor_id": 986,
         "enabled": true
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.40.5+315": {
@@ -1357,6 +1497,13 @@
       "tiktok_measurement": {
         "consent_vendor_id": 986,
         "enabled": true
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.40.6+316": {
@@ -1368,6 +1515,13 @@
       "tiktok_measurement": {
         "consent_vendor_id": 986,
         "enabled": true
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.40.7+317": {
@@ -1379,6 +1533,13 @@
       "tiktok_measurement": {
         "consent_vendor_id": 986,
         "enabled": true
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.40.8+318": {
@@ -1390,6 +1551,13 @@
       "tiktok_measurement": {
         "consent_vendor_id": 986,
         "enabled": true
+      },
+      "premium": {
+        "free_swipes_intro_limit": 300,
+        "filter_trial_limit": 50,
+        "free_swipes_daily_limit": 150,
+        "rewarded_swipe_grant": 100,
+        "filter_rewarded_daily_limit": 2
       }
     },
     "1.40.9+319": {

@@ -138,9 +138,9 @@ SECTIONS: tuple[SectionDef, ...] = (
         title="Premium",
         description="Claves activas en RemoteConfigPremium.",
         fields=(
-            FieldDef("premium.free_swipes_intro_limit", "free_swipes_intro_limit", "int", 300),
+            FieldDef("premium.free_swipes_intro_limit", "free_swipes_intro_limit", "int", 150),
             FieldDef("premium.filter_trial_limit", "filter_trial_limit", "int", 50),
-            FieldDef("premium.free_swipes_daily_limit", "free_swipes_daily_limit", "int", 150),
+            FieldDef("premium.free_swipes_daily_limit", "free_swipes_daily_limit", "int", 75),
             FieldDef("premium.rewarded_swipe_grant", "rewarded_swipe_grant", "int", 100),
         ),
     ),
