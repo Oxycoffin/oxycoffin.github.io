@@ -142,6 +142,7 @@ SECTIONS: tuple[SectionDef, ...] = (
             FieldDef("premium.filter_trial_limit", "filter_trial_limit", "int", 50),
             FieldDef("premium.free_swipes_daily_limit", "free_swipes_daily_limit", "int", 75),
             FieldDef("premium.rewarded_swipe_grant", "rewarded_swipe_grant", "int", 100),
+            FieldDef("premium.spotlight_weekly_limit", "spotlight_weekly_limit", "int", 5),
         ),
     ),
     SectionDef(
