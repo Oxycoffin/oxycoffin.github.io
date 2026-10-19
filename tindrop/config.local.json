@@ -129,8 +129,8 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 62,
-  "issued_at": 1792338882,
+  "version": 63,
+  "issued_at": 1792401908,
   "app_versions": {
     "1.29.0+285": {
       "flags": {
@@ -1561,6 +1561,17 @@
       }
     },
     "1.40.9+319": {
+      "app_update": {
+        "current_version": "1.40.8+318",
+        "current_build_number": 318,
+        "mode": "none"
+      },
+      "tiktok_measurement": {
+        "consent_vendor_id": 986,
+        "enabled": true
+      }
+    },
+    "1.40.10+320": {
       "app_update": {
         "current_version": "1.40.8+318",
         "current_build_number": 318,
