@@ -1,0 +1,21 @@
+:root{--bg:#120a1f;--card:#1f1533;--orange:#ff8a00;--amber:#ffc34d;--text:#fff6e8;--dim:#b9a9d6}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:radial-gradient(ellipse at 50% -10%,#3a1f5e,#1a0e2c 55%,#0b0614);background-attachment:fixed;color:var(--text);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+a{color:var(--amber)}.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+header{padding:18px 0}header .wrap{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;color:var(--text);text-decoration:none;font-weight:800;font-size:18px}
+.brand img{border-radius:10px}nav{margin-left:auto;display:flex;gap:8px;align-items:center}
+nav a{color:var(--dim);text-decoration:none;font-weight:600;padding:6px 10px;border-radius:10px}nav a:hover{color:var(--text)}
+.lang button{background:var(--card);color:var(--dim);border:1px solid #ffffff22;border-radius:8px;padding:5px 9px;font-weight:700;cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--orange);color:#fff}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;padding:24px 0 40px}
+h1{font-size:clamp(34px,6vw,56px);line-height:1.05;margin:0 0 12px;color:var(--orange);text-shadow:0 0 28px #ff6a0099}
+.lead{font-size:19px;color:var(--dim)}.cta{display:inline-block;margin-top:16px;background:linear-gradient(90deg,#ffb13b,#ff6a00);color:#fff;font-weight:800;padding:14px 22px;border-radius:30px;text-decoration:none;box-shadow:0 6px 22px #ff6a0077}
+.hero img.shot{width:100%;max-width:340px;justify-self:center;border-radius:28px;box-shadow:0 10px 40px #ff6a0055}
+.paper{background:var(--card);border:1px solid #ffffff18;border-radius:22px;padding:24px;margin:0 0 40px}
+.paper h1{font-size:34px}.paper h2{color:var(--amber);font-size:21px;margin-top:28px}.meta{color:var(--dim);font-size:14px}
+.summary{background:#ff8a0014;border:1px solid #ff8a0044;border-radius:16px;padding:14px 18px}
+.faq h3{margin-bottom:4px}footer{color:var(--dim);font-size:14px;padding:10px 0 40px;text-align:center}
+@media(max-width:700px){.hero{grid-template-columns:1fr}}
+[data-locale]{display:none}html[lang=es] [data-locale=es],html[lang=en] [data-locale=en]{display:block}
+html[lang=es] span[data-locale=es],html[lang=en] span[data-locale=en]{display:inline}
