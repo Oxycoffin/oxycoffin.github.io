@@ -694,6 +694,17 @@
         "consent_vendor_id": 986,
         "enabled": true
       }
+    },
+    "1.40.17+327": {
+      "app_update": {
+        "current_version": "1.40.16+326",
+        "current_build_number": 326,
+        "mode": "none"
+      },
+      "tiktok_measurement": {
+        "consent_vendor_id": 986,
+        "enabled": true
+      }
     }
   },
   "tiktok_measurement": {
