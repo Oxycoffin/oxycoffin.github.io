@@ -39,7 +39,7 @@
     "filter_rewarded_daily_limit": 2
   },
   "rating": {
-    "swipe_threshold": 100,
+    "swipe_threshold": 20,
     "cooldown_days": 4,
     "share_reward_cooldown_days": 7,
     "ios_app_store_id": "6756980913"
@@ -129,8 +129,8 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 70,
-  "issued_at": 1793033514,
+  "version": 71,
+  "issued_at": 1793108051,
   "app_versions": {
     "1.29.0+285": {
       "flags": {
