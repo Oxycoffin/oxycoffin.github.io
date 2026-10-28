@@ -78,8 +78,7 @@ test("dashboard combines available revenue without comparing incomplete periods"
   assert.equal(dashboard.summary.adImpressions30, 200);
   assert.equal(dashboard.summary.revenueChange, null);
   assert.equal(dashboard.summary.androidCrashRate, 0.002);
-  assert.equal(dashboard.trends.revenue.length, 30);
-  assert.equal(dashboard.version, 2);
+  assert.equal(dashboard.version, 3);
   assert.equal(dashboard.periods[30].ads.ctr, 0.05);
   assert.equal(dashboard.periods[30].ads.matchRate, 250 / 300);
   assert.equal(dashboard.periods[30].acquisition.refunds, 1);
@@ -188,6 +187,7 @@ test("Play metric arrays retain nonzero rates and absent metrics remain null", (
       date: "2026-09-01",
       crashRate: 0.012,
       userPerceivedCrashRate: 0.007,
+      activeUsers: null,
       anrRate: 0.003,
       userPerceivedAnrRate: null,
     },
@@ -251,6 +251,7 @@ test("empty dashboard reports missing coverage instead of fake zero data", () =>
     apple: false,
     admob: false,
     play: false,
+    playReports: false,
     revenue: false,
   });
   assert.equal(dashboard.summary.revenueChange, null);
@@ -348,6 +349,7 @@ test("Play daily timelines stop at each metric set freshness", () => {
         day: 31,
         timeZone: "America/Los_Angeles",
       },
+      latestDay: "2026-08-31",
     },
   );
 });

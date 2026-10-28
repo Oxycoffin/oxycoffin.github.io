@@ -114,6 +114,35 @@ async function fetchAppleReviews(env) {
   };
 }
 
+// The public lookup API exposes the storefront rating, which App Store Connect
+// does not. Ratings are per storefront, so configured ones are combined by
+// their rating counts.
+async function fetchAppleRating(env) {
+  const countries = String(env.APPLE_RATING_COUNTRIES || "es")
+    .split(",")
+    .map((code) => code.trim().toLowerCase())
+    .filter(Boolean);
+  const results = await Promise.all(
+    countries.map(async (country) => {
+      const response = await fetch(
+        `https://itunes.apple.com/lookup?id=${encodeURIComponent(env.APPLE_APP_ID)}&country=${country}`,
+      );
+      if (!response.ok) return null;
+      const app = (await response.json()).results?.[0];
+      return app ? { country, average: Number(app.averageUserRating || 0), count: Number(app.userRatingCount || 0), version: app.version || null } : null;
+    }),
+  );
+  const rated = results.filter((item) => item && item.count > 0);
+  const count = rated.reduce((total, item) => total + item.count, 0);
+  return {
+    average: count ? rated.reduce((total, item) => total + item.average * item.count, 0) / count : null,
+    count,
+    countries: rated.map((item) => item.country),
+    version: results.find(Boolean)?.version || null,
+    fetchedAt: new Date().toISOString(),
+  };
+}
+
 export async function fetchAppleDay(env, reportDate) {
   const parameters = new URLSearchParams({
     "filter[frequency]": "DAILY",
@@ -170,7 +199,10 @@ export async function refreshApple(env, existing = {}) {
     const candidate = addDays(yesterday, -offset);
     if (!existingDays.has(candidate)) targets.push(candidate);
   }
-  const [points, reviewsResult] = await Promise.all([
+  const ratingFresh =
+    existing.rating?.fetchedAt &&
+    Date.now() - Date.parse(existing.rating.fetchedAt) < 6 * 60 * 60 * 1000;
+  const [points, reviewsResult, rating] = await Promise.all([
     Promise.all(targets.map((target) => fetchAppleDay(env, target))),
     fetchAppleReviews(env).catch((error) => {
       console.warn(
@@ -181,6 +213,12 @@ export async function refreshApple(env, existing = {}) {
       );
       return existing.reviews || null;
     }),
+    ratingFresh
+      ? existing.rating
+      : fetchAppleRating(env).catch((error) => {
+          console.warn(JSON.stringify({ event: "apple_rating_unavailable", message: String(error?.message || error) }));
+          return existing.rating || null;
+        }),
   ]);
   const replacedDates = new Set(points.map((point) => point.date));
   const daily = [
@@ -214,6 +252,7 @@ export async function refreshApple(env, existing = {}) {
       )
       .slice(0, 8),
     reviews: reviewsResult,
+    rating,
   };
 }
 

@@ -10,6 +10,8 @@ APPLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
 APPLE_VENDOR_NUMBER=""
 
 GOOGLE_SERVICE_ACCOUNT_JSON='{"client_email":"...","private_key":"..."}'
+# Optional: enables Android installs, rating and sales from Play bulk reports.
+GOOGLE_PLAY_REPORTS_BUCKET="pubsite_prod_rev_0123456789"
 
 ADMOB_CLIENT_ID=""
 ADMOB_CLIENT_SECRET=""

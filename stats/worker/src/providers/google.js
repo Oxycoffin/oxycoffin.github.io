@@ -5,7 +5,7 @@ import { decimalValue } from "../parsers.js";
 let cachedToken = null;
 let tokenExpiresAt = 0;
 
-async function googleToken(env) {
+export async function googleToken(env) {
   if (cachedToken && Date.now() < tokenExpiresAt - 60_000) return cachedToken;
   const serviceAccount = JSON.parse(env.GOOGLE_SERVICE_ACCOUNT_JSON);
   const now = Math.floor(Date.now() / 1000);
@@ -21,7 +21,7 @@ async function googleToken(env) {
     payload: {
       iss: serviceAccount.client_email,
       scope:
-        "https://www.googleapis.com/auth/playdeveloperreporting https://www.googleapis.com/auth/androidpublisher",
+        "https://www.googleapis.com/auth/playdeveloperreporting https://www.googleapis.com/auth/androidpublisher https://www.googleapis.com/auth/devstorage.read_only",
       aud: "https://oauth2.googleapis.com/token",
       iat: now,
       exp: now + 3600,
@@ -70,6 +70,7 @@ function dailyWindow(metricSet) {
   return {
     startTime: { ...dateTime(addDays(endDay, -32)), ...zone },
     endTime: { ...dateTime(endDay), ...zone },
+    latestDay: endDay,
   };
 }
 
@@ -85,8 +86,8 @@ async function metricSetWindow(env, set) {
   return dailyWindow(await response.json());
 }
 
-async function queryMetricSet(env, set, metrics) {
-  const window = await metricSetWindow(env, set);
+async function queryMetricSet(env, set, metrics, window) {
+  const { latestDay: _latestDay, ...timeline } = window;
   const response = await fetch(
     `https://playdeveloperreporting.googleapis.com/v1beta1/apps/${env.GOOGLE_PLAY_PACKAGE}/${set}:query`,
     {
@@ -96,7 +97,7 @@ async function queryMetricSet(env, set, metrics) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        timelineSpec: { aggregationPeriod: "DAILY", ...window },
+        timelineSpec: { aggregationPeriod: "DAILY", ...timeline },
         metrics,
         pageSize: 1000,
       }),
@@ -127,6 +128,7 @@ function mergeVitals(crashes, anrs) {
       date: metricDate(row),
       crashRate: metric(row, "crashRate"),
       userPerceivedCrashRate: metric(row, "userPerceivedCrashRate"),
+      activeUsers: metric(row, "distinctUsers"),
     });
   }
   for (const row of anrs.rows || []) {
@@ -184,20 +186,36 @@ async function fetchReviews(env) {
   };
 }
 
-export async function refreshPlay(env) {
+export async function refreshPlay(env, existing = {}) {
   await googleToken(env);
-  const [crashes, anrs, reviews] = await Promise.all([
-    queryMetricSet(env, "crashRateMetricSet", [
-      "crashRate",
-      "userPerceivedCrashRate",
-    ]),
-    queryMetricSet(env, "anrRateMetricSet", [
-      "anrRate",
-      "userPerceivedAnrRate",
-    ]),
-    fetchReviews(env),
+  const [crashWindow, anrWindow] = await Promise.all([
+    metricSetWindow(env, "crashRateMetricSet"),
+    metricSetWindow(env, "anrRateMetricSet"),
   ]);
-  return { daily: mergeVitals(crashes, anrs), reviews };
+  // Vitals publish once a day; reuse the stored series until Google moves the
+  // freshness window instead of re-querying 30 identical days every hour.
+  const vitalsFresh =
+    existing.daily?.length &&
+    existing.vitalsThrough?.crash === crashWindow.latestDay &&
+    existing.vitalsThrough?.anr === anrWindow.latestDay &&
+    existing.daily.some((day) => day.activeUsers !== undefined);
+  const [daily, reviews] = await Promise.all([
+    vitalsFresh
+      ? existing.daily
+      : Promise.all([
+          queryMetricSet(env, "crashRateMetricSet", ["crashRate", "userPerceivedCrashRate", "distinctUsers"], crashWindow),
+          queryMetricSet(env, "anrRateMetricSet", ["anrRate", "userPerceivedAnrRate"], anrWindow),
+        ]).then(([crashes, anrs]) => mergeVitals(crashes, anrs)),
+    fetchReviews(env).catch((error) => {
+      console.warn(JSON.stringify({ event: "play_reviews_unavailable", message: String(error?.message || error) }));
+      return existing.reviews || null;
+    }),
+  ]);
+  return {
+    daily,
+    reviews,
+    vitalsThrough: { crash: crashWindow.latestDay, anr: anrWindow.latestDay },
+  };
 }
 
 export const googleInternals = {

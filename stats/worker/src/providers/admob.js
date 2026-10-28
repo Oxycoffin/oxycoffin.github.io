@@ -144,19 +144,40 @@ async function optionalBreakdown(
   }
 }
 
-export async function refreshAdmob(env) {
+const FULL_HISTORY_INTERVAL = 6 * 60 * 60 * 1000;
+const BREAKDOWN_INTERVAL = 60 * 60 * 1000;
+const RECENT_DAYS = 7;
+
+function olderThan(timestamp, interval) {
+  return !timestamp || Date.now() - Date.parse(timestamp) >= interval;
+}
+
+// Frequent refreshes only re-read the last week, where AdMob still revises
+// estimates; the full 60-day history is rebuilt a few times a day.
+export function mergeDaily(existing, fresh, start) {
+  const freshDates = new Set(fresh.map((row) => row.date));
+  return [
+    ...existing.filter((row) => row.date < start && !freshDates.has(row.date)),
+    ...fresh,
+  ]
+    .sort((left, right) => left.date.localeCompare(right.date))
+    .slice(-61);
+}
+
+export async function refreshAdmob(env, existing = {}) {
   const token = await admobToken(env);
-  const account = await accountName(env, token);
+  const account = existing.account || (await accountName(env, token));
   const currency = env.DEFAULT_CURRENCY || "EUR";
-  const dateRange = {
-    startDate: dayParts(daysAgo(60)),
-    endDate: dayParts(isoDay()),
-  };
+  const full = !existing.daily?.length || olderThan(existing.fullHistoryAt, FULL_HISTORY_INTERVAL);
+  const start = daysAgo(full ? 60 : RECENT_DAYS);
+  const dateRange = { startDate: dayParts(start), endDate: dayParts(isoDay()) };
   const breakdownRange = {
     startDate: dayParts(daysAgo(29)),
     endDate: dayParts(isoDay()),
   };
-  const [dailyParts, adUnits, countries] = await Promise.all([
+  const breakdowns =
+    !existing.adUnits?.length || !existing.platforms || olderThan(existing.breakdownAt, BREAKDOWN_INTERVAL);
+  const [dailyParts, adUnits, countries, platforms] = await Promise.all([
     generateReport(account, token, {
       dateRange,
       dimensions: ["DATE"],
@@ -170,17 +191,23 @@ export async function refreshAdmob(env) {
       ],
       localizationSettings: { currencyCode: currency, languageCode: "en-US" },
     }),
-    optionalBreakdown(account, token, breakdownRange, "AD_UNIT", currency),
-    optionalBreakdown(account, token, breakdownRange, "COUNTRY", currency),
+    breakdowns ? optionalBreakdown(account, token, breakdownRange, "AD_UNIT", currency) : existing.adUnits,
+    breakdowns ? optionalBreakdown(account, token, breakdownRange, "COUNTRY", currency) : existing.countries,
+    breakdowns ? optionalBreakdown(account, token, breakdownRange, "PLATFORM", currency) : existing.platforms,
   ]);
+  const fresh = reportRows(dailyParts, currency);
+  const now = new Date().toISOString();
   return {
     account,
-    daily: reportRows(dailyParts, currency),
+    daily: full ? fresh : mergeDaily(existing.daily || [], fresh, start),
+    fullHistoryAt: full ? now : existing.fullHistoryAt,
     adUnits,
     countries,
-    breakdownStart: daysAgo(29),
-    breakdownEnd: isoDay(),
+    platforms,
+    breakdownAt: breakdowns ? now : existing.breakdownAt,
+    breakdownStart: breakdowns ? daysAgo(29) : existing.breakdownStart,
+    breakdownEnd: breakdowns ? isoDay() : existing.breakdownEnd,
   };
 }
 
-export const admobInternals = { reportRows, dimensionDate, breakdownRows };
+export const admobInternals = { reportRows, dimensionDate, breakdownRows, mergeDaily };

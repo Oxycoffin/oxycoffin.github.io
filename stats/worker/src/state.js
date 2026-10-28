@@ -1,60 +1,76 @@
-const STATE_KEY = "tindrop-pulse:state:v1";
+// Each source lives under its own key so concurrent refreshes of different
+// sources never overwrite each other. The v1 combined key is read only as a
+// fallback until every source has been rewritten under the new layout.
+const LEGACY_STATE_KEY = "tindrop-pulse:state:v1";
+const SOURCE_KEY_PREFIX = "tindrop-pulse:source:v2:";
+
+export const SOURCE_NAMES = ["apple", "play", "playReports", "admob"];
+
+function emptySource() {
+  return { status: "pending", data: { daily: [] } };
+}
 
 export function emptyState(currency = "EUR") {
   return {
-    version: 1,
+    version: 2,
     currency,
-    generatedAt: null,
-    sources: {
-      apple: { status: "pending", data: { daily: [] } },
-      play: { status: "pending", data: { daily: [] } },
-      admob: { status: "pending", data: { daily: [] } }
-    }
+    sources: Object.fromEntries(SOURCE_NAMES.map((name) => [name, emptySource()])),
   };
+}
+
+export async function readSource(env, sourceName) {
+  const stored = await env.PULSE_CACHE.get(`${SOURCE_KEY_PREFIX}${sourceName}`, "json");
+  if (stored) return stored;
+  const legacy = await env.PULSE_CACHE.get(LEGACY_STATE_KEY, "json");
+  return legacy?.sources?.[sourceName] || emptySource();
 }
 
 export async function readState(env) {
-  const state = await env.PULSE_CACHE.get(STATE_KEY, "json");
-  return state || emptyState(env.DEFAULT_CURRENCY || "EUR");
-}
-
-export async function writeState(env, state) {
-  state.generatedAt = new Date().toISOString();
-  await env.PULSE_CACHE.put(STATE_KEY, JSON.stringify(state));
+  const stored = await Promise.all(
+    SOURCE_NAMES.map((name) => env.PULSE_CACHE.get(`${SOURCE_KEY_PREFIX}${name}`, "json")),
+  );
+  const legacy = stored.some((source) => !source)
+    ? await env.PULSE_CACHE.get(LEGACY_STATE_KEY, "json")
+    : null;
+  const state = emptyState(env.DEFAULT_CURRENCY || "EUR");
+  SOURCE_NAMES.forEach((name, index) => {
+    state.sources[name] = stored[index] || legacy?.sources?.[name] || emptySource();
+  });
   return state;
 }
 
+async function writeSource(env, sourceName, source) {
+  await env.PULSE_CACHE.put(`${SOURCE_KEY_PREFIX}${sourceName}`, JSON.stringify(source));
+  return source;
+}
+
 export async function markAttempt(env, sourceName) {
-  const state = await readState(env);
-  state.sources[sourceName] = {
-    ...state.sources[sourceName],
-    status: state.sources[sourceName]?.lastSuccessAt ? "ready" : "pending",
+  const source = await readSource(env, sourceName);
+  return writeSource(env, sourceName, {
+    ...source,
+    status: source.lastSuccessAt ? "ready" : "pending",
     lastAttemptAt: new Date().toISOString(),
-    error: null
-  };
-  return writeState(env, state);
-}
-
-export async function markSuccess(env, sourceName, data) {
-  const state = await readState(env);
-  state.sources[sourceName] = {
-    ...state.sources[sourceName],
-    status: "ready",
-    lastAttemptAt: new Date().toISOString(),
-    lastSuccessAt: new Date().toISOString(),
     error: null,
-    data
-  };
-  return writeState(env, state);
+  });
 }
 
-export async function markFailure(env, sourceName, error) {
-  const state = await readState(env);
-  state.sources[sourceName] = {
-    ...state.sources[sourceName],
+export async function markSuccess(env, sourceName, previous, data) {
+  const now = new Date().toISOString();
+  return writeSource(env, sourceName, {
+    ...previous,
+    status: data?.notConfigured ? "disabled" : "ready",
+    lastAttemptAt: now,
+    lastSuccessAt: now,
+    error: null,
+    data,
+  });
+}
+
+export async function markFailure(env, sourceName, previous, error) {
+  return writeSource(env, sourceName, {
+    ...previous,
     status: "error",
     lastAttemptAt: new Date().toISOString(),
-    error: String(error?.message || error).slice(0, 240)
-  };
-  return writeState(env, state);
+    error: String(error?.message || error).slice(0, 240),
+  });
 }

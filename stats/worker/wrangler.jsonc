@@ -17,14 +17,16 @@
     { "binding": "PULSE_CACHE", "id": "55a75137c4fb4f8781849c03fdd0a7d1" }
   ],
   "triggers": {
-    "crons": ["*/30 * * * *"]
+    "crons": ["*/10 * * * *"]
   },
   "vars": {
     "ENVIRONMENT": "production",
     "APPLE_APP_ID": "6756980913",
     "APPLE_APP_SKU": "com.tindrop.tindrop",
     "GOOGLE_PLAY_PACKAGE": "com.tindrop.tindrop",
-    "DEFAULT_CURRENCY": "EUR"
+    "DEFAULT_CURRENCY": "EUR",
+    "APPLE_RATING_COUNTRIES": "es",
+    "GOOGLE_PLAY_FEE_RATE": "0.15"
   },
   "secrets": {
     "required": [

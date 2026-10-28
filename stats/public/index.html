@@ -21,7 +21,7 @@
       rel="icon"
       href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>◒</text></svg>"
     />
-    <link rel="stylesheet" href="styles.css?v=4" />
+    <link rel="stylesheet" href="styles.css?v=7" />
   </head>
   <body>
     <a class="skip" href="#main" data-i18n="skip">Ir a los datos</a>
@@ -67,7 +67,9 @@
           <strong data-i18n="analytics">Analítica</strong></span
         >
         <div class="toolbar-actions">
-          <button
+          <span class="live-status" id="liveStatus" role="status" aria-live="polite"
+            ><i aria-hidden="true"></i><span id="liveText">—</span></span
+          ><button
             id="languageButton"
             class="button button-quiet"
             type="button"
@@ -145,8 +147,11 @@
                 <option value="impressions" data-i18n="impressions">
                   Impresiones
                 </option>
-                <option value="downloads" data-i18n="iosDownloads">
-                  Descargas iOS
+                <option value="downloads" data-i18n="downloads">
+                  Descargas
+                </option>
+                <option value="activeUsers" data-i18n="activeUsers">
+                  Usuarios activos Android
                 </option>
                 <option value="crashRate" data-i18n="crash">
                   Crashes Android
@@ -159,20 +164,17 @@
             </div>
             <div class="chart-caption">
               <span id="chartCaption"></span
-              ><span class="legend"
-                ><i></i
-                ><span data-i18n="selectedDay">Día seleccionado</span></span
-              >
+              ><span class="legend" id="chartLegend"></span>
             </div>
             <div class="day-detail" id="dayDetail" aria-live="polite"></div>
           </article>
           <aside class="panel revenue-panel">
+            <div class="live-card" id="live" aria-live="polite"></div>
             <div class="panel-head">
               <h2 data-i18n="revenueMix">De dónde viene el ingreso</h2>
               <span class="unit">EUR</span>
             </div>
             <div id="revenueMix"></div>
-            <div class="today" id="today"></div>
             <div class="insights" id="insights"></div>
           </aside>
         </section>
@@ -225,6 +227,12 @@
                   Unidades</button
                 ><button
                   type="button"
+                  data-breakdown="platforms"
+                  data-i18n="platforms"
+                >
+                  Plataforma</button
+                ><button
+                  type="button"
                   data-breakdown="countries"
                   data-i18n="countries"
                 >
@@ -254,6 +262,7 @@
                   <p class="subtle" id="appleCoverage">—</p>
                 </div>
               </div>
+              <span class="rating-badge" id="appleRating"></span>
             </div>
             <div class="store-stats" id="appleStats"></div>
             <h4 data-i18n="downloadCountries">Descargas por país</h4>
@@ -270,13 +279,27 @@
                   <p class="subtle" id="playCoverage">—</p>
                 </div>
               </div>
+              <span class="rating-badge" id="playRating"></span>
             </div>
-            <div class="store-stats" id="qualityStats"></div>
+            <div class="store-stats" id="playStats"></div>
+            <h4 data-i18n="installCountries">Instalaciones por país</h4>
+            <div id="playCountries" class="country-list"></div>
+            <p class="footnote" id="playNote"></p>
+          </article>
+          <article class="panel">
+            <div class="panel-head">
+              <div class="provider-heading">
+                <span class="provider-icon vitals-icon" aria-hidden="true"
+                  >◎</span
+                >
+                <div>
+                  <h3 data-i18n="stability">Estabilidad Android</h3>
+                  <p class="subtle" id="vitalsCoverage">—</p>
+                </div>
+              </div>
+            </div>
+            <div class="meters" id="qualityStats"></div>
             <p class="quality-note" id="qualityNote"></p>
-            <p class="footnote" data-i18n="playLimits">
-              Esta conexión aporta estabilidad y reseñas. Instalaciones e
-              ingresos de Google Play aún no están conectados.
-            </p>
           </article>
           <article class="panel reviews-panel">
             <div class="panel-head">
@@ -285,6 +308,17 @@
                 <p class="subtle" data-i18n="reviewSample">
                   Reseñas recientes · todas las fechas
                 </p>
+              </div>
+              <div
+                class="segmented small"
+                role="group"
+                aria-label="Filtrar reseñas"
+                data-i18n-aria="reviewFilter"
+              >
+                <button type="button" class="active" aria-pressed="true" data-review="all" data-i18n="all">
+                  Todas</button
+                ><button type="button" data-review="App Store">App Store</button
+                ><button type="button" data-review="Google Play">Google Play</button>
               </div>
             </div>
             <div id="reviews" class="reviews"></div>
@@ -312,11 +346,14 @@
                   <th scope="col" data-i18n="revenue">Ingresos registrados</th>
                   <th scope="col">Apple</th>
                   <th scope="col">AdMob</th>
+                  <th scope="col">Play</th>
                   <th scope="col" data-i18n="iosDownloads">Descargas iOS</th>
+                  <th scope="col" data-i18n="androidInstalls">Instalaciones Android</th>
                   <th scope="col" data-i18n="impressions">Impresiones</th>
                   <th scope="col" data-i18n="clicks">Clics</th>
                   <th scope="col">eCPM</th>
                   <th scope="col">CTR</th>
+                  <th scope="col" data-i18n="activeUsersShort">Usuarios Android</th>
                   <th scope="col" data-i18n="crash">Crashes Android</th>
                   <th scope="col">ANR</th>
                 </tr>
@@ -345,6 +382,6 @@
         </footer>
       </main>
     </div>
-    <script src="app.js?v=4" defer></script>
+    <script src="app.js?v=6" defer></script>
   </body>
 </html>
