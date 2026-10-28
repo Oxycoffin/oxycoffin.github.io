@@ -66,8 +66,11 @@ export function intervalFor(name, source = {}) {
   const interval = name === "apple" && appleNeedsCatchUp(source.data)
     ? APPLE_CATCH_UP_INTERVAL
     : SOURCE_INTERVALS[name];
-  // A failed source retries within half an hour, never sooner than its cadence.
-  return source.status === "error" ? Math.min(interval, ERROR_RETRY_INTERVAL) : interval;
+  // A failed or unconfigured source is rechecked within half an hour, so a
+  // fix or a newly added secret shows up without waiting a full cadence.
+  return source.status === "error" || source.status === "disabled"
+    ? Math.min(interval, ERROR_RETRY_INTERVAL)
+    : interval;
 }
 
 export function dueSources(state, manual = false) {

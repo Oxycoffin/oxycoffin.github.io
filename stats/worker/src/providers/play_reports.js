@@ -57,6 +57,18 @@ async function fetchObject(env, bucket, name, previous) {
   };
 }
 
+async function listObjects(env, bucket, prefix) {
+  const parameters = new URLSearchParams({ prefix, fields: "items(name,generation,updated)" });
+  const response = await fetch(
+    `https://storage.googleapis.com/storage/v1/b/${encodeURIComponent(bucket)}/o?${parameters}`,
+    { headers: { Authorization: `Bearer ${await googleToken(env)}` } },
+  );
+  if (response.status === 401 || response.status === 403) return { forbidden: true };
+  if (response.status === 404) return { items: [] };
+  if (!response.ok) throw new Error(`Play report listing returned ${response.status}`);
+  return { items: (await response.json()).items || [] };
+}
+
 function column(row, ...names) {
   for (const name of names) if (row[name] !== undefined && row[name] !== "") return row[name];
   return undefined;
@@ -151,6 +163,46 @@ export function summarizeSales(text, packageName, currency, feeRate = DEFAULT_FE
   return [...days.values()].sort((left, right) => left.date.localeCompare(right.date));
 }
 
+// Earnings reports arrive once a month, after it closes, with every charge,
+// Google fee, tax and refund already converted to the merchant currency. Their
+// sum per transaction day is the real net that replaces the sales estimate.
+export function parseEarnings(text, packageName, currency) {
+  const days = new Map();
+  for (const row of parseDelimited(text, ",")) {
+    const product = column(row, "Product id", "Product ID", "Package ID");
+    if (product && product !== packageName) continue;
+    if ((column(row, "Merchant Currency") || currency) !== currency) continue;
+    const date = reportDate(column(row, "Transaction Date"));
+    const amount = parseAmount(column(row, "Amount (Merchant Currency)"));
+    if (!date || amount === null) continue;
+    days.set(date, (days.get(date) || 0) + amount);
+  }
+  return [...days.entries()]
+    .map(([date, net]) => ({ date, net: Math.round(net * 1_000_000) / 1_000_000 }))
+    .sort((left, right) => left.date.localeCompare(right.date));
+}
+
+function emptySalesDay(date) {
+  return { date, orders: 0, refunds: 0, subscriptions: 0, grossByCurrency: {}, netEstimate: 0 };
+}
+
+// Closed months with an earnings report use its real net; later days keep the
+// estimate from the sales report.
+export function applyEarnings(sales, earnings) {
+  const months = new Set(earnings.map((row) => row.month));
+  if (!months.size) return sales;
+  const net = new Map();
+  for (const row of earnings) for (const day of row.rows) net.set(day.date, (net.get(day.date) || 0) + day.net);
+  const byDate = new Map(sales.map((row) => [row.date, row]));
+  for (const month of months) {
+    for (let date = `${month}-01`; date <= monthEnd(month); date = addDays(date, 1)) {
+      const day = byDate.get(date) || emptySalesDay(date);
+      byDate.set(date, { ...day, netEstimate: Math.round((net.get(date) || 0) * 1_000_000) / 1_000_000, netSource: "earnings" });
+    }
+  }
+  return [...byDate.values()].sort((left, right) => left.date.localeCompare(right.date));
+}
+
 // A sales file covers every day up to the day before Google last rewrote it;
 // days without orders inside that range are genuine zeros.
 function salesCoverage(month, updatedAt) {
@@ -164,7 +216,7 @@ function fillSales(month, rows, coveredThrough) {
   const byDate = new Map(rows.map((row) => [row.date, row]));
   const filled = [];
   for (let date = `${month}-01`; date <= coveredThrough; date = addDays(date, 1)) {
-    filled.push(byDate.get(date) || { date, orders: 0, refunds: 0, subscriptions: 0, grossByCurrency: {}, netEstimate: 0 });
+    filled.push(byDate.get(date) || emptySalesDay(date));
   }
   return filled;
 }
@@ -182,8 +234,13 @@ export async function refreshPlayReports(env, existing = {}) {
   const objects = {};
   const denied = new Set();
 
-  const load = async (kind, month, name, parse) => {
+  const load = async (kind, month, name, parse, knownGeneration) => {
     const previous = previousObjects[name];
+    // A listing already told us the generation; an unchanged file needs no request.
+    if (previous && knownGeneration && previous.generation === knownGeneration) {
+      objects[name] = previous;
+      return;
+    }
     const result = await fetchObject(env, bucket, name, previous);
     if (result.forbidden) {
       denied.add(kind);
@@ -219,6 +276,24 @@ export async function refreshPlayReports(env, existing = {}) {
       // Country detail only matters for the 30-day window.
       if (month >= months[1])
         jobs.push(load("countries", month, `stats/installs/installs_${pkg}_${compact}_country.csv`, (bytes) => parseCountryInstalls(decodeText(bytes))));
+      jobs.push(
+        listObjects(env, bucket, `earnings/earnings_${compact}`).then((listing) => {
+          if (listing.forbidden) {
+            denied.add("earnings");
+            return;
+          }
+          return Promise.all(
+            listing.items
+              .filter((item) => item.name.endsWith(".zip") || item.name.endsWith(".csv"))
+              .map((item) =>
+                load("earnings", month, item.name, async (bytes) => {
+                  const csv = item.name.endsWith(".zip") ? await unzipFirst(bytes) : bytes;
+                  return csv ? parseEarnings(decodeText(csv), pkg, currency) : [];
+                }, String(item.generation)),
+              ),
+          );
+        }),
+      );
       return jobs;
     }),
   );
@@ -235,7 +310,12 @@ export async function refreshPlayReports(env, existing = {}) {
   const installsDaily = [...byDate.values()].sort((left, right) => left.date.localeCompare(right.date));
   const ratings = rowsOf("ratings").sort((left, right) => left.date.localeCompare(right.date));
   const latestRating = [...ratings].reverse().find((row) => row.total !== null) || null;
-  const sales = rowsOf("sales").sort((left, right) => left.date.localeCompare(right.date));
+  const earnings = Object.values(objects).filter((object) => object.kind === "earnings");
+  const sales = applyEarnings(
+    rowsOf("sales").sort((left, right) => left.date.localeCompare(right.date)),
+    earnings,
+  );
+  const earningsMonths = earnings.map((object) => object.month).sort();
 
   return {
     daily: installsDaily.slice(-90),
@@ -245,11 +325,12 @@ export async function refreshPlayReports(env, existing = {}) {
       ? { average: latestRating.total, date: latestRating.date, dailyAverage: latestRating.daily }
       : null,
     ratingsDaily: ratings.slice(-60).map(({ date, daily }) => ({ date, daily })),
-    salesAvailable: !denied.has("sales"),
+    salesAvailable: !denied.has("sales") || earnings.length > 0,
+    earningsThrough: earningsMonths.length ? monthEnd(earningsMonths.at(-1)) : null,
     feeRate,
     denied: [...denied],
     objects,
   };
 }
 
-export const playReportsInternals = { bucketName, fillSales, recentMonths, salesCoverage };
+export const playReportsInternals = { bucketName, fillSales, monthEnd, recentMonths, salesCoverage };

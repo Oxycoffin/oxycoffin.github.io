@@ -5,6 +5,8 @@ import { addDays, isoDay } from "../src/dates.js";
 import { workerInternals } from "../src/index.js";
 import { decodeText, unzipFirst } from "../src/parsers.js";
 import {
+  applyEarnings,
+  parseEarnings,
   parseInstalls,
   parseRatings,
   playReportsInternals,
@@ -139,12 +141,23 @@ test("Play reports refresh uses generations and reuses unchanged months", async 
   const compact = month.replace("-", "");
   const installs = utf16(`Date,Package Name,Daily User Installs,Daily User Uninstalls,Installs on active devices\n${month}-01,com.tindrop.tindrop,5,1,100\n`);
   const sales = await zip(`salesreport_${compact}.csv`, `Order Number,Order Charged Date,Financial Status,Product Type,Package ID,Currency of Sale,Item Price\nGPA.1,${month}-01,Charged,inapp,com.tindrop.tindrop,EUR,2.00\n`);
+  const previousMonth = playReportsInternals.recentMonths()[1];
+  const previousCompact = previousMonth.replace("-", "");
+  const earnings = await zip(
+    `earnings_${previousCompact}.csv`,
+    `Description,Transaction Date,Transaction Type,Product id,Merchant Currency,Amount (Merchant Currency)\nGPA.9,"${new Date(`${previousMonth}-03T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })}",Charge,com.tindrop.tindrop,EUR,4.00\nGPA.9,${previousMonth}-03,Google fee,com.tindrop.tindrop,EUR,-0.60\n`,
+  );
   const requests = [];
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async (url) => {
     const href = String(url);
     requests.push(href);
     if (href.startsWith("https://oauth2")) return Response.json({ access_token: "t", expires_in: 3600 });
+    if (href.includes("/o?")) {
+      const prefix = new URL(href).searchParams.get("prefix");
+      return Response.json(prefix === `earnings/earnings_${previousCompact}` ? { items: [{ name: `earnings/earnings_${previousCompact}_1.zip`, generation: "3" }] } : {});
+    }
+    if (href.includes("earnings_")) return new Response(earnings, { headers: { "x-goog-generation": "3" } });
     const object = decodeURIComponent(href.split("/o/")[1].split("?")[0]);
     if (href.includes("ifGenerationNotMatch=")) return new Response(null, { status: 304 });
     const headers = { "x-goog-generation": "7", "last-modified": new Date().toUTCString() };
@@ -166,11 +179,17 @@ test("Play reports refresh uses generations and reuses unchanged months", async 
     };
     const first = await refreshPlayReports(env, {});
     assert.equal(first.daily[0].installs, 5);
-    assert.equal(first.sales[0].netEstimate, 1.7);
+    assert.equal(first.sales.find((row) => row.date === `${month}-01`).netEstimate, 1.7);
     assert.ok(requests.some((href) => href.includes("/b/pubsite_prod_rev_123/o/")));
+    const earned = first.sales.find((row) => row.date === `${previousMonth}-03`);
+    assert.equal(earned.netEstimate, 3.4);
+    assert.equal(earned.netSource, "earnings");
+    assert.equal(first.earningsThrough, playReportsInternals.monthEnd(previousMonth));
     requests.length = 0;
     const second = await refreshPlayReports(env, first);
     assert.deepEqual(second.daily, first.daily);
+    assert.deepEqual(second.sales, first.sales);
+    assert.ok(!requests.some((href) => href.includes("earnings_") && href.includes("alt=media")));
     assert.ok(requests.filter((href) => href.includes("ifGenerationNotMatch=7")).length >= 2);
     assert.deepEqual(await refreshPlayReports({ GOOGLE_PLAY_PACKAGE: "x" }, {}), { notConfigured: true, daily: [] });
   } finally {
@@ -264,6 +283,7 @@ test("scheduler runs every due source in one tick and respects manual cooldown",
   assert.deepEqual(workerInternals.dueSources(state), ["apple", "playReports", "admob"]);
   state.sources.apple = { status: "error", lastSuccessAt: at(26 * 60), lastAttemptAt: at(31), data: { backfillComplete: true, daily: [{ date: yesterday }] } };
   assert.equal(workerInternals.intervalFor("apple", state.sources.apple), 30 * 60_000);
+  assert.equal(workerInternals.intervalFor("playReports", { status: "disabled" }), 30 * 60_000);
   assert.deepEqual(workerInternals.dueSources(state), ["apple", "playReports", "admob"]);
   state.sources.play.lastAttemptAt = at(2);
   assert.deepEqual(workerInternals.dueSources(state, true), ["apple", "playReports", "admob"]);
@@ -289,4 +309,31 @@ test("per-source state migrates from the legacy key without losing other sources
   assert.equal(state.sources.admob.data.daily[0].date, "2026-10-02");
   assert.equal(state.sources.playReports.status, "pending");
   assert.equal(kv.writes, 2);
+});
+
+test("earnings sum every charge, fee and tax per day in the merchant currency", () => {
+  const csv =
+    "Description,Transaction Date,Transaction Type,Product id,Merchant Currency,Amount (Merchant Currency)\n" +
+    'GPA.1,"Oct 1, 2026",Charge,com.tindrop.tindrop,EUR,"1,000.00"\n' +
+    'GPA.1,"Oct 1, 2026",Google fee,com.tindrop.tindrop,EUR,-150.00\n' +
+    'GPA.2,"Oct 2, 2026",Charge refund,com.tindrop.tindrop,EUR,-2.00\n' +
+    'GPA.3,"Oct 2, 2026",Charge,com.other,EUR,9.00\n';
+  assert.deepEqual(parseEarnings(csv, "com.tindrop.tindrop", "EUR"), [
+    { date: "2026-10-01", net: 850 },
+    { date: "2026-10-02", net: -2 },
+  ]);
+});
+
+test("earnings replace estimates for the whole closed month only", () => {
+  const sales = [
+    { date: "2026-09-30", orders: 2, refunds: 0, subscriptions: 1, grossByCurrency: { EUR: 5 }, netEstimate: 4.25 },
+    { date: "2026-10-01", orders: 1, refunds: 0, subscriptions: 0, grossByCurrency: { EUR: 2 }, netEstimate: 1.7 },
+  ];
+  const result = applyEarnings(sales, [{ month: "2026-09", rows: [{ date: "2026-09-30", net: 3.9 }] }]);
+  assert.equal(result.length, 31);
+  assert.equal(result.find((row) => row.date === "2026-09-30").netEstimate, 3.9);
+  assert.equal(result.find((row) => row.date === "2026-09-30").orders, 2);
+  assert.equal(result.find((row) => row.date === "2026-09-01").netEstimate, 0);
+  assert.equal(result.at(-1).netEstimate, 1.7);
+  assert.equal(result.at(-1).netSource, undefined);
 });

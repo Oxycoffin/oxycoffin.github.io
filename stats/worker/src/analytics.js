@@ -504,6 +504,7 @@ export function buildDashboard(state, viewer = {}, intervalFor = null) {
     },
     play: {
       feeRate: reportsData.feeRate ?? null,
+      earningsThrough: reportsData.earningsThrough || null,
       salesAvailable: Boolean(reportsData.salesAvailable && android.sales.length),
     },
     insights: insightsFor(periods[30]),

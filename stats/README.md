@@ -19,7 +19,7 @@ Workers y nunca se entregan al navegador.
   AdMob cada 10 minutos, vitals y reseñas de Play cada hora, informes masivos
   de Play cada 3 horas y Apple a diario. Mientras falta el informe de ayer o el
   histórico de 60 días, Apple se consulta cada 30 minutos. Una fuente con error
-  reintenta como máximo cada 30 minutos.
+  o sin configurar se vuelve a comprobar como máximo cada 30 minutos.
 - Las consultas son incrementales: AdMob relee solo la última semana (la
   historia completa cada 6 horas y los desgloses cada hora), los vitals de Play
   solo se consultan cuando Google mueve su ventana de frescura y los informes
@@ -47,15 +47,21 @@ a la media de los últimos siete días. Resume por separado:
   RPM y desgloses por unidad publicitaria, plataforma y país.
 - Google Play (vitals y reseñas): crash rate y ANR percibidos frente a los
   umbrales de Google, picos del periodo, usuarios activos diarios medidos por
-  Android vitals (`distinctUsers`) y reseñas recientes.
+  Android vitals (`distinctUsers`) y reseñas recientes. Google no publica vitals
+  hasta reunir suficientes usuarios; mientras Play Console muestre "Data
+  unavailable", la API devuelve cero filas y el panel lo indica.
 - Google Play (informes masivos, opcional): instalaciones y desinstalaciones
   diarias, dispositivos activos, instalaciones por país, valoración media global
-  y ventas estimadas (pedidos, reembolsos y neto estimado).
+  y ventas (pedidos, reembolsos y neto). Los meses cerrados usan el informe
+  mensual de ganancias (`earnings/`), que ya descuenta comisión, impuestos y
+  reembolsos en EUR.
 
-Las ventas netas de Play se estiman a partir del informe de ventas estimadas:
+Mientras Google no publica las ganancias de un mes (suele hacerlo hacia el día
+5 del siguiente), sus ventas netas se estiman a partir del informe de ventas
+estimadas:
 precio sin impuestos menos la comisión `GOOGLE_PLAY_FEE_RATE` (15 % por
 defecto) y solo para importes en EUR; el resto se muestra aparte por moneda,
-sin convertir. Para contabilidad manda el informe de ganancias mensual.
+sin convertir.
 
 Google publica los informes masivos con 2–7 días de retraso. Mientras Play no
 cubre dos periodos completos, la comparativa de ingresos usa solo Apple +

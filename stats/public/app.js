@@ -108,11 +108,13 @@
       installs: "Instalaciones",
       uninstalls: "Desinstalaciones",
       activeDevices: "Dispositivos activos",
-      playNet: "Ventas netas (est.)",
+      playNet: "Ventas netas",
+      playNetReal: "Ganancias reales hasta el {date}; después, estimadas",
+      playNetEstimated: "Estimadas hasta que Google publique las ganancias del mes",
       orders: "Pedidos",
       playRefunds: "Reembolsos",
       playNote:
-        "Google publica estos informes con 2–7 días de retraso; instalaciones hasta el {installs}, ventas hasta el {sales}. Ventas netas = precio sin impuestos menos el {fee} de comisión, solo en EUR.",
+        "Google publica estos informes con 2–7 días de retraso; instalaciones hasta el {installs}, ventas hasta el {sales}. Los meses cerrados usan el informe de ganancias (neto real en EUR); los días posteriores se estiman como precio sin impuestos menos el {fee} de comisión, solo en EUR.",
       playSetup:
         "Para ver instalaciones, valoración y ventas de Android, configura el bucket de informes de Google Play y da acceso de descarga a la cuenta de servicio.",
       playDenied:
@@ -263,11 +265,13 @@
       installs: "Installs",
       uninstalls: "Uninstalls",
       activeDevices: "Active devices",
-      playNet: "Net sales (est.)",
+      playNet: "Net sales",
+      playNetReal: "Actual earnings through {date}; estimated afterwards",
+      playNetEstimated: "Estimated until Google posts the month's earnings",
       orders: "Orders",
       playRefunds: "Refunds",
       playNote:
-        "Google posts these reports 2–7 days late; installs through {installs}, sales through {sales}. Net sales = price before tax minus the {fee} fee, EUR only.",
+        "Google posts these reports 2–7 days late; installs through {installs}, sales through {sales}. Closed months use the earnings report (actual EUR net); later days are estimated as price before tax minus the {fee} fee, EUR only.",
       playSetup:
         "To see Android installs, rating and sales, configure the Google Play reports bucket and give the service account download access.",
       playDenied:
@@ -1109,7 +1113,13 @@
         stat(t("installs"), int(c.installDays ? a.androidInstalls : null)),
         stat(t("uninstalls"), int(c.installDays ? a.androidUninstalls : null)),
         stat(t("activeDevices"), int(a.androidActiveDevices)),
-        stat(t("playNet"), money(sales && c.salesDays ? s.revenue.play : null)),
+        stat(
+          t("playNet"),
+          money(sales && c.salesDays ? s.revenue.play : null),
+          data.play?.earningsThrough && data.play.earningsThrough >= s.start
+            ? t("playNetReal", { date: day(data.play.earningsThrough) })
+            : t("playNetEstimated"),
+        ),
         stat(t("orders"), int(sales && c.salesDays ? s.play.orders : null)),
         stat(t("playRefunds"), int(sales && c.salesDays ? s.play.refunds : null)),
       );
