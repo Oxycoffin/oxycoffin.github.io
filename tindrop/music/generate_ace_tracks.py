@@ -20,6 +20,8 @@ Usage: VARIANTS=1 DURATION=90 /Users/macmini/dev/ACE-Step-1.5/.venv/bin/python -
 Non-turbo DiTs (DIT_MODEL=acestep-v15-xl-sft) take STEPS (default 50 there,
 8 for turbo), GUIDANCE (CFG, default 7.0) and SHIFT (default 1.0). Re-running
 on the same <out_dir> resumes: tracks already in its manifest are skipped.
+For long batches on the external SSD run it through run_ace_batch.py, which
+relaunches it after the drive drops off the bus and comes back.
 
 The prompts used for the catalog are recorded in each batch manifest.json under
 /Volumes/Externo/Creaciones/tindrop-musica/.
