@@ -14,7 +14,9 @@ For every track / Para cada pista:
   path;
 - do not author mood or pace fields: the app derives Slow (<90 BPM),
   Medium (90–<120 BPM) or Fast (>=120 BPM) exclusively from the canonical
-  `beatMap.bpm`; for Tindrop Originals the only genre hint is the artist line
+  `beatMap.bpm` (rounded as shown); an authored tempo (e.g. the generation
+  BPM) may only be passed as `--tempo-hint-bpm` to pick the metrical level
+  (80 vs 160), never to replace the beats the analyzer measures; for Tindrop Originals the only genre hint is the artist line
   (`<Genre> · Tindrop Originals`); provide a deterministic `sortOrder` only as a same-title
   tie-breaker, a useful `previewStartMs` and a normalized waveform;
 - run `python3 tindrop/music/validate_catalog.py <catalog>`;
@@ -37,9 +39,12 @@ demand; the signed manifest is 1,811,065 bytes (SHA-256
 `76ab2d97ea0d2a878cb1ba432eb381f5e4741ce301a0b523ab663b0c5800ba0b`), close to
 the app's 2 MiB transport limit. The artist line carries the genre label
 (`<Genre> · Tindrop Originals`); speed stays derived from `beatMap.bpm`.
-Known gap: the analyzer reports 8 tracks at a metrical multiple of their
-generated tempo (e.g. 80 → 160 BPM), so those appear with the wrong speed until
-the analyzer is fixed and the maps are regenerated.
+Catalog v6 keeps the same 43 audio objects byte for byte and only
+regenerates their beat maps with the analyzer of Tindrop commit `340e44b50`:
+one metrical level per song, a steadier beat grid and the generation BPM as
+level hint. The 8 tracks v5 read at a metrical multiple (e.g. 80 → 160 BPM)
+now show their real speed. Signed v6 manifest: 1,766,471 bytes (SHA-256
+`7ab746aab60c627220be02ec4c4e2307108c794a3b28173ee58463b8e37f2669`).
 After v5 was live and verified, the 28 retired v1–v4 objects (20 CC0 and 8
 synthesized originals) were deleted from R2 at the owner's request; drafts that
 already cached them keep working, but they can no longer be re-downloaded.
@@ -48,8 +53,9 @@ El catálogo v5 (30-10-2026) sustituye toda la biblioteca por 43 instrumentales
 Tindrop Originals generados en local con ACE-Step 1.5. `ace_tracks.json` define
 títulos, género y másters; `prepare_ace_catalog.py` recorta la cola, normaliza
 a -16 LUFS, codifica AAC 128 kbps y calcula los cues con el analizador Dart
-canónico. Ocho pistas lentas se detectan a un múltiplo de su tempo real y
-mostrarán una velocidad incorrecta hasta corregir el analizador.
+canónico. El catálogo v6 conserva el mismo audio y solo regenera los mapas
+de ritmo: las ocho pistas que v5 leía a un múltiplo de su tempo muestran ya su
+velocidad real.
 
 `generate_original_catalog.py` and `prepare_cc0_catalog.py` below document the
 retired v1–v4 sources; they are kept for history and must not be run against

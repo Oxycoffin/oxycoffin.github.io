@@ -135,7 +135,10 @@ def main() -> None:
         if not args.reuse_encoded or not output.is_file():
             encode(source, output, track["title"], artist)
         duration_ms = round(probe_seconds(output) * 1000)
-        cues = canonical_beat_map(output, duration_ms, args.tindrop_root)
+        record = generation_record(source)
+        # The requested generation tempo resolves half/double-time ambiguity
+        # (e.g. 76 vs 152 BPM); beats and drift still come from the audio.
+        cues = canonical_beat_map(output, duration_ms, args.tindrop_root, record.get("bpm"))
         catalog_tracks.append({
             "id": track["id"],
             "title": track["title"],
@@ -151,7 +154,7 @@ def main() -> None:
             "featured": bool(track.get("featured", False)),
             "beatMap": cues,
         })
-        write_evidence(root, track, spec["artist"], spec["generator"], generation_record(source), sha256(source))
+        write_evidence(root, track, spec["artist"], spec["generator"], record, sha256(source))
         print(f"prepared {output.name}: {duration_ms} ms, {cues.get('bpm', 0):.1f} BPM", flush=True)
     payload = {"version": args.version, "issuedAtMs": args.issued_at_ms, "tracks": catalog_tracks}
     args.catalog.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

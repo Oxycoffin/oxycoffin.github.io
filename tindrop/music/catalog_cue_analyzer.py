@@ -11,7 +11,13 @@ from pathlib import Path
 ANALYSIS_SAMPLE_RATE = 11_025
 
 
-def canonical_beat_map(encoded: Path, total_ms: int, tindrop_root: Path) -> dict:
+def canonical_beat_map(
+    encoded: Path,
+    total_ms: int,
+    tindrop_root: Path,
+    tempo_hint_bpm: float | None = None,
+) -> dict:
+    """`tempo_hint_bpm` (an authored tempo) only selects the metrical level."""
     dart = tindrop_root.parent / ".flutter" / "flutter" / "bin" / "dart"
     tool = tindrop_root / "tool" / "beat_video_catalog_analyzer.dart"
     if not dart.is_file() or not tool.is_file():
@@ -48,6 +54,11 @@ def canonical_beat_map(encoded: Path, total_ms: int, tindrop_root: Path) -> dict
                 str(ANALYSIS_SAMPLE_RATE),
                 "--duration-ms",
                 str(total_ms),
+                *(
+                    ["--tempo-hint-bpm", str(tempo_hint_bpm)]
+                    if tempo_hint_bpm
+                    else []
+                ),
             ],
             cwd=tindrop_root,
             capture_output=True,
