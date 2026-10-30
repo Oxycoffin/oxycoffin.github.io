@@ -40,6 +40,9 @@ the app's 2 MiB transport limit. The artist line carries the genre label
 Known gap: the analyzer reports 8 tracks at a metrical multiple of their
 generated tempo (e.g. 80 → 160 BPM), so those appear with the wrong speed until
 the analyzer is fixed and the maps are regenerated.
+After v5 was live and verified, the 28 retired v1–v4 objects (20 CC0 and 8
+synthesized originals) were deleted from R2 at the owner's request; drafts that
+already cached them keep working, but they can no longer be re-downloaded.
 
 El catálogo v5 (30-10-2026) sustituye toda la biblioteca por 43 instrumentales
 Tindrop Originals generados en local con ACE-Step 1.5. `ace_tracks.json` define
