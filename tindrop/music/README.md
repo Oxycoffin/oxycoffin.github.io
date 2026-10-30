@@ -12,9 +12,10 @@ For every track / Para cada pista:
 - generate the full-track beat map with Tindrop's canonical Dart analyzer and
   review its confidence/continuity without hand-authoring a catalog-only cue
   path;
-- do not author genre, mood or pace labels: the app derives Slow (<90 BPM),
+- do not author mood or pace fields: the app derives Slow (<90 BPM),
   Medium (90–<120 BPM) or Fast (>=120 BPM) exclusively from the canonical
-  `beatMap.bpm`; provide a deterministic `sortOrder` only as a same-title
+  `beatMap.bpm`; for Tindrop Originals the only genre hint is the artist line
+  (`<Genre> · Tindrop Originals`); provide a deterministic `sortOrder` only as a same-title
   tie-breaker, a useful `previewStartMs` and a normalized waveform;
 - run `python3 tindrop/music/validate_catalog.py <catalog>`;
 - sign only after approval with `python3 tindrop/music/sign_catalog.py tindrop/music/catalog.local.json --key ~/.tindrop_remote_config/remote_config_ed25519 --catalog-output tindrop/music/catalog.json --output tindrop/music/catalog.json.sig`; the signer compacts the delivery copy before signing so the readable source manifest can retain audited beat-map formatting without exceeding the app's 2 MiB transport limit;
@@ -24,23 +25,32 @@ Never commit the private Ed25519 key or unlicensed music.
 
 ## Production snapshot
 
-Catalog v4 refreshes all 20 complete CC0 works with the canonical Dart analyzer
-at Tindrop commit `18866b5a4` (`schemaVersion=6`, `analysisVersion=1`). The maps
-include local rhythm regions and audible attacks, generated from the exact
-published AAC files. Track IDs, URLs, audio hashes, titles, licenses, ordering
-and preview points are preserved. Audio remains 52,911,030 bytes on demand;
-the signed manifest is 1,375,687 bytes with SHA-256
-`47e2800351b876bf519eec1bee218d8cb4070a5007d34d09a668eadfd1287839`.
-The eight retired Tindrop Originals remain at their immutable R2 URLs for old
-drafts. No audio upload or deletion is part of this analysis refresh.
+Catalog v5 (2026-10-30) replaces the whole library with 43 instrumental
+Tindrop Originals generated locally by Lagartija Labs with ACE-Step 1.5 (MIT
+weights; DiT `acestep-v15-xl-turbo` quantized to 8-bit MLX, LM
+`acestep-5Hz-lm-1.7B`). `ace_tracks.json` owns titles, genre labels and the
+lossless masters under `/Volumes/Externo/Creaciones/tindrop-musica/`;
+`prepare_ace_catalog.py` trims the silent tail, normalizes to -16 LUFS with a
+limiter, encodes AAC-LC 128 kbps/44.1 kHz and delegates cues to the canonical
+Dart analyzer at Tindrop commit `ded60b502`. Audio totals 62,772,383 bytes on
+demand; the signed manifest is 1,811,065 bytes (SHA-256
+`76ab2d97ea0d2a878cb1ba432eb381f5e4741ce301a0b523ab663b0c5800ba0b`), close to
+the app's 2 MiB transport limit. The artist line carries the genre label
+(`<Genre> · Tindrop Originals`); speed stays derived from `beatMap.bpm`.
+Known gap: the analyzer reports 8 tracks at a metrical multiple of their
+generated tempo (e.g. 80 → 160 BPM), so those appear with the wrong speed until
+the analyzer is fixed and the maps are regenerated.
 
-El catálogo v4 actualiza las 20 canciones CC0 completas con el analizador Dart
-canónico del commit `18866b5a4` de Tindrop (`schemaVersion=6`,
-`analysisVersion=1`). Los mapas incluyen ritmo por tramos y ataques audibles,
-calculados sobre los AAC publicados. Se conservan los identificadores, URLs,
-hashes de audio, títulos, licencias, orden y puntos de preescucha. Los audios
-suman 52.911.030 bytes bajo demanda y el manifiesto firmado ocupa 1.375.687
-bytes. Esta actualización no sube ni elimina audios.
+El catálogo v5 (30-10-2026) sustituye toda la biblioteca por 43 instrumentales
+Tindrop Originals generados en local con ACE-Step 1.5. `ace_tracks.json` define
+títulos, género y másters; `prepare_ace_catalog.py` recorta la cola, normaliza
+a -16 LUFS, codifica AAC 128 kbps y calcula los cues con el analizador Dart
+canónico. Ocho pistas lentas se detectan a un múltiplo de su tempo real y
+mostrarán una velocidad incorrecta hasta corregir el analizador.
+
+`generate_original_catalog.py` and `prepare_cc0_catalog.py` below document the
+retired v1–v4 sources; they are kept for history and must not be run against
+the v5 manifest.
 
 `catalog.local.json` is the auditable source manifest. The deterministic
 `generate_original_catalog.py` command recreates the eight Tindrop Originals v1
