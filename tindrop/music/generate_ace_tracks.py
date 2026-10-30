@@ -165,8 +165,10 @@ dit_convert.convert_and_load = _load_cached_decoder
 
 
 def main():
-    prompts_path, out_dir = sys.argv[1], sys.argv[2]
+    prompts_path, out_dir = (os.path.abspath(arg) for arg in sys.argv[1:3])
     prompts = json.load(open(prompts_path))
+    # ACE-Step keeps progress estimates under <cwd>/.cache, ignored by its repo.
+    os.chdir(REPO)
     from acestep.handler import AceStepHandler
     from acestep.llm_inference import LLMHandler
     from acestep.inference import GenerationConfig, GenerationParams, generate_music
