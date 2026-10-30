@@ -8,6 +8,9 @@ MLX Linear layers to 8 bits. The LM stays as published (bf16, MLX backend).
 Usage: VARIANTS=1 DURATION=90 /Users/macmini/dev/ACE-Step-1.5/.venv/bin/python -I \
     generate_ace_tracks.py <prompts.json> <out_dir>
 
+Non-turbo DiTs (DIT_MODEL=acestep-v15-xl-sft) take STEPS (default 50 there,
+8 for turbo), GUIDANCE (CFG, default 7.0) and SHIFT (default 1.0).
+
 The prompts used for catalog v5 are recorded in each batch manifest.json under
 /Volumes/Externo/Creaciones/tindrop-musica/.
 """
@@ -31,6 +34,11 @@ import torch  # noqa: E402
 from acestep.models.mlx import dit_convert  # noqa: E402
 
 DIT_BITS = int(os.environ.get("DIT_BITS", "8"))
+DIT_MODEL = os.environ.get("DIT_MODEL", "acestep-v15-xl-turbo")
+TURBO = "turbo" in DIT_MODEL
+STEPS = int(os.environ.get("STEPS", "8" if TURBO else "50"))
+GUIDANCE = float(os.environ.get("GUIDANCE", "7.0"))
+SHIFT = float(os.environ.get("SHIFT", "1.0"))
 GROUP = 64
 
 
@@ -88,7 +96,7 @@ def main():
     dit = AceStepHandler()
     status = dit.initialize_service(
         project_root=REPO,
-        config_path=os.environ.get("DIT_MODEL", "acestep-v15-xl-turbo"),
+        config_path=DIT_MODEL,
         device="mps",
         use_mlx_dit=True,
     )
@@ -112,7 +120,7 @@ def main():
     def write_manifest():
         peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 2**30
         json.dump(
-            {"model": os.environ.get("DIT_MODEL", "acestep-v15-xl-turbo"), "dit_bits": DIT_BITS,
+            {"model": DIT_MODEL, "dit_bits": DIT_BITS, "steps": STEPS, "guidance": GUIDANCE, "shift": SHIFT,
              "lm": os.environ.get("LM_MODEL", "acestep-5Hz-lm-1.7B"), "peak_rss_gib": round(peak, 1),
              "tracks": manifest},
             open(manifest_path, "w"), indent=2, ensure_ascii=False,
@@ -133,6 +141,9 @@ def main():
                 keyscale=item.get("key", ""),
                 duration=item.get("duration", duration),
                 seed=seed,
+                inference_steps=STEPS,
+                guidance_scale=GUIDANCE,
+                shift=SHIFT,
             )
             config = GenerationConfig(batch_size=1, audio_format="wav", use_random_seed=False, seeds=[seed])
             result = generate_music(dit, llm, params, config, save_dir=out_dir)
