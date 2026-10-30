@@ -1,6 +1,7 @@
 import { buildDashboard, dashboardTag } from "./analytics.js";
 import { assertRefreshIntent, requireViewer } from "./auth.js";
 import { addDays, ageMs, isoDay } from "./dates.js";
+import { fxIsStale, refreshFx } from "./fx.js";
 import { refreshAdmob } from "./providers/admob.js";
 import { refreshApple } from "./providers/apple.js";
 import { refreshPlay } from "./providers/google.js";
@@ -93,8 +94,10 @@ async function api(request, env, ctx, viewer) {
   }
   if (request.method === "POST" && url.pathname === "/api/refresh") {
     assertRefreshIntent(request);
-    const sources = dueSources(await readState(env), true);
+    const state = await readState(env);
+    const sources = dueSources(state, true);
     if (!sources.length) return json({ accepted: false, reason: "cooldown" }, 200);
+    if (fxIsStale(state.fx)) ctx.waitUntil(refreshFx(env));
     for (const source of sources) ctx.waitUntil(updateSource(env, source));
     return json({ accepted: true, sources }, 202);
   }
@@ -127,7 +130,9 @@ async function handleRequest(request, env, ctx) {
 export default {
   fetch: handleRequest,
   async scheduled(_event, env, ctx) {
-    for (const source of dueSources(await readState(env), false)) ctx.waitUntil(updateSource(env, source));
+    const state = await readState(env);
+    if (fxIsStale(state.fx)) ctx.waitUntil(refreshFx(env));
+    for (const source of dueSources(state, false)) ctx.waitUntil(updateSource(env, source));
   },
 };
 

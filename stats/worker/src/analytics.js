@@ -1,6 +1,7 @@
 import { addDays, isoDay, lastDays } from "./dates.js";
+import { convertRevenueRows, toEur } from "./fx.js";
 
-const DASHBOARD_VERSION = 3;
+const DASHBOARD_VERSION = 4;
 
 function rowsInWindow(rows, start, end) {
   return rows.filter(
@@ -74,6 +75,18 @@ function addCurrencies(target, amounts = {}, skip) {
   return target;
 }
 
+// Native amounts already folded into the totals, with their approximate value
+// in the dashboard currency (null when no rate was available).
+function convertedAmounts(amounts, rates, currency, factor = 1) {
+  return Object.entries(amounts)
+    .map(([code, amount]) => {
+      const missing = {};
+      const eur = toEur({ [code]: amount }, rates, currency, missing);
+      return { code, amount, eur: missing[code] ? null : eur * factor };
+    })
+    .sort((a, b) => (b.eur ?? 0) - (a.eur ?? 0));
+}
+
 function rankCountries(rows, field) {
   const totals = new Map();
   for (const row of rows) {
@@ -84,7 +97,7 @@ function rankCountries(rows, field) {
   return [...totals.values()].sort((a, b) => b[field] - a[field]);
 }
 
-function summarizePeriod(days, today, apple, admob, play, reviews, currency, android = {}) {
+function summarizePeriod(days, today, apple, admob, play, reviews, currency, android = {}, fx = {}) {
   const installs = android.installs || [];
   const sales = android.sales || [];
   const start = addDays(today, -(days - 1));
@@ -124,8 +137,10 @@ function summarizePeriod(days, today, apple, admob, play, reviews, currency, and
     }
   }
   const playOtherCurrencies = {};
-  for (const day of currentSales)
-    addCurrencies(playOtherCurrencies, day.grossByCurrency, currency);
+  for (const day of currentSales) {
+    if (day.netSource !== "earnings")
+      addCurrencies(playOtherCurrencies, day.grossByCurrency, currency);
+  }
 
   const appleRevenue = sum(apple, "proceeds", start, today);
   const admobRevenue = sum(admob, "estimatedEarnings", start, today);
@@ -175,8 +190,8 @@ function summarizePeriod(days, today, apple, admob, play, reviews, currency, and
       apple: appleRevenue,
       admob: admobRevenue,
       play: playRevenue,
-      otherCurrencies,
-      playOtherCurrencies,
+      otherCurrencies: convertedAmounts(otherCurrencies, fx.rates, currency),
+      playOtherCurrencies: convertedAmounts(playOtherCurrencies, fx.rates, currency, 1 - (fx.feeRate ?? 0.15)),
       appleChange: appleComparable ? change(appleRevenue, previousAppleRevenue) : null,
       admobChange: admobComparable ? change(admobRevenue, previousAdmobRevenue) : null,
       playChange: salesComparable ? change(playRevenue, previousPlayRevenue) : null,
@@ -405,7 +420,7 @@ function insightsFor(period) {
 // Weak validator for conditional dashboard polling: it changes whenever a
 // source is touched or the calendar day (and so every window) moves.
 export function dashboardTag(state) {
-  const parts = [DASHBOARD_VERSION, isoDay()];
+  const parts = [DASHBOARD_VERSION, isoDay(), state.fx?.fetchedAt];
   for (const [name, source] of Object.entries(state.sources || {}).sort()) {
     parts.push(name, source.status, source.lastAttemptAt, source.lastSuccessAt);
   }
@@ -435,30 +450,39 @@ export function buildDashboard(state, viewer = {}, intervalFor = null) {
   const admobData = state.sources?.admob?.data || {};
   const playData = state.sources?.play?.data || {};
   const reportsData = state.sources?.playReports?.data || {};
-  const apple = (appleData.daily || []).filter(
-    (row) => row.reportAvailable !== false,
+  const fxRates = state.fx?.rates || null;
+  const feeRate = reportsData.feeRate ?? 0.15;
+  // Other currencies are folded into EUR here, so every total, chart and
+  // export below already works with the approximate amount that is paid out.
+  const converted = convertRevenueRows(
+    {
+      apple: (appleData.daily || []).filter((row) => row.reportAvailable !== false),
+      sales: reportsData.sales || [],
+    },
+    fxRates,
+    currency,
+    feeRate,
   );
+  const apple = converted.apple;
   const admob = admobData.daily || [];
   const play = playData.daily || [];
   const android = {
     installs: reportsData.daily || [],
-    sales: reportsData.sales || [],
+    sales: converted.sales,
     countries: reportsData.countries || [],
   };
   const reviews = playData.reviews || null;
   const periods = {
-    7: summarizePeriod(7, end, apple, admob, play, reviews, currency, android),
-    30: summarizePeriod(30, end, apple, admob, play, reviews, currency, android),
+    7: summarizePeriod(7, end, apple, admob, play, reviews, currency, android, { rates: fxRates, feeRate }),
+    30: summarizePeriod(30, end, apple, admob, play, reviews, currency, android, { rates: fxRates, feeRate }),
   };
   const successfulUpdates = Object.values(state.sources || {})
     .map((source) => source.lastSuccessAt)
     .filter(Boolean)
     .sort();
-  const hasUnconvertedAppleRevenue = apple.some((day) =>
-    Object.entries(day.proceedsByCurrency || {}).some(
-      ([code, amount]) => code !== currency && Number(amount) !== 0,
-    ),
-  );
+  const unconverted = {};
+  for (const day of apple) toEur(day.proceedsByCurrency, fxRates, currency, unconverted);
+  const hasUnconvertedAppleRevenue = Object.keys(unconverted).length > 0;
   const daily = mergeDaily(end, apple, admob, play, android);
   const sources = {};
   for (const name of ["apple", "play", "playReports", "admob"]) {
@@ -509,6 +533,7 @@ export function buildDashboard(state, viewer = {}, intervalFor = null) {
     },
     insights: insightsFor(periods[30]),
     flags: { hasUnconvertedAppleRevenue },
+    fx: state.fx ? { date: state.fx.date, fetchedAt: state.fx.fetchedAt, source: state.fx.source } : null,
     sources,
     summary: {
       currency,

@@ -75,7 +75,7 @@
       refreshDone: "Datos actualizados.",
       cooldown:
         "Todas las fuentes se han consultado hace menos de cinco minutos. Se muestran los últimos datos disponibles.",
-      estimated: "AdMob estimado + proceeds Apple + Play neto estimado, en EUR",
+      estimated: "AdMob estimado + proceeds Apple + Play neto estimado, en EUR (otras monedas al cambio aproximado)",
       liveTitle: "Hoy en directo",
       liveSource: "AdMob · provisional · {ago}",
       livePace: "{value} de un día medio (últimos {days} días)",
@@ -90,11 +90,13 @@
       daysAgo: "hace {n} d",
       inMinutes: "en {n} min",
       inHours: "en {n} h",
-      currencies: "Otros importes de Apple",
-      currenciesBody: "Sin convertir ni sumar al total: {values}.",
-      playCurrencies: "Ventas de Play en otras monedas",
+      currencies: "Apple en otras monedas",
+      currenciesBody: "Sumado al total al cambio aproximado: {values}.",
+      playCurrencies: "Play en otras monedas",
       playCurrenciesBody:
-        "Brutas, sin convertir ni sumar al total: {values}.",
+        "Sumado al total, neto estimado al cambio aproximado: {values}.",
+      noRate: "Sin tipo de cambio",
+      noRateBody: "Fuera del total hasta tener cambio: {values}.",
       absentPlay: "Ventas de Play sin conectar",
       absentPlayBody:
         "El total no incluye las compras ni las suscripciones de Android.",
@@ -234,7 +236,7 @@
       refreshDone: "Data updated.",
       cooldown:
         "Every source was checked less than five minutes ago. Showing the latest available data.",
-      estimated: "Estimated AdMob + Apple proceeds + estimated Play net, in EUR",
+      estimated: "Estimated AdMob + Apple proceeds + estimated Play net, in EUR (other currencies at approximate rates)",
       liveTitle: "Today, live",
       liveSource: "AdMob · provisional · {ago}",
       livePace: "{value} of an average day (last {days} days)",
@@ -249,10 +251,12 @@
       daysAgo: "{n} d ago",
       inMinutes: "in {n} min",
       inHours: "in {n} h",
-      currencies: "Other Apple amounts",
-      currenciesBody: "Not converted or added to the total: {values}.",
-      playCurrencies: "Play sales in other currencies",
-      playCurrenciesBody: "Gross, not converted or added to the total: {values}.",
+      currencies: "Apple in other currencies",
+      currenciesBody: "Added to the total at the approximate rate: {values}.",
+      playCurrencies: "Play in other currencies",
+      playCurrenciesBody: "Added to the total as estimated net at the approximate rate: {values}.",
+      noRate: "No exchange rate",
+      noRateBody: "Left out of the total until a rate is available: {values}.",
       absentPlay: "Play sales not connected",
       absentPlayBody: "The total excludes Android purchases and subscriptions.",
       requests: "Requests",
@@ -396,12 +400,12 @@
       ? fmt(v, { notation: "compact", maximumFractionDigits: 1 })
       : int(v);
   const money = (v, currency = data?.currency || "EUR") =>
-    fmt(v, {
-      style: "currency",
-      currency,
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+    fmt(
+      v,
+      currency === (data?.currency || "EUR")
+        ? { style: "currency", currency, minimumFractionDigits: 2, maximumFractionDigits: 2 }
+        : { style: "currency", currency },
+    );
   const pct = (v) => fmt(v, { style: "percent", maximumFractionDigits: 2 });
   const day = (v) =>
     v
@@ -929,13 +933,23 @@
       ...rows,
     );
     const insights = [];
-    const otherApple = Object.entries(s.revenue.otherCurrencies || {});
-    const otherPlay = Object.entries(s.revenue.playOtherCurrencies || {});
-    const amounts = (list) => list.map(([code, value]) => money(value, code)).join(" · ");
-    if (otherApple.length)
-      insights.push(["currencies", t("currenciesBody", { values: amounts(otherApple) }), true]);
-    if (otherPlay.length)
-      insights.push(["playCurrencies", t("playCurrenciesBody", { values: amounts(otherPlay) }), true]);
+    const list = (value) => (Array.isArray(value) ? value : []);
+    const otherApple = list(s.revenue.otherCurrencies);
+    const otherPlay = list(s.revenue.playOtherCurrencies);
+    const amounts = (items) =>
+      items.map((item) => `${money(item.amount, item.code)} ≈ ${money(item.eur)}`).join(" · ");
+    const missing = [...otherApple, ...otherPlay].filter((item) => item.eur == null);
+    const known = (items) => items.filter((item) => item.eur != null);
+    if (known(otherApple).length)
+      insights.push(["currencies", t("currenciesBody", { values: amounts(known(otherApple)) }), false]);
+    if (known(otherPlay).length)
+      insights.push(["playCurrencies", t("playCurrenciesBody", { values: amounts(known(otherPlay)) }), false]);
+    if (missing.length)
+      insights.push([
+        "noRate",
+        t("noRateBody", { values: missing.map((item) => money(item.amount, item.code)).join(" · ") }),
+        true,
+      ]);
     if (!playConnected) insights.push(["absentPlay", t("absentPlayBody"), false]);
     set(
       "insights",

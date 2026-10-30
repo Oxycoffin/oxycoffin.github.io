@@ -1,3 +1,5 @@
+import { readFx } from "./fx.js";
+
 // Each source lives under its own key so concurrent refreshes of different
 // sources never overwrite each other. The v1 combined key is read only as a
 // fallback until every source has been rewritten under the new layout.
@@ -26,13 +28,15 @@ export async function readSource(env, sourceName) {
 }
 
 export async function readState(env) {
-  const stored = await Promise.all(
-    SOURCE_NAMES.map((name) => env.PULSE_CACHE.get(`${SOURCE_KEY_PREFIX}${name}`, "json")),
-  );
+  const [fx, ...stored] = await Promise.all([
+    readFx(env),
+    ...SOURCE_NAMES.map((name) => env.PULSE_CACHE.get(`${SOURCE_KEY_PREFIX}${name}`, "json")),
+  ]);
   const legacy = stored.some((source) => !source)
     ? await env.PULSE_CACHE.get(LEGACY_STATE_KEY, "json")
     : null;
   const state = emptyState(env.DEFAULT_CURRENCY || "EUR");
+  state.fx = fx;
   SOURCE_NAMES.forEach((name, index) => {
     state.sources[name] = stored[index] || legacy?.sources?.[name] || emptySource();
   });

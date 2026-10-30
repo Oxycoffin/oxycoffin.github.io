@@ -78,7 +78,7 @@ test("dashboard combines available revenue without comparing incomplete periods"
   assert.equal(dashboard.summary.adImpressions30, 200);
   assert.equal(dashboard.summary.revenueChange, null);
   assert.equal(dashboard.summary.androidCrashRate, 0.002);
-  assert.equal(dashboard.version, 3);
+  assert.equal(dashboard.version, 4);
   assert.equal(dashboard.periods[30].ads.ctr, 0.05);
   assert.equal(dashboard.periods[30].ads.matchRate, 250 / 300);
   assert.equal(dashboard.periods[30].acquisition.refunds, 1);
@@ -149,7 +149,7 @@ test("period country totals and other currencies respect the selected dates", ()
     null,
     "EUR",
   );
-  assert.deepEqual(s.revenue.otherCurrencies, { USD: 4 });
+  assert.deepEqual(s.revenue.otherCurrencies, [{ code: "USD", amount: 4, eur: null }]);
   assert.deepEqual(s.acquisition.countries, [
     { code: "ES", downloads: 3, proceeds: -2 },
   ]);

@@ -60,8 +60,8 @@ Mientras Google no publica las ganancias de un mes (suele hacerlo hacia el día
 5 del siguiente), sus ventas netas se estiman a partir del informe de ventas
 estimadas:
 precio sin impuestos menos la comisión `GOOGLE_PLAY_FEE_RATE` (15 % por
-defecto) y solo para importes en EUR; el resto se muestra aparte por moneda,
-sin convertir.
+defecto); las ventas en otras monedas se convierten a EUR al cambio
+aproximado (ver más abajo).
 
 Google publica los informes masivos con 2–7 días de retraso. Mientras Play no
 cubre dos periodos completos, la comparativa de ingresos usa solo Apple +
@@ -104,9 +104,16 @@ moneda no son secretos y sí están versionados.
   configurar" y el resto del panel funciona igual.
 - AdMob: OAuth client ID, client secret y refresh token con alcance de informes.
 
-El resumen de Apple conserva los proceeds separados por moneda y solo incorpora
-al total los que Apple ya expresa en EUR. No aplica tipos de cambio inventados;
-el panel avisa cuando existen importes en otras monedas.
+Apple y Play guardan los importes en su moneda original. Al construir el panel
+se convierten a EUR con el tipo de cambio diario de
+[currency-api](https://github.com/fawazahmed0/exchange-api) (incluye monedas
+como PYG que el BCE no publica), cacheado en KV como `tindrop-pulse:fx:v1` y
+renovado cada 12 h. Así los totales, gráficos, tabla y CSV reflejan el importe
+aproximado que llega en EUR: Apple por sus proceeds y Play por el precio sin
+impuestos menos la comisión. Se usa el cambio del día para todo el histórico,
+por lo que es una aproximación; los meses con informe de ganancias de Play usan
+el importe exacto de Google. El panel indica qué cantidades se convirtieron y,
+si falta algún tipo, las deja fuera del total y lo avisa.
 
 ## Desarrollo local
 
@@ -140,3 +147,6 @@ server-side. Each source is cached under its own KV key and refreshed by a
 the browser polls the dashboard every minute with an ETag so unchanged
 snapshots cost a 304. Daily KV usage stays around 450 writes, inside the free
 tier.
+Non-EUR Apple proceeds and Play sales are converted to approximate EUR with a
+daily cached exchange rate and included in every total, chart and export;
+closed Play months use Google's exact earnings report instead.
