@@ -129,8 +129,8 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 77,
-  "issued_at": 1793476852,
+  "version": 78,
+  "issued_at": 1793531266,
   "app_versions": {
     "1.29.0+285": {
       "flags": {
@@ -1735,6 +1735,68 @@
       }
     },
     "1.44.0+333": {
+      "app_update": {
+        "current_version": "1.42.0+330",
+        "current_build_number": 330,
+        "mode": "none"
+      },
+      "tiktok_measurement": {
+        "consent_vendor_id": 986,
+        "enabled": true
+      },
+      "monetization": {
+        "price_experiment": {
+          "review_preview_ios": true,
+          "review_preview_arm": "review_b",
+          "arms": [
+            {
+              "id": "review_b",
+              "share": 0,
+              "plans": [
+                "weekly_trial",
+                "monthly_trial",
+                "annual_best_value",
+                "lifetime"
+              ],
+              "products": {
+                "weekly_trial": {
+                  "ios": "suscripcion_semanal_ios_b_prueba",
+                  "android": "td_premium_weekly_renewable",
+                  "android_base_plan": "weekly-b",
+                  "android_offer": "trial-3d-b"
+                },
+                "weekly_flex": {
+                  "ios": "suscripcion_semanal_ios_b",
+                  "android": "td_premium_weekly_renewable",
+                  "android_base_plan": "weekly-b"
+                },
+                "monthly_trial": {
+                  "ios": "suscripcion_mensual_ios_b_prueba",
+                  "android": "td_premium_monthly_renewable",
+                  "android_base_plan": "monthly-b",
+                  "android_offer": "trial-3d-b"
+                },
+                "monthly_flex": {
+                  "ios": "suscripcion_mensual_renovable_ios_b",
+                  "android": "td_premium_monthly_renewable",
+                  "android_base_plan": "monthly-b"
+                },
+                "annual_best_value": {
+                  "ios": "suscripcion_anual_ios_b_sinprueba",
+                  "android": "td_premium_annual_renewable",
+                  "android_base_plan": "annual-b"
+                },
+                "lifetime": {
+                  "ios": "premium_vitalicio_ios",
+                  "android": "td_premium_lifetime"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "1.45.0+334": {
       "app_update": {
         "current_version": "1.42.0+330",
         "current_build_number": 330,
