@@ -129,8 +129,8 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 79,
-  "issued_at": 1793537143,
+  "version": 80,
+  "issued_at": 1793720839,
   "app_versions": {
     "1.29.0+285": {
       "flags": {
@@ -1918,6 +1918,68 @@
             }
           ]
         }
+      }
+    },
+    "1.46.1+336": {
+      "app_update": {
+        "current_version": "1.46.0+335",
+        "current_build_number": 335,
+        "mode": "none"
+      },
+      "monetization": {
+        "price_experiment": {
+          "arms": [
+            {
+              "id": "review_b",
+              "plans": [
+                "weekly_trial",
+                "monthly_trial",
+                "annual_best_value",
+                "lifetime"
+              ],
+              "products": {
+                "annual_best_value": {
+                  "android": "td_premium_annual_renewable",
+                  "android_base_plan": "annual-b",
+                  "ios": "suscripcion_anual_ios_b_sinprueba"
+                },
+                "lifetime": {
+                  "android": "td_premium_lifetime",
+                  "ios": "premium_vitalicio_ios"
+                },
+                "monthly_flex": {
+                  "android": "td_premium_monthly_renewable",
+                  "android_base_plan": "monthly-b",
+                  "ios": "suscripcion_mensual_renovable_ios_b"
+                },
+                "monthly_trial": {
+                  "android": "td_premium_monthly_renewable",
+                  "android_base_plan": "monthly-b",
+                  "android_offer": "trial-3d-b",
+                  "ios": "suscripcion_mensual_ios_b_prueba"
+                },
+                "weekly_flex": {
+                  "android": "td_premium_weekly_renewable",
+                  "android_base_plan": "weekly-b",
+                  "ios": "suscripcion_semanal_ios_b"
+                },
+                "weekly_trial": {
+                  "android": "td_premium_weekly_renewable",
+                  "android_base_plan": "weekly-b",
+                  "android_offer": "trial-3d-b",
+                  "ios": "suscripcion_semanal_ios_b_prueba"
+                }
+              },
+              "share": 0
+            }
+          ],
+          "review_preview_arm": "review_b",
+          "review_preview_ios": true
+        }
+      },
+      "tiktok_measurement": {
+        "consent_vendor_id": 986,
+        "enabled": true
       }
     }
   }
