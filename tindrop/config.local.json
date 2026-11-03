@@ -129,8 +129,8 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 85,
-  "issued_at": 1793735004,
+  "version": 86,
+  "issued_at": 1793738601,
   "app_versions": {
     "1.29.0+285": {
       "flags": {
@@ -2349,6 +2349,128 @@
       }
     },
     "1.47.1+340": {
+      "app_update": {
+        "current_version": "1.46.0+335",
+        "current_build_number": 335,
+        "mode": "none"
+      },
+      "tiktok_measurement": {
+        "consent_vendor_id": 986,
+        "enabled": true
+      },
+      "ads": {
+        "enabled": true,
+        "between_batches_spacing_minutes": 30,
+        "action_interstitial_cooldown_minutes": 30
+      },
+      "monetization": {
+        "price_experiment": {
+          "enabled": true,
+          "experiment_id": "price_notrial_v1",
+          "starts_at": 1793727218,
+          "android_enabled": true,
+          "ios_enabled": true,
+          "arms": [
+            {
+              "id": "control_notrial",
+              "share": 0.25,
+              "plans": [
+                "annual_best_value",
+                "monthly_flex"
+              ],
+              "products": {
+                "annual_best_value": {
+                  "android": "td_premium_annual_renewable",
+                  "ios": "suscripcion_anual_ios_a_sinprueba"
+                },
+                "monthly_flex": {
+                  "android": "td_premium_monthly_renewable",
+                  "ios": "suscripcion_mensual_renovable_ios_1"
+                }
+              }
+            },
+            {
+              "id": "annual_first",
+              "share": 0.25,
+              "plans": [
+                "annual_best_value",
+                "lifetime",
+                "monthly_flex"
+              ],
+              "products": {
+                "annual_best_value": {
+                  "android": "td_premium_annual_renewable",
+                  "android_base_plan": "annual-b",
+                  "ios": "suscripcion_anual_ios_b_sinprueba"
+                },
+                "lifetime": {
+                  "android": "td_premium_lifetime",
+                  "ios": "premium_vitalicio_ios"
+                },
+                "monthly_flex": {
+                  "android": "td_premium_monthly_renewable",
+                  "android_base_plan": "monthly-b",
+                  "ios": "suscripcion_mensual_renovable_ios_b"
+                }
+              }
+            },
+            {
+              "id": "weekly_first",
+              "share": 0.25,
+              "plans": [
+                "weekly_flex",
+                "annual_best_value",
+                "lifetime"
+              ],
+              "products": {
+                "weekly_flex": {
+                  "android": "td_premium_weekly_renewable",
+                  "android_base_plan": "weekly-b",
+                  "ios": "suscripcion_semanal_ios_b"
+                },
+                "annual_best_value": {
+                  "android": "td_premium_annual_renewable",
+                  "android_base_plan": "annual-b",
+                  "ios": "suscripcion_anual_ios_b_sinprueba"
+                },
+                "lifetime": {
+                  "android": "td_premium_lifetime",
+                  "ios": "premium_vitalicio_ios"
+                }
+              }
+            },
+            {
+              "id": "lifetime_first",
+              "share": 0.25,
+              "plans": [
+                "lifetime",
+                "annual_best_value",
+                "monthly_flex"
+              ],
+              "products": {
+                "lifetime": {
+                  "android": "td_premium_lifetime",
+                  "ios": "premium_vitalicio_ios"
+                },
+                "annual_best_value": {
+                  "android": "td_premium_annual_renewable",
+                  "android_base_plan": "annual-b",
+                  "ios": "suscripcion_anual_ios_b_sinprueba"
+                },
+                "monthly_flex": {
+                  "android": "td_premium_monthly_renewable",
+                  "android_base_plan": "monthly-b",
+                  "ios": "suscripcion_mensual_renovable_ios_b"
+                }
+              }
+            }
+          ],
+          "review_preview_arm": "annual_first",
+          "review_preview_ios": true
+        }
+      }
+    },
+    "1.47.2+341": {
       "app_update": {
         "current_version": "1.46.0+335",
         "current_build_number": 335,
