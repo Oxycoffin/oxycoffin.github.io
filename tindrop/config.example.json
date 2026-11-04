@@ -35,8 +35,8 @@
   "premium": {
     "filter_trial_limit": 50,
     "filter_rewarded_daily_limit": 2,
-    "free_swipes_intro_limit": 150,
-    "free_swipes_daily_limit": 75,
+    "free_swipes_intro_limit": 75,
+    "free_swipes_daily_limit": 45,
     "rewarded_swipe_grant": 100,
     "spotlight_weekly_limit": 5
   },
