@@ -129,8 +129,8 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 87,
-  "issued_at": 1793751409,
+  "version": 88,
+  "issued_at": 1793896017,
   "app_versions": {
     "1.29.0+285": {
       "flags": {
@@ -1681,9 +1681,7 @@
         "enabled": true
       },
       "monetization": {
-        "price_experiment": {
-          "review_preview_ios": true
-        }
+        "price_experiment": {}
       }
     },
     "1.42.0+330": {
@@ -1697,9 +1695,7 @@
         "enabled": true
       },
       "monetization": {
-        "price_experiment": {
-          "review_preview_ios": true
-        }
+        "price_experiment": {}
       }
     },
     "1.42.1+331": {
@@ -1713,9 +1709,7 @@
         "enabled": true
       },
       "monetization": {
-        "price_experiment": {
-          "review_preview_ios": true
-        }
+        "price_experiment": {}
       }
     },
     "1.43.0+332": {
@@ -1729,9 +1723,7 @@
         "enabled": true
       },
       "monetization": {
-        "price_experiment": {
-          "review_preview_ios": true
-        }
+        "price_experiment": {}
       }
     },
     "1.44.0+333": {
@@ -1746,8 +1738,6 @@
       },
       "monetization": {
         "price_experiment": {
-          "review_preview_ios": true,
-          "review_preview_arm": "review_b",
           "arms": [
             {
               "id": "review_b",
@@ -1808,8 +1798,6 @@
       },
       "monetization": {
         "price_experiment": {
-          "review_preview_ios": true,
-          "review_preview_arm": "review_b",
           "arms": [
             {
               "id": "review_b",
@@ -1870,8 +1858,6 @@
       },
       "monetization": {
         "price_experiment": {
-          "review_preview_ios": true,
-          "review_preview_arm": "review_b",
           "arms": [
             {
               "id": "review_b",
@@ -1972,9 +1958,7 @@
               },
               "share": 0
             }
-          ],
-          "review_preview_arm": "review_b",
-          "review_preview_ios": true
+          ]
         }
       },
       "tiktok_measurement": {
@@ -2098,9 +2082,7 @@
                 }
               }
             }
-          ],
-          "review_preview_arm": "annual_first",
-          "review_preview_ios": true
+          ]
         }
       }
     },
@@ -2220,9 +2202,7 @@
                 }
               }
             }
-          ],
-          "review_preview_arm": "annual_first",
-          "review_preview_ios": true
+          ]
         }
       }
     },
@@ -2342,9 +2322,7 @@
                 }
               }
             }
-          ],
-          "review_preview_arm": "annual_first",
-          "review_preview_ios": true
+          ]
         }
       }
     },
@@ -2464,9 +2442,7 @@
                 }
               }
             }
-          ],
-          "review_preview_arm": "annual_first",
-          "review_preview_ios": true
+          ]
         }
       }
     },
@@ -2586,9 +2562,7 @@
                 }
               }
             }
-          ],
-          "review_preview_arm": "annual_first",
-          "review_preview_ios": true
+          ]
         }
       }
     }
