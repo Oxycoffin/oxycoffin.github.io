@@ -129,8 +129,8 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 93,
-  "issued_at": 1794350046,
+  "version": 94,
+  "issued_at": 1794409800,
   "app_versions": {
     "1.29.0+285": {
       "flags": {
@@ -3047,6 +3047,126 @@
       }
     },
     "1.47.7+346": {
+      "ads": {
+        "action_interstitial_cooldown_minutes": 30,
+        "between_batches_spacing_minutes": 30,
+        "enabled": true
+      },
+      "app_update": {
+        "current_version": "1.47.5+344",
+        "current_build_number": 344,
+        "mode": "none"
+      },
+      "monetization": {
+        "price_experiment": {
+          "android_enabled": true,
+          "arms": [
+            {
+              "id": "control_notrial",
+              "plans": [
+                "annual_best_value",
+                "monthly_flex"
+              ],
+              "products": {
+                "annual_best_value": {
+                  "android": "td_premium_annual_renewable",
+                  "ios": "suscripcion_anual_ios_a_sinprueba"
+                },
+                "monthly_flex": {
+                  "android": "td_premium_monthly_renewable",
+                  "ios": "suscripcion_mensual_renovable_ios_1"
+                }
+              },
+              "share": 0.25
+            },
+            {
+              "id": "annual_first",
+              "plans": [
+                "annual_best_value",
+                "lifetime",
+                "monthly_flex"
+              ],
+              "products": {
+                "annual_best_value": {
+                  "android": "td_premium_annual_renewable",
+                  "android_base_plan": "annual-b",
+                  "ios": "suscripcion_anual_ios_b_sinprueba"
+                },
+                "lifetime": {
+                  "android": "td_premium_lifetime",
+                  "ios": "premium_vitalicio_ios"
+                },
+                "monthly_flex": {
+                  "android": "td_premium_monthly_renewable",
+                  "android_base_plan": "monthly-b",
+                  "ios": "suscripcion_mensual_renovable_ios_b"
+                }
+              },
+              "share": 0.25
+            },
+            {
+              "id": "weekly_first",
+              "plans": [
+                "weekly_flex",
+                "annual_best_value",
+                "lifetime"
+              ],
+              "products": {
+                "annual_best_value": {
+                  "android": "td_premium_annual_renewable",
+                  "android_base_plan": "annual-b",
+                  "ios": "suscripcion_anual_ios_b_sinprueba"
+                },
+                "lifetime": {
+                  "android": "td_premium_lifetime",
+                  "ios": "premium_vitalicio_ios"
+                },
+                "weekly_flex": {
+                  "android": "td_premium_weekly_renewable",
+                  "android_base_plan": "weekly-b",
+                  "ios": "suscripcion_semanal_ios_b"
+                }
+              },
+              "share": 0.25
+            },
+            {
+              "id": "lifetime_first",
+              "plans": [
+                "lifetime",
+                "annual_best_value",
+                "monthly_flex"
+              ],
+              "products": {
+                "annual_best_value": {
+                  "android": "td_premium_annual_renewable",
+                  "android_base_plan": "annual-b",
+                  "ios": "suscripcion_anual_ios_b_sinprueba"
+                },
+                "lifetime": {
+                  "android": "td_premium_lifetime",
+                  "ios": "premium_vitalicio_ios"
+                },
+                "monthly_flex": {
+                  "android": "td_premium_monthly_renewable",
+                  "android_base_plan": "monthly-b",
+                  "ios": "suscripcion_mensual_renovable_ios_b"
+                }
+              },
+              "share": 0.25
+            }
+          ],
+          "enabled": true,
+          "experiment_id": "price_notrial_v1",
+          "ios_enabled": true,
+          "starts_at": 1793727218
+        }
+      },
+      "tiktok_measurement": {
+        "consent_vendor_id": 986,
+        "enabled": true
+      }
+    },
+    "1.47.8+347": {
       "ads": {
         "action_interstitial_cooldown_minutes": 30,
         "between_batches_spacing_minutes": 30,
