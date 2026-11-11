@@ -31,8 +31,8 @@ para evitar perder accidentalmente la configuración histórica.
 
 Flujo recomendado:
 
-1. Copia `tindrop/config.example.json` a `tindrop/config.local.json`.
-2. Edita `tindrop/config.local.json` (este archivo está ignorado por Git).
+1. Parte de `tindrop/config.local.json`, fuente versionada; conserva raíz y perfiles publicados.
+2. Edita solo los valores o el nuevo perfil autorizado.
 3. Ejecuta el script de firmado:
 
 ```bash
@@ -68,17 +68,32 @@ build**. No hay que esperar a que la versión esté disponible en la tienda:
 5. Verifica en la URL pública, usando un parámetro anticaché, que `version` ha
    avanzado y que aparece la clave exacta dentro de `app_versions`.
 
-La app nueva reconocerá automáticamente su perfil. Las versiones anteriores a
-1.30.0 ignoran `app_versions` y siguen leyendo el bloque raíz. Publicar el
+La app nueva reconocerá automáticamente su perfil. Los clientes sin selección de perfil siguen leyendo el bloque raíz. Publicar el
 perfil y activar una actualización son operaciones distintas: `mode: soft` o
 `mode: hard` solo se activa después de comprobar que la nueva versión ya está
 disponible en la tienda.
 
-Opcionalmente actualiza el public key con:
+Solo para una rotación de clave autorizada, actualiza la clave pública con:
 
 ```bash
 python3 tindrop/scripts/sign_remote_config.py --update-public-key
 ```
+
+## Protecciones locales de integración
+
+Este clon dispone de hooks `pre-push` y `reference-transaction` que bloquean
+actualizaciones directas de `main` y pushes directos a `origin/main`. El registro
+compartido vive en `<git-common-dir>/agent-coordination/`; las tareas reservan
+su ámbito bajo `registry.lock/` creado atómicamente y trabajan en ramas y
+worktrees exclusivos.
+
+La cola FIFO usa `integration/runner.py`: `status`, `enqueue <ref> --owner
+<tarea>`, `validate-next --checks <JSON de arrays argv fiables>` y, con la
+publicación autorizada, `publish <id>`. Mantiene exclusión durante validación y
+publicación, verifica el SHA remoto y no cambia el checkout de `main`. Incluye
+entre las comprobaciones la firma, la raíz y todos los perfiles previos. La
+lectura pública posterior sigue siendo obligatoria. Son guardas de este clon;
+no prueban protección del servidor ni configuración de otras máquinas.
 
 ## UI local para publicar remote config
 
@@ -94,7 +109,7 @@ La UI hace este flujo:
 - Editar `tindrop/config.local.json`.
 - Firmar `tindrop/config.json` y `tindrop/config.json.sig`.
 - `git add` + `git commit`.
-- `git push origin HEAD` (si dejas marcado push automático).
+- El push directo queda bloqueado en el clon protegido: entrega el commit a la cola de integración descrita arriba.
 
 ## Previsualización local
 
