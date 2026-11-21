@@ -129,8 +129,8 @@
       "enable_quarterly_bridge": false
     }
   },
-  "version": 97,
-  "issued_at": 1795070152,
+  "version": 98,
+  "issued_at": 1795295829,
   "app_versions": {
     "1.29.0+285": {
       "flags": {
@@ -1977,7 +1977,7 @@
         "enabled": true
       },
       "ads": {
-        "enabled": true,
+        "enabled": false,
         "between_batches_spacing_minutes": 30,
         "action_interstitial_cooldown_minutes": 30
       },
@@ -2097,7 +2097,7 @@
         "enabled": true
       },
       "ads": {
-        "enabled": true,
+        "enabled": false,
         "between_batches_spacing_minutes": 30,
         "action_interstitial_cooldown_minutes": 30
       },
@@ -2217,7 +2217,7 @@
         "enabled": true
       },
       "ads": {
-        "enabled": true,
+        "enabled": false,
         "between_batches_spacing_minutes": 30,
         "action_interstitial_cooldown_minutes": 30
       },
@@ -2337,7 +2337,7 @@
         "enabled": true
       },
       "ads": {
-        "enabled": true,
+        "enabled": false,
         "between_batches_spacing_minutes": 30,
         "action_interstitial_cooldown_minutes": 30
       },
@@ -2457,7 +2457,7 @@
         "enabled": true
       },
       "ads": {
-        "enabled": true,
+        "enabled": false,
         "between_batches_spacing_minutes": 30,
         "action_interstitial_cooldown_minutes": 30
       },
@@ -2577,7 +2577,7 @@
         "enabled": true
       },
       "ads": {
-        "enabled": true,
+        "enabled": false,
         "between_batches_spacing_minutes": 30,
         "action_interstitial_cooldown_minutes": 30
       },
@@ -2697,7 +2697,7 @@
         "enabled": true
       },
       "ads": {
-        "enabled": true,
+        "enabled": false,
         "between_batches_spacing_minutes": 30,
         "action_interstitial_cooldown_minutes": 30
       },
@@ -2817,7 +2817,7 @@
         "enabled": true
       },
       "ads": {
-        "enabled": true,
+        "enabled": false,
         "between_batches_spacing_minutes": 30,
         "action_interstitial_cooldown_minutes": 30
       },
@@ -2937,7 +2937,7 @@
         "enabled": true
       },
       "ads": {
-        "enabled": true,
+        "enabled": false,
         "between_batches_spacing_minutes": 30,
         "action_interstitial_cooldown_minutes": 30
       },
@@ -3050,7 +3050,7 @@
       "ads": {
         "action_interstitial_cooldown_minutes": 30,
         "between_batches_spacing_minutes": 30,
-        "enabled": true
+        "enabled": false
       },
       "app_update": {
         "current_version": "1.47.5+344",
@@ -3170,7 +3170,7 @@
       "ads": {
         "action_interstitial_cooldown_minutes": 30,
         "between_batches_spacing_minutes": 30,
-        "enabled": true
+        "enabled": false
       },
       "app_update": {
         "current_version": "1.47.5+344",
@@ -3290,7 +3290,7 @@
       "ads": {
         "action_interstitial_cooldown_minutes": 30,
         "between_batches_spacing_minutes": 30,
-        "enabled": true
+        "enabled": false
       },
       "app_update": {
         "current_build_number": 347,
@@ -3410,7 +3410,7 @@
       "ads": {
         "action_interstitial_cooldown_minutes": 30,
         "between_batches_spacing_minutes": 30,
-        "enabled": true
+        "enabled": false
       },
       "app_update": {
         "current_build_number": 348,
@@ -3530,7 +3530,7 @@
       "ads": {
         "action_interstitial_cooldown_minutes": 30,
         "between_batches_spacing_minutes": 30,
-        "enabled": true
+        "enabled": false
       },
       "app_update": {
         "current_build_number": 348,
