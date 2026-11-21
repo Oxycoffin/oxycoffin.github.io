@@ -168,3 +168,8 @@ mantener `ads.enabled: false`. Para reabrir tras confirmación del proveedor, la
 Android comprometida exige un ID de sustitución explícito para cada perfil con anuncios
 activos. Los perfiles apagados pueden conservar sus datos históricos. Las comprobaciones
 se aplican también a las operaciones del editor web que llaman al firmador.
+
+Una vez levantada la suspensión, `replacements` permite asignar por formato y plataforma
+una reserva que se haya comprobado en AdMob. En cada firma se sustituye el ID retirado tanto
+en la raíz como en los perfiles que lo sobrescriben. Una segunda firma conserva la asignación.
+El cambio de ID conserva el valor de `enabled`. Las reservas están vacías durante el incidente.

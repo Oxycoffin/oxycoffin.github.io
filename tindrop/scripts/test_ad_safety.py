@@ -1,5 +1,5 @@
 import unittest
-from ad_safety import validate_ad_safety
+from ad_safety import replace_retired_units, validate_ad_safety
 
 
 class AdSafetyTest(unittest.TestCase):
@@ -20,6 +20,20 @@ class AdSafetyTest(unittest.TestCase):
         self.ads["enabled"] = True
         with self.assertRaises(ValueError):
             validate_ad_safety(self.config, self.policy)
+
+    def test_rotation_respects_hold_and_updates_only_matching_units(self):
+        self.policy["replacements"] = {"android_interstitial": self.new}
+        self.profile["units"] = {"android_interstitial": self.old, "ios_interstitial": "unrelated"}
+        replace_retired_units(self.config, self.policy)
+        self.assertEqual(self.ads["units"]["android_interstitial"], self.old)
+        self.policy["serving_suspended"] = False
+        replace_retired_units(self.config, self.policy)
+        replace_retired_units(self.config, self.policy)
+        self.assertEqual(self.ads["units"]["android_interstitial"], self.new)
+        self.assertEqual(self.profile["units"], {"android_interstitial": self.new, "ios_interstitial": "unrelated"})
+        self.policy["replacements"]["android_interstitial"] = self.old
+        with self.assertRaises(ValueError):
+            replace_retired_units(self.config, self.policy)
 
     def test_old_binaries_require_explicit_safe_replacement_after_suspension(self):
         self.policy["serving_suspended"] = False
