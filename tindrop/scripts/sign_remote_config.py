@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from ad_safety import validate_ad_safety
+from ad_safety import replace_retired_units, validate_ad_safety
 
 import argparse
 import base64
@@ -90,7 +90,9 @@ def _run_sign(
 
     data = _bump_and_stamp(_load_json(config_in))
 
-    validate_ad_safety(data, _load_json(Path(__file__).resolve().parents[1] / "ad-safety.json"))
+    policy = _load_json(Path(__file__).resolve().parents[1] / "ad-safety.json")
+    replace_retired_units(data, policy)
+    validate_ad_safety(data, policy)
     payload = _canonical_json(data)
     config_out.write_bytes(payload)
     _write_signature(sig_out, payload, key_path)

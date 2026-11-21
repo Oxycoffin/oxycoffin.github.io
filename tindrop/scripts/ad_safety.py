@@ -2,6 +2,25 @@
 import re
 
 
+def replace_retired_units(config, policy):
+    """Apply approved replacements to the root and version overrides before signing."""
+    if policy["serving_suspended"]:
+        return
+    retired = policy["retired_units"]
+    blocked = {unit for entries in retired.values() for unit in entries}
+    replacements = policy.get("replacements", {})
+    for slot, replacement in replacements.items():
+        if slot not in retired or not isinstance(replacement, str) or not re.fullmatch(
+            r"ca-app-pub-6279728494613017/\d+", replacement
+        ) or replacement in blocked or list(replacements.values()).count(replacement) != 1:
+            raise ValueError(f"Reserva inválida para {slot}")
+    for profile in [config, *config.get("app_versions", {}).values()]:
+        units = profile.get("ads", {}).get("units", {})
+        for slot, replacement in replacements.items():
+            if units.get(slot) in retired[slot]:
+                units[slot] = replacement
+
+
 def validate_ad_safety(config, policy):
     suspended = policy["serving_suspended"]
     retired = policy["retired_units"]
