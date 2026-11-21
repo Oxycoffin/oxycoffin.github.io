@@ -159,3 +159,12 @@ El CSS está embebido en cada archivo para facilitar su uso como documentos inde
 ---
 
 Hecho con cariño para Tindrop.
+
+### Seguridad publicitaria en Remote Config
+
+El firmador comprueba la raíz y los valores que hereda cada perfil antes de escribir.
+Mientras `ad-safety.json` tenga `serving_suspended: true`, todos los perfiles deben
+mantener `ads.enabled: false`. Para reabrir tras confirmación del proveedor, la unidad
+Android comprometida exige un ID de sustitución explícito para cada perfil con anuncios
+activos. Los perfiles apagados pueden conservar sus datos históricos. Las comprobaciones
+se aplican también a las operaciones del editor web que llaman al firmador.
